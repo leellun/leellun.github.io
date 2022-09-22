@@ -1,0 +1,670 @@
+# Site settings
+title: 旧·时光 | Time
+SEOTitle: 旧·时光 | YoungChen's Blog
+header-img: img/bg1.jpg
+email: Chen.Jiayang@foxmail.com
+description: "我的肩上是风，风上是闪烁的星辰。—— 北岛《结局或开始》"
+keyword: "博客,Java,Redis,Spring,分布式系统"
+url: "http://chenjiayang.me"              # your host, for absolute URL
+baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
+
+# SNS settings
+RSS: true
+weibo_username:     u/3284056213
+zhihu_username:     EasonChen_7
+github_username:    jiayangchen
+#facebook_username:  jiayangchen
+linkedin_username:  嘉扬-陈-04463a117
+csdn_username: chen_kkw
+
+# Build settings
+# from 2016, 'pygments' is unsupported on GitHub Pages. Use 'rouge' for highlighting instead.
+highlighter: rouge
+permalink: pretty
+
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md","README.zh.md"]
+anchorjs: false                          # if you want to customize anchor. check out line:181 of `post.html`
+
+
+# Gems
+# from PR#40, to support local preview for Jekyll 3.0
+gems: [jekyll-paginate]
+paginate: 5
+port: 4001
+
+# Markdown settings
+# replace redcarpet to kramdown,
+# although redcarpet can auto highlight code, the lack of header-id make the catalog impossible, so I switch to kramdown
+# document: http://jekyllrb.com/docs/configuration/#kramdown
+markdown: kramdown
+syntax_highlighter: rouge
+
+kramdown:
+  input: GFM                            # use Github Flavored Markdown !important
+  auto_ids:                  true
+  footnote_nr:               1
+  entity_output:             as_char
+  toc_levels:                1..6
+  smart_quotes:              lsquo,rsquo,ldquo,rdquo
+  enable_coderay:            false
+  hard_wrap:                 false
+  syntax_highlighter:        rouge
+  transliterated_header_ids: true
+  footnote_backlink:         "&#8617;&#xfe0e;"
+
+# Livere settings
+livere_userid: MTAyMC8zMjgxNS85Mzc2
+# Disqus settings
+#disqus_username: jiayangchen
+
+# Duoshuo settings
+#duoshuo_username: jiayangchen
+# Share component is depend on Comment so we can NOT use share only.
+#duoshuo_share: true                     # set to false if you want to use Comment without Sharing
+
+# Analytics settings
+# Baidu Analytics
+ba_track_id: 57bc9aa8fa52f13b45b8480cacb9cc67
+# Google Analytics
+#ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
+#ga_domain: huangxuan.me
+
+
+# Sidebar settings
+sidebar: true                           # whether or not using Sidebar.
+sidebar-about-description: "愿你既有前程可奔赴，又有岁月可回头"
+sidebar-avatar: /img/avatar.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+
+# Featured Tags
+featured-tags: true                     # whether or not using Feature-Tags
+featured-condition-size: 5              # A tag will be featured if the size of it is more than this condition value
+
+# Friends
+friends: [
+    {
+        title: "yeming",
+        href: "http://yeming.me/"
+    },
+    {
+        title: "田守枝的Java技术博客",
+        href: "http://tianshouzhi.com/"
+    },
+    {
+        title: "Ivy-End",
+        href: "http://www.ivy-end.com/"
+    },
+    {
+        title: "青菜萝卜",
+        href: "http://www.huding.me/index.html"
+    },
+    {
+        title: "Commouse",
+        href: "http://www.commouse.me"
+    },
+    {
+        title: "Gaocegege",
+        href: "http://www.gaocegege.com"
+    }
+]
+
+papers: [
+    {
+        url: "http://www.vldb.org/pvldb/vol10/p1730-lin.pdf",
+        title: "PaxosStore:High-availability Storage Made Practical in WeChat"
+    },
+    {
+        url: "https://www.usenix.org/system/files/fast20-chen_jiqiang.pdf",
+        title: "HotRing: A Hotspot-Aware In-Memory Key-Value Store"
+    },
+    {
+        url: "https://lamport.azurewebsites.net/pubs/paxos-simple.pdf",
+        title: "Paxos Made Simple"
+    },
+    {
+        url: "https://raft.github.io/raft.pdf",
+        title: "In Search of an Understandable Consensus Algorithm"
+    },
+    {
+        url: "https://chenjiayang.me/2019/12/21/read-dynamo-again/",
+        title: "重读 Amazon Dynamo 论文有感"
+    },
+    {
+        url: "https://chenjiayang.me/2018/07/20/paper-chubby/",
+        title: "The Chubby lock service for loosely-coupled distributed systems"
+    },
+    {
+        url: "https://chenjiayang.me/2018/07/27/paper-spanner/",
+        title: "Spanner: Google’s Globally-Distributed Database"
+    },
+    {
+        url: "https://chenjiayang.me/2018/08/05/paper-Dynamo/",
+        title: "Dynamo: Amazon’s Highly Available Key-value Store"
+    },
+    {
+        url: "https://chenjiayang.me/2018/08/11/paper-megastore/",
+        title: "Megastore: Providing Scalable, Highly Available Storage for Interactive Services"
+    },
+    {
+        url: "https://chenjiayang.me/2018/09/02/paper-cassandra/",
+        title: "Cassandra - A Decentralized Structured Storage System"
+    },
+    {
+        url: "https://chenjiayang.me/2018/11/06/paper-surviva/",
+        title: "Survivability of Cloud Databases - Factors and Prediction"
+    }
+]
+
+books: {
+    "2021": [
+        {
+            url: "https://book.douban.com/subject/35562179/",
+            title: "天堂旅行团",
+            star: "☆☆☆",
+            comment: "张嘉佳可不可以写一些开心的书啊"
+        },
+        {
+            url: "https://book.douban.com/subject/35581077/",
+            title: "了不起的中国画 清宫旧藏追踪录",
+            star: "☆☆☆☆☆",
+            comment: "力荐，至少可以入门怎么鉴赏"
+        },
+        {
+            url: "https://book.douban.com/subject/35582002/",
+            title: "我的灵魂骑在纸背上",
+            star: "☆☆☆☆☆",
+            comment: "怎么学会这种随便写写就这么感人的文笔啊"
+        },
+        {
+            url: "https://book.douban.com/subject/35578740/",
+            title: "中国的选择 中美博弈与战略抉择",
+            star: "☆☆☆☆☆",
+            comment: "力荐"
+        },
+        {
+            url: "https://book.douban.com/subject/35486968/",
+            title: "在人间：肿瘤科女医生亲历记录",
+            star: "☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/35512975/",
+            title: "伊朗四千年",
+            star: "☆☆☆☆☆",
+            comment: "中东的复杂性蓝星第一"
+        },
+        {
+            url: "https://book.douban.com/subject/35426737/",
+            title: "吴军数学通识讲义 : 原来数学可以这样用",
+            star: "☆☆☆☆",
+            comment: "还可以，当做知识回顾了"
+        },
+        {
+            url: "https://book.douban.com/subject/34815132/",
+            title: "圆圈正义 作为自由前提的信念",
+            star: "☆☆☆",
+            comment: "一般般"
+        },
+        {
+            url: "https://book.douban.com/subject/20424526/",
+            title: "邓小平时代",
+            star: "☆☆☆☆☆",
+            comment: "三过书架没拿，以为长篇很枯燥结果打开就停不下来"
+        },
+        {
+            url: "https://book.douban.com/subject/35374447/",
+            title: "请照顾好我妈妈",
+            star: "☆☆☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/35233508/",
+            title: "應許之地：歐巴馬回憶錄",
+            star: "☆☆☆",
+            comment: "真是期待川宝的回忆录啊"
+        },
+        {
+            url: "https://book.douban.com/subject/35216962/",
+            title: "抚顺故事集",
+            star: "☆☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/35174681/",
+            title: "一往无前 雷军亲述小米热血10年",
+            star: "☆☆",
+            comment: "年度最差候选，呵呵哒"
+        },
+        {
+            url: "https://book.douban.com/subject/35398543/",
+            title: "中国经济2021",
+            star: "☆☆☆",
+            comment: "也不好意思说读吧，就是翻过去……反正每年出一本"
+        },
+        {
+            url: "https://book.douban.com/subject/35398543/",
+            title: "云上的中国 激荡的数智化未来",
+            star: "☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/35166857/",
+            title: "风声",
+            star: "☆☆☆☆☆",
+            comment: "只因民族已到存亡之际，我辈只能奋不顾身，挽救于万一"
+        },
+        {
+            url: "https://book.douban.com/subject/35025444/",
+            title: "血色浪漫",
+            star: "☆☆☆☆☆",
+            comment: "小说当不得真"
+        },
+        {
+            url: "https://book.douban.com/subject/35335514/",
+            title: "文城",
+            star: "☆☆☆",
+            comment: "余华新书，一般"
+        },
+        {
+            url: "https://book.douban.com/subject/35102294/",
+            title: "不拘一格 网飞的自由与责任工作法",
+            star: "☆☆☆☆☆",
+            comment: "两百页小册子，给一百颗星，管理者都应看看"
+        },
+        {
+            url: "https://book.douban.com/subject/26712353/",
+            title: "血疫 埃博拉的故事",
+            star: "☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/35221197/",
+            title: "破茧 隔离、信任与未来",
+            star: "☆☆☆",
+            comment: "远不如溢出惊艳，演讲稿大杂烩"
+        },
+        {
+            url: "https://book.douban.com/subject/1418776/",
+            title: "美国反对美国",
+            star: "☆☆☆☆☆",
+            comment: "无愧三届帝师"
+        },
+        {
+            url: "https://book.douban.com/subject/34672176/",
+            title: "呼吸",
+            star: "☆☆☆☆",
+            comment: "如果你不是作者粉我只推荐前两个故事"
+        },
+        {
+            url: "https://book.douban.com/subject/26171466/",
+            title: "筚路维艰:中国社会主义路径的五次选择",
+            star: "☆☆☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/6895949/",
+            title: "联合政府与一党训政 1944～1946年间国共政争",
+            star: "☆☆☆☆☆",
+            comment: "一书理清所有时间线"
+        },
+        {
+            url: "https://book.douban.com/subject/26824237/",
+            title: "大国大城 当代中国的统一、发展与平衡",
+            star: "☆☆☆☆☆",
+            comment: "不论你是否同意陆铭的观点，都应该读一读"
+        }
+    ],
+    "2020": [
+        {
+            url: "https://book.douban.com/subject/35074464/",
+            title: "光景宛如昨",
+            star: "☆☆☆☆☆",
+            comment: "看完有种难以言说的幸福感"
+        },
+        {
+            url: "https://book.douban.com/subject/1009529/",
+            title: "毛泽东、斯大林与朝鲜战争",
+            star: "☆☆☆☆☆",
+            comment: "严肃史学"
+        },
+        {
+            url: "https://book.douban.com/subject/6388661/",
+            title: "这些人，那些事",
+            star: "☆☆☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/27096824/",
+            title: "决战朝鲜",
+            star: "☆☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/35006198/",
+            title: "大宋之变",
+            star: "☆☆☆",
+            comment: "没看完，不够通俗易懂……越看越懵逼"
+        },
+        {
+            url: "https://book.douban.com/subject/34983746/",
+            title: "长安客",
+            star: "☆☆☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/34880649/",
+            title: "改变中国,经济学家的改革记述",
+            star: "☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/26865333/",
+            title: "中国1945,中国革命与美国的抉择",
+            star: "☆☆☆",
+            comment: "没看完,偏向性比较明显,过于粉饰美国二战后在亚太的野心"
+        },
+        {
+            url: "https://book.douban.com/subject/34433981/",
+            title: "汴京之围,北宋末年的外交、战争和人",
+            star: "☆☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/34970321/",
+            title: "1918年之疫,被流感改变的世界",
+            star: "☆☆",
+            comment: "枯燥、晦涩、翻译质量感人，年度最差读本候选"
+        },
+        {
+            url: "https://book.douban.com/subject/34895571/",
+            title: "饱食穷民",
+            star: "☆☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/34949599/",
+            title: "溢出 : 中国制造未来史",
+            star: "☆☆☆☆☆",
+            comment: "部分观点很有借鉴意义，对民族身份认同的思考很受启发"
+        },
+        {
+            url: "https://book.douban.com/subject/33479141/",
+            title: "世界贸易战简史",
+            star: "☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/30460837/",
+            title: "近代中国人物论",
+            star: "☆☆",
+            comment: "枯燥"
+        },
+        {
+            url: "https://book.douban.com/subject/34888158/",
+            title: "中国经济2020",
+            star: "☆☆☆",
+            comment: "流水账回顾"
+        },
+        {
+            url: "https://book.douban.com/subject/34434309/",
+            title: "82年生的金智英",
+            star: "☆☆☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/30169979/",
+            title: "战后日本经济史",
+            star: "☆☆☆☆☆",
+            comment: "论点扎实，推荐"
+        },
+        {
+            url: "https://book.douban.com/subject/33440205/",
+            title: "你当像鸟飞往你的山",
+            star: "☆☆☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/10575976/",
+            title: "中国近代史",
+            star: "☆☆☆☆☆"
+        }
+    ],
+    "2019": [
+        {
+            url: "https://book.douban.com/subject/33440205/",
+            title: "你当像鸟飞往你的山",
+            star: "☆☆☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/30306047/",
+            title: "重新定义未来,区块链如何……生活方式!",
+            star: "☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/33417653/",
+            title: "我不是产品经理,移动互联网商业模式下的用户增长",
+            star: "☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/30169979/",
+            title: "战后日本经济史",
+            star: "☆☆☆☆☆"
+        },
+        {
+            url: "https://book.douban.com/subject/10575976/",
+            title: "中国近代史",
+            star: "☆☆☆☆☆"
+        }
+    ]
+}
+
+
+# Photos
+photos: [
+    {
+        url: "https://ss.im5i.com/2021/11/09/JBnHR.md.jpg",
+        title: "学走路",
+        date: "2021.11",
+        location: "陆家嘴中央绿地"
+    },
+    {
+        url: "https://ss.im5i.com/2021/11/09/JBoLd.md.jpg",
+        title: "咖啡节",
+        date: "2021.11",
+        location: "陆家嘴中央绿地"
+    },
+    {
+        url: "https://ss.im5i.com/2021/11/09/JBIq4.md.jpg",
+        title: "格栅建筑",
+        date: "2021.10",
+        location: "苏州美术馆"
+    },
+    {
+        url: "https://ss.im5i.com/2021/09/17/lvt1s.md.jpg",
+        title: "十字路口",
+        date: "2021.09",
+        location: "北新泾"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTVY7.png",
+        title: "路牌",
+        date: "2021.04",
+        location: "愚园路"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTd72.png",
+        title: "水墨倒影",
+        date: "2021.03",
+        location: "苏州博物馆"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTlVP.png",
+        title: "三个必胜纪念馆",
+        date: "2020.10",
+        location: "南京"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTrTD.png",
+        title: "少年",
+        date: "2020.01",
+        location: "江苏路"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTyzj.png",
+        title: "猫",
+        date: "2019.12",
+        location: "北新泾"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTJNS.png",
+        title: "汽车机器人",
+        date: "2019.11",
+        location: "上海科技馆"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTcbL.png",
+        title: "大雁塔",
+        date: "2019.11",
+        location: "西安"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTsmt.png",
+        title: "华清宫",
+        date: "2019.11",
+        location: "骊山国家森林公园"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTUhq.png",
+        title: "后巷",
+        date: "2019.11",
+        location: "西安兵马俑博物馆"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTbBm.png",
+        title: "中超联赛",
+        date: "2019.11",
+        location: "上海八万人体育场"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTtns.png",
+        title: "随拍",
+        date: "2019.06",
+        location: "长宁区愚园路"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTuMQ.png",
+        title: "点评小人",
+        date: "2019.06",
+        location: "长宁区德必易园"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTHV3.png",
+        title: "南湖",
+        date: "2019.06",
+        location: "安徽黟县宏村"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTjWy.png",
+        title: "月沼",
+        date: "2019.06",
+        location: "安徽黟县宏村"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTTzO.png",
+        title: "莲蕊峰",
+        date: "2019.06",
+        location: "安徽黄山风景区"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTXNR.png",
+        title: "墙上涂鸦",
+        date: "2019.01",
+        location: "厦门大学芙蓉隧道"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VT2td.png",
+        title: "落日",
+        date: "2019.01",
+        location: "厦门园林植物园"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VT9m4.png",
+        title: "三丘田码头",
+        date: "2019.01",
+        location: "厦门鼓浪屿"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTYhW.png",
+        title: "罗中立美术馆",
+        date: "2018.06",
+        location: "重庆四川美术学院"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTnJG.png",
+        title: "艺术楼",
+        date: "2018.06",
+        location: "成都东郊记忆"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTonz.png",
+        title: "青铜面具人像",
+        date: "2018.06",
+        location: "四川博物馆"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VT3M5.png",
+        title: "电动……霸王龙",
+        date: "2018.06",
+        location: "上海自然博物馆"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTZd6.png",
+        title: "年关",
+        date: "2018.02",
+        location: "张家港乐余镇"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTiW8.png",
+        title: "泉台",
+        date: "2017.09",
+        location: "东南大学四牌楼校区"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTm0U.png",
+        title: "晚霞",
+        date: "2017.09",
+        location: "东 26 楼寝室阳台"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VT8Sw.png",
+        title: "求婚",
+        date: "2017.05",
+        location: "上海八万人体育场"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTAtZ.png",
+        title: "Hackathon",
+        date: "2016.11",
+        location: "微软紫竹亚研院"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTLxJ.png",
+        title: "初春",
+        date: "2016.04",
+        location: "闵行区滨江公园外"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTzw1.md.png",
+        title: "军训晚会",
+        date: "2015.09",
+        location: "上海交通大学霍英东体育馆"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VT0Jn.png",
+        title: "唐朝彩色侍女佣像",
+        date: "2016 年中秋",
+        location: "上海博物馆"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTDol.png",
+        title: "校门",
+        date: "2015.04",
+        location: "苏州大学"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTaM7.png",
+        title: "中超联赛首轮",
+        date: "2015.03",
+        location: "上海八万人体育场"
+    },
+    {
+        url: "https://ss.im5i.com/2021/08/17/VTpd2.png",
+        title: "大礼堂",
+        date: "2014 年末",
+        location: "梁丰高级中学"
+    }
+]
