@@ -10,12 +10,8 @@ baseurl: ""                             # for example, '/blog' if your blog host
 
 # SNS settings
 RSS: true
-weibo_username:     u/3284056213
-zhihu_username:     EasonChen_7
-github_username:    jiayangchen
-#facebook_username:  jiayangchen
-linkedin_username:  嘉扬-陈-04463a117
-csdn_username: chen_kkw
+github_username:    leellun
+csdn_username: liu289747235
 
 # Build settings
 # from 2016, 'pygments' is unsupported on GitHub Pages. Use 'rouge' for highlighting instead.
@@ -55,10 +51,8 @@ kramdown:
 # Livere settings
 livere_userid: MTAyMC8zMjgxNS85Mzc2
 # Disqus settings
-#disqus_username: jiayangchen
 
-# Duoshuo settings
-#duoshuo_username: jiayangchen
+
 # Share component is depend on Comment so we can NOT use share only.
 #duoshuo_share: true                     # set to false if you want to use Comment without Sharing
 
