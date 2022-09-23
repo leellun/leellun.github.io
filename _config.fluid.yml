@@ -14,16 +14,28 @@ index:
     text: "一个Java、SpringBoot、SpringCloud、服务器等文章分享博客网站"
 post:
   banner_img_height: 60
+  banner_img: /img/bg-default.png
 archive:
   banner_img_height: 60
+  banner_img: /img/bg-default.png
 category:
   banner_img_height: 60
+  banner_img: /img/bg-default.png
 tag:
   banner_img_height: 60
+  banner_img: /img/bg-default.png
 about:
   banner_img_height: 60
+  banner_img: /img/bg-default.png
 page:
   banner_img_height: 60
+  banner_img: /img/bg-default.png
+page404:
+  banner_img: /img/bg-default.png
+  banner_img_height: 60
+links:
+  enable: true
+  banner_img: /img/bg-default.png
 
 #---------------------------
 # 页脚
