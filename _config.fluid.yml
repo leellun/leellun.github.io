@@ -1,5 +1,33 @@
 favicon: /img/leaf_icon.png
+
 navbar:
   # 导航栏左侧的标题，为空则按 hexo config 中 `title` 显示
   # The title on the left side of the navigation bar. If empty, it is based on `title` in hexo config
   blog_title: "青叶水间"
+index:
+  banner_img_height: 60
+post:
+  banner_img_height: 60
+archive:
+  banner_img_height: 60
+category:
+  banner_img_height: 60
+tag:
+  banner_img_height: 60
+about:
+  banner_img_height: 60
+page:
+  banner_img_height: 60
+
+#---------------------------
+# 页脚
+# Footer
+#---------------------------
+footer:
+  # 页脚第一行文字的 HTML，建议保留 Fluid 的链接，用于向更多人推广本主题
+  # HTML of the first line of the footer, it is recommended to keep the Fluid link to promote this theme to more people
+  content: '
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a>
+  '
