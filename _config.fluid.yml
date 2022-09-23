@@ -6,6 +6,7 @@ navbar:
   blog_title: "青叶水间"
 index:
   banner_img_height: 60
+  banner_img: /img/bg-default.png
   slogan:
     enable: true
 
