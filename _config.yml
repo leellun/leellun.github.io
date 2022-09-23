@@ -105,4 +105,3 @@ deploy:
   type: git
   repo: git@github.com:leellun/leellun.github.io.git
   branch: master
-  message: 自动生成page

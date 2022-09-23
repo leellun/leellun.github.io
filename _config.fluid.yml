@@ -6,6 +6,12 @@ navbar:
   blog_title: "青叶水间"
 index:
   banner_img_height: 60
+  slogan:
+    enable: true
+
+    # 为空则按 hexo config.subtitle 显示
+    # If empty, text based on `subtitle` in hexo config
+    text: "一个Java、SpringBoot、SpringCloud、服务器等文章分享博客网站"
 post:
   banner_img_height: 60
 archive:
