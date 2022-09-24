@@ -219,15 +219,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/09/23/%E5%A6%82%E4%BD%95%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/" target="_self">
-          如何用hexo在github上搭建自己的博客
+        <a href="/2022/07/27/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2redis/" target="_self">
+          kubesphere快速部署redis
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/09/23/%E5%A6%82%E4%BD%95%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/27/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2redis/" target="_self">
         <div>
-          一、github仓库创建在github创建仓库，仓库名称为[username].github.io。   然后选择设置   设置网站的访问host并且制定分支为主分支   配置git免登录认证信息     二、hexo使用1.1 安装hexo全局安装hexo 1234npm install -g hexo# 发布支持npm install --save hexo-deployer-git  1.2
+          一、配置文件创建redis-conf：redis.conf 123456cluster-enabled yes #开启集群cluster-config-file nodes.conf #集群nodecluster-node-timeout 5000 # 集群延迟appendonly yes # aof文件开启masterauth 123456 # 密码requirepass 123456 # 认证
         </div>
       </a>
 
@@ -235,8 +235,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-09-23 17:38" pubdate>
-              2022-09-23
+            <time datetime="2022-07-27 19:38" pubdate>
+              2022-07-27
             </time>
           </div>
         
@@ -251,7 +251,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%89%8D%E7%AB%AF/" class="category-chain-item">前端</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
   
   
 
@@ -266,11 +266,212 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/hexo/">#hexo</a>
+              <a href="/tags/k8s/">#k8s</a>
             
-              <a href="/tags/github/">#github</a>
+              <a href="/tags/kubernetes/">#kubernetes</a>
             
-              <a href="/tags/%E5%8D%9A%E5%AE%A2/">#博客</a>
+              <a href="/tags/kubeshpere/">#kubeshpere</a>
+            
+              <a href="/tags/redis/">#redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/07/26/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2mysql/" target="_self">
+          kubesphere快速部署mysql
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/26/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2mysql/" target="_self">
+        <div>
+          一、docker部署方式1docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:8.0 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci    二、k8s有状态部署方式2.1 准备配置文件创建my-cnf的Config
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-07-26 18:38" pubdate>
+              2022-07-26
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/kubeshpere/">#kubeshpere</a>
+            
+              <a href="/tags/mysql/">#mysql</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/07/26/devops%E4%B9%8BKubeSphere%E6%B5%81%E6%B0%B4%E7%BA%BF%E9%83%A8%E7%BD%B2/" target="_self">
+          devops之KubeSphere流水线部署
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/26/devops%E4%B9%8BKubeSphere%E6%B5%81%E6%B0%B4%E7%BA%BF%E9%83%A8%E7%BD%B2/" target="_self">
+        <div>
+          阶段 1：Checkout SCM：从 GitHub 仓库检出源代码。 阶段 2：单元测试：待该测试通过后才会进行下一阶段。 阶段 3：SonarQube 分析：SonarQube 代码质量分析。 阶段 4：构建并推送快照镜像：根据策略设置中选定的分支来构建镜像，并将 SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER 标签推送至 Docker Hub，其中 $BUIL
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-07-26 12:38" pubdate>
+              2022-07-26
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/kubeshpere/">#kubeshpere</a>
+            
+              <a href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BF/">#流水线</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/07/25/devops%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AESonarQube/" target="_self">
+          devops安装配置SonarQube
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/25/devops%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AESonarQube/" target="_self">
+        <div>
+          一、介绍SonarQube 是一种主流的代码质量持续检测工具。您可以将其用于代码库的静态和动态分析。SonarQube 集成到 KubeSphere 流水线后，如果在运行的流水线中检测到问题，您可以直接在仪表板上查看常见代码问题，例如 Bug 和漏洞。 需要启用 KubeSphere DevOps 系统。 二、安装 SonarQube 服务器1helm upgrade --install sona
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-07-25 17:38" pubdate>
+              2022-07-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/sonarqube/">#sonarqube</a>
             
           </div>
         
@@ -285,7 +486,7 @@
       <h1 class="index-header">
         
         <a href="/2022/07/24/k8s%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90KubeSphere/" target="_self">
-          如何用hexo在github上搭建自己的博客
+          k8s快速集成KubeSphere
         </a>
       </h1>
 
@@ -410,7 +611,273 @@
     </article>
   </div>
 
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/13/k8s%20Service%E7%9A%84%E6%A6%82%E8%BF%B0%E3%80%81%E7%B1%BB%E5%9E%8B%E5%8F%8A%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/" target="_self">
+          k8s Service的概述、类型及代理模式
+        </a>
+      </h1>
 
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/13/k8s%20Service%E7%9A%84%E6%A6%82%E8%BF%B0%E3%80%81%E7%B1%BB%E5%9E%8B%E5%8F%8A%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/" target="_self">
+        <div>
+          一、概述Kubernete Service 是一个定义了一组Pod的策略的抽象，我们也有时候叫做宏观服务。这些被服务标记的Pod都是（一般）通过label Selector决定的 。 通过创建Service,可以为一组具有相同功能的容器应用提供一个统一的入口地址，并且将请求负载分发到后端的各个容器应用上。 对于Kubernete原生的应用，Kubernete提供了一个简单的Endpoints AP
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-13 23:32" pubdate>
+              2021-08-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/service/">#service</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/10/k8s%20pod%E9%87%8D%E5%90%AF%E7%AD%96%E7%95%A5%E4%B8%8E%E7%8A%B6%E6%80%81/" target="_self">
+          k8s pod重启策略与状态
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/10/k8s%20pod%E9%87%8D%E5%90%AF%E7%AD%96%E7%95%A5%E4%B8%8E%E7%8A%B6%E6%80%81/" target="_self">
+        <div>
+          重启策略PodSpec中有一个 restartPolicy字段，可能的值为Always、OnFailure和Never。默认为Always.  restartPolicy 适用于Pod中的所有容器。restartPolicy仅指通过同一节点上的kubelet 重新启动容器。失败的容器由kubelet以五分钟为上限的指数退避延迟(10秒,20秒, 40秒.)重新启动,并在成功执行十分钟后重置。如Po
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-10 21:32" pubdate>
+              2021-08-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/%E9%87%8D%E5%90%AF%E7%AD%96%E7%95%A5/">#重启策略</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/08/k8s%20pod%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E2%80%94%E6%8E%A2%E9%92%88/" target="_self">
+          k8s pod生命周期—探针
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/08/k8s%20pod%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E2%80%94%E6%8E%A2%E9%92%88/" target="_self">
+        <div>
+          三种类型处理程序探针是由kubelet对容器执行的定期诊断。要执行诊断, kubelet调用由容器实现的Handler。有三种类型的处理程序: ExecAction：在容器内执行指定命令。如果命令退出时返回码为0则认为诊断成功。 TCPSocketAction：对指定端口上的容器的IP地址进行TCP检查。如果端口打开,则诊断被认为是成功的。 HTTPGetAction：对指定的端口和路径上的容器的
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-08 22:32" pubdate>
+              2021-08-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/%E6%8E%A2%E9%92%88/">#探针</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/06/k8s%20pod%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" target="_self">
+          k8s pod生命周期
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/06/k8s%20pod%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" target="_self">
+        <div>
+          k8s pod生命周期—Init容器pod生命周期![1657944206659](k8s pod生命周期/1657944206659.png) Pod能够具有多个容器,应用运行在容器里面,但是它也可能有一个或多个先于应用容器启动的Init容器。 Init容器与普通的容器非常像,除了如下两点:  Init 容器总是运行到成功完成为止 每个Init容器都必须在下一个Init容器启动之前成功完成  如
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-06 22:32" pubdate>
+              2021-08-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/pod/">#pod</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
 
 
 

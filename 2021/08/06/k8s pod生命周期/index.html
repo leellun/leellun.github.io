@@ -1,0 +1,707 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="k8s pod生命周期—Init容器pod生命周期![1657944206659](k8s pod生命周期&#x2F;1657944206659.png) Pod能够具有多个容器,应用运行在容器里面,但是它也可能有一个或多个先于应用容器启动的Init容器。 Init容器与普通的容器非常像,除了如下两点:  Init 容器总是运行到成功完成为止 每个Init容器都必须在下一个Init容器启动之前成功完成  如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8s pod生命周期">
+<meta property="og:url" content="https://leellun.github.io/2021/08/06/k8s%20pod%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="k8s pod生命周期—Init容器pod生命周期![1657944206659](k8s pod生命周期&#x2F;1657944206659.png) Pod能够具有多个容器,应用运行在容器里面,但是它也可能有一个或多个先于应用容器启动的Init容器。 Init容器与普通的容器非常像,除了如下两点:  Init 容器总是运行到成功完成为止 每个Init容器都必须在下一个Init容器启动之前成功完成  如">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-06T14:32:02.000Z">
+<meta property="article:modified_time" content="2022-09-23T17:34:02.881Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="k8s">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="pod">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>k8s pod生命周期 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="k8s pod生命周期"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-08-06 22:32" pubdate>
+          2021年8月6日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          47 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">k8s pod生命周期</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="k8s-pod生命周期—Init容器"><a href="#k8s-pod生命周期—Init容器" class="headerlink" title="k8s pod生命周期—Init容器"></a>k8s pod生命周期—Init容器</h1><h1 id="pod生命周期"><a href="#pod生命周期" class="headerlink" title="pod生命周期"></a>pod生命周期</h1><p>![1657944206659](k8s pod生命周期/1657944206659.png)</p>
+<p>Pod能够具有多个容器,应用运行在容器里面,但是它也可能有一个或多个先于应用容器启动的Init容器。</p>
+<p>Init容器与普通的容器非常像,除了如下两点:</p>
+<ul>
+<li>Init 容器总是运行到成功完成为止</li>
+<li>每个Init容器都必须在下一个Init容器启动之前成功完成</li>
+</ul>
+<p>如果Pod的Init容器失败, Kubernetes会不断地重启该Pod,直到Init容器成功为止。然而,如果Pod对应的restartPolicy 为Never,它不会重新启动。</p>
+<p><strong>因为Init容器具有与应用程序容器分离的单独镜像,所以它们的启动相关代码具有如下优势:</strong></p>
+<ul>
+<li>它们可以包含并运行实用工具,但是出于安全考虑,是不建议在应用程序容器镜像中包含这些实用工具的。</li>
+<li>它们可以包含使用工具和定制化代码来安装,但是不能出现在应用程序镜像中。例如,创建镜像没必要FROM另一个镜像,只需要在安装过程中使用类似sed、 awk、 python或dig这样的工具。</li>
+<li>应用程序镜像可以分离出创建和部署的角色,而没有必要联合它们构建一个单独的镜像。</li>
+<li>Init 容器使用Linux Namespace,所以相对应用程序容器来说具有不同的文件系统视图。因此,它们能够具有访问Secret的权限,而应用程序容器则不能。</li>
+<li>它们必须在应用程序容器启动之前运行完成,而应用程序容器是并行运行的,所以Init容器能够提供了一种简单的阻塞或延迟应用容器的启动的方法,直到满足了一组先决条件。</li>
+</ul>
+<p>在Pod启动过程中,Init容器会按顺序在网络和数据卷初始化之后启动。每个容器必须在下一个容器启动之前成功退出。</p>
+<p>如果由于运行时或失败退出,将导致容器启动失败,它会根据Pod的restartPolicy指定的策略进行重试。然而,如果Pod的restartPolicy设置为Always, Init容器失败时会使用RestartPolicy策略。</p>
+<p>在所有的Init容器没有成功之前, Pod将不会变成Ready状态。Init容器的端口将不会在Service 中进行聚集。正在初始化中的Pod处于Pending状态,但应该会将Initializing状态设置为true。</p>
+<p>如果Pod重启,所有Init容器必须重新执行。</p>
+<p>对Init容器spec的修改被限制在容器image字段,修改其他字段都不会生效。更改Init容器的image字段,等价于重启该Pod。(kubectl edit pod myapp-pod)</p>
+<p>Init容器具有应用容器的所有字段。除了readinessProbe，因为Init容器无法定义不同于完成(completion)的就绪(readiness)之外的其他状态。这会在验证过程中强制执行。</p>
+<p>在Pod中的每个app和Init容器的名称必须唯一；与任何其它容器共享同一个名称,会在验证时抛出错误。</p>
+<h1 id="Init容器"><a href="#Init容器" class="headerlink" title="Init容器"></a>Init容器</h1><p>Init模板</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">myapp-pod</span><br>  <span class="hljs-attr">labels:</span><br>    <span class="hljs-attr">app:</span> <span class="hljs-string">myapp</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">containers:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">myapp-container</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">busybox</span><br>    <span class="hljs-attr">command:</span> [<span class="hljs-string">&#x27;sh&#x27;</span>, <span class="hljs-string">&#x27;-c&#x27;</span>, <span class="hljs-string">&#x27;echo The app is running! &amp;&amp; sleep 3600&#x27;</span>]<br>  <span class="hljs-attr">initContainers:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">init-myservice</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">busybox</span><br>    <span class="hljs-attr">command:</span> [<span class="hljs-string">&#x27;sh&#x27;</span>, <span class="hljs-string">&#x27;-c&#x27;</span>, <span class="hljs-string">&#x27;until nslookup myservice; do echo waiting for myservice; sleep 2;done;&#x27;</span>]<br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">init-mydb</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">busybox</span><br>    <span class="hljs-attr">command:</span> [<span class="hljs-string">&#x27;sh&#x27;</span>, <span class="hljs-string">&#x27;-c&#x27;</span>, <span class="hljs-string">&#x27;until nslookup mydb; do echo waiting for mydb; sleep 2; done; &#x27;</span>]<br></code></pre></td></tr></table></figure>
+
+<p>myservice模板</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">myservice</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">ports:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span><br>      <span class="hljs-attr">port:</span> <span class="hljs-number">80</span><br>      <span class="hljs-attr">targetPort:</span> <span class="hljs-number">9376</span><br></code></pre></td></tr></table></figure>
+
+<p>mydb模板</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">mydb</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">ports:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span><br>      <span class="hljs-attr">port:</span> <span class="hljs-number">80</span><br>      <span class="hljs-attr">targetPort:</span> <span class="hljs-number">9377</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="Init容器操作查看"><a href="#Init容器操作查看" class="headerlink" title="Init容器操作查看"></a>Init容器操作查看</h1><h2 id="第一步：之创建init状态检测pod"><a href="#第一步：之创建init状态检测pod" class="headerlink" title="第一步：之创建init状态检测pod"></a>第一步：之创建init状态检测pod</h2><p>通过init容器模板创建pod</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"># 先生成<span class="hljs-keyword">init</span>配置清单<br>[<span class="hljs-symbol">root@</span>k8s-master01 <span class="hljs-keyword">init</span>-container]# vi <span class="hljs-keyword">init</span>.yaml<br># 通过<span class="hljs-keyword">init</span>.yaml创建pod<br>[<span class="hljs-symbol">root@</span>k8s-master01 <span class="hljs-keyword">init</span>-container]# kubectl create -f  <span class="hljs-keyword">init</span>.yaml<br># 查看pod的状态<br>[<span class="hljs-symbol">root@</span>k8s-master01 <span class="hljs-keyword">init</span>-container]# kubectl <span class="hljs-keyword">get</span> pod<br>NAME        READY   STATUS     RESTARTS   AGE<br>myapp-pod   <span class="hljs-number">0</span>/<span class="hljs-number">1</span>     Init:<span class="hljs-number">0</span>/<span class="hljs-number">2</span>   <span class="hljs-number">0</span>          3m8s<br></code></pre></td></tr></table></figure>
+
+<p>查看myapp-pod的启动日志</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><code class="hljs yaml">[<span class="hljs-string">root@k8s-master01</span> <span class="hljs-string">init-container</span>]<span class="hljs-comment"># kubectl describe pod myapp-pod</span><br><span class="hljs-attr">Name:</span>         <span class="hljs-string">myapp-pod</span><br><span class="hljs-attr">Namespace:</span>    <span class="hljs-string">default</span><br><span class="hljs-attr">Priority:</span>     <span class="hljs-number">0</span><br><span class="hljs-attr">Node:</span>         <span class="hljs-string">k8s-node02/fd56:a9ae:cb0f::853</span><br><span class="hljs-attr">Start Time:</span>   <span class="hljs-string">Sat,</span> <span class="hljs-number">16</span> <span class="hljs-string">Jul</span> <span class="hljs-number">2022 20:56:13</span> <span class="hljs-string">+0800</span><br><span class="hljs-attr">Labels:</span>       <span class="hljs-string">app=myapp</span><br><span class="hljs-attr">Annotations:</span>  <span class="hljs-string">&lt;none&gt;</span><br><span class="hljs-attr">Status:</span>       <span class="hljs-string">Pending</span><br><span class="hljs-attr">IP:</span>           <span class="hljs-number">10.244</span><span class="hljs-number">.2</span><span class="hljs-number">.4</span><br><span class="hljs-attr">IPs:</span><br>  <span class="hljs-attr">IP:</span>  <span class="hljs-number">10.244</span><span class="hljs-number">.2</span><span class="hljs-number">.4</span><br><span class="hljs-attr">Init Containers:</span><br>  <span class="hljs-attr">init-myservice:</span><br>    <span class="hljs-attr">Container ID:</span>  <span class="hljs-string">docker://b4e6898bf71991f1571f0750d7ed58f54aeb511ca175b9dcafbbdf457aac3971</span><br>    <span class="hljs-attr">Image:</span>         <span class="hljs-string">busybox</span><br>    <span class="hljs-attr">Image ID:</span>      <span class="hljs-string">docker-pullable://busybox@sha256:5acba83a746c7608ed544dc1533b87c737a0b0fb730301639a0179f9344b1678</span><br>    <span class="hljs-attr">Port:</span>          <span class="hljs-string">&lt;none&gt;</span><br>    <span class="hljs-attr">Host Port:</span>     <span class="hljs-string">&lt;none&gt;</span><br>    <span class="hljs-attr">Command:</span><br>      <span class="hljs-string">sh</span><br>      <span class="hljs-string">-c</span><br>      <span class="hljs-string">until</span> <span class="hljs-string">nslookup</span> <span class="hljs-string">myservice;</span> <span class="hljs-string">do</span> <span class="hljs-string">echo</span> <span class="hljs-string">waiting</span> <span class="hljs-string">for</span> <span class="hljs-string">myservice;</span> <span class="hljs-string">sleep</span> <span class="hljs-number">2</span><span class="hljs-string">;done;</span><br>    <span class="hljs-attr">State:</span>          <span class="hljs-string">Running</span><br>      <span class="hljs-attr">Started:</span>      <span class="hljs-string">Sat,</span> <span class="hljs-number">16</span> <span class="hljs-string">Jul</span> <span class="hljs-number">2022 20:56:33</span> <span class="hljs-string">+0800</span><br>    <span class="hljs-attr">Ready:</span>          <span class="hljs-literal">False</span><br>    <span class="hljs-attr">Restart Count:</span>  <span class="hljs-number">0</span><br>    <span class="hljs-attr">Environment:</span>    <span class="hljs-string">&lt;none&gt;</span><br>    <span class="hljs-attr">Mounts:</span><br>      <span class="hljs-string">/var/run/secrets/kubernetes.io/serviceaccount</span> <span class="hljs-string">from</span> <span class="hljs-string">kube-api-access-4vx22</span> <span class="hljs-string">(ro)</span><br>  <span class="hljs-attr">init-mydb:</span><br>    <span class="hljs-attr">Container ID:</span>  <br>    <span class="hljs-attr">Image:</span>         <span class="hljs-string">busybox</span><br>    <span class="hljs-attr">Image ID:</span>      <br>    <span class="hljs-attr">Port:</span>          <span class="hljs-string">&lt;none&gt;</span><br>    <span class="hljs-attr">Host Port:</span>     <span class="hljs-string">&lt;none&gt;</span><br>    <span class="hljs-attr">Command:</span><br>      <span class="hljs-string">sh</span><br>      <span class="hljs-string">-c</span><br>      <span class="hljs-string">until</span> <span class="hljs-string">nslookup</span> <span class="hljs-string">mydb;</span> <span class="hljs-string">do</span> <span class="hljs-string">echo</span> <span class="hljs-string">waiting</span> <span class="hljs-string">for</span> <span class="hljs-string">mydb;</span> <span class="hljs-string">sleep</span> <span class="hljs-number">2</span><span class="hljs-string">;</span> <span class="hljs-string">done;</span> <br>    <span class="hljs-attr">State:</span>          <span class="hljs-string">Waiting</span><br>      <span class="hljs-attr">Reason:</span>       <span class="hljs-string">PodInitializing</span><br>    <span class="hljs-attr">Ready:</span>          <span class="hljs-literal">False</span><br>    <span class="hljs-attr">Restart Count:</span>  <span class="hljs-number">0</span><br>    <span class="hljs-attr">Environment:</span>    <span class="hljs-string">&lt;none&gt;</span><br>    <span class="hljs-attr">Mounts:</span><br>      <span class="hljs-string">/var/run/secrets/kubernetes.io/serviceaccount</span> <span class="hljs-string">from</span> <span class="hljs-string">kube-api-access-4vx22</span> <span class="hljs-string">(ro)</span><br><span class="hljs-attr">Containers:</span><br>  <span class="hljs-attr">myapp-container:</span><br>    <span class="hljs-attr">Container ID:</span>  <br>    <span class="hljs-attr">Image:</span>         <span class="hljs-string">busybox</span><br>    <span class="hljs-attr">Image ID:</span>      <br>    <span class="hljs-attr">Port:</span>          <span class="hljs-string">&lt;none&gt;</span><br>    <span class="hljs-attr">Host Port:</span>     <span class="hljs-string">&lt;none&gt;</span><br>    <span class="hljs-attr">Command:</span><br>      <span class="hljs-string">sh</span><br>      <span class="hljs-string">-c</span><br>      <span class="hljs-string">echo</span> <span class="hljs-string">The</span> <span class="hljs-string">app</span> <span class="hljs-string">is</span> <span class="hljs-string">running!</span> <span class="hljs-string">&amp;&amp;</span> <span class="hljs-string">sleep</span> <span class="hljs-number">3600</span><br>    <span class="hljs-attr">State:</span>          <span class="hljs-string">Waiting</span><br>      <span class="hljs-attr">Reason:</span>       <span class="hljs-string">PodInitializing</span><br>    <span class="hljs-attr">Ready:</span>          <span class="hljs-literal">False</span><br>    <span class="hljs-attr">Restart Count:</span>  <span class="hljs-number">0</span><br>    <span class="hljs-attr">Environment:</span>    <span class="hljs-string">&lt;none&gt;</span><br>    <span class="hljs-attr">Mounts:</span><br>      <span class="hljs-string">/var/run/secrets/kubernetes.io/serviceaccount</span> <span class="hljs-string">from</span> <span class="hljs-string">kube-api-access-4vx22</span> <span class="hljs-string">(ro)</span><br><span class="hljs-attr">Conditions:</span><br>  <span class="hljs-string">Type</span>              <span class="hljs-string">Status</span><br>  <span class="hljs-string">Initialized</span>       <span class="hljs-literal">False</span> <br>  <span class="hljs-string">Ready</span>             <span class="hljs-literal">False</span> <br>  <span class="hljs-string">ContainersReady</span>   <span class="hljs-literal">False</span> <br>  <span class="hljs-string">PodScheduled</span>      <span class="hljs-literal">True</span> <br><span class="hljs-attr">Volumes:</span><br>  <span class="hljs-attr">kube-api-access-4vx22:</span><br>    <span class="hljs-attr">Type:</span>                    <span class="hljs-string">Projected</span> <span class="hljs-string">(a</span> <span class="hljs-string">volume</span> <span class="hljs-string">that</span> <span class="hljs-string">contains</span> <span class="hljs-string">injected</span> <span class="hljs-string">data</span> <span class="hljs-string">from</span> <span class="hljs-string">multiple</span> <span class="hljs-string">sources)</span><br>    <span class="hljs-attr">TokenExpirationSeconds:</span>  <span class="hljs-number">3607</span><br>    <span class="hljs-attr">ConfigMapName:</span>           <span class="hljs-string">kube-root-ca.crt</span><br>    <span class="hljs-attr">ConfigMapOptional:</span>       <span class="hljs-string">&lt;nil&gt;</span><br>    <span class="hljs-attr">DownwardAPI:</span>             <span class="hljs-literal">true</span><br><span class="hljs-attr">QoS Class:</span>                   <span class="hljs-string">BestEffort</span><br><span class="hljs-attr">Node-Selectors:</span>              <span class="hljs-string">&lt;none&gt;</span><br><span class="hljs-attr">Tolerations:</span>                 <span class="hljs-string">node.kubernetes.io/not-ready:NoExecute</span> <span class="hljs-string">op=Exists</span> <span class="hljs-string">for</span> <span class="hljs-string">300s</span><br>                             <span class="hljs-string">node.kubernetes.io/unreachable:NoExecute</span> <span class="hljs-string">op=Exists</span> <span class="hljs-string">for</span> <span class="hljs-string">300s</span><br><span class="hljs-attr">Events:</span><br>  <span class="hljs-string">Type</span>    <span class="hljs-string">Reason</span>     <span class="hljs-string">Age</span>    <span class="hljs-string">From</span>               <span class="hljs-string">Message</span><br>  <span class="hljs-string">----</span>    <span class="hljs-string">------</span>     <span class="hljs-string">----</span>   <span class="hljs-string">----</span>               <span class="hljs-string">-------</span><br>  <span class="hljs-string">Normal</span>  <span class="hljs-string">Scheduled</span>  <span class="hljs-string">4m6s</span>   <span class="hljs-string">default-scheduler</span>  <span class="hljs-string">Successfully</span> <span class="hljs-string">assigned</span> <span class="hljs-string">default/myapp-pod</span> <span class="hljs-string">to</span> <span class="hljs-string">k8s-node02</span><br>  <span class="hljs-string">Normal</span>  <span class="hljs-string">Pulling</span>    <span class="hljs-string">2m34s</span>  <span class="hljs-string">kubelet</span>            <span class="hljs-string">Pulling</span> <span class="hljs-string">image</span> <span class="hljs-string">&quot;busybox&quot;</span><br>  <span class="hljs-string">Normal</span>  <span class="hljs-string">Pulled</span>     <span class="hljs-string">2m16s</span>  <span class="hljs-string">kubelet</span>            <span class="hljs-string">Successfully</span> <span class="hljs-string">pulled</span> <span class="hljs-string">image</span> <span class="hljs-string">&quot;busybox&quot;</span> <span class="hljs-string">in</span> <span class="hljs-number">17.</span><span class="hljs-string">673975295s</span><br>  <span class="hljs-string">Normal</span>  <span class="hljs-string">Created</span>    <span class="hljs-string">2m16s</span>  <span class="hljs-string">kubelet</span>            <span class="hljs-string">Created</span> <span class="hljs-string">container</span> <span class="hljs-string">init-myservice</span><br>  <span class="hljs-string">Normal</span>  <span class="hljs-string">Started</span>    <span class="hljs-string">2m16s</span>  <span class="hljs-string">kubelet</span>            <span class="hljs-string">Started</span> <span class="hljs-string">container</span> <span class="hljs-string">init-myservice</span><br></code></pre></td></tr></table></figure>
+
+<p>查看日志</p>
+<figure class="highlight golo"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs golo">[root<span class="hljs-meta">@k</span>8s-master01 init-container]<span class="hljs-comment"># kubectl logs myapp-pod -c  init-myservice</span><br>waiting <span class="hljs-keyword">for</span> myservice<br>Server:         <span class="hljs-number">10.96</span><span class="hljs-number">.0</span><span class="hljs-number">.10</span><br>Address:        <span class="hljs-number">10.96</span><span class="hljs-number">.0</span><span class="hljs-number">.10</span>:<span class="hljs-number">53</span><br><br>** server can&#x27;t <span class="hljs-keyword">find</span> myservice.default.svc.cluster.<span class="hljs-keyword">local</span>: NXDOMAIN<br><br>*** Can&#x27;t <span class="hljs-keyword">find</span> myservice.svc.cluster.<span class="hljs-keyword">local</span>: No answer<br>*** Can&#x27;t <span class="hljs-keyword">find</span> myservice.cluster.<span class="hljs-keyword">local</span>: No answer<br>*** Can&#x27;t <span class="hljs-keyword">find</span> myservice.default.svc.cluster.<span class="hljs-keyword">local</span>: No answer<br>*** Can&#x27;t <span class="hljs-keyword">find</span> myservice.svc.cluster.<span class="hljs-keyword">local</span>: No answer<br>*** Can&#x27;t <span class="hljs-keyword">find</span> myservice.cluster.<span class="hljs-keyword">local</span>: No answer<br></code></pre></td></tr></table></figure>
+
+<h2 id="第二步：创建myservice"><a href="#第二步：创建myservice" class="headerlink" title="第二步：创建myservice"></a>第二步：创建myservice</h2><p>通过myservice模板创建svc</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gauss">vi myservice.yaml<br>kubectl <span class="hljs-keyword">create</span> -f myservice.yaml<br></code></pre></td></tr></table></figure>
+
+<p>查看pod状态，可以看出status中的显示变成了Init:1/2,说明检测状态中，有一个service已经成功启动。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">[root@k8s-master01 init-container]<span class="hljs-comment"># kubectl get pod</span><br>NAME        READY   STATUS     RESTARTS   AGE<br>myapp-pod   <span class="hljs-number">0</span><span class="hljs-regexp">/1     Init:1/</span><span class="hljs-number">2</span>   <span class="hljs-number">0</span>          <span class="hljs-number">16</span>m<br></code></pre></td></tr></table></figure>
+
+<h2 id="第三步：创建mydb"><a href="#第三步：创建mydb" class="headerlink" title="第三步：创建mydb"></a>第三步：创建mydb</h2><p>通过myservice模板创建svc</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gauss">vi mydb.yaml<br>kubectl <span class="hljs-keyword">create</span> -f mydb.yaml<br></code></pre></td></tr></table></figure>
+
+<p>查看pod状态，可以看出READY显示为1/1,status中的显示变成了Running,说明检测状态中，已经成功启动。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">[<span class="hljs-symbol">root@</span>k8s-master01 <span class="hljs-keyword">init</span>-container]# kubectl <span class="hljs-keyword">get</span> pod<br>NAME        READY   STATUS    RESTARTS   AGE<br>myapp-pod   <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">0</span>          22m<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/k8s/">#k8s</a>
+      
+        <a href="/tags/kubernetes/">#kubernetes</a>
+      
+        <a href="/tags/pod/">#pod</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>k8s pod生命周期</div>
+      <div>https://leellun.github.io/2021/08/06/k8s pod生命周期/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年8月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/08/08/k8s%20pod%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E2%80%94%E6%8E%A2%E9%92%88/" title="k8s pod生命周期—探针">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">k8s pod生命周期—探针</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/08/04/kubeadm%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4/" title="kubernetes调度器scheduler">
+                        <span class="hidden-mobile">kubernetes调度器scheduler</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
