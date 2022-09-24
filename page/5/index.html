@@ -219,6 +219,199 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/07/24/k8s/basic/kubernetes%E7%9A%84%E5%8E%86%E5%8F%B2%E4%B8%8E%E4%BB%8B%E7%BB%8D/" target="_self">
+          k8s资源清单及常用字段
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/07/24/k8s/basic/kubernetes%E7%9A%84%E5%8E%86%E5%8F%B2%E4%B8%8E%E4%BB%8B%E7%BB%8D/" target="_self">
+        <div>
+          kubernetes发展史CNCF(云计算基金会) Borg google内部使用borg，后来发现dockerswarm使用广泛，所以让go开发工程师重写brog，成了k8s，1.0版本的时候捐给了CNCF。  一开始docker和另外一家coreos公司，技术基本是共享的，docker火起来后，coreos也研发了一个类似docker的技术，最后coreos加入k8s生态构建，etcd就是co
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-07-24 12:38" pubdate>
+              2021-07-24
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/07/17/k8s/k8s%E6%8E%A7%E5%88%B6%E5%99%A8/kubernetes%E6%8E%A7%E5%88%B6%E5%99%A8Job%E4%B8%8ECronJob/" target="_self">
+          kubernetes控制器Job与CronJob
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/07/17/k8s/k8s%E6%8E%A7%E5%88%B6%E5%99%A8/kubernetes%E6%8E%A7%E5%88%B6%E5%99%A8Job%E4%B8%8ECronJob/" target="_self">
+        <div>
+          JobJob负责批处理任务,即仅执行一次的任务,它保证批处理任务的一个或多个Pod成功结束 特殊说明  spec.template格式同Pod RestartPolicy仅支持NeverdOnFailure 单个Pod时,默认Pod成功运行后Job即结束 .spec. completions 标志Job结束需要成功运行的Pod个数,默认为1 .spec. parallelism 标志并行运行的Po
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-07-17 13:32" pubdate>
+              2021-07-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/job/">#job</a>
+            
+              <a href="/tags/cronjob/">#cronjob</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/07/16/k8s/k8s%E6%8E%A7%E5%88%B6%E5%99%A8/RC%E4%B8%8ERS%E4%B8%8EDeployment%E5%85%B3%E8%81%94/" target="_self">
+          RC与RS与Deployment关联
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/07/16/k8s/k8s%E6%8E%A7%E5%88%B6%E5%99%A8/RC%E4%B8%8ERS%E4%B8%8EDeployment%E5%85%B3%E8%81%94/" target="_self">
+        <div>
+          RCRC (ReplicationController )主要的作用就是用来确保容器应用的副本数始终保持在用户定义的副本数。即如果有容器异常退出,会自动创建新的Pod来替代:而如果异常多出来的容器也会自动回收 Kubernetes 官方建议使用RS (ReplicaSet)替代RC (ReplicationController)进行部署,RS跟RC没有本质的不同,只是名字不一样,并且RS支持集合式
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-07-16 10:24" pubdate>
+              2021-07-16
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/07/13/k8s/k8s%E6%8E%A7%E5%88%B6%E5%99%A8/kubernetes%E6%8E%A7%E5%88%B6%E5%99%A8DaemonSet/" target="_self">
           kubernetes控制器DaemonSet
         </a>
@@ -349,15 +542,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/01/23/%E5%A6%82%E4%BD%95%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/" target="_self">
-          如何用hexo在github上搭建自己的博客
+        <a href="/2021/06/03/centos/IPVS%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E7%94%A8%E8%B0%83%E5%BA%A6%E6%96%B9%E5%BC%8F/" target="_self">
+          Centos查看IPVS和安装IPVS
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/01/23/%E5%A6%82%E4%BD%95%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/06/03/centos/IPVS%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%B8%B8%E7%94%A8%E8%B0%83%E5%BA%A6%E6%96%B9%E5%BC%8F/" target="_self">
         <div>
-          一、github仓库创建在github创建仓库，仓库名称为[username].github.io。   然后选择设置   设置网站的访问host并且制定分支为主分支   配置git免登录认证信息     二、hexo使用1.1 安装hexo全局安装hexo 1234npm install -g hexo# 发布支持npm install --save hexo-deployer-git  1.2
+          IPVS的介绍与原理及常用调度方式一、介绍 IPVS (IP Virtual Server)是在 Netfilter 上层构建的，并作为 Linux 内核的一部分，实现传输层负载均衡。IPVS是LVS（Linux Virtual Server）项目重要组成部分，目前包含于官方Linux Kernel，IPVS也是一个开源软件。 IPVS的主要用途是为web服务器提供一个“前端”，处理入向连接请求。
         </div>
       </a>
 
@@ -365,8 +558,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2019-01-23 17:38" pubdate>
-              2019-01-23
+            <time datetime="2021-06-03 22:14" pubdate>
+              2021-06-03
             </time>
           </div>
         
@@ -381,7 +574,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%89%8D%E7%AB%AF/" class="category-chain-item">前端</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
   
   
 
@@ -396,11 +589,261 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/hexo/">#hexo</a>
+              <a href="/tags/centos/">#centos</a>
             
-              <a href="/tags/github/">#github</a>
+              <a href="/tags/ipvs/">#ipvs</a>
             
-              <a href="/tags/%E5%8D%9A%E5%AE%A2/">#博客</a>
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/06/03/centos/Centos%E6%9F%A5%E7%9C%8BIPVS%E5%92%8C%E5%AE%89%E8%A3%85IPVS/" target="_self">
+          Centos查看IPVS和安装IPVS
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/06/03/centos/Centos%E6%9F%A5%E7%9C%8BIPVS%E5%92%8C%E5%AE%89%E8%A3%85IPVS/" target="_self">
+        <div>
+          一、查看IPVS检查IPVS是否正确安装 1lsmod | grep ip_vs 或 ps -ef | grep ip_vs  查看内核有哪些模块 12345678insmod / modprobe 加载驱动rmmod 卸载驱动lsmod 查看系统中所有已经被加载了的所有的模块以及模块 间的依赖关系modinfo 获得模块的信息 查看已经加载的驱动模块的信息： lsmod 能够显示驱动的大小以及被
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-06-03 21:14" pubdate>
+              2021-06-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/centos/">#centos</a>
+            
+              <a href="/tags/ipvs/">#ipvs</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/05/06/centos/keepalived+haproxy/keepalived+haproxy+nginx%E9%AB%98%E5%8F%AF%E7%94%A8%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%AE%9E%E6%88%98/" target="_self">
+          keepalived+haproxy+nginx高可用负载均衡实战
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/05/06/centos/keepalived+haproxy/keepalived+haproxy+nginx%E9%AB%98%E5%8F%AF%E7%94%A8%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%AE%9E%E6%88%98/" target="_self">
+        <div>
+          一、环境ip配置(vip最好与A，B同一网段，外网才好访问)    服务器 Ip    A 10.0.0.101   B 10.0.0.102   VIP（虚拟ip存在与A或者B） 10.0.0.150   服务器软件    服务器 软件    A keepalived、haproxy、nginx   B keepalived、haproxy、nginx   端口配置    软件 端口
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-05-06 20:14" pubdate>
+              2021-05-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/keepalived/">#keepalived</a>
+            
+              <a href="/tags/haproxy/">#haproxy</a>
+            
+              <a href="/tags/nginx/">#nginx</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/05/06/centos/keepalived+haproxy/keepalived+haproxy%E9%AB%98%E5%8F%AF%E7%94%A8%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" target="_self">
+          keepalived+haproxy高可用负载均衡
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/05/06/centos/keepalived+haproxy/keepalived+haproxy%E9%AB%98%E5%8F%AF%E7%94%A8%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" target="_self">
+        <div>
+          一、keepalived简介Keepalived是基于vrrp协议的一款高可用软件。Keepailived有一台主服务器和多台备份服务器，在主服务器和备份服务器上面部署相同的服务配置，使用一个虚拟IP地址对外提供服务，当主服务器出现故障时，虚拟IP地址会自动漂移到备份服务器。 二、keepalived工作原理keepalived是以VRRP协议为实现基础的。 VRRP（Virtual Router
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-05-06 20:14" pubdate>
+              2021-05-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/keepalived/">#keepalived</a>
+            
+              <a href="/tags/haproxy/">#haproxy</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/05/05/centos/keepalived+haproxy/keepalived%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" target="_self">
+          keepalived配置文件
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/05/05/centos/keepalived+haproxy/keepalived%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" target="_self">
+        <div>
+          一、配置文件说明第一部分：全局定义块1、email通知。作用：有故障，发邮件报警。2、Lvs负载均衡器标识（lvs_id）。在一个网络内，它应该是唯一的。3、花括号“{}”。用来分隔定义块，因此必须成对出现。如果写漏了，keepalived运行时，不会得到预期的结果。由于定义块内存在嵌套关系，因此很容易遗漏结尾处的花括号，这点要特别注意。 123456789101112131415global_d
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-05-05 20:14" pubdate>
+              2021-05-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/keepalived/">#keepalived</a>
             
           </div>
         
@@ -412,7 +855,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/4/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="page-number current">5</span>
+      <a class="extend prev" rel="prev" href="/page/4/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/#board">6</a><a class="extend next" rel="next" href="/page/6/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

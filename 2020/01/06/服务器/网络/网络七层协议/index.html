@@ -1,0 +1,721 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="七层协议图  七层协议走势图    七层协议定义   应用层 网络服务与最终用户的一个接口(用户操作)人机交互窗口，把人的语言输入到计算机当中。    表示层 编码，解码，加密，解密（二进制）   会话层 建立，维持，终止会话进程（QQ号码）   传输层 通过端口号区分不同的服务，数据分段（受MTU限制），确认、重传、流控、排序（TCP）   网络层 通过IP地址（IPV4、IPV6）进行逻辑寻址">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络七层协议">
+<meta property="og:url" content="https://leellun.github.io/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="七层协议图  七层协议走势图    七层协议定义   应用层 网络服务与最终用户的一个接口(用户操作)人机交互窗口，把人的语言输入到计算机当中。    表示层 编码，解码，加密，解密（二进制）   会话层 建立，维持，终止会话进程（QQ号码）   传输层 通过端口号区分不同的服务，数据分段（受MTU限制），确认、重传、流控、排序（TCP）   网络层 通过IP地址（IPV4、IPV6）进行逻辑寻址">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leellun.github.io/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/1657990104981.png">
+<meta property="og:image" content="https://leellun.github.io/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/1657993303282.png">
+<meta property="og:image" content="https://leellun.github.io/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/1658028753477.png">
+<meta property="article:published_time" content="2020-01-06T12:14:02.000Z">
+<meta property="article:modified_time" content="2022-09-24T05:56:40.179Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="centos">
+<meta property="article:tag" content="七层协议">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://leellun.github.io/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/1657990104981.png">
+  
+  
+  
+  <title>网络七层协议 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="网络七层协议"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-01-06 20:14" pubdate>
+          2020年1月6日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">网络七层协议</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="七层协议图"><a href="#七层协议图" class="headerlink" title="七层协议图"></a>七层协议图</h1><img src="/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/1657990104981.png" srcset="/img/loading.gif" lazyload class="" width="1657990104981">
+
+<p>七层协议走势图</p>
+ <img src="/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/1657993303282.png" srcset="/img/loading.gif" lazyload class="" width="1657993303282">
+
+<h1 id="七层协议定义"><a href="#七层协议定义" class="headerlink" title="七层协议定义"></a>七层协议定义</h1><table>
+<thead>
+<tr>
+<th>应用层</th>
+<th>网络服务与最终用户的一个接口(用户操作)人机交互窗口，把人的语言输入到计算机当中。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>表示层</td>
+<td>编码，解码，加密，解密（二进制）</td>
+</tr>
+<tr>
+<td>会话层</td>
+<td>建立，维持，终止会话进程（QQ号码）</td>
+</tr>
+<tr>
+<td>传输层</td>
+<td>通过端口号区分不同的服务，数据分段（受MTU限制），确认、重传、流控、排序（TCP）</td>
+</tr>
+<tr>
+<td>网络层</td>
+<td>通过IP地址（IPV4、IPV6）进行逻辑寻址（ICMP，ARP协议）</td>
+</tr>
+<tr>
+<td>数据链路层</td>
+<td>建立逻辑连接、进行硬件地址寻址、差错校验等功能(交换机网卡)将上层数据加上源和目的方的物理(MAC)地址封装成数据帧，MAC地址是用来标识网卡的物理地址，建立数据链路:当发现数据错误时，可以重传数据帧。</td>
+</tr>
+<tr>
+<td>物理层</td>
+<td>建立、维护、断开物理连接(网卡，网线，光纤，集线器，中继器，调制解调器) 报文头部和上层数据信息都是由二进制数组成的，物理层将这些二进制数字组成的比特流转换成电信号在网络中传输。</td>
+</tr>
+</tbody></table>
+<h2 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h2><p>应用层（Application layer）是七层OSI模型的第七层。应用层直接和应用程序接口并提供常见的网络应用服务。应用层也向表示层发出请求。应用层是开放系统的最高层,是直接为应用进程提供服务的。其作用是在实现多个系统应用进程相互通信的同时,完成一系列业务处理所需的服务.其服务元素分为两类:公共应用服务元素CASE和特定应用服务元素SASE.</p>
+<p>网络服务与最终用户的一个接口(用户操作)人机交互窗口，把人的语言输入到计算机当中。例如，在00的对话窗口输入字符。 </p>
+<p>应用层直接和应用程式介面结合，并提供常见的网路应用服务。应用层也向第六层表示层发出请求。 </p>
+<p>应用层协议例子 ：</p>
+<p>AFP、APPC、BitTorrent、CFDP、DHCP、DNS、FTAM、FTP、Gopher、HTTP、IMAP、iTMS、IRC、LDAP、Modbus、NFS、NNTP、NTP、POP3、SIP、SMB、SMTP、SNMP、SNTP、SSH、Telnet、TFTP、TSP、Whois、X.400、X.500、XMPP、RPC</p>
+<h2 id="表示层"><a href="#表示层" class="headerlink" title="表示层"></a>表示层</h2><p>表示层(Presentation)亦称表达层，为不同终端的上层用户提供数据和信息正确的语法表示变换方法。如文本文件的ASCII格式和UTF-8格式。</p>
+<p>数据的表示、安全、压缩(人的语言翻译成计算机)将接收到的数据翻译成二进制数组成的计算机语言，并对数据进行压缩和解压、数据加密和解密等工作0101。 </p>
+<p>表示层的主要功能：</p>
+<p>数据语法转换<br>语法表示<br>连接管理<br>数据处理<br>    数据加密和解密<br>    数据压缩和解压<br>    数据编码和解码</p>
+<p>具有表示层功能的协议 ：</p>
+<p>HTTP/HTTPS<br>FTP/FTPS<br>SSH<br>Telnet<br>ASN.1</p>
+<h2 id="会话层"><a href="#会话层" class="headerlink" title="会话层"></a>会话层</h2><p>主要为两个会话层实体进行会话（Session），而进行的对话连接的管理服务。</p>
+<p>建立、管理、中止会话(通信软件建立会话，比如:QQ)管理是否允许不同机器上的用户之间建立会话连接关系。 </p>
+<p>会话层为客户端的应用程序提供了开启、关闭和管理会话的机制，亦即半永久的对话。会话的实体包含了对其他程序作会话链接的要求及回应其他程序提出的会话链接要求。在应用程序的执行环境中，会话层是这些程序用来提出远程过程调用（remote procedure calls，RPC）的地方。</p>
+<p>会话层标准为了使会话连接创建阶段能进行功能协商，也为了便于其它国际标准参考和引用，定义了12种功能单元。各个系统可根据自身情况和需要，以核心功能服务单元为基础，选配其他功能单元组成合理的会话服务子集。</p>
+<p>会话层协议：</p>
+<p>ADSP：AppleTalk的数据流协议<br>ASP：AppleTalk的动态会话协议<br>H.245, Call Control Protocol for Multimedia Communication<br>ISO-SP, OSI Session Layer Protocol（X.225, ISO 8327）<br>iSNS, Internet Storage Name Service<br>NetBIOS<br>PAP, 密码认证协议<br>PPTP, 点对点隧道协议<br>L2TP, 第二层隧道协议<br>RPC, 远程过程调用<br>RTCP, 实时传输控制协议<br>SMPP, Short Message Peer-to-Peer<br>ZIP, Zone Information Protocol<br>SDP, 套接字直接协议<br>SOCKS</p>
+<h2 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h2><p>传输层（英语：Transport Layer）在计算机网络中是互联网协议包与开放系统互连（英语：Open Systems Interconnection）（OSI）网络堆栈中协议的分层结构中的方法的一个概念划分。该层的协议为应用进程提供端到端的通信服务。[1] 它提供面向连接的数据流支持、可靠性、流量控制、多路复用等服务。</p>
+<p>定义传输数据的协议端口号，以及流控和差错校验(防火墙端到端) 将上层数据分片并加上端口号封装成数据段，或通过对报文头中的端口识别，实现网络中不同主机上的用户进程之间的数据。 </p>
+<p>具有传输层功能的协议：<br>TCP<br>UDP<br>SPX</p>
+<h2 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h2><p>网络层（Network Layer）是OSI模型中的第三层（TCP/IP模型中的网际层），提供路由和寻址的功能，使两终端系统能够互连且决定最佳路径，并具有一定的拥塞控制和流量控制的能力。相当于发送邮件时需要地址一般重要。由于TCP/IP协议体系中的网络层功能由IP协议规定和实现，故又称IP层。</p>
+<p>进行逻辑地址寻址，实现”不同网络之间”的”路径选择”(路由器) 将上层数据加上源和目的方的逻辑(IP)地址封装成数据包，实现数据从源端到目的端的传输。 </p>
+<p>网络层协议 ：</p>
+<p>IP （V4、V6）<br>IPX<br>X.25<br>RARP<br>ICMP（V4、V6）<br>IGMP<br>IPsec<br>RIP<br>OSPF</p>
+<h2 id="链路层"><a href="#链路层" class="headerlink" title="链路层"></a>链路层</h2><p>链路层是计算机网络中互联网协议包的最低一层。链路层是一组仅限于主机物理连接的线路的方法和通信协议。链路是用于网络中的主机或节点的物理和逻辑网络组件，链路协议是一套仅在网段的相邻网络节点之间运行的方法和标准。</p>
+<p>建立逻辑连接、进行硬件地址寻址、差错校验等功能(交换机网卡)将上层数据加上源和目的方的物理(MAC)地址封装成数据帧，MAC地址是用来标识网卡的物理地址，建立数据链路:当发现数据错误时，可以重传数据帧。 </p>
+<p>TCP/IP 模型中的链路层是网络协议的描述性领域，仅在主机所连接的本地网段（链路）上运行。此类协议数据包不会通到其他网络。链路层包括定义本地（on-link）网络节点之间通信的协议，这些协议实现了维护本地节点之间的链路状态的目的，例如本地网络拓扑，并且通常使用基于框架的协议。特定于链路类型的数据包。</p>
+<p>互联网工程任务组（IETF） 在这一层指定的核心协议是地址解析协议（ARP）、反向地址解析协议（RARP） 和邻居发现协议（NDP），这是一种提供类似功能的设施作为IPv6的ARP。自IPv6出现以来，开放式最短路径优先协议（OSPF）也被认为在链路级别上运行，尽管该协议的IPv4版本被认为是在网络层上运行。</p>
+<p>IS-IS（RFC 1142）是另一种链路状态路由协议，在考虑TCP/IP模型时适合该层，但是，它是在OSI模型规范堆栈中开发的，它是第2层协议。它不是互联网标准。</p>
+<h2 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h2><p>物理层（Physical Layer）是计算机网络OSI模型中最低的一层，也是最基本的一层。简单的说，网络的物理层面确保原始的数据可在各种物理媒体上传输。</p>
+<p>建立、维护、断开物理连接(网卡，网线，光纤，集线器，中继器，调制解调器) 报文头部和上层数据信息都是由二进制数组成的，物理层将这些二进制数字组成的比特流转换成电信号在网络中传输。 </p>
+<p>物理层协议：</p>
+<p>电话网络modems- V.92<br>IRDA物理层<br>USB物理层<br>EIA RS-232, EIA-422, EIA-423, RS-449, RS-485<br>Ethernet physical layer Including 10BASE-T, 10BASE2, 10BASE5, 100BASE-TX, 100BASE-FX, 100BASE-T, 1000BASE-T, 1000BASE-SX还有其他类型<br>Varieties of 802.11 Wi-Fi物理层<br>DSL<br>ISDN<br>T1 and other T-carrier links, and E1 and other E-carrier links<br>SONET/SDH<br>Optical Transport Network（OTN）<br>GSM Um air interface物理层<br>Bluetooth物理层<br>ITU Recommendations: see ITU-T<br>IEEE 1394 interface<br>TransferJet物理层<br>Etherloop<br>ARINC 818航空电子数字视频总线<br>G.hn/G.9960物理层<br>CAN bus（controller area network）物理层<br>资料编码技巧<br>编辑<br>RS-232-C编码<br>Zero-complemented差动式编码<br>曼彻斯特编码（Manchester Encoding）<br>差分曼彻斯特编码（Differential Manchester Encoding）</p>
+<h1 id="数据封装与解封装"><a href="#数据封装与解封装" class="headerlink" title="数据封装与解封装"></a>数据封装与解封装</h1><img src="/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/1658028753477.png" srcset="/img/loading.gif" lazyload class="" width="1658028753477">
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/centos/">#centos</a>
+      
+        <a href="/tags/%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/">#七层协议</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>网络七层协议</div>
+      <div>https://leellun.github.io/2020/01/06/服务器/网络/网络七层协议/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年1月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/02/09/centos/linux%E5%9F%BA%E7%A1%80/" title="linux基础">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">linux基础</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/01/04/%E6%9C%8D%E5%8A%A1%E5%99%A8/nginx/nginx%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="nginx基础知识">
+                        <span class="hidden-mobile">nginx基础知识</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

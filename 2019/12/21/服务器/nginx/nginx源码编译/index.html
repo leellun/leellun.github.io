@@ -1,0 +1,654 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一 准备软件环境下载 1yum install -y wget gcc gcc-c++ make pcre pcre-devel zlib zlib-devel openssl openssl-devel  nginx下载 http:&#x2F;&#x2F;nginx.org&#x2F;download&#x2F; 二 源码编译1234567891011121314151617181920212223242526272829[root@">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx源码编译">
+<meta property="og:url" content="https://leellun.github.io/2019/12/21/%E6%9C%8D%E5%8A%A1%E5%99%A8/nginx/nginx%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="一 准备软件环境下载 1yum install -y wget gcc gcc-c++ make pcre pcre-devel zlib zlib-devel openssl openssl-devel  nginx下载 http:&#x2F;&#x2F;nginx.org&#x2F;download&#x2F; 二 源码编译1234567891011121314151617181920212223242526272829[root@">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-12-21T12:14:02.000Z">
+<meta property="article:modified_time" content="2022-09-24T05:59:21.454Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="nginx">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>nginx源码编译 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="nginx源码编译"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-12-21 20:14" pubdate>
+          2019年12月21日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          90 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">nginx源码编译</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一-准备"><a href="#一-准备" class="headerlink" title="一 准备"></a>一 准备</h1><p>软件环境下载</p>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nsis">yum install -y wget gcc gcc-c++ make pcre pcre-devel <span class="hljs-literal">zlib</span> <span class="hljs-literal">zlib</span>-devel openssl openssl-devel<br></code></pre></td></tr></table></figure>
+
+<p>nginx下载</p>
+<p><a target="_blank" rel="noopener" href="http://nginx.org/download/">http://nginx.org/download/</a></p>
+<h1 id="二-源码编译"><a href="#二-源码编译" class="headerlink" title="二 源码编译"></a>二 源码编译</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs xml">[root@k8s-master01 nginx-1.23.1]# ./configure --prefix=/usr/local/nginx --with-http_ssl_module<br>[root@k8s-master01 nginx-1.23.1]# make &amp;&amp; make install<br>#配置 /usr/local/nginx/sbin到环境变量<br>[root@k8s-master01 nginx-1.23.1]# cd /usr/local/nginx/<br>[root@k8s-master01 nginx-1.23.1]# sbin/nginx -c conf/nginx.conf<br>[root@k8s-master01 nginx]# curl 10.0.0.101<br><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Welcome to nginx!<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css"><span class="hljs-selector-tag">html</span> &#123; <span class="hljs-attribute">color</span>-scheme: light dark; &#125;</span><br><span class="language-css"><span class="hljs-selector-tag">body</span> &#123; <span class="hljs-attribute">width</span>: <span class="hljs-number">35em</span>; <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> auto;</span><br><span class="language-css"><span class="hljs-attribute">font-family</span>: Tahoma, Verdana, Arial, sans-serif; &#125;</span><br><span class="language-css"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Welcome to nginx!<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>If you see this page, the nginx web server is successfully installed and<br>working. Further configuration is required.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>For online documentation and support please refer to<br><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;http://nginx.org/&quot;</span>&gt;</span>nginx.org<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>.<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span><br>Commercial support is available at<br><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;http://nginx.com/&quot;</span>&gt;</span>nginx.com<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">em</span>&gt;</span>Thank you for using nginx.<span class="hljs-tag">&lt;/<span class="hljs-name">em</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>预编译参数：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-attr">--add-module</span>=path：启用外部模块。<br><span class="hljs-attr">--add-dynamic-module</span>=path：启用外部动态模块。<br><span class="hljs-attr">--prefix</span>=path ：定义将保留服务器文件的目录。<br><span class="hljs-attr">--sbin-path</span>=path：设置nginx可执行文件的名称。此名称仅在安装期间使用。默认情况下，文件名为 prefix/sbin/nginx。<br><span class="hljs-attr">--modules-path</span>=path：定义将在其中安装nginx动态模块的目录。默认情况下使用prefix/modules目录。<br><span class="hljs-attr">--conf-path</span>=path：设置nginx.conf配置文件的名称。如果需要，可以通过在命令行参数中指定nginx来始终使用其他配置文件来启动它 。默认情况下，文件名为prefix/conf/nginx<span class="hljs-selector-class">.conf</span><br><span class="hljs-attr">--error-log-path</span>=path：设置主要错误，警告和诊断文件的名称及路径。默认情况下，文件名为 prefix/logs/error.log。<br><span class="hljs-attr">--pid-path</span>=path：设置nginx.pid将存储主进程的进程ID 的文件名及路径。默认情况下，文件名为 prefix/logs/nginx.pid。<br><span class="hljs-attr">--lock-path</span>=path：为锁定文件的名称设置前缀。默认情况下，值为 prefix/logs/nginx.lock。<br><span class="hljs-attr">--user</span>=name：设置非特权用户的名称，默认用户名是nobody。（设置所有者）<br><span class="hljs-attr">--group</span>=name：设置工作进程将使用其凭据的组的名称。默认情况下，组名称设置为非特权用户的名称。（所属组 ）<br><span class="hljs-attr">--build</span>=name：设置一个可选的nginx构建名称。<br><span class="hljs-attr">--builddir</span>=path：设置构建目录。<br><span class="hljs-attr">--http-log-path</span>=path：设置HTTP服务器的主请求日志文件的名称。安装后，可以始终nginx.conf使用access_log伪指令在配置文件中 更改文件名 。默认情况下，文件名为 prefix/logs/access.log。<br><span class="hljs-attr">--http-client-body-temp-path</span>=path：定义用于存储包含客户端请求正文的临时文件的目录。安装后，可以始终nginx.conf使用client_body_temp_path 指令在配置文件中 更改目录 。默认情况下，目录名为 prefix/client_body_temp。<br><span class="hljs-attr">--http-proxy-temp-path</span>=path：定义一个目录，用于存储带有从代理服务器接收到的数据的临时文件。安装后，始终可以nginx.conf使用proxy_temp_path 指令在配置文件中 更改目录 。默认情况下，目录名为 prefix/proxy_temp。<br><span class="hljs-attr">--http-fastcgi-temp-path</span>=path：定义一个目录，用于存储包含从FastCGI服务器接收到的数据的临时文件。安装后，可以始终nginx.conf使用fastcgi_temp_path 指令在配置文件中 更改目录 。默认情况下，目录名为 prefix/fastcgi_temp。<br><span class="hljs-attr">--http-uwsgi-temp-path</span>=path：定义一个目录，用于存储包含从uwsgi服务器接收到的数据的临时文件。安装后，始终可以nginx.conf使用uwsgi_temp_path 指令在配置文件中 更改目录 。默认情况下，目录名为 prefix/uwsgi_temp。<br><span class="hljs-attr">--http-scgi-temp-path</span>=path：定义一个目录，用于存储带有从SCGI服务器接收到的数据的临时文件。安装后，可以始终nginx.conf使用scgi_temp_path 指令在配置文件中 更改目录 。默认情况下，目录名为 prefix/scgi_temp。<br><span class="hljs-attr">--with-select_module</span><br><span class="hljs-attr">--with-threads</span>：启用线程池的使用 。<br><span class="hljs-attr">--with-file-aio</span>：支持 在FreeBSD和Linux上使用 异步文件I / O（AIO）。<br><span class="hljs-attr">--with-http_ssl_module</span>：启用构建将HTTPS协议支持添加 到HTTP服务器的模块的功能。默认情况下未构建此模块。需要OpenSSL库来构建和运行此模块。<br><span class="hljs-attr">--with-http_v2_module</span>：支持构建提供对HTTP / <span class="hljs-number">2</span>支持的模块 。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_realip_module</span>：启用构建ngx_http_realip_module 模块的功能，该模块将客户端地址更改为在指定的标头字段中发送的地址。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_addition_module</span>：允许构建ngx_http_addition_module 模块，该模块在响应前后添加文本。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_xslt_module</span><br><span class="hljs-attr">--with-http_xslt_module</span>=dynamic：支持构建ngx_http_xslt_module 模块，该 模块使用一个或多个XSLT样式表转换XML响应。默认情况下未构建此模块。该libxml2的和 的libxslt库需要构建和运行此模块。<br><span class="hljs-attr">--with-http_image_filter_module</span><br><span class="hljs-attr">--with-http_image_filter_module</span>=dynamic：支持构建ngx_http_image_filter_module 模块，该模块可以转换JPEG，GIF，PNG和WebP格式的图像。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_geoip_module</span><br><span class="hljs-attr">--with-http_geoip_module</span>=dynamic：支持构建ngx_http_geoip_module 模块，该模块根据客户端IP地址和预编译的MaxMind数据库创建变量 。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_sub_module</span>：支持构建ngx_http_sub_module 模块，该模块通过将一个指定的字符串替换为另一个指定的字符串来修改响应。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_dav_module</span>：支持构建ngx_http_dav_module 模块，该模块通过WebDAV协议提供文件管理自动化。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_flv_module</span>：支持构建ngx_http_flv_module 模块，该模块为Flash Video（FLV）文件提供伪流服务器端支持。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_mp4_module</span>：支持构建ngx_http_mp4_module 模块，该模块为MP4文件提供伪流服务器端支持。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_gunzip_module</span>：支持为不支持“ gzip”编码方法的客户端构建ngx_http_gunzip_module 模块，该 模块使用“ Content-Encoding: gzip” 解压缩响应。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_gzip_static_module</span>：支持构建ngx_http_gzip_static_module 模块，该 模块支持发送.gz扩展名为“ ”的预压缩文件，而不是常规文件。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_auth_request_module</span>：允许构建ngx_http_auth_request_module 模块，该 模块基于子请求的结果实现客户端授权。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_random_index_module</span>：支持构建ngx_http_random_index_module 模块，该 模块处理以斜杠（<span class="hljs-string">&#x27; /&#x27;</span>）结尾的请求，并在目录中选择一个随机文件作为索引文件。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_secure_link_module</span>：启用构建 ngx_http_secure_link_module 模块。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_degradation_module</span>：启用构建 ngx_http_degradation_module模块。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_slice_module</span>：支持构建ngx_http_slice_module 模块，该 模块将请求拆分为子请求，每个子请求都返回一定范围的响应。该模块提供了更有效的大响应缓存。默认情况下未构建此模块。<br><span class="hljs-attr">--with-http_stub_status_module</span>：支持构建ngx_http_stub_status_module 模块，该 模块提供对基本状态信息的访问。默认情况下未构建此模块。<br><span class="hljs-attr">--with-google_perftools_module</span>：允许构建 ngx_google_perftools_module 模块，以使用Google Performance Tools对nginx工作进程进行 性能分析。该模块供nginx开发人员使用，默认情况下未构建。<br><span class="hljs-attr">--with-cpp_test_module</span>：启用构建 ngx_cpp_test_module模块。<br><span class="hljs-attr">--with-mail</span><br><span class="hljs-attr">--with-mail</span>=dynamic：启用POP3 / IMAP4 / SMTP 邮件代理服务器。<br><span class="hljs-attr">--with-mail_ssl_module</span>：启用构建将 SSL / TLS协议支持添加 到邮件代理服务器的模块的功能。默认情况下未构建此模块。需要OpenSSL库来构建和运行此模块。<br><span class="hljs-attr">--with-compat</span>：启用动态模块兼容性。<br><span class="hljs-attr">--with-cc</span>=path：设置C编译器的名称。<br><span class="hljs-attr">--with-cpp</span>=path：设置C预处理器的名称。<br><span class="hljs-attr">--with-cc-opt</span>=parameters：设置将添加到CFLAGS变量的其他参数。在FreeBSD下使用系统PCRE库时， <span class="hljs-attr">--with-cc-opt</span>=<span class="hljs-string">&quot;-I /usr/local/include&quot;</span> 应指定。如果<span class="hljs-built_in">select</span>()需要增加支持的文件数量，也可以在此处指定，例如： <span class="hljs-attr">--with-cc-opt</span>=<span class="hljs-string">&quot;-D FD_SETSIZE=2048&quot;</span>。<br><span class="hljs-attr">--with-ld-opt</span>=parameters：设置在链接期间将使用的其他参数。在FreeBSD下使用系统PCRE库时， <span class="hljs-attr">--with-ld-opt</span>=<span class="hljs-string">&quot;-L /usr/local/lib&quot;</span> 应指定。<br><span class="hljs-attr">--with-cpu-opt</span>=cpu：每个指定的CPU能够使建筑： pentium，pentiumpro， pentium3，pentium4， athlon，opteron， sparc32，sparc64， ppc64。<br><span class="hljs-attr">--without-pcre</span>：禁用PCRE库的用法。<br><span class="hljs-attr">--with-pcre</span>：强制使用PCRE库。<br><span class="hljs-attr">--with-pcre</span>=path：设置PCRE库源的路径。需要从PCRE站点下载并分发库分发（版本<span class="hljs-number">4.4</span> — <span class="hljs-number">8.43</span>） 。其余的由nginx的./configure和完成 make。该库对于location指令中的正则表达式支持和 ngx_http_rewrite_module 模块是必需的 。<br><span class="hljs-attr">--with-pcre-opt</span>=parameters：为PCRE设置其他构建选项。<br><span class="hljs-attr">--with-pcre-jit</span>：使用“及时编译”支持（<span class="hljs-number">1.1</span>.<span class="hljs-number">12</span>，pcre_jit指令）构建PCRE库 。<br><span class="hljs-attr">--with-zlib</span>=path：设置zlib库源的路径。需要从zlib站点下载并分发库发行版（版本<span class="hljs-number">1.1</span>.<span class="hljs-number">3</span>-<span class="hljs-number">1.2</span>.<span class="hljs-number">11</span>） 。其余的由nginx的./configure和完成 make。ngx_http_gzip_module模块需要该库 。<br><span class="hljs-attr">--with-zlib-opt</span>=parameters：为zlib设置其他构建选项。<br><span class="hljs-attr">--with-zlib-asm</span>=cpu：使得能够使用指定的CPU中的一个优化的zlib汇编源程序： pentium，pentiumpro。<br><span class="hljs-attr">--with-libatomic</span>：强制使用libatomic_ops库。<br><span class="hljs-attr">--with-libatomic</span>=path：设置libatomic_ops库源的路径。<br><span class="hljs-attr">--with-openssl</span>=path：设置OpenSSL库源的路径。<br><span class="hljs-attr">--with-openssl-opt</span>=parameters：为OpenSSL设置其他构建选项。<br><span class="hljs-attr">--with-debug</span>：启用调试日志。<br><span class="hljs-attr">--with-http_perl_module</span><br><span class="hljs-attr">--with-http_perl_module</span>=dynamic：支持构建 嵌入式Perl模块。默认情况下未构建此模块。<br><span class="hljs-attr">--with-perl_modules_path</span>=path：定义一个目录，该目录将保留Perl模块。<br><span class="hljs-attr">--with-perl</span>=path：设置Perl二进制文件的名称。<br><span class="hljs-attr">--with-stream</span><br><span class="hljs-attr">--with-stream</span>=dynamic：支持构建 用于通用TCP / UDP代理和负载平衡的 流模块。默认情况下未构建此模块。<br><span class="hljs-attr">--with-stream_ssl_module</span>：支持构建一个模块，该模块 向流模块添加 SSL / TLS协议支持。默认情况下未构建此模块。需要OpenSSL库来构建和运行此模块。<br><span class="hljs-attr">--with-stream_realip_module</span>：启用构建ngx_stream_realip_module 模块的功能，该 模块将客户端地址更改为PROXY协议标头中发送的地址。默认情况下未构建此模块。<br><span class="hljs-attr">--with-stream_geoip_module</span><br><span class="hljs-attr">--with-stream_geoip_module</span>=dynamic：支持构建ngx_stream_geoip_module 模块，该 模块根据客户端IP地址和预编译的MaxMind数据库创建变量 。默认情况下未构建此模块。<br><span class="hljs-attr">--with-stream_ssl_preread_module</span>：支持构建ngx_stream_ssl_preread_module 模块，该 模块允许从ClientHello 消息中提取信息， 而无需终止SSL / TLS。默认情况下未构建此模块。<br><span class="hljs-attr">--without-select_module</span>：启用或禁用构建允许服务器使用该<span class="hljs-built_in">select</span>()方法的模块。如果平台似乎不支持更合适的方法（例如kqueue，epoll或/ dev / poll），则会自动构建此模块。<br><span class="hljs-attr">--with-poll_module</span><br><span class="hljs-attr">--without-poll_module</span>：启用或禁用构建允许服务器使用该<span class="hljs-built_in">poll</span>()方法的模块。如果平台似乎不支持更合适的方法（例如kqueue，epoll或/ dev / poll），则会自动构建此模块。<br><span class="hljs-attr">--without-http_charset_module</span>：禁用构建ngx_http_charset_module 模块，该 模块将指定的字符集添加到“ Content-Type”响应标头字段中，并且可以将数据从一个字符集转换为另一个字符集。<br><span class="hljs-attr">--without-http_gzip_module</span>：禁用构建可压缩 HTTP服务器响应的模块。zlib库是构建和运行此模块所必需的。<br><span class="hljs-attr">--without-http_ssi_module</span>：禁用构建处理通过SSI（服务器端包含）命令的 ngx_http_ssi_module模块的响应。<br><span class="hljs-attr">--without-http_userid_module</span>：禁用构建ngx_http_userid_module 模块，该模块设置适合客户端标识的cookie。<br><span class="hljs-attr">--without-http_access_module</span>：禁用构建ngx_http_access_module 模块，该 模块允许限制对某些客户端地址的访问。<br><span class="hljs-attr">--without-http_auth_basic_module</span>：禁用构建ngx_http_auth_basic_module 模块，该 模块允许通过使用“ HTTP基本身份验证”协议验证用户名和密码来限制对资源的访问。<br><span class="hljs-attr">--without-http_mirror_module</span>：禁用构建ngx_http_mirror_module 模块，该 模块通过创建后台镜像子请求来实现原始请求的镜像。<br><span class="hljs-attr">--without-http_autoindex_module</span>：禁用构建 ngx_http_autoindex_module 模块，以处理以斜杠（<span class="hljs-string">&#x27; /&#x27;</span>）结尾的请求，并在ngx_http_index_module模块找不到索引文件的情况下生成目录列表 。<br><span class="hljs-attr">--without-http_geo_module</span>：禁用构建ngx_http_geo_module 模块，该 模块创建的变量的值取决于客户端IP地址。<br><span class="hljs-attr">--without-http_map_module</span>：禁用构建ngx_http_map_module 模块，该 模块创建的变量值取决于其他变量的值。<br><span class="hljs-attr">--without-http_split_clients_module</span>：禁用构建ngx_http_split_clients_module 模块，该 模块创建用于A / B测试的变量。<br><span class="hljs-attr">--without-http_referer_module</span>：禁用构建ngx_http_referer_module 模块，该 模块可以阻止对“ Referer”标头字段中具有无效值的请求的站点访问。<br><span class="hljs-attr">--without-http_rewrite_module</span>：禁用构建允许HTTP服务器 重定向请求和更改请求URI的模块。构建和运行此模块需要PCRE库。<br><span class="hljs-attr">--without-http_proxy_module</span>：禁用构建HTTP服务器 代理模块。<br><span class="hljs-attr">--without-http_fastcgi_module</span>：禁用构建将请求传递到FastCGI服务器的 ngx_http_fastcgi_module模块。<br><span class="hljs-attr">--without-http_uwsgi_module</span>：禁用构建 将请求传递到uwsgi服务器的 ngx_http_uwsgi_module模块。<br><span class="hljs-attr">--without-http_scgi_module</span>：禁用构建 将请求传递到SCGI服务器的 ngx_http_scgi_module模块。<br><span class="hljs-attr">--without-http_grpc_module</span>：禁用构建 将请求传递到gRPC服务器的 ngx_http_grpc_module模块。<br><span class="hljs-attr">--without-http_memcached_module</span>：禁用构建ngx_http_memcached_module 模块，该 模块从memcached服务器获取响应。<br><span class="hljs-attr">--without-http_limit_conn_module</span>：禁用构建ngx_http_limit_conn_module 模块，该 模块限制每个键的连接数，例如，单个IP地址的连接数。<br><span class="hljs-attr">--without-http_limit_req_module</span>：禁用构建ngx_http_limit_req_module 模块，该模块限制每个密钥的请求处理速率，例如，来自单个IP地址的请求的处理速率。<br><span class="hljs-attr">--without-http_empty_gif_module</span>：禁用构建发出单像素透明GIF的模块 。<br><span class="hljs-attr">--without-http_browser_module</span>：禁用构建ngx_http_browser_module 模块，该 模块创建的变量值取决于“ User-Agent”请求标头字段的值。<br><span class="hljs-attr">--without-http_upstream_hash_module</span>：禁用构建实现哈希 负载平衡方法的模块 。<br><span class="hljs-attr">--without-http_upstream_ip_hash_module</span>：禁用构建实现ip_hash 负载平衡方法的模块 。<br><span class="hljs-attr">--without-http_upstream_least_conn_module</span>：禁用构建实现了minimum_conn 负载平衡方法的模块 。<br><span class="hljs-attr">--without-http_upstream_keepalive_module</span>：禁用构建一个模块来提供 对上游服务器连接的缓存。<br><span class="hljs-attr">--without-http_upstream_zone_module</span>：禁用构建模块，该模块可以将上游组的运行时状态存储在共享内存 区域中。<br><span class="hljs-attr">--without-http</span>：禁用HTTP服务器。<br><span class="hljs-attr">--without-http-cache</span>：禁用HTTP缓存。<br><span class="hljs-attr">--without-mail_pop3_module</span>：在邮件代理服务器中 禁用POP3协议。<br><span class="hljs-attr">--without-mail_imap_module</span>：在邮件代理服务器中 禁用IMAP协议。<br><span class="hljs-attr">--without-mail_smtp_module</span>：在邮件代理服务器中 禁用SMTP协议。<br><span class="hljs-attr">--without-stream_limit_conn_module</span>：禁用构建ngx_stream_limit_conn_module 模块，该 模块限制每个键的连接数，例如，单个IP地址的连接数。<br><span class="hljs-attr">--without-stream_access_module</span>：禁用构建ngx_stream_access_module 模块，该 模块允许限制对某些客户端地址的访问。<br><span class="hljs-attr">--without-stream_geo_module</span>：禁用构建ngx_stream_geo_module 模块，该 模块创建的变量的值取决于客户端IP地址。<br><span class="hljs-attr">--without-stream_map_module</span>：禁用构建ngx_stream_map_module 模块，该 模块创建的变量值取决于其他变量的值。<br><span class="hljs-attr">--without-stream_split_clients_module</span>：禁用构建ngx_stream_split_clients_module 模块，该 模块创建用于A / B测试的变量。<br><span class="hljs-attr">--without-stream_return_module</span>：禁用构建ngx_stream_return_module 模块，该 模块向客户端发送一些指定的值，然后关闭连接。<br><span class="hljs-attr">--without-stream_upstream_hash_module</span>：禁用构建实现哈希 负载平衡方法的模块 。<br><span class="hljs-attr">--without-stream_upstream_least_conn_module</span>：禁用构建实现了minimum_conn 负载平衡方法的模块 。<br><span class="hljs-attr">--without-stream_upstream_zone_module</span>：禁用构建模块，该模块可以将上游组的运行时状态存储在共享内存 区域中。<br></code></pre></td></tr></table></figure>
+
+<h1 id="三、nginx命令"><a href="#三、nginx命令" class="headerlink" title="三、nginx命令"></a>三、nginx命令</h1><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">./nginx</span> 启动nginx<br><span class="hljs-string">./nginx</span> -h 查看nginx命令简单帮助文档<br><span class="hljs-string">./nginx</span> -t 检查配置文件语法是否有错<br><span class="hljs-string">./nginx</span> -V 显示版本和编译时的配置选项<br><span class="hljs-string">./nginx</span> -s stop 强制停止nginx服务<br><span class="hljs-string">./nginx</span> -s <span class="hljs-keyword">reload</span> 重新加载nginx配置文件，然后优雅的方式重启nginx<br><span class="hljs-string">./nginx</span> -s reopen 重启nginx<br><span class="hljs-string">./nginx</span> -s <span class="hljs-keyword">quit</span> 处理完关于nginx的所有请求后再停止服务<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/nginx/">#nginx</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>nginx源码编译</div>
+      <div>https://leellun.github.io/2019/12/21/服务器/nginx/nginx源码编译/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2019年12月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/01/04/%E6%9C%8D%E5%8A%A1%E5%99%A8/nginx/nginx%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="nginx基础知识">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">nginx基础知识</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/01/23/%E5%A6%82%E4%BD%95%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/" title="如何用hexo在github上搭建自己的博客">
+                        <span class="hidden-mobile">如何用hexo在github上搭建自己的博客</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
