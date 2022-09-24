@@ -219,15 +219,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/08/04/kubeadm%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4/" target="_self">
-          kubernetes调度器scheduler
+        <a href="/2022/03/03/k8s/%E9%9B%86%E7%BE%A4/containerd%20%E5%AE%89%E8%A3%85/" target="_self">
+          containerd 二进制安装
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/04/kubeadm%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/03/03/k8s/%E9%9B%86%E7%BE%A4/containerd%20%E5%AE%89%E8%A3%85/" target="_self">
         <div>
-          kubeadm快速部署kubernetes集群1 安装要求 一台或多台机器，操作系统 CentOS7.x-86_x64 硬件配置：2GB或更多RAM，2个CPU或更多CPU，硬盘30GB或更多(master必须2cpu,node可以不用) 可以访问外网，需要拉取镜像，如果服务器不能上网，需要提前下载镜像并导入节点 禁止swap分区  安装 kubeadm | Kubernetes 2 准备环境
+          一、环境系统：Centos7 二、进制安装Release containerd 1.6.5 · containerd/containerd · GitHub  github上面提供了带cri、cni和不带的，这里图方便和兼容性就直接选择带cri和cni的吧 ![1659279888078](containerd 安装/1659279888078.png) 下载 1wget -c https://g
         </div>
       </a>
 
@@ -235,8 +235,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2021-08-04 18:11" pubdate>
-              2021-08-04
+            <time datetime="2022-03-03 21:14" pubdate>
+              2022-03-03
             </time>
           </div>
         
@@ -266,11 +266,11 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/k8s/">#k8s</a>
-            
               <a href="/tags/kubernetes/">#kubernetes</a>
             
-              <a href="/tags/%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">#集群部署</a>
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/containerd/">#containerd</a>
             
           </div>
         
@@ -284,15 +284,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/08/02/k8s%E9%9B%86%E7%BE%A4%E5%BC%80%E5%90%AFfirewalld%E9%98%B2%E7%81%AB%E5%A2%99/" target="_self">
-          k8s集群开启firewalld防火墙
+        <a href="/2021/09/03/k8s/k8s%E5%AE%89%E5%85%A8/Kubernetes%20%E9%9B%86%E7%BE%A4%E5%AE%89%E5%85%A8/" target="_self">
+          Kubernetes 集群安全
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/02/k8s%E9%9B%86%E7%BE%A4%E5%BC%80%E5%90%AFfirewalld%E9%98%B2%E7%81%AB%E5%A2%99/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/09/03/k8s/k8s%E5%AE%89%E5%85%A8/Kubernetes%20%E9%9B%86%E7%BE%A4%E5%AE%89%E5%85%A8/" target="_self">
         <div>
-          一、基础设置1234567891011121314# 关闭selinuxsed -i &#x27;s/enforcing/disabled/&#x27; /etc/selinux/config  # 永久setenforce 0  # 临时# 关闭swapswapoff -a  # 临时sed -ri &#x27;s/.*swap.*/#&amp;/&#x27; /etc/fstab    # 永
+          机制说明Kubernetes 作为一个分布式集群的管理工具,保证集群的安全性是其一个重要的任务。API Server是集群内部各个组件通信的中介,也是外部控制的入口。所以Kubernetes的安全机制基本就是围绕保护API Server来设计的。Kubernetes 使用了认证(Authentication) 、鉴权(Authorization)、准入控制(AdmissionControl)三步来
         </div>
       </a>
 
@@ -300,8 +300,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2021-08-02 19:18" pubdate>
-              2021-08-02
+            <time datetime="2021-09-03 21:14" pubdate>
+              2021-09-03
             </time>
           </div>
         
@@ -331,13 +331,11 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/k8s/">#k8s</a>
-            
               <a href="/tags/kubernetes/">#kubernetes</a>
             
-              <a href="/tags/firewalld/">#firewalld</a>
+              <a href="/tags/k8s/">#k8s</a>
             
-              <a href="/tags/%E9%98%B2%E7%81%AB%E5%A2%99/">#防火墙</a>
+              <a href="/tags/%E8%AE%A4%E8%AF%81%E6%8E%88%E6%9D%83/">#认证授权</a>
             
           </div>
         
@@ -351,15 +349,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/08/02/kubernetes%E8%B0%83%E5%BA%A6%E5%99%A8scheduler/" target="_self">
-          kubernetes调度器scheduler
+        <a href="/2021/09/03/k8s/k8s%E5%AE%89%E5%85%A8/k8s%E9%9B%86%E7%BE%A4%E5%AE%89%E5%85%A8%E5%AE%9E%E6%88%98/" target="_self">
+          k8s集群安全实战—为指定用户设置操作权限
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/02/kubernetes%E8%B0%83%E5%BA%A6%E5%99%A8scheduler/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/09/03/k8s/k8s%E5%AE%89%E5%85%A8/k8s%E9%9B%86%E7%BE%A4%E5%AE%89%E5%85%A8%E5%AE%9E%E6%88%98/" target="_self">
         <div>
-          一、简介Scheduler 是kubernetes 的调度器,主要的任务是把定义的pod分配到集群的节点上。听起来非常简单,但有很多要考虑的问题:  公平：如何保证每个节点都能被分配资源 资源高效利用：集群所有资源最大化被使用 效率：调度的性能要好,能够尽快地对大批量的pod完成调度工作 灵活：允许用户根据自己的需求控制调度的逻辑  Sheduler 是作为单独的程序运行的，启动之后会一直坚挺AP
+          1 下载、解压并准备如下所示的命令行工具。123456curl -L https://github.com/cloudflare/cfssl/releases/download/v1.5.0/cfssl_1.5.0_linux_amd64 -o cfsslchmod +x cfsslcurl -L https://github.com/cloudflare/cfssl/releases/downl
         </div>
       </a>
 
@@ -367,8 +365,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2021-08-02 19:18" pubdate>
-              2021-08-02
+            <time datetime="2021-09-03 21:14" pubdate>
+              2021-09-03
             </time>
           </div>
         
@@ -398,13 +396,11 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/k8s/">#k8s</a>
-            
               <a href="/tags/kubernetes/">#kubernetes</a>
             
-              <a href="/tags/scheduler/">#scheduler</a>
+              <a href="/tags/k8s/">#k8s</a>
             
-              <a href="/tags/%E8%B0%83%E5%BA%A6%E5%99%A8/">#调度器</a>
+              <a href="/tags/%E8%AE%A4%E8%AF%81%E6%8E%88%E6%9D%83/">#认证授权</a>
             
           </div>
         
@@ -418,15 +414,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/08/02/k8s%20dashboard/" target="_self">
-          kubernetes 入门学习 dashboard
+        <a href="/2021/09/03/k8s/%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7/HPA%E5%AE%9E%E6%88%98%E6%BC%94%E7%A4%BA/" target="_self">
+          HPA实战演示
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/02/k8s%20dashboard/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/09/03/k8s/%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7/HPA%E5%AE%9E%E6%88%98%E6%BC%94%E7%A4%BA/" target="_self">
         <div>
-          1 dashboard安装1$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml  结果： 1234567891011121314namespace/kubernetes-dashboard created  # 命名空间k
+          镜像拉取将镜像放到本地私有云上 123docker pull mirrorgooglecontainers/hpa-exampledocker tag mirrorgooglecontainers/hpa-example harborcloud.com/library/hpa-exampledocker push reg.westos.org/library/hpa-example  配置文件ha
         </div>
       </a>
 
@@ -434,8 +430,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2021-08-02 19:18" pubdate>
-              2021-08-02
+            <time datetime="2021-09-03 21:14" pubdate>
+              2021-09-03
             </time>
           </div>
         
@@ -465,11 +461,11 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/k8s/">#k8s</a>
-            
               <a href="/tags/kubernetes/">#kubernetes</a>
             
-              <a href="/tags/dashboard/">#dashboard</a>
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/hpa/">#hpa</a>
             
           </div>
         
@@ -483,15 +479,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/08/01/k8s%E5%B8%B8%E7%94%A8%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%8A%E7%89%B9%E7%82%B9/" target="_self">
-          k8s常用控制器及特点
+        <a href="/2021/09/03/k8s/k8s%E8%AF%81%E4%B9%A6/k8s%20%E8%AF%81%E4%B9%A6%E4%BB%8B%E7%BB%8D/" target="_self">
+          k8s 证书介绍
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/01/k8s%E5%B8%B8%E7%94%A8%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%8A%E7%89%B9%E7%82%B9/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/09/03/k8s/k8s%E8%AF%81%E4%B9%A6/k8s%20%E8%AF%81%E4%B9%A6%E4%BB%8B%E7%BB%8D/" target="_self">
         <div>
-          什么是控制器Kubernetes 中内建了很多controller (控制器),这些相当于一个状态机,用来控制Pod的具体状态和行为 控制器类型 ReplicationController 和 ReplicaSet Deployment DaemonSet StateFulSet Job/CronJob Horizontal Pod Autoscaling  ReplicationControll
+          一、集群需要哪些证书？ Kubelet 的客户端证书，用于 API 服务器身份验证 Kubelet 服务端证书， 用于 API 服务器与 Kubelet 的会话 API 服务器端点的证书 集群管理员的客户端证书，用于 API 服务器身份认证 API 服务器的客户端证书，用于和 Kubelet 的会话 API 服务器的客户端证书，用于和 etcd 的会话 控制器管理器的客户端证书/kubeconfi
         </div>
       </a>
 
@@ -499,8 +495,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2021-08-01 20:24" pubdate>
-              2021-08-01
+            <time datetime="2021-09-03 21:14" pubdate>
+              2021-09-03
             </time>
           </div>
         
@@ -530,11 +526,11 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/k8s/">#k8s</a>
-            
               <a href="/tags/kubernetes/">#kubernetes</a>
             
-              <a href="/tags/%E6%8E%A7%E5%88%B6%E5%99%A8/">#控制器</a>
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/%E8%AF%81%E4%B9%A6/">#证书</a>
             
           </div>
         
@@ -548,15 +544,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/07/30/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/" target="_self">
-          k8s网络通讯方式
+        <a href="/2021/08/26/k8s/persistence/kubernetes%20%E4%B9%8B%20Volume/" target="_self">
+          kubernetes 之 Volume
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/07/30/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/26/k8s/persistence/kubernetes%20%E4%B9%8B%20Volume/" target="_self">
         <div>
-          k8s组网要求 所有的Pods之间可以在不使用NAT网络地址转换的情况下相互通信。 所有的Nodes之间可以在不使用NAT网络地址转换的情况下相互通信。 每个Pod自己看到的自己的ip和其他Pod看到的一致。即所有Pod对象都处于同一平面网络中，而且可以使用Pod自身的地址直接通信。  k8s网络模型设计基础原则 每个Pod都拥有一个独立的IP地址，假定所有 Pod 都在一个可以直接连通的、扁平的
+          1 Volume 介绍目的：容器磁盘上的文件的生命周期是短暂的,这就使得在容器中运行重要应用时会出现一些问题。首先,当容器崩溃时, kubelet会重启它,但是容器中的文件将丢失–容器以干净的状态(镜像最初的状态)重新启动。其次,在Pod中同时运行多个容器时,这些容器之间通常需要共享文件。Kubernetes中的Volume抽象就很好的解决了这些问题。 Volume 是Pod 中能够被多个容器访问
         </div>
       </a>
 
@@ -564,8 +560,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-30 14:38" pubdate>
-              2021-07-30
+            <time datetime="2021-08-26 21:14" pubdate>
+              2021-08-26
             </time>
           </div>
         
@@ -595,11 +591,11 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/k8s/">#k8s</a>
-            
               <a href="/tags/kubernetes/">#kubernetes</a>
             
-              <a href="/tags/%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF/">#网络通讯</a>
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/volume/">#volume</a>
             
           </div>
         
@@ -613,15 +609,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/07/29/kubernetes%E7%BB%84%E4%BB%B6%E4%BB%8B%E7%BB%8D/" target="_self">
-          k8s资源清单及常用字段
+        <a href="/2021/08/25/k8s/persistence/kubernetes%20%E6%8C%81%E4%B9%85%E5%8D%B7/" target="_self">
+          kubernetes 持久卷
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/07/29/kubernetes%E7%BB%84%E4%BB%B6%E4%BB%8B%E7%BB%8D/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/25/k8s/persistence/kubernetes%20%E6%8C%81%E4%B9%85%E5%8D%B7/" target="_self">
         <div>
-          kubernetes组件一个 Kubernetes 集群是由一组被称作节点（node）的机器组成， 这些节点上会运行由 Kubernetes 所管理的容器化应用。 且每个集群至少有一个工作节点。 工作节点会托管所谓的 Pods，而 Pod 就是作为应用负载的组件。 控制平面管理集群中的工作节点和 Pods。 为集群提供故障转移和高可用性， 这些控制平面一般跨多主机运行，而集群也会跨多个节点运行。
+          1 概念PersistentVolume（PV） 是集群中由管理员配置的一段网络存储。它是集群中的资源，就像节点是集群资源一样。PV 是容量插件，如Volumes，但其生命周期独立于使用PV 的任何单个pod。此API 对象捕获存储实现的详细信息，包括NFS，iSCSI 或特定于云提供程序的存储系统。 PersistentVolumeClaim（PVC） 是由用户进行存储的请求。它类似于pod。P
         </div>
       </a>
 
@@ -629,8 +625,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-29 19:38" pubdate>
-              2021-07-29
+            <time datetime="2021-08-25 21:14" pubdate>
+              2021-08-25
             </time>
           </div>
         
@@ -660,11 +656,11 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/k8s/">#k8s</a>
-            
               <a href="/tags/kubernetes/">#kubernetes</a>
             
-              <a href="/tags/%E7%BB%84%E4%BB%B6/">#组件</a>
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/%E6%8C%81%E4%B9%85%E5%8D%B7/">#持久卷</a>
             
           </div>
         
@@ -678,15 +674,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/07/27/k8s%E8%B5%84%E6%BA%90%E6%B8%85%E5%8D%95%E5%8F%8A%E5%B8%B8%E7%94%A8%E5%AD%97%E6%AE%B5/" target="_self">
-          k8s资源清单及常用字段
+        <a href="/2021/08/24/k8s/persistence/kubernates%20%E4%B9%8B%20Secret/" target="_self">
+          kubernates 之 Secret
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/07/27/k8s%E8%B5%84%E6%BA%90%E6%B8%85%E5%8D%95%E5%8F%8A%E5%B8%B8%E7%94%A8%E5%AD%97%E6%AE%B5/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/24/k8s/persistence/kubernates%20%E4%B9%8B%20Secret/" target="_self">
         <div>
-          K8s中所有的内容都抽象为资源,资源实例化之后,叫做对象。 名称空间级别工作负载型资源(workload ): Pod、 ReplicaSet, Deployment、 StatefulSet、DaemonSet、Job、CronJob (ReplicationController 在vl.11 版本被废弃) 服务发现及负载均衡型资源( ServiceDiscovery LoadBalance )
+          一、Secret 存在意义Secret 解决了密码、token、密钥等敏感数据的配置问题,而不需要把这些敏感数据暴露到镜像或者Pod Spec中。Secret 可以以Volume或者环境变量的方式使用 二、Secret有三种类型Service Account 用来访 Kubernetes API, 由Kubernetes 自动创建,并且会自动挂载到Pod的/run/secrets/kubernet
         </div>
       </a>
 
@@ -694,8 +690,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-27 19:38" pubdate>
-              2021-07-27
+            <time datetime="2021-08-24 20:14" pubdate>
+              2021-08-24
             </time>
           </div>
         
@@ -725,9 +721,11 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
               <a href="/tags/k8s/">#k8s</a>
             
-              <a href="/tags/kubernetes/">#kubernetes</a>
+              <a href="/tags/secret/">#secret</a>
             
           </div>
         
@@ -741,15 +739,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/07/25/kubernetes%20kubectl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
-          kubernetes  kubectl常用命令
+        <a href="/2021/08/23/k8s/persistence/k8s%20pvc%E4%BD%9C%E4%B8%BA%E5%AD%98%E5%82%A8%E7%9A%84%E7%AE%80%E5%8D%95%E7%A4%BA%E4%BE%8B/" target="_self">
+          k8s pvc作为存储的简单示例
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/07/25/kubernetes%20kubectl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/23/k8s/persistence/k8s%20pvc%E4%BD%9C%E4%B8%BA%E5%AD%98%E5%82%A8%E7%9A%84%E7%AE%80%E5%8D%95%E7%A4%BA%E4%BE%8B/" target="_self">
         <div>
-          1 kubectl 概述kubectl 是Kubernetes 集群的命令行工具，通过kubectl 能够对集群本身进行管理，并能够在集群上进行容器化应用的安装部署。 kubectl 概述 | Kubernetes  2 kubectl 命令的语法1kubectl [command] [TYPE] [NAME] [flags]   command：指定要对一个或多个资源执行的操作，例如 creat
+          一、pod直接使用pvcPod 使用 PersistentVolumeClaim 作为存储:  创建由物理存储支持的 PersistentVolume，未与任何 Pod 关联。 创建一个 PersistentVolumeClaim， 它将自动绑定到合适的 PersistentVolume。 创建一个使用 PersistentVolumeClaim 作为存储的 Pod。  1.1 创建 Persis
         </div>
       </a>
 
@@ -757,8 +755,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-25 22:38" pubdate>
-              2021-07-25
+            <time datetime="2021-08-23 21:14" pubdate>
+              2021-08-23
             </time>
           </div>
         
@@ -788,11 +786,13 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/k8s/">#k8s</a>
-            
               <a href="/tags/kubernetes/">#kubernetes</a>
             
-              <a href="/tags/kubectl/">#kubectl</a>
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/pv/">#pv</a>
+            
+              <a href="/tags/pvc/">#pvc</a>
             
           </div>
         
@@ -806,15 +806,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/07/24/kubernetes%E7%9A%84%E5%8E%86%E5%8F%B2%E4%B8%8E%E4%BB%8B%E7%BB%8D/" target="_self">
-          k8s资源清单及常用字段
+        <a href="/2021/08/23/k8s/persistence/kubernates%20%E4%B9%8B%20configMap/" target="_self">
+          kubernates 之 configMap
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/07/24/kubernetes%E7%9A%84%E5%8E%86%E5%8F%B2%E4%B8%8E%E4%BB%8B%E7%BB%8D/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/23/k8s/persistence/kubernates%20%E4%B9%8B%20configMap/" target="_self">
         <div>
-          kubernetes发展史CNCF(云计算基金会) Borg google内部使用borg，后来发现dockerswarm使用广泛，所以让go开发工程师重写brog，成了k8s，1.0版本的时候捐给了CNCF。  一开始docker和另外一家coreos公司，技术基本是共享的，docker火起来后，coreos也研发了一个类似docker的技术，最后coreos加入k8s生态构建，etcd就是co
+          一、介绍ConfigMap功能在Kubernetes1.2 版本中引入，许多应用程序会从配置文件、命令行参数或环境变量中读取配置信息。ConfigMap API给我们提供了向容器中注入配置信息的机制， ConfigMap可以被用来保存单个属性，也可以用来保存整个配置文件或者JSON二进制大对象 二、ConfigMap 的创建1、使用目录创建1234567891011121314151617[roo
         </div>
       </a>
 
@@ -822,8 +822,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-24 12:38" pubdate>
-              2021-07-24
+            <time datetime="2021-08-23 21:14" pubdate>
+              2021-08-23
             </time>
           </div>
         
@@ -853,9 +853,11 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
               <a href="/tags/k8s/">#k8s</a>
             
-              <a href="/tags/kubernetes/">#kubernetes</a>
+              <a href="/tags/configmap/">#configmap</a>
             
           </div>
         
@@ -867,7 +869,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><a class="page-number" href="/page/5/#board">5</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

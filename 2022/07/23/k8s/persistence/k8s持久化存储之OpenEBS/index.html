@@ -1,0 +1,846 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、介绍OpenEBS 是 CNCF 项目的一部分，采用 Apache v2 许可证。是 Kubernetes 部署使用最广泛且易用的开源存储解决方案。 目的： 让持久化工作负载的存储和存储服务完全集成到环境中，这样每个团队和工作负载都可以从控制的粒度和 Kubernetes 原生行为中获益。 特点：  微服务架构，使用 Kubernetes 自身的能力来编排管理 OpenEBS 组件。  Ope">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8s持久化存储之OpenEBS">
+<meta property="og:url" content="https://leellun.github.io/2022/07/23/k8s/persistence/k8s%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%E4%B9%8BOpenEBS/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="一、介绍OpenEBS 是 CNCF 项目的一部分，采用 Apache v2 许可证。是 Kubernetes 部署使用最广泛且易用的开源存储解决方案。 目的： 让持久化工作负载的存储和存储服务完全集成到环境中，这样每个团队和工作负载都可以从控制的粒度和 Kubernetes 原生行为中获益。 特点：  微服务架构，使用 Kubernetes 自身的能力来编排管理 OpenEBS 组件。  Ope">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-23T09:38:02.000Z">
+<meta property="article:modified_time" content="2022-09-23T14:41:44.474Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="k8s">
+<meta property="article:tag" content="openebs">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>k8s持久化存储之OpenEBS - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="k8s持久化存储之OpenEBS"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-23 17:38" pubdate>
+          2022年7月23日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          55 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">k8s持久化存储之OpenEBS</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h1><p>OpenEBS 是 CNCF 项目的一部分，采用 Apache v2 许可证。是 Kubernetes 部署使用最广泛且易用的开源存储解决方案。</p>
+<p><strong>目的：</strong></p>
+<p>让持久化工作负载的存储和存储服务完全集成到环境中，这样每个团队和工作负载都可以从控制的粒度和 Kubernetes 原生行为中获益。</p>
+<p><strong>特点：</strong></p>
+<ul>
+<li><p>微服务架构，使用 Kubernetes 自身的能力来编排管理 OpenEBS 组件。</p>
+</li>
+<li><p>OpenEBS 支持一系列存储引擎，以便开发人员能够部署适合其应用程序设计目标的存储技术。</p>
+<p>像 Cassandra 这样的分布式应用程序可以使用 LocalPV 引擎实现最低延迟的写操作。</p>
+<p>像 MySQL 和 PostgreSQL 这样的独立应用程序可以使用 ZFS 引擎 (cStor) 进行恢复。</p>
+<p>像 Kafka 这样的流媒体应用程序可以使用 NVMe 引擎 Mayastor 在边缘环境中获得最佳性能。</p>
+<p>在各种引擎类型中，OpenEBS 为高可用性、快照、克隆和易管理性提供了一致的框架。</p>
+</li>
+<li><p>管理员和开发人员可以使用 Kubernetes 提供的所有工具来交互和管理 OpenEBS。</p>
+</li>
+</ul>
+<h1 id="二、OpenEBS-存储引擎建议"><a href="#二、OpenEBS-存储引擎建议" class="headerlink" title="二、OpenEBS 存储引擎建议"></a>二、OpenEBS 存储引擎建议</h1><table>
+<thead>
+<tr>
+<th>应用需求</th>
+<th>存储类型</th>
+<th>OpenEBS 卷类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>低时延、高可用性、同步复制、快照、克隆、精简配置</td>
+<td>SSD/ 云存储卷</td>
+<td>OpenEBS Mayastor</td>
+</tr>
+<tr>
+<td>高可用性、同步复制、快照、克隆、精简配置</td>
+<td>机械 /SSD/ 云存储卷</td>
+<td>OpenEBS cStor</td>
+</tr>
+<tr>
+<td>高可用性、同步复制、精简配置</td>
+<td>主机路径或外部挂载存储</td>
+<td>OpenEBS Jiva</td>
+</tr>
+<tr>
+<td>低时延、本地 PV</td>
+<td>主机路径或外部挂载存储</td>
+<td>Dynamic Local PV - Hostpath, Dynamic Local PV - Rawfile</td>
+</tr>
+<tr>
+<td>低时延、本地 PV</td>
+<td>本地机械 /SSD/ 云存储卷等块设备</td>
+<td>Dynamic Local PV - Device</td>
+</tr>
+<tr>
+<td>低延迟，本地 PV，快照，克隆</td>
+<td>本地机械 /SSD/ 云存储卷等块设备</td>
+<td>OpenEBS Dynamic Local PV - ZFS , OpenEBS Dynamic Local PV - LVM</td>
+</tr>
+</tbody></table>
+<ul>
+<li>多机环境，如果有额外的块设备（非系统盘块设备）作为数据盘，选用 <code>OpenEBS Mayastor</code>、<code>OpenEBS cStor</code></li>
+<li>多机环境，如果没有额外的块设备（非系统盘块设备）作为数据盘，仅单块系统盘块设备，选用 <code>OpenEBS Jiva</code></li>
+<li>单机环境，建议本地路径 <code>Dynamic Local PV - Hostpath, Dynamic Local PV - Rawfile</code>，由于单机多用于测试环境，数据可靠性要求较低。</li>
+</ul>
+<h1 id="三、安装"><a href="#三、安装" class="headerlink" title="三、安装"></a>三、安装</h1><p><a target="_blank" rel="noopener" href="https://openebs.io/docs/2.12.x/user-guides/cstor">openobs官方安装文档</a></p>
+<p>在安装openebs之前先去除污点，然后等安装完成再添加回来污点</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs crmsh"><span class="hljs-comment"># 去除污点</span><br>kubectl taint nodes k8s-master01 <span class="hljs-keyword">node</span><span class="hljs-title">-role</span>.kubernetes.io/<span class="hljs-attr">master=</span>:NoSchedule-<br><span class="hljs-comment"># 添加污点</span><br>kubectl taint nodes k8s-master01 <span class="hljs-keyword">node</span><span class="hljs-title">-role</span>.kubernetes.io/<span class="hljs-attr">master=</span>:NoSchedule<br></code></pre></td></tr></table></figure>
+
+<p>添加helm repo</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">helm</span> repo <span class="hljs-keyword">add</span> openebs https:<span class="hljs-comment">//openebs.github.io/charts</span><br><span class="hljs-symbol">helm</span> repo update<br></code></pre></td></tr></table></figure>
+
+<p>安装openebs（这里只会安装Jiva和Local组件）</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">helm install openebs</span> <span class="hljs-literal">--</span><span class="hljs-comment">namespace openebs openebs/openebs</span> <span class="hljs-literal">--</span><span class="hljs-comment">create</span><span class="hljs-literal">-</span><span class="hljs-comment">namespace</span> <span class="hljs-literal">--</span><span class="hljs-comment">version 3</span><span class="hljs-string">.</span><span class="hljs-comment">0</span><span class="hljs-string">.</span><span class="hljs-comment">x</span><br></code></pre></td></tr></table></figure>
+
+<p>添加cstor支持</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">helm install openebs <span class="hljs-params">--namespace</span> openebs openebs/openebs <span class="hljs-params">--create-namespace</span> <span class="hljs-params">--set</span> cstor.enabled=<span class="hljs-literal">true</span> <span class="hljs-params">--version</span> 3.2.0<br></code></pre></td></tr></table></figure>
+
+<p>查看安装</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># 查看安装pod</span><br>kubectl <span class="hljs-built_in">get</span> pod -n openebs<br><span class="hljs-comment"># 查看安装blockdevice，这里的blockdevice是磁盘，当添加一块未分配的磁盘，就会有值</span><br>kubectl <span class="hljs-built_in">get</span> bd -n openebs<br></code></pre></td></tr></table></figure>
+
+<p>OpenEBS依赖与iSCSI做存储管理，因此需要先确保您的集群上已有安装openiscsi。 （这里当报错的时候可以安装试试）</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">yum -y install iscsi-initiator-utils<br>systemctl <span class="hljs-keyword">enable</span> iscsid <span class="hljs-comment">--now</span><br>systemctl <span class="hljs-keyword">start</span> iscsid<br></code></pre></td></tr></table></figure>
+
+<p>查看安装状况：</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs tap">[root@k8s-master01 ~]<span class="hljs-comment"># kubectl get pod -n openebs</span><br>NAME                                            READY   STATUS    RESTARTS         AGE<br>openebs-cstor-admission-server-b74f5487-lkz84   1/1     Running  <span class="hljs-number"> 1 </span>(6m21s ago)    8h<br>openebs-cstor-csi-controller-0                  6/6     Running  <span class="hljs-number"> 0 </span>               4m44s<br>openebs-cstor-csi-node-4df4w                    2/2     Running  <span class="hljs-number"> 2 </span>(61m ago)      8h<br>openebs-cstor-csi-node-x8bmt                    2/2     Running  <span class="hljs-number"> 6 </span>(16m ago)      8h<br>openebs-cstor-csi-node-zzn4k                    2/2     Running  <span class="hljs-number"> 2 </span>(6m21s ago)    8h<br>openebs-cstor-cspc-operator-84464fb479-fh949    1/1     Running  <span class="hljs-number"> 3 </span>(16m ago)      8h<br>openebs-cstor-cvc-operator-646f6f676b-xhd44     1/1     Running  <span class="hljs-number"> 2 </span>(16m ago)      46m<br>openebs-localpv-provisioner-55b65f8b55-zqj29    1/1     Running  <span class="hljs-number"> 13 </span>(6m23s ago)   8h<br>openebs-ndm-429hl                               1/1     Running  <span class="hljs-number"> 2 </span>(4m28s ago)    8h<br>openebs-ndm-9kkzd                               1/1     Running  <span class="hljs-number"> 1 </span>(6m21s ago)    8h<br>openebs-ndm-operator-6c944d87b6-5ddxz           1/1     Running  <span class="hljs-number"> 2 </span>(16m ago)      46m<br>openebs-ndm-sqnwx                               1/1     Running  <span class="hljs-number"> 6 </span>(15m ago)      8h<br></code></pre></td></tr></table></figure>
+
+<h1 id="四、添加磁盘"><a href="#四、添加磁盘" class="headerlink" title="四、添加磁盘"></a>四、添加磁盘</h1><figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs llvm">[root<span class="hljs-title">@k8s-master01</span> ~]# kubectl get bd -n openebs<br>NAME                                           NODENAME       SIZE           CLAIMSTATE   STATUS     AGE<br>blockdevice<span class="hljs-number">-57886</span>fae<span class="hljs-number">032</span>a<span class="hljs-number">3</span>d<span class="hljs-number">3638</span>badeb<span class="hljs-number">1282</span>dd<span class="hljs-number">67</span>e   k<span class="hljs-number">8</span>s-node<span class="hljs-number">02</span>     <span class="hljs-number">21473771008</span>    Unclaimed    Active     <span class="hljs-number">53</span>s<br>blockdevice-d<span class="hljs-number">923</span>fc<span class="hljs-number">382</span>d<span class="hljs-number">96</span>ff<span class="hljs-number">6</span>eea<span class="hljs-number">7</span>d<span class="hljs-number">9</span>ab<span class="hljs-number">8</span>efb<span class="hljs-number">66224</span>   k<span class="hljs-number">8</span>s-master<span class="hljs-number">01</span>   <span class="hljs-number">21473771008</span>    Unclaimed    Active     <span class="hljs-number">11</span>m<br>blockdevice-e<span class="hljs-number">5009</span>ce<span class="hljs-number">419</span><span class="hljs-keyword">c</span><span class="hljs-number">80719025</span><span class="hljs-keyword">c</span><span class="hljs-number">4</span><span class="hljs-keyword">cc</span><span class="hljs-number">9409253</span>ab   k<span class="hljs-number">8</span>s-node<span class="hljs-number">01</span>     <span class="hljs-number">21473771008</span>    Unclaimed    Active     <span class="hljs-number">33</span>s<br></code></pre></td></tr></table></figure>
+
+<h1 id="五、配置"><a href="#五、配置" class="headerlink" title="五、配置"></a>五、配置</h1><h2 id="5-1-创建cStor存储池"><a href="#5-1-创建cStor存储池" class="headerlink" title="5.1 创建cStor存储池"></a>5.1 创建cStor存储池</h2><p>cspc.yaml ：</p>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">apiVersion</span><span class="hljs-punctuation">:</span> <span class="hljs-string">cstor.openebs.io/v1</span><br><span class="hljs-attribute">kind</span><span class="hljs-punctuation">:</span> <span class="hljs-string">CStorPoolCluster</span><br><span class="hljs-attribute">metadata</span><span class="hljs-punctuation">:</span><br> <span class="hljs-attribute">name</span><span class="hljs-punctuation">:</span> <span class="hljs-string">cstor-disk-pool</span><br> <span class="hljs-attribute">namespace</span><span class="hljs-punctuation">:</span> <span class="hljs-string">openebs</span><br><span class="hljs-attribute">spec</span><span class="hljs-punctuation">:</span><br> <span class="hljs-attribute">pools</span><span class="hljs-punctuation">:</span><br>   <span class="hljs-bullet">-</span> <span class="hljs-string">nodeSelector:</span><br>       <span class="hljs-attribute">kubernetes.io/hostname</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;k8s-master01&quot;</span><br>     <span class="hljs-attribute">dataRaidGroups</span><span class="hljs-punctuation">:</span><br>       <span class="hljs-bullet">-</span> <span class="hljs-string">blockDevices:</span><br>           <span class="hljs-bullet">-</span> <span class="hljs-string">blockDeviceName: &quot;blockdevice-d923fc382d96ff6eea7d9ab8efb66224&quot;</span><br>     <span class="hljs-attribute">poolConfig</span><span class="hljs-punctuation">:</span><br>       <span class="hljs-attribute">dataRaidGroupType</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;stripe&quot;</span><br><br>   <span class="hljs-bullet">-</span> <span class="hljs-string">nodeSelector:</span><br>       <span class="hljs-attribute">kubernetes.io/hostname</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;k8s-node01&quot;</span><br>     <span class="hljs-attribute">dataRaidGroups</span><span class="hljs-punctuation">:</span><br>       <span class="hljs-bullet">-</span> <span class="hljs-string">blockDevices:</span><br>           <span class="hljs-bullet">-</span> <span class="hljs-string">blockDeviceName: &quot;blockdevice-e5009ce419c80719025c4cc9409253ab&quot;</span><br>     <span class="hljs-attribute">poolConfig</span><span class="hljs-punctuation">:</span><br>       <span class="hljs-attribute">dataRaidGroupType</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;stripe&quot;</span><br><br>   <span class="hljs-bullet">-</span> <span class="hljs-string">nodeSelector:</span><br>       <span class="hljs-attribute">kubernetes.io/hostname</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;k8s-node02&quot;</span><br>     <span class="hljs-attribute">dataRaidGroups</span><span class="hljs-punctuation">:</span><br>       <span class="hljs-bullet">-</span> <span class="hljs-string">blockDevices:</span><br>           <span class="hljs-bullet">-</span> <span class="hljs-string">blockDeviceName: &quot;blockdevice-57886fae032a3d3638badeb1282dd67e&quot;</span><br>     <span class="hljs-attribute">poolConfig</span><span class="hljs-punctuation">:</span><br>       <span class="hljs-attribute">dataRaidGroupType</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;stripe&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>dataRaidGroupType:可以根据您的需要设置为 <code>stripe</code> or <code>mirror</code> 。下面以配置为stripe为例。 </p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs tap">[root@k8s-master01 openebs]<span class="hljs-comment"># kubectl get CStorPoolCluster -n openebs</span><br>NAME              HEALTHYINSTANCES   PROVISIONEDINSTANCES   DESIREDINSTANCES   AGE<br>cstor-disk-pool                     <span class="hljs-number"> 3 </span>                    <span class="hljs-number"> 3 </span>                 42s<br></code></pre></td></tr></table></figure>
+
+<h2 id="5-2-storageclass创建"><a href="#5-2-storageclass创建" class="headerlink" title="5.2 storageclass创建"></a>5.2 storageclass创建</h2><h3 id="5-2-1-cstor的创建"><a href="#5-2-1-cstor的创建" class="headerlink" title="5.2.1 cstor的创建"></a>5.2.1 cstor的创建</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">StorageClass</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">storage.k8s.io/v1</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">cstor-csi-disk</span><br><span class="hljs-attr">provisioner:</span> <span class="hljs-string">cstor.csi.openebs.io</span><br><span class="hljs-attr">allowVolumeExpansion:</span> <span class="hljs-literal">true</span><br><span class="hljs-attr">parameters:</span><br>  <span class="hljs-attr">cas-type:</span> <span class="hljs-string">cstor</span><br>  <span class="hljs-comment"># cstorPoolCluster should have the name of the CSPC</span><br>  <span class="hljs-attr">cstorPoolCluster:</span> <span class="hljs-string">cstor-disk-pool</span><br>  <span class="hljs-comment"># replicaCount should be &lt;= no. of CSPI created in the selected CSPC</span><br>  <span class="hljs-attr">replicaCount:</span> <span class="hljs-string">&quot;3&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>添加硬盘后查看磁盘情况</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs tap">磁盘 /dev/sdb：21.5 GB,<span class="hljs-number"> 21474836480 </span>字节，41943040 个扇区<br>Units = 扇区 of<span class="hljs-number"> 1 </span>*<span class="hljs-number"> 512 </span>=<span class="hljs-number"> 512 </span>bytes<br>扇区大小(逻辑/物理)：512 字节 /<span class="hljs-number"> 512 </span>字节<br>I/O 大小(最小/最佳)：512 字节 /<span class="hljs-number"> 512 </span>字节<br>磁盘标签类型：gpt<br>Disk identifier: ADA9C10B-8C31-4EE2-A29B-F2701E9554DC<br><br><br><span class="hljs-comment">#         Start          End    Size  Type            Name</span><br><span class="hljs-number"> 1 </span>       <span class="hljs-number"> 2048 </span>   <span class="hljs-number"> 41943006 </span>    20G  Linux filesyste OpenEBS_NDM<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-2-2-jiva"><a href="#5-2-2-jiva" class="headerlink" title="5.2.2 jiva"></a>5.2.2 jiva</h3><figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">apiVersion</span><span class="hljs-punctuation">:</span> <span class="hljs-string">storage.k8s.io/v1</span><br><span class="hljs-attribute">kind</span><span class="hljs-punctuation">:</span> <span class="hljs-string">StorageClass</span><br><span class="hljs-attribute">metadata</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-attribute">name</span><span class="hljs-punctuation">:</span> <span class="hljs-string">jiva-storageclass</span><br>  <span class="hljs-attribute">annotations</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-attribute">openebs.io/cas-type</span><span class="hljs-punctuation">:</span> <span class="hljs-string">jiva</span><br>    <span class="hljs-attribute">cas.openebs.io/config</span><span class="hljs-punctuation">:</span> <span class="hljs-string">|</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">name: StoragePool</span><br>        <span class="hljs-attribute">value</span><span class="hljs-punctuation">:</span> <span class="hljs-string">default</span><br><span class="hljs-attribute">provisioner</span><span class="hljs-punctuation">:</span> <span class="hljs-string">openebs.io/provisioner-iscsi</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-2-3-hostpath"><a href="#5-2-3-hostpath" class="headerlink" title="5.2.3  hostpath"></a>5.2.3  hostpath</h3><figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">apiVersion</span><span class="hljs-punctuation">:</span> <span class="hljs-string">storage.k8s.io/v1</span><br><span class="hljs-attribute">kind</span><span class="hljs-punctuation">:</span> <span class="hljs-string">StorageClass</span><br><span class="hljs-attribute">metadata</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-attribute">name</span><span class="hljs-punctuation">:</span> <span class="hljs-string">localpv-hostpath-sc</span><br>  <span class="hljs-attribute">annotations</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-attribute">openebs.io/cas-type</span><span class="hljs-punctuation">:</span> <span class="hljs-string">local</span><br>    <span class="hljs-attribute">cas.openebs.io/config</span><span class="hljs-punctuation">:</span> <span class="hljs-string">|</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">name: BasePath</span><br>        <span class="hljs-attribute">value</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/var/openebs/local&quot;</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">name: StorageType</span><br>        <span class="hljs-attribute">value</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;hostpath&quot;</span><br><span class="hljs-attribute">provisioner</span><span class="hljs-punctuation">:</span> <span class="hljs-string">openebs.io/local</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-2-4-device"><a href="#5-2-4-device" class="headerlink" title="5.2.4 device"></a>5.2.4 device</h3><p>下面的类型需要添加硬盘</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs tap">磁盘 /dev/sdc：21.5 GB,<span class="hljs-number"> 21474836480 </span>字节，41943040 个扇区<br>Units = 扇区 of<span class="hljs-number"> 1 </span>*<span class="hljs-number"> 512 </span>=<span class="hljs-number"> 512 </span>bytes<br>扇区大小(逻辑/物理)：512 字节 /<span class="hljs-number"> 512 </span>字节<br>I/O 大小(最小/最佳)：512 字节 /<span class="hljs-number"> 512 </span>字节<br>磁盘标签类型：gpt<br>Disk identifier: BAD0A706-0A9D-478A-85C6-319224EC5D1F<br><br><br><span class="hljs-comment">#         Start          End    Size  Type            Name</span><br><span class="hljs-number"> 1 </span>       <span class="hljs-number"> 2048 </span>   <span class="hljs-number"> 41943006 </span>    20G  Linux filesyste OpenEBS_NDM<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">apiVersion</span><span class="hljs-punctuation">:</span> <span class="hljs-string">storage.k8s.io/v1</span><br><span class="hljs-attribute">kind</span><span class="hljs-punctuation">:</span> <span class="hljs-string">StorageClass</span><br><span class="hljs-attribute">metadata</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-attribute">name</span><span class="hljs-punctuation">:</span> <span class="hljs-string">localpv-device-sc</span><br>  <span class="hljs-attribute">annotations</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-attribute">openebs.io/cas-type</span><span class="hljs-punctuation">:</span> <span class="hljs-string">local</span><br>    <span class="hljs-attribute">cas.openebs.io/config</span><span class="hljs-punctuation">:</span> <span class="hljs-string">|</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">name: StorageType</span><br>        <span class="hljs-attribute">value</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;device&quot;</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">name: FSType</span><br>        <span class="hljs-attribute">value</span><span class="hljs-punctuation">:</span> <span class="hljs-string">ext4</span><br><span class="hljs-attribute">provisioner</span><span class="hljs-punctuation">:</span> <span class="hljs-string">openebs.io/local</span><br></code></pre></td></tr></table></figure>
+
+<p>查看：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">[root@k8s-master01 openebs]# kubectl <span class="hljs-keyword">get</span> sc -n openebs<br><span class="hljs-type">NAME</span>               PROVISIONER            RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE<br>cstor-csi-disk     cstor.csi.openebs.io   <span class="hljs-keyword">Delete</span>          <span class="hljs-keyword">Immediate</span>              <span class="hljs-keyword">true</span>                   <span class="hljs-number">43</span>s<br>openebs-device     openebs.io/<span class="hljs-keyword">local</span>       <span class="hljs-keyword">Delete</span>          WaitForFirstConsumer   <span class="hljs-keyword">false</span>                  <span class="hljs-number">9</span>h<br>openebs-hostpath   openebs.io/<span class="hljs-keyword">local</span>       <span class="hljs-keyword">Delete</span>          WaitForFirstConsumer   <span class="hljs-keyword">false</span>                  <span class="hljs-number">9</span>h<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-2-5-cStor、Jiva、LocalPV-特性比较："><a href="#5-2-5-cStor、Jiva、LocalPV-特性比较：" class="headerlink" title="5.2.5 cStor、Jiva、LocalPV 特性比较："></a>5.2.5 cStor、Jiva、LocalPV 特性比较：</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Jiva</th>
+<th>cStor</th>
+<th>Local PV</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>轻量级运行于用户空间</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>同步复制</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>适合低容量工作负载</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>支持快照，克隆</td>
+<td>Basic</td>
+<td>Advanced</td>
+<td>No</td>
+</tr>
+<tr>
+<td>数据一致性</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>使用 Velero 恢复备份</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>适合高容量工作负载</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>自动精简配置</td>
+<td></td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>磁盘池或聚合支持</td>
+<td></td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>动态扩容</td>
+<td></td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>数据弹性 (RAID 支持)</td>
+<td></td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>接近原生磁盘性能</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<p>大多数场景推荐 <code>cStor</code>，因其提供了强大的功能，包括快照 / 克隆、存储池功能（如精简资源调配、按需扩容等）。</p>
+<p><code>Jiva</code> 适用于低容量需求的工作负载场景，例如 <code>5</code> 到 <code>50G</code>。尽管使用 <code>Jiva</code> 没有空间限制，但建议将其用于低容量工作负载。<code>Jiva</code> 非常易于使用，并提供企业级容器本地存储，而不需要专用硬盘。有快照和克隆功能的需求的场景，优先考虑使用 <code>cStor</code> 而不是 <code>Jiva</code>。</p>
+<h2 id="5-3-默认sc"><a href="#5-3-默认sc" class="headerlink" title="5.3 默认sc"></a>5.3 默认sc</h2><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">kubectl patch storage<span class="hljs-keyword">class</span> <span class="hljs-title class_">cstor</span>-<span class="hljs-title">csi</span>-<span class="hljs-title">disk</span> -<span class="hljs-title">p</span> &#x27;&#123;<span class="hljs-string">&quot;metadata&quot;</span>: &#123;<span class="hljs-string">&quot;annotations&quot;</span>:&#123;<span class="hljs-string">&quot;storageclass.kubernetes.io/is-default-class&quot;</span>:<span class="hljs-string">&quot;true&quot;</span>&#125;&#125;&#125;<span class="hljs-string">&#x27;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>推荐文章：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/easylife206/article/details/125213855">https://blog.csdn.net/easylife206/article/details/125213855</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/519172233">https://zhuanlan.zhihu.com/p/519172233</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/kubernetes/">#kubernetes</a>
+      
+        <a href="/tags/k8s/">#k8s</a>
+      
+        <a href="/tags/openebs/">#openebs</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>k8s持久化存储之OpenEBS</div>
+      <div>https://leellun.github.io/2022/07/23/k8s/persistence/k8s持久化存储之OpenEBS/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/07/24/k8s/devops/k8s%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90KubeSphere/" title="k8s快速集成KubeSphere">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">k8s快速集成KubeSphere</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/03/16/k8s/%E9%9B%86%E7%BE%A4/%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4/" title="二进制部署kubernetes集群">
+                        <span class="hidden-mobile">二进制部署kubernetes集群</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
