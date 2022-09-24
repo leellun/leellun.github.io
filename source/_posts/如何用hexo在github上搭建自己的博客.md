@@ -1,6 +1,6 @@
 ---
 title: 如何用hexo在github上搭建自己的博客
-date: 2022-09-23 17:38:02
+date: 2019-01-23 17:38:02
 categories:
   - 前端
 tags:
@@ -14,19 +14,19 @@ author: leellun
 
 在github创建仓库，仓库名称为[username].github.io。
 
-![image-20220923174506204](hexo基本使用教程/image-20220923174506204.png)
+![image-20220923174506204](如何用hexo在github上搭建自己的博客/image-20220923174506204.png)
 
 然后选择设置
 
-![image-20220923175440656](hexo基本使用教程/image-20220923175440656.png)
+![image-20220923175440656](如何用hexo在github上搭建自己的博客/image-20220923175440656.png)
 
 设置网站的访问host并且制定分支为主分支
 
-![image-20220923175557661](hexo基本使用教程/image-20220923175557661.png)
+![image-20220923175557661](如何用hexo在github上搭建自己的博客/image-20220923175557661.png)
 
 配置git免登录认证信息
 
-![image-20220923180413762](hexo基本使用教程/image-20220923180413762.png)
+![image-20220923180413762](如何用hexo在github上搭建自己的博客/image-20220923180413762.png)
 
 
 
@@ -157,7 +157,7 @@ footer:
     <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a>
 ```
 
-## 三、页面与文章
+# 三、页面与文章
 
 创建页面：
 
@@ -187,7 +187,25 @@ hexo new "My New Post"
 
 更多：https://hexo.io/docs/variables.html
 
+启动服务：
+
+```bash
+$ hexo server
+```
+
+构建静态文件：
+
+```bash
+$ hexo generate
+```
+
+推送到github，提供网页浏览：
+
+```bash
+$ hexo deploy
+```
 
 
-当前博客网站源码配置：https://github.com/leellun/leellun.github.io
+
+这里是我的博客网站源码配置（deveploer分支）：https://github.com/leellun/leellun.github.io
 
