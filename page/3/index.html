@@ -219,6 +219,136 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/08/26/k8s/persistence/kubernetes%20%E4%B9%8B%20Volume/" target="_self">
+          kubernetes 之 Volume
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/26/k8s/persistence/kubernetes%20%E4%B9%8B%20Volume/" target="_self">
+        <div>
+          1 Volume 介绍目的：容器磁盘上的文件的生命周期是短暂的,这就使得在容器中运行重要应用时会出现一些问题。首先,当容器崩溃时, kubelet会重启它,但是容器中的文件将丢失–容器以干净的状态(镜像最初的状态)重新启动。其次,在Pod中同时运行多个容器时,这些容器之间通常需要共享文件。Kubernetes中的Volume抽象就很好的解决了这些问题。 Volume 是Pod 中能够被多个容器访问
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-26 21:14" pubdate>
+              2021-08-26
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/k8s%E6%8C%81%E4%B9%85%E5%8D%B7/">#k8s持久卷</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/25/k8s/persistence/kubernetes%20%E6%8C%81%E4%B9%85%E5%8D%B7/" target="_self">
+          kubernetes 持久卷
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/25/k8s/persistence/kubernetes%20%E6%8C%81%E4%B9%85%E5%8D%B7/" target="_self">
+        <div>
+          1 概念PersistentVolume（PV） 是集群中由管理员配置的一段网络存储。它是集群中的资源，就像节点是集群资源一样。PV 是容量插件，如Volumes，但其生命周期独立于使用PV 的任何单个pod。此API 对象捕获存储实现的详细信息，包括NFS，iSCSI 或特定于云提供程序的存储系统。 PersistentVolumeClaim（PVC） 是由用户进行存储的请求。它类似于pod。P
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-25 21:14" pubdate>
+              2021-08-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/k8s%E6%8C%81%E4%B9%85%E5%8D%B7/">#k8s持久卷</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/08/24/k8s/persistence/kubernates%20%E4%B9%8B%20Secret/" target="_self">
           kubernates 之 Secret
         </a>
@@ -270,7 +400,7 @@
             
               <a href="/tags/k8s/">#k8s</a>
             
-              <a href="/tags/secret/">#secret</a>
+              <a href="/tags/k8s%E8%B5%84%E6%BA%90/">#k8s资源</a>
             
           </div>
         
@@ -402,7 +532,7 @@
             
               <a href="/tags/k8s/">#k8s</a>
             
-              <a href="/tags/configmap/">#configmap</a>
+              <a href="/tags/k8s%E8%B5%84%E6%BA%90/">#k8s资源</a>
             
           </div>
         
@@ -664,7 +794,7 @@
             
               <a href="/tags/k8s/">#k8s</a>
             
-              <a href="/tags/ingress/">#ingress</a>
+              <a href="/tags/k8s%E8%B5%84%E6%BA%90/">#k8s资源</a>
             
           </div>
         
@@ -728,138 +858,6 @@
               <a href="/tags/kubernetes/">#kubernetes</a>
             
               <a href="/tags/k8s/">#k8s</a>
-            
-              <a href="/tags/service/">#service</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/08/10/k8s/pod/k8s%20pod%E9%87%8D%E5%90%AF%E7%AD%96%E7%95%A5%E4%B8%8E%E7%8A%B6%E6%80%81/" target="_self">
-          k8s pod重启策略与状态
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/10/k8s/pod/k8s%20pod%E9%87%8D%E5%90%AF%E7%AD%96%E7%95%A5%E4%B8%8E%E7%8A%B6%E6%80%81/" target="_self">
-        <div>
-          重启策略PodSpec中有一个 restartPolicy字段，可能的值为Always、OnFailure和Never。默认为Always.  restartPolicy 适用于Pod中的所有容器。restartPolicy仅指通过同一节点上的kubelet 重新启动容器。失败的容器由kubelet以五分钟为上限的指数退避延迟(10秒,20秒, 40秒.)重新启动,并在成功执行十分钟后重置。如Po
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-08-10 21:32" pubdate>
-              2021-08-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/kubernetes/">#kubernetes</a>
-            
-              <a href="/tags/k8s/">#k8s</a>
-            
-              <a href="/tags/%E9%87%8D%E5%90%AF%E7%AD%96%E7%95%A5/">#重启策略</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/08/08/k8s/pod/k8s%20pod%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E2%80%94%E6%8E%A2%E9%92%88/" target="_self">
-          k8s pod生命周期—探针
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/08/k8s/pod/k8s%20pod%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E2%80%94%E6%8E%A2%E9%92%88/" target="_self">
-        <div>
-          三种类型处理程序探针是由kubelet对容器执行的定期诊断。要执行诊断, kubelet调用由容器实现的Handler。有三种类型的处理程序: ExecAction：在容器内执行指定命令。如果命令退出时返回码为0则认为诊断成功。 TCPSocketAction：对指定端口上的容器的IP地址进行TCP检查。如果端口打开,则诊断被认为是成功的。 HTTPGetAction：对指定的端口和路径上的容器的
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-08-08 22:32" pubdate>
-              2021-08-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/kubernetes/">#kubernetes</a>
-            
-              <a href="/tags/k8s/">#k8s</a>
-            
-              <a href="/tags/%E6%8E%A2%E9%92%88/">#探针</a>
             
           </div>
         
