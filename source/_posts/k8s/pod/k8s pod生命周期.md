@@ -3,10 +3,10 @@ title: k8s pod生命周期
 date: 2021-08-06 22:32:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s
-  - pod
 ---
 
 # k8s pod生命周期—Init容器

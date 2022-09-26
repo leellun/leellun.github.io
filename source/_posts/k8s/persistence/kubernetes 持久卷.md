@@ -3,10 +3,10 @@ title: kubernetes 持久卷
 date: 2021-08-25 21:14:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s
-  - k8s持久卷
 ---
 
 # 1 概念

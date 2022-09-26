@@ -3,6 +3,7 @@ title: kubernetes  kubectl常用命令
 date: 2021-07-25 22:38:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

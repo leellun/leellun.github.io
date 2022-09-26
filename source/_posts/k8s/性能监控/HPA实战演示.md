@@ -3,6 +3,7 @@ title: HPA实战演示
 date: 2021-09-03 21:14:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

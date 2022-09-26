@@ -3,6 +3,7 @@ title: devops之KubeSphere流水线部署
 date: 2022-07-26 12:38:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

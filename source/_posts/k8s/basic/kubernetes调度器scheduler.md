@@ -3,11 +3,10 @@ title: kubernetes调度器scheduler
 date: 2021-08-02 19:18:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s
-  - scheduler
-  - 调度器
 ---
 
 # 一、简介

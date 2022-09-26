@@ -3,6 +3,7 @@ title: etcd集群
 date: 2022-03-10 20:14:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

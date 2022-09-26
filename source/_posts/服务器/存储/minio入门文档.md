@@ -3,6 +3,7 @@ title: minio入门文档
 date: 2022-04-04 20:14:02
 categories:
   - 服务器
+  - 存储
 tags:
   - minio
 ---

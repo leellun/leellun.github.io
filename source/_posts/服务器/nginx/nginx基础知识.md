@@ -3,6 +3,7 @@ title: nginx基础知识
 date: 2020-01-04 12:14:02
 categories:
   - 服务器
+  - nginx
 tags:
   - nginx
 ---

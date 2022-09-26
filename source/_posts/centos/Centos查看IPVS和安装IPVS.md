@@ -3,6 +3,7 @@ title: Centos查看IPVS和安装IPVS
 date: 2021-06-03 21:14:02
 categories:
   - 服务器
+  - linux
 tags:
   - centos
   - ipvs

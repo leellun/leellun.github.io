@@ -3,6 +3,7 @@ title: Centos – 查看、修改、更新系统时间
 date: 2020-03-03 21:14:02
 categories:
   - 服务器
+  - linux
 tags:
   - centos 
 ---

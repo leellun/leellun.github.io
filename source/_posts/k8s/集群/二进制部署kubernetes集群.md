@@ -3,6 +3,7 @@ title: 二进制部署kubernetes集群
 date: 2022-03-16 20:14:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

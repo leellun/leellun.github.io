@@ -3,6 +3,7 @@ title: k8s Service的概述、类型及代理模式
 date: 2021-08-13 23:32:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

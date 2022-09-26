@@ -3,6 +3,7 @@ title: NoSql入门和概述
 date: 2020-03-06 20:14:02
 categories:
   - 服务器
+  - redis
 tags:
   - centos 
   - nosql

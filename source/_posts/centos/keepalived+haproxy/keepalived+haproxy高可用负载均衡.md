@@ -3,6 +3,7 @@ title: keepalived+haproxy高可用负载均衡
 date: 2021-05-06 20:14:02
 categories:
   - 服务器
+  - 高可用
 tags:
   - keepalived
   - haproxy

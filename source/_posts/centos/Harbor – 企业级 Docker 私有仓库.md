@@ -3,6 +3,7 @@ title: Harbor – 企业级 Docker 私有仓库
 date: 2022-03-06 20:14:02
 categories:
   - 服务器
+  - docker
 tags:
   - centos 
   - harbor

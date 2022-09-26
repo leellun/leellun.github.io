@@ -3,11 +3,10 @@ title: k8s pvc作为存储的简单示例
 date: 2021-08-23 21:14:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s
-  - pv
-  - pvc
 ---
 
 # 一、pod直接使用pvc

@@ -3,6 +3,7 @@ title: keepalived配置文件
 date: 2021-05-05 20:14:02
 categories:
   - 服务器
+  - 高可用
 tags:
   - keepalived
 ---

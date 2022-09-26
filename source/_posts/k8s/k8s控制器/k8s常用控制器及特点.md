@@ -3,6 +3,7 @@ title: k8s常用控制器及特点
 date: 2021-08-01 20:24:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

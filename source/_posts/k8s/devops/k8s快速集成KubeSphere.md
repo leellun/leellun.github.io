@@ -3,11 +3,11 @@ title: k8s快速集成KubeSphere
 date: 2022-07-24 17:38:02
 categories:
   - 服务器
+  - k8s
 tags:
   - k8s
   - kubernetes 
   - kubesphere
-  - wordpress
 ---
 
 # 一、KubeSphere 介绍

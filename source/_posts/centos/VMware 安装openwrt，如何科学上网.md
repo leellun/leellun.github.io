@@ -3,6 +3,7 @@ title: VMware 安装openwrt，如何科学上网
 date: 2022-03-02 20:14:02
 categories:
   - 服务器
+  - linux
 tags:
   - centos 
   - openwrt

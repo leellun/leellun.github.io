@@ -3,6 +3,7 @@ title: kubesphere快速部署mysql
 date: 2022-07-26 18:38:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

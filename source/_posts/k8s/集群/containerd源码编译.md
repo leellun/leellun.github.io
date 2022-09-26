@@ -3,6 +3,7 @@ title: containerd源码编译
 date: 2022-03-05 20:14:02
 categories:
   - 服务器
+  - k8s
 tags:
   - containerd 
 ---

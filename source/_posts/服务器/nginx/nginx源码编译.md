@@ -3,6 +3,7 @@ title: nginx源码编译
 date: 2019-12-21 20:14:02
 categories:
   - 服务器
+  - nginx
 tags:
   - nginx
 ---

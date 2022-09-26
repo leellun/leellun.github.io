@@ -3,6 +3,7 @@ title: springboot快速集成redis
 date: 2020-01-06 20:14:02
 categories:
   - 服务器
+  - redis
 tags:
   - redis 
 ---

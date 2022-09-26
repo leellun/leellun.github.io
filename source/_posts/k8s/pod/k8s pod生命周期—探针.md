@@ -3,10 +3,10 @@ title: k8s pod生命周期—探针
 date: 2021-08-08 22:32:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s
-  - 探针
 ---
 
 # 三种类型处理程序

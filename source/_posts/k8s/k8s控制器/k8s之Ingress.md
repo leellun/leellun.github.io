@@ -3,10 +3,11 @@ title: k8s之Ingress安装部署
 date: 2021-08-14 12:24:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s
-  - k8s资源
+  - ingress 
 ---
 
 # 一、介绍

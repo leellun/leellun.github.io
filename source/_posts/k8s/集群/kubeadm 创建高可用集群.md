@@ -3,6 +3,7 @@ title: kubeadm 创建高可用集群
 date: 2022-03-12 18:11:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

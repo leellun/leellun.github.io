@@ -3,10 +3,10 @@ title: k8s pod重启策略与状态
 date: 2021-08-10 21:32:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s
-  - 重启策略
 ---
 
 # 重启策略

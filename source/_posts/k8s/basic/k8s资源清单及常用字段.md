@@ -3,6 +3,7 @@ title: k8s资源清单及常用字段
 date: 2021-07-27 19:38:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

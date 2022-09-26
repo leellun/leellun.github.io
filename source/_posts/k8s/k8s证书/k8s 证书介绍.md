@@ -3,10 +3,10 @@ title: k8s 证书介绍
 date: 2021-09-03 21:14:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s
-  - 证书
 ---
 
 # 一、集群需要哪些证书？

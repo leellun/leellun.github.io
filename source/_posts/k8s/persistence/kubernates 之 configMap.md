@@ -3,10 +3,10 @@ title: kubernates 之 configMap
 date: 2021-08-23 21:14:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s
-  - k8s资源
 ---
 
 # 一、介绍

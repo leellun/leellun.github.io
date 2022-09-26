@@ -3,6 +3,7 @@ title: devops安装配置SonarQube
 date: 2022-07-25 17:38:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

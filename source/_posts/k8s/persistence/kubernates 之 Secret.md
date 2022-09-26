@@ -3,10 +3,10 @@ title: kubernates 之 Secret
 date: 2021-08-24 20:14:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s
-  - k8s资源
 ---
 
 # 一、Secret 存在意义

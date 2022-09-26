@@ -3,6 +3,7 @@ title: k8s私有环境中通过OpenELB 暴露服务端口并结合ingress配置�
 date: 2022-09-25 10:14:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes
   - k8s

@@ -3,6 +3,7 @@ title: Prometheus  入门—架构及原理
 date: 2021-08-23 21:14:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

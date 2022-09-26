@@ -3,10 +3,10 @@ title: kubernetes控制器DaemonSet
 date: 2021-07-13 13:32:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s
-  - k8s资源
 ---
 
 # 什么是DaemonSet？

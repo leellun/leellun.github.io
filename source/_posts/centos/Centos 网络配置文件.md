@@ -3,6 +3,7 @@ title: Centos 网络配置
 date: 2020-03-05 21:14:02
 categories:
   - 服务器
+  - linux
 tags:
   - centos 
   - 网络配置

@@ -3,6 +3,7 @@ title: kubernetes 入门学习 dashboard
 date: 2021-08-02 19:18:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

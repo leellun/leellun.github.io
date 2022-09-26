@@ -3,6 +3,7 @@ title: redis集群
 date: 2020-01-22 20:14:02
 categories:
   - 服务器
+  - redis
 tags:
   - redis 
 ---

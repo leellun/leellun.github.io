@@ -3,6 +3,7 @@ title: containerd 二进制安装
 date: 2022-03-03 21:14:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

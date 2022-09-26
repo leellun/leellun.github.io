@@ -3,6 +3,7 @@ title: centos7防火墙配置
 date: 2020-03-06 20:14:02
 categories:
   - 服务器
+  - linux
 tags:
   - centos 
   - 防火墙

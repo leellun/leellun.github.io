@@ -3,6 +3,7 @@ title: kubesphere快速部署redis
 date: 2022-07-27 19:38:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

@@ -3,6 +3,7 @@ title: k8s网络通讯方式
 date: 2021-07-30 14:38:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

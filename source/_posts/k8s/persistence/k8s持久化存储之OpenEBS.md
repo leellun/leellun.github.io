@@ -3,6 +3,7 @@ title: k8s持久化存储之OpenEBS
 date: 2022-07-23 17:38:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s

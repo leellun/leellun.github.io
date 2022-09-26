@@ -3,10 +3,10 @@ title: kubernetes基础控制器
 date: 2021-06-30 20:24:02
 categories:
   - 服务器
+  - k8s
 tags:
   - kubernetes 
   - k8s
-  - 控制器
 ---
 
 **ReplicationController**

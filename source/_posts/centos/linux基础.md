@@ -3,6 +3,7 @@ title: linux基础
 date: 2020-02-09 20:14:02
 categories:
   - 服务器
+  - linux
 tags:
   - centos 
   - linux
