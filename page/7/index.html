@@ -219,15 +219,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/" target="_self">
-          网络七层协议
+        <a href="/2020/01/22/nosql/redis/redis%E9%9B%86%E7%BE%A4/" target="_self">
+          redis集群
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/01/22/nosql/redis/redis%E9%9B%86%E7%BE%A4/" target="_self">
         <div>
-          七层协议图  七层协议走势图    七层协议定义   应用层 网络服务与最终用户的一个接口(用户操作)人机交互窗口，把人的语言输入到计算机当中。    表示层 编码，解码，加密，解密（二进制）   会话层 建立，维持，终止会话进程（QQ号码）   传输层 通过端口号区分不同的服务，数据分段（受MTU限制），确认、重传、流控、排序（TCP）   网络层 通过IP地址（IPV4、IPV6）进行逻辑寻址
+          redis集群一、介绍Redis 集群使用数据分片（sharding）而非一致性哈希（consistency hashing）来实现： 一个 Redis 集群包含 16384 个哈希槽（hash slot）， 数据库中的每个键都属于这 16384 个哈希槽的其中一个， 集群使用公式 CRC16(key) % 16384 来计算键 key 属于哪个槽， 其中 CRC16(key) 语句用于计算键 k
         </div>
       </a>
 
@@ -235,8 +235,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-01-06 20:14" pubdate>
-              2020-01-06
+            <time datetime="2020-01-22 20:14" pubdate>
+              2020-01-22
             </time>
           </div>
         
@@ -254,6 +254,13 @@
   <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
   
   
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/" class="category-chain-item">redis</a>
+  
+  
+
+  
 
       </span>
     
@@ -266,9 +273,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/centos/">#centos</a>
-            
-              <a href="/tags/%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/">#七层协议</a>
+              <a href="/tags/redis/">#redis</a>
             
           </div>
         
@@ -317,6 +322,13 @@
   <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
   
   
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/" class="category-chain-item">redis</a>
+  
+  
+
+  
 
       </span>
     
@@ -330,6 +342,144 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/redis/">#redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/01/06/nosql/redis/springboot%E9%9B%86%E6%88%90redis/" target="_self">
+          springboot快速集成redis
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/01/06/nosql/redis/springboot%E9%9B%86%E6%88%90redis/" target="_self">
+        <div>
+          一、maven配置12345678&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&g
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-01-06 20:14" pubdate>
+              2020-01-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/" class="category-chain-item">redis</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/redis/">#redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/" target="_self">
+          网络七层协议
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/" target="_self">
+        <div>
+          七层协议图  七层协议走势图    七层协议定义   应用层 网络服务与最终用户的一个接口(用户操作)人机交互窗口，把人的语言输入到计算机当中。    表示层 编码，解码，加密，解密（二进制）   会话层 建立，维持，终止会话进程（QQ号码）   传输层 通过端口号区分不同的服务，数据分段（受MTU限制），确认、重传、流控、排序（TCP）   网络层 通过IP地址（IPV4、IPV6）进行逻辑寻址
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-01-06 20:14" pubdate>
+              2020-01-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/" class="category-chain-item">网络</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/centos/">#centos</a>
+            
+              <a href="/tags/%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/">#七层协议</a>
             
           </div>
         
@@ -377,6 +527,13 @@
         
   <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/nginx/" class="category-chain-item">nginx</a>
+  
+  
+
   
 
       </span>
@@ -439,6 +596,13 @@
   <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
   
   
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/nginx/" class="category-chain-item">nginx</a>
+  
+  
+
+  
 
       </span>
     
@@ -465,13 +629,13 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2019/01/23/%E5%A6%82%E4%BD%95%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/" target="_self">
+        <a href="/2019/01/23/%E5%89%8D%E7%AB%AF/%E5%A6%82%E4%BD%95%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/" target="_self">
           如何用hexo在github上搭建自己的博客
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/01/23/%E5%A6%82%E4%BD%95%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2019/01/23/%E5%89%8D%E7%AB%AF/%E5%A6%82%E4%BD%95%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/" target="_self">
         <div>
           一、github仓库创建在github创建仓库，仓库名称为[username].github.io。   然后选择设置   设置网站的访问host并且制定分支为主分支   配置git免登录认证信息     二、hexo使用1.1 安装hexo全局安装hexo 1234npm install -g hexo# 发布支持npm install --save hexo-deployer-git  1.2
         </div>

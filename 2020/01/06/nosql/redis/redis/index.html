@@ -26,7 +26,7 @@
 <meta property="og:image" content="http://www.runoob.com/wp-content/uploads/2014/11/pubsub1.png">
 <meta property="og:image" content="http://www.runoob.com/wp-content/uploads/2014/11/pubsub2.png">
 <meta property="article:published_time" content="2020-01-06T12:14:02.000Z">
-<meta property="article:modified_time" content="2022-09-25T11:01:25.011Z">
+<meta property="article:modified_time" content="2022-09-26T16:12:35.653Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="redis">
 <meta name="twitter:card" content="summary_large_image">
@@ -332,10 +332,13 @@
 <figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs xquery">（<span class="hljs-number">1</span>）keys * 显示所有<span class="hljs-built_in">的key</span><br>（<span class="hljs-number">2</span><span class="hljs-built_in">）exists</span><span class="hljs-built_in"> key</span> 判断某<span class="hljs-built_in">个key</span>是否存在<br>（<span class="hljs-number">3</span>）move<span class="hljs-built_in"> key</span> db   将当前库<span class="hljs-built_in">的key</span>移至db库<br>（<span class="hljs-number">4</span>）expire<span class="hljs-built_in"> key</span> 秒钟  为给定<span class="hljs-built_in">的key</span>设置过期时间<br>（<span class="hljs-number">5</span>）ttl<span class="hljs-built_in"> key</span> 查看还有多少秒过期，-<span class="hljs-number">1</span>表示永不过期，-<span class="hljs-number">2</span>表示已过期<br>（<span class="hljs-number">6</span>）type<span class="hljs-built_in"> key</span> 查看你<span class="hljs-built_in">的key</span>是什么类型<br>（<span class="hljs-number">7</span>）del<span class="hljs-built_in"> key</span>删<span class="hljs-built_in">除key</span><br></code></pre></td></tr></table></figure>
 
 <p>更多操作：<a target="_blank" rel="noopener" href="http://redisdoc.com/database/index.html">http://redisdoc.com/database/index.html</a></p>
-<h2 id="Redis字符串-String"><a href="#Redis字符串-String" class="headerlink" title="Redis字符串(String)"></a>Redis字符串(String)</h2><p>string是redis最基本的类型，一个key对应一个value。</p>
+<h2 id="Redis字符串-String"><a href="#Redis字符串-String" class="headerlink" title="Redis字符串(String)"></a>Redis字符串(String)</h2><blockquote>
+<p>string是redis最基本的类型，一个key对应一个value。</p>
 <p>string类型是二进制安全的。意思是redis的string可以包含任何数据。比如jpg图片或者序列化的对象 。</p>
 <p>string类型是Redis最基本的数据类型，一个redis中字符串value最多可以是512M。</p>
 <p>应用场景：共享session、分布式锁，计数器、限流。</p>
+<p>内部编码有3种，int（8字节长整型）/embstr（小于等于39字节字符串）/raw（大于39个字节字符串）</p>
+</blockquote>
 <p>相关操作：</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk">set<span class="hljs-regexp">/get/</span>del<span class="hljs-regexp">/append/</span>strlen  设置<span class="hljs-regexp">/获取/</span>删除<span class="hljs-regexp">/追加/</span>字符串长度<br>Incr<span class="hljs-regexp">/decr/i</span>ncrby/decrby 数字操作，一定要是数字才能进行加减<br>getrange<span class="hljs-regexp">/setrange  返回指定范围内的字符串/</span>指定范围字符串替换<br>setex(set with expire)键秒值/setnx(set <span class="hljs-keyword">if</span> not exist)<br>mset<span class="hljs-regexp">/mget/m</span>setnx <br>getset(先get再set)<br></code></pre></td></tr></table></figure>
 
@@ -494,7 +497,7 @@
 <p>（2）启动哨兵</p>
 <figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stata">redis-sentinel sentinel.<span class="hljs-keyword">conf</span> <br></code></pre></td></tr></table></figure>
 
-<h2 id="复制原理"><a href="#复制原理" class="headerlink" title="复制原理"></a>复制原理</h2><p>slave启动成功连接到master后会发送一个sync命令<br>Master接到命令启动后台的存盘进程，同时收集所有接收到的用于修改数据集命令，<br>在后台进程执行完毕之后，master将传送整个数据文件到slave,以完成一次完全同步<br>全量复制：而slave服务在接收到数据库文件数据后，将其存盘并加载到内存中。<br>增量复制：Master继续将新的所有收集到的修改命令依次传给slave,完成同步<br>但是只要是重新连接master,一次完全同步（全量复制)将被自动执行</p>
+<h2 id="复制原理"><a href="#复制原理" class="headerlink" title="复制原理"></a>复制原理</h2><p>slave启动成功连接到master后会发送一个sync命令<br>Master接到命令启动后台的存盘进程，同时收集所有接收到的用于修改数据集命令，在后台进程执行完毕之后，master将传送整个数据文件到slave,以完成一次完全同步<br>全量复制：而slave服务在接收到数据库文件数据后，将其存盘并加载到内存中。<br>增量复制：Master继续将新的所有收集到的修改命令依次传给slave,完成同步，但是只要是重新连接master,一次完全同步（全量复制)将被自动执行</p>
 <p>例：当slave第一次连上master会全量复制，后面进行的是增量复制</p>
 <h2 id="复制缺点"><a href="#复制缺点" class="headerlink" title="复制缺点"></a>复制缺点</h2><p>复制延时：</p>
 <p>由于所有的写操作都是先在Master上操作，然后同步更新到Slave上，所以从Master同步到Slave机器有一定的延迟，当系统很繁忙的时候，延迟问题会更加严重，Slave机器数量的增加也会使这个问题更加严重。</p>
@@ -535,6 +538,13 @@
         
   <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/" class="category-chain-item">redis</a>
+  
+  
+
   
 
       </span>
@@ -605,9 +615,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/" title="网络七层协议">
+                      <a href="/2020/01/22/nosql/redis/redis%E9%9B%86%E7%BE%A4/" title="redis集群">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">网络七层协议</span>
+                        <span class="hidden-mobile">redis集群</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -615,8 +625,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/01/04/%E6%9C%8D%E5%8A%A1%E5%99%A8/nginx/nginx%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="nginx基础知识">
-                        <span class="hidden-mobile">nginx基础知识</span>
+                      <a href="/2020/01/06/nosql/redis/springboot%E9%9B%86%E6%88%90redis/" title="springboot快速集成redis">
+                        <span class="hidden-mobile">springboot快速集成redis</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
