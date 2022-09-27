@@ -148,15 +148,17 @@ Zset：当有序集合的元素个数小于128个，每个元素的值小于64�
 
 ## Redis字符串(String)
 
-
-string是redis最基本的类型，一个key对应一个value。
-
-
-string类型是二进制安全的。意思是redis的string可以包含任何数据。比如jpg图片或者序列化的对象 。
-
-string类型是Redis最基本的数据类型，一个redis中字符串value最多可以是512M。
-
-应用场景：共享session、分布式锁，计数器、限流。
+>
+> string是redis最基本的类型，一个key对应一个value。
+>
+>
+> string类型是二进制安全的。意思是redis的string可以包含任何数据。比如jpg图片或者序列化的对象 。
+>
+> string类型是Redis最基本的数据类型，一个redis中字符串value最多可以是512M。
+>
+> 应用场景：共享session、分布式锁，计数器、限流。
+>
+> 内部编码有3种，int（8字节长整型）/embstr（小于等于39字节字符串）/raw（大于39个字节字符串）
 
 相关操作：
 
@@ -175,7 +177,10 @@ getset(先get再set)
 
 Redis 列表是简单的字符串列表，按照插入顺序排序。可以添加一个元素导列表的头部（左边）或者尾部（右边）。它的底层实际是个链表。
 
-内部编码：ziplist（压缩列表）、linkedlist（链表）
+> 简介：列表（list）类型是用来存储多个有序的字符串，一个列表最多可以存储2^32-1个元素。
+> 简单实用举例：lpush key value [value ...] 、lrange key start end
+> 内部编码：ziplist（压缩列表）、linkedlist（链表）
+> 应用场景：消息队列，文章列表
 
 list应用场景参考以下：
 
@@ -205,9 +210,11 @@ lpush+brpop=Message Queue（消息队列）
 
 ## Redis集合(Set)
 
-Redis的Set是string类型的无序集合。它是通过HashTable实现实现的。
-
-应用场景：用户标签,生成随机数抽奖、社交需求。
+> 简介：集合（set）类型也是用来保存多个的字符串元素，但是不允许重复元素
+> 简单使用举例：sadd key element [element ...]、smembers key
+> 内部编码：intset（整数集合）、hashtable（哈希表）
+> 注意点：smembers和lrange、hgetall都属于比较重的命令，如果元素过多存在阻塞Redis的可能性，可以使用sscan来完成。
+> 应用场景：用户标签,生成随机数抽奖、社交需求。
 
 相关操作：
 
@@ -227,7 +234,11 @@ Redis的Set是string类型的无序集合。它是通过HashTable实现实现的
 
 ## Redis哈希(Hash)
 
-应用场景：缓存用户信息等。
+> 简介：在Redis中，哈希类型是指v（值）本身又是一个键值对（k-v）结构
+> 简单使用举例：hset key field value 、hget key field
+> 内部编码：ziplist（压缩列表） 、hashtable（哈希表）
+> 应用场景：缓存用户信息等。
+> 注意点：如果开发使用hgetall，哈希元素比较多的话，可能导致Redis阻塞，可以使用hscan。而如果只是获取部分field，建议使用hmget。
 
 相关操作：
 
@@ -244,7 +255,10 @@ Redis的Set是string类型的无序集合。它是通过HashTable实现实现的
 
 ## Redis有序集合Zset(sorted set)
 
-应用场景：排行榜，社交需求（如用户点赞）。
+> - 简介：已排序的字符串集合，同时元素不能重复
+> - 简单格式举例：`zadd key score member [score member ...]`，`zrank key member`
+> - 底层内部编码：`ziplist（压缩列表）`、`skiplist（跳跃表）`
+> - 应用场景：排行榜，社交需求（如用户点赞）
 
 相关操作：
 
