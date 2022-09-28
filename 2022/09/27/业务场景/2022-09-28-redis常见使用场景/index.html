@@ -1,0 +1,849 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1、数据缓存123456789101112131415161718192021222324252627@Bean@SuppressWarnings(&quot;all&quot;)public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory factory) &amp;#123;    RedisTempla">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis常见使用场景">
+<meta property="og:url" content="https://leellun.github.io/2022/09/27/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-09-28-redis%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="1、数据缓存123456789101112131415161718192021222324252627@Bean@SuppressWarnings(&quot;all&quot;)public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory factory) &amp;#123;    RedisTempla">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-27T12:14:02.000Z">
+<meta property="article:modified_time" content="2022-09-28T13:46:42.038Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>redis常见使用场景 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="redis常见使用场景"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-27 20:14" pubdate>
+          2022年9月27日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          75 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">redis常见使用场景</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="1、数据缓存"><a href="#1、数据缓存" class="headerlink" title="1、数据缓存"></a>1、数据缓存</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Bean</span><br><span class="hljs-meta">@SuppressWarnings(&quot;all&quot;)</span><br><span class="hljs-keyword">public</span> RedisTemplate&lt;String, Object&gt; <span class="hljs-title function_">redisTemplate</span><span class="hljs-params">(RedisConnectionFactory factory)</span> &#123;<br>    RedisTemplate&lt;String, Object&gt; template = <span class="hljs-keyword">new</span> <span class="hljs-title class_">RedisTemplate</span>&lt;String, Object&gt;();<br>    template.setConnectionFactory(factory);<br>    <span class="hljs-type">Jackson2JsonRedisSerializer</span> <span class="hljs-variable">jackson2JsonRedisSerializer</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Jackson2JsonRedisSerializer</span>(Object.class);<br>    <span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">om</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectMapper</span>();<br>    om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);<br>    om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);<br>    jackson2JsonRedisSerializer.setObjectMapper(om);<br>    <span class="hljs-type">StringRedisSerializer</span> <span class="hljs-variable">stringRedisSerializer</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringRedisSerializer</span>();<br><br>    <span class="hljs-comment">// key采用String的序列化方式</span><br>    template.setKeySerializer(stringRedisSerializer);<br><br>    <span class="hljs-comment">// hash的key也采用String的序列化方式</span><br>    template.setHashKeySerializer(stringRedisSerializer);<br><br>    <span class="hljs-comment">// value序列化方式采用jackson</span><br>    template.setValueSerializer(jackson2JsonRedisSerializer);<br><br>    <span class="hljs-comment">// hash的value序列化方式采用jackson</span><br>    template.setHashValueSerializer(jackson2JsonRedisSerializer);<br><br>    template.afterPropertiesSet();<br>    <span class="hljs-keyword">return</span> template;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>设置序列化和反序列化，通过对key和value进行序列化存储和反序列化给应用程序。</p>
+<h2 id="2、共享session"><a href="#2、共享session" class="headerlink" title="2、共享session"></a>2、共享session</h2><p>String 类型，因为 Redis 是分布式的独立服务，可以在多个应用之间共享</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gherkin"><span class="hljs-variable">&lt;dependency&gt;</span> <br> <span class="hljs-variable">&lt;groupId&gt;</span>org.springframework.session<span class="hljs-variable">&lt;/groupId&gt;</span> <br> <span class="hljs-variable">&lt;artifactId&gt;</span>spring-session-data-redis<span class="hljs-variable">&lt;/artifactId&gt;</span> <br><span class="hljs-variable">&lt;/dependency&gt;</span><span class="hljs-comment">#通过在启动类开启redissession支持</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@SpringBootApplication</span><br><span class="hljs-variable">@EnableRedisHttpSession</span>(maxInactiveIntervalInSeconds = <span class="hljs-number">1800</span>, flushMode = FlushMode.IMMEDIATE,redisNamespace = <span class="hljs-string">&quot;mall&quot;</span>)<br>public class AuthServerApplication &#123;<br>    <span class="hljs-selector-tag">public</span> <span class="hljs-selector-tag">static</span> <span class="hljs-selector-tag">void</span> <span class="hljs-selector-tag">main</span>(String[] args) &#123;<br>        <span class="hljs-selector-tag">SpringApplication</span><span class="hljs-selector-class">.run</span>(AuthServerApplication.class, args);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>配置redissession类</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">GulimallSessionConfig</span> &#123;<br>    <span class="hljs-comment">//配置一个默认的序列化处理器</span><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title class_">RedisSerializer</span>&lt;<span class="hljs-title class_">Object</span>&gt; <span class="hljs-title function_">springSessionDefaultRedisSerializer</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">GenericJackson2JsonRedisSerializer</span>();<br>    &#125;<br>    <span class="hljs-comment">//设置cookiename MALLSESSIONID，domain mall.com</span><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title class_">CookieSerializer</span> <span class="hljs-title function_">cookieSerializer</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-title class_">DefaultCookieSerializer</span> serializer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DefaultCookieSerializer</span>();<br>        serializer.<span class="hljs-title function_">setCookieName</span>(<span class="hljs-string">&quot;MALLSESSIONID&quot;</span>);<br>        serializer.<span class="hljs-title function_">setDomainName</span>(<span class="hljs-string">&quot;mall.com&quot;</span>);<br>        <span class="hljs-keyword">return</span> serializer;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>注意：上面的依赖配置在每一个需要启动的服务都需要</p>
+<h2 id="3、分布式锁"><a href="#3、分布式锁" class="headerlink" title="3、分布式锁"></a>3、分布式锁</h2><p>分布式锁有多种方式实现：</p>
+<p>mysql方式</p>
+<p>需要一个mysql表作为锁表，利用mysql的键的唯一性及insert的原子性，得到同一时刻，只会有一个线程插入相同的记录</p>
+<p>zk方式</p>
+<p>采取zk的临时路径，推荐curator-framework</p>
+<p>redis方式</p>
+<p>这个redisson主要思想：通过setnx创建一个30s的key，并且创建一个守护线程10s续命分布式锁执行一次setnx，放置key因为过期造成其它线程进入访问引起业务数据异常。比较注意的是，redession加入pub/sub 消息发布订阅机制，当客户端释放锁时会pub一个消息，其它客户端收到消息，又会去竞争锁。这里运用的思想还是AQS。</p>
+<p>非常重要：通过分布式锁，再一次说明了AQS的重要性。</p>
+<h2 id="4、全局ID"><a href="#4、全局ID" class="headerlink" title="4、全局ID"></a>4、全局ID</h2><p>int类型，incrby，利用原子性</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">incrby</span> userid <span class="hljs-number">1000</span><br></code></pre></td></tr></table></figure>
+
+<p>分库分表的场景，一次性拿一段</p>
+<h2 id="5、计数器"><a href="#5、计数器" class="headerlink" title="5、计数器"></a>5、计数器</h2><p>int类型，incr方法</p>
+<p>例如：文章的阅读量、微博点赞数、允许一定的延迟，先写入Redis再定时同步到数据库。</p>
+<p>在 Redis 的数据结构中，<code>string</code>、<code>hash</code>和<code>sorted set</code>都提供了<code>incr</code>方法用于原子性的自增操作。</p>
+<ul>
+<li>如果应用需要显示每天的注册用户数，便可以使用string作为计数器，设定一个名为REGISTERED_COUNT_TODAY的 key，并在初始化时给它设置一个到凌晨 0 点的过期时间，每当用户注册成功后便使用incr命令使该 key 增长 1，同时当每天凌晨 0 点后，这个计数器都会因为 key 过期使值清零。</li>
+<li>每条微博都有点赞数、评论数、转发数和浏览数四条属性，这时用hash进行计数会更好，将该计数器的 key 设为weibo:weibo_id，hash的 field 为like_number、comment_number、forward_number和view_number，在对应操作后通过hincrby使hash 中的 field 自增。</li>
+<li>如果应用有一个发帖排行榜的功能，便选择sorted set吧，将集合的 key 设为POST_RANK。当用户发帖后，使用zincrby将该用户 id 的 score 增长 1。sorted set会重新进行排序，用户所在排行榜的位置也就会得到实时的更新。</li>
+</ul>
+<h2 id="6、限流"><a href="#6、限流" class="headerlink" title="6、限流"></a>6、限流</h2><p>incr访问次数，当超过次数false</p>
+<h2 id="7、位统计（在线用户）"><a href="#7、位统计（在线用户）" class="headerlink" title="7、位统计（在线用户）"></a>7、位统计（在线用户）</h2><p>String类型的bitcount</p>
+<p><strong>setbit</strong></p>
+<p><code>setbit key offset value</code>：给对应的位设置值</p>
+<p><strong>getbit</strong></p>
+<p><code>getbit key offset</code> 获取指定位的值</p>
+<p><strong>bitcount</strong></p>
+<p><code>bitcount key [start] [end]</code> 获取指定范围为1的个数</p>
+<p>例如：</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs subunit">//设置用户id为3的用户在2022<span class="hljs-string">-5</span><span class="hljs-string">-17</span>登录<br>$ setbit user:view:2022<span class="hljs-string">-5</span><span class="hljs-string">-17</span> 3 1<br>//查看用户id为3的用户在2022<span class="hljs-string">-5</span><span class="hljs-string">-17</span>是否登录<br>$ getbit user:view:2022<span class="hljs-string">-5</span><span class="hljs-string">-17</span> 3<br>//查看2022<span class="hljs-string">-5</span><span class="hljs-string">-17</span>有多少人登录<br>$ bitcount user:view:2022<span class="hljs-string">-5</span><span class="hljs-string">-17</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>Bitmaps间的操作</strong>：不过生产环境很难用上，生产环境现在大多都是集群，所以交集并集之类的用不上</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs maxima">bitop <span class="hljs-built_in">op</span> destkey <span class="hljs-built_in">key</span> [<span class="hljs-built_in">key</span> ...]<br></code></pre></td></tr></table></figure>
+
+<p><code>bitop</code>命令可以对多个bitmaps做交集（and)、并集（or）、非（not）、异或（xor），并将操作结果存放在<code>destkey</code>中。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-operator">/</span><span class="hljs-operator">/</span> 将<span class="hljs-number">17</span>、<span class="hljs-number">18</span>、<span class="hljs-number">19</span>集合结果放到three:<span class="hljs-keyword">and</span>上<br>$ bitop <span class="hljs-keyword">and</span> three:<span class="hljs-keyword">and</span> <span class="hljs-keyword">user</span>:<span class="hljs-keyword">view</span>:<span class="hljs-number">2022</span><span class="hljs-number">-5</span><span class="hljs-number">-17</span> <span class="hljs-keyword">user</span>:<span class="hljs-keyword">view</span>:<span class="hljs-number">2022</span><span class="hljs-number">-5</span><span class="hljs-number">-18</span> <span class="hljs-keyword">user</span>:<span class="hljs-keyword">view</span>:<span class="hljs-number">2022</span><span class="hljs-number">-5</span><span class="hljs-number">-19</span><br>$ bitcount three:<span class="hljs-keyword">and</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="8、时间轴（Timeline）"><a href="#8、时间轴（Timeline）" class="headerlink" title="8、时间轴（Timeline）"></a>8、时间轴（Timeline）</h2><p>list为双向链表。</p>
+<p>如果将list用作时间轴，用户通过lpush发完消息，可以通过lrange拉取最新的消息。lrange可以指定需要多少length。</p>
+<p>例如：微博消息发布后，通过lrange获取最新微博。</p>
+<h2 id="9-消息队列"><a href="#9-消息队列" class="headerlink" title="9. 消息队列"></a>9. 消息队列</h2><p>有序消息队列：Redis 中list的数据结构实现是双向链表，消息的生产者只需要通过lpush将消息放入 list，消费者便可以通过rpop取出该消息，并且可以保证消息的有序性。</p>
+<p>优先级消息队列：带有优先级的消息队列也可以选择sorted set。</p>
+<p>pub/sub用作发布者 / 订阅者模型的消息，不需要担心由于服务器故障导致消息丢失的情况，Redis 拥有持久化功能。</p>
+<p>Redis 中list的数据结构实现是双向链表，所以可以非常便捷的应用于消息队列（生产者 / 消费者模型）。消息的生产者只需要通过lpush将消息放入 list，消费者便可以通过rpop取出该消息，并且可以保证消息的有序性。如果需要实现带有优先级的消息队列也可以选择sorted set。而pub/sub功能也可以用作发布者 / 订阅者模型的消息。无论使用何种方式，由于 Redis 拥有持久化功能，也不需要担心由于服务器故障导致消息丢失的情况。</p>
+<p>List提供了两个阻塞的弹出操作：blpop/brpop，可以设置超时时间：</p>
+<ul>
+<li>blpop：blpop key1 timeout 移除并获取列表的第一个元素，如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</li>
+<li>brpop：brpop key1 timeout 移除并获取列表的最后一个元素，如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</li>
+</ul>
+<p>队列：先进先除：rpush blpop，左头右尾，右边进入队列，左边出队列<br>栈：先进后出：rpush brpop</p>
+<h2 id="10、抽奖"><a href="#10、抽奖" class="headerlink" title="10、抽奖"></a>10、抽奖</h2><p>利用set结构的无序性,通过 Spop（ Redis Spop 命令用于移除集合中的指定 key 的一个或多个随机元素，移除后会返回移除的元素。 ） 随机获得值。</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs 1c">&gt; smembers key1<br><span class="hljs-number">1</span>) <span class="hljs-string">&quot;1&quot;</span><br><span class="hljs-number">2</span>) <span class="hljs-string">&quot;2&quot;</span><br><span class="hljs-number">3</span>) <span class="hljs-string">&quot;3&quot;</span><br><span class="hljs-number">4</span>) <span class="hljs-string">&quot;4&quot;</span><br><span class="hljs-number">5</span>) <span class="hljs-string">&quot;5&quot;</span><br><span class="hljs-number">6</span>) <span class="hljs-string">&quot;7&quot;</span><br><span class="hljs-number">7</span>) <span class="hljs-string">&quot;8&quot;</span><br>&gt; spop key1<br><span class="hljs-string">&quot;8&quot;</span><br>&gt; spop key1<br><span class="hljs-string">&quot;3&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="11、点赞、签到、打卡"><a href="#11、点赞、签到、打卡" class="headerlink" title="11、点赞、签到、打卡"></a>11、点赞、签到、打卡</h2><figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs axapta">假如上面的微博ID是t1001，用户ID是u3001<br><br>用 <span class="hljs-keyword">like</span>:t1001 来维护 t1001 这条微博的所有点赞用户<br><br>点赞了这条微博：sadd <span class="hljs-keyword">like</span>:t1001 u3001<br>取消点赞：srem <span class="hljs-keyword">like</span>:t1001 u3001<br>是否点赞：sismember <span class="hljs-keyword">like</span>:t1001 u3001<br>点赞的所有用户：smembers <span class="hljs-keyword">like</span>:t1001<br>点赞数：scard <span class="hljs-keyword">like</span>:t1001<br></code></pre></td></tr></table></figure>
+
+<h2 id="12-商品标签"><a href="#12-商品标签" class="headerlink" title="12 商品标签"></a>12 商品标签</h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs vim">sadd <span class="hljs-keyword">tag</span><span class="hljs-variable">s:i5001</span> 画面清晰细腻<br>sadd <span class="hljs-keyword">tag</span><span class="hljs-variable">s:i5001</span> 真彩清晰显示屏<br>sadd <span class="hljs-keyword">tag</span><span class="hljs-variable">s:i5001</span> 流程至极<br></code></pre></td></tr></table></figure>
+
+<h2 id="13、好友关系、用户关注、推荐模型"><a href="#13、好友关系、用户关注、推荐模型" class="headerlink" title="13、好友关系、用户关注、推荐模型"></a>13、好友关系、用户关注、推荐模型</h2><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-keyword">A</span>:follow：存放 <span class="hljs-keyword">A</span> 所有关注的用户 id<br><br><span class="hljs-keyword">A</span>:follower：存放 <span class="hljs-keyword">A</span> 所有粉丝的用户 id<br><br>那么通过sinter命令便可以根据<span class="hljs-keyword">A</span>:follow和<span class="hljs-keyword">A</span>:follower的交集得到与 <span class="hljs-keyword">A</span> 互相关注的用户。当 <span class="hljs-keyword">A</span> 进入另一个用户 B 的主页后，<span class="hljs-keyword">A</span>:follow和B:follow的交集便是 <span class="hljs-keyword">A</span> 和 B 的共同专注，<span class="hljs-keyword">A</span>:follow和B:follower的交集便是 <span class="hljs-keyword">A</span> 关注的人也关注了 B。<br></code></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs elixir">相互关注：<br><br>sadd <span class="hljs-number">1</span><span class="hljs-symbol">:follow</span> <span class="hljs-number">2</span><br>sadd <span class="hljs-number">1</span><span class="hljs-symbol">:follower</span> <span class="hljs-number">2</span><br>sadd <span class="hljs-number">2</span><span class="hljs-symbol">:follower</span> <span class="hljs-number">1</span><br>sadd <span class="hljs-number">2</span><span class="hljs-symbol">:follow</span> <span class="hljs-number">1</span><br><span class="hljs-number">1</span>关注的人也关注了他(取交集)：<br><br>交集：sinter <span class="hljs-number">1</span><span class="hljs-symbol">:follow</span> <span class="hljs-number">2</span><span class="hljs-symbol">:follower</span><br><br>用户<span class="hljs-number">1</span>可能认识的人(差集)：sdiff <span class="hljs-number">2</span><span class="hljs-symbol">:follow</span> <span class="hljs-number">1</span><span class="hljs-symbol">:follow</span><br>用户<span class="hljs-number">2</span>可能认识的人：sdiff <span class="hljs-number">1</span><span class="hljs-symbol">:follow</span> <span class="hljs-number">2</span><span class="hljs-symbol">:follow</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="14-排行榜"><a href="#14-排行榜" class="headerlink" title="14 .排行榜"></a>14 .排行榜</h2><p>id 为6001 的新闻点击数加1：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">zincrby</span> hotNews:<span class="hljs-number">20190926</span> <span class="hljs-number">1</span> n6001<br></code></pre></td></tr></table></figure>
+
+<p>获取今天点击最多的15条：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">zrevrange</span> hotNews:<span class="hljs-number">20190926</span> <span class="hljs-number">0</span> <span class="hljs-number">15</span> withscores<br></code></pre></td></tr></table></figure>
+
+<h2 id="15-倒排索引"><a href="#15-倒排索引" class="headerlink" title="15 .倒排索引"></a>15 .倒排索引</h2><p>可以通过分词器把对应的分词 设置set key id，然后通过id找到对应的数据。一般用es</p>
+<h2 id="16、电商实际应用场景"><a href="#16、电商实际应用场景" class="headerlink" title="16、电商实际应用场景"></a>16、电商实际应用场景</h2><h3 id="16-1-商品维度和用户维度计数"><a href="#16-1-商品维度和用户维度计数" class="headerlink" title="16.1 商品维度和用户维度计数"></a>16.1 商品维度和用户维度计数</h3><p>商品（喜欢数，评论数，鉴定数，浏览数,etc） 采用Redis 的类型: <code>Hash</code>. </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>喜欢数=<span class="hljs-number">5</span><br>$ HSET product:<span class="hljs-number">10001</span> favor <span class="hljs-number">5</span><br><span class="hljs-regexp">//</span>喜欢数+<span class="hljs-number">1</span><br>$ HINCRBY product:<span class="hljs-number">10001</span> favor <span class="hljs-number">1</span><br><span class="hljs-regexp">//</span>获取hashkey value<br>$ HGETALL product:<span class="hljs-number">10001</span><br><span class="hljs-number">1</span>) <span class="hljs-string">&quot;favor&quot;</span><br><span class="hljs-number">2</span>) <span class="hljs-string">&quot;6&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>用户维度计数（动态数、关注数、粉丝数、喜欢商品数、发帖数 等）采用 <code>Hash</code>  </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>关注=<span class="hljs-number">5</span><br>$ HSET user:<span class="hljs-number">10001</span> follow <span class="hljs-number">5</span><br><span class="hljs-regexp">//</span>关注+<span class="hljs-number">1</span><br>$ HINCRBY user:<span class="hljs-number">10001</span> favor <span class="hljs-number">1</span><br><span class="hljs-regexp">//</span>获取hashkey value<br>$ HGETALL user:<span class="hljs-number">10001</span><br><span class="hljs-number">1</span>) <span class="hljs-string">&quot;follow&quot;</span><br><span class="hljs-number">2</span>) <span class="hljs-string">&quot;6&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="16-2-存储社交关系"><a href="#16-2-存储社交关系" class="headerlink" title="16.2 存储社交关系"></a>16.2 存储社交关系</h3><p>将用戶的好友/粉丝/关注，可以存在一个<code>sorted set</code>中，score可以是timestamp，这样求两个人的共同好友的操作，可能就只需要用求交集命令即可。 </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-operator">/</span><span class="hljs-operator">/</span>score 为<span class="hljs-type">timestamp</span><br>redis<span class="hljs-operator">&gt;</span> ZADD <span class="hljs-keyword">user</span>:<span class="hljs-number">100000</span>:follow <span class="hljs-number">61307510400000</span> &quot;100001&quot; <br>redis<span class="hljs-operator">&gt;</span> ZADD <span class="hljs-keyword">user</span>:<span class="hljs-number">100000</span>:follow <span class="hljs-number">61307510402300</span> &quot;100002&quot;<br>redis<span class="hljs-operator">&gt;</span> ZADD <span class="hljs-keyword">user</span>:<span class="hljs-number">100000</span>:follow <span class="hljs-number">61307510405600</span> &quot;100003&quot;<br>redis<span class="hljs-operator">&gt;</span> ZADD <span class="hljs-keyword">user</span>:<span class="hljs-number">200000</span>:follow <span class="hljs-number">61307510400000</span> &quot;100001&quot;<br>redis<span class="hljs-operator">&gt;</span> ZADD <span class="hljs-keyword">user</span>:<span class="hljs-number">200000</span>:follow <span class="hljs-number">61307510402300</span> &quot;100005&quot;<br>redis<span class="hljs-operator">&gt;</span> ZADD <span class="hljs-keyword">user</span>:<span class="hljs-number">200000</span>:follow <span class="hljs-number">61307510405600</span> &quot;100004&quot;<br><span class="hljs-operator">/</span><span class="hljs-operator">/</span>交集命令，获得共同关注<br>redis<span class="hljs-operator">&gt;</span> ZINTERSTORE <span class="hljs-keyword">out</span>:<span class="hljs-number">100000</span>:<span class="hljs-number">200000</span> <span class="hljs-number">1</span> <span class="hljs-keyword">user</span>:<span class="hljs-number">100000</span>:follow <span class="hljs-keyword">user</span>:<span class="hljs-number">200000</span>:follow <br><span class="hljs-operator">/</span><span class="hljs-operator">/</span>输出所有的共同关注 <span class="hljs-number">-1</span>表示无右边界<br>redis<span class="hljs-operator">&gt;</span> ZRANGE <span class="hljs-keyword">out</span>:<span class="hljs-number">100000</span>:<span class="hljs-number">200000</span> <span class="hljs-number">0</span> <span class="hljs-number">-1</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="16-3-用作缓存"><a href="#16-3-用作缓存" class="headerlink" title="16.3 用作缓存"></a>16.3 用作缓存</h3><p>代替memcached（商品列表，评论列表，@提示列表，etc）相对memcached，redis数据结构（list,set,sorted set,hash, etc）可以更方便cache各种业务数据，性能也不亚于memcached。</p>
+<h3 id="16-4-反spam系统"><a href="#16-4-反spam系统" class="headerlink" title="16.4 反spam系统"></a>16.4 反spam系统</h3><p>评论，发布商品，论坛发贴，etc</p>
+<p>将会有各种spam攻击 ，垃圾评论、发布垃圾商品、广告、刷自家商品排名等。针对这些spam制定一系列anti-spam规则，其中有些规则可以利用redis做实时分析， 1分钟评论不得超过2次、5分钟评论少于5次等（更多机制/规则需要结合drools ） </p>
+<p>采用sorted set将最近一天用户操作记录起来（全部操作记录到log，后续利用hadoop进行更全面分析统计），通过</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs maxima">//获取大于<span class="hljs-number">61307510405600</span>的评论    -<span class="hljs-literal">inf</span>等同于负无穷大  +<span class="hljs-literal">inf</span>等同于正无穷大  “<span class="hljs-number">61307510405600</span> +<span class="hljs-literal">inf</span>” 则表示&gt;=<span class="hljs-number">61307510405600</span><br>ZRANGEBYSCORE user:<span class="hljs-number">200000</span>:operation:comment <span class="hljs-number">61307510405600</span> +<span class="hljs-literal">inf</span><br></code></pre></td></tr></table></figure>
+
+<p> 获得1分钟内的操作记录。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ZADD</span> user:<span class="hljs-number">200000</span>:operation:comment <span class="hljs-number">61307510402300</span><br></code></pre></td></tr></table></figure>
+
+<p>更复杂一点的实时计算可以采用Storm。</p>
+<h3 id="16-5-用户Timeline-Feeds"><a href="#16-5-用户Timeline-Feeds" class="headerlink" title="16.5 用户Timeline/Feeds"></a>16.5 用户Timeline/Feeds</h3><p>在逛 有个类似微博的栏目我关注，里面包括关注的人、主题、品牌的动态。redis在这边主要当作cache使用。 注意设置过期时间。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ZADD</span> user:<span class="hljs-number">100000</span>:feed:topic  <span class="hljs-number">61307510400000</span> &lt;feedId&gt;<br></code></pre></td></tr></table></figure>
+
+<h3 id="16-6-最新列表-amp-排行榜（用户刚刚喜欢的商品，etc）"><a href="#16-6-最新列表-amp-排行榜（用户刚刚喜欢的商品，etc）" class="headerlink" title="16.6 最新列表&amp;排行榜（用户刚刚喜欢的商品，etc）"></a>16.6 最新列表&amp;排行榜（用户刚刚喜欢的商品，etc）</h3><p>这里采用Redis的<code>List</code>数据结构或<code>sorted set</code> 结构, 方便实现最新列表or排行榜 等业务场景。 </p>
+<h3 id="16-7-消息通知"><a href="#16-7-消息通知" class="headerlink" title="16.7 消息通知"></a>16.7 消息通知</h3><p>其实这业务场景也可以算在计数上，也是采用<code>Hash</code>。如下：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs awk">redis&gt; HSET user:&lt;userId&gt;:message:ur system <span class="hljs-number">1</span><span class="hljs-regexp">//</span><span class="hljs-number">1</span>条未读系统消息<br>redis&gt; HINCRBY user:&lt;userId&gt;:message:ur system <span class="hljs-number">1</span> <span class="hljs-regexp">//</span>未读系统消息+<span class="hljs-number">1</span><br>redis&gt; HINCRBY user:&lt;userId&gt;:message:ur comment <span class="hljs-number">1</span> <span class="hljs-regexp">//</span>未读评论消息+<span class="hljs-number">1</span><br>redis&gt; HSET user:&lt;userId&gt;:message:ur system <span class="hljs-number">0</span><span class="hljs-regexp">//</span>设为系统消息已读<br>redis&gt; HGETALL user:&lt;userId&gt;:message:ur <span class="hljs-regexp">//</span>获取这key hashkey 和value<br><span class="hljs-number">1</span>) <span class="hljs-string">&quot;system&quot;</span><br><span class="hljs-number">2</span>) <span class="hljs-string">&quot;0&quot;</span><br><span class="hljs-number">3</span>) <span class="hljs-string">&quot;comment&quot;</span><br><span class="hljs-number">4</span>) <span class="hljs-string">&quot;1&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="16-8-将Redis用作消息队列"><a href="#16-8-将Redis用作消息队列" class="headerlink" title="16.8. 将Redis用作消息队列"></a>16.8. 将Redis用作消息队列</h3><p>当在集群环境时候，java <code>ConcurrentLinkedQueue</code> 就无法满足需求时，可以采用Redis的List数据结构实现分布式的消息队列。</p>
+<h2 id="17-Redis-在金融系统的应用场景"><a href="#17-Redis-在金融系统的应用场景" class="headerlink" title="17 Redis 在金融系统的应用场景"></a>17 Redis 在金融系统的应用场景</h2><h3 id="17-1-session共享"><a href="#17-1-session共享" class="headerlink" title="17.1 session共享"></a>17.1 session共享</h3><h3 id="17-2-活动抢券"><a href="#17-2-活动抢券" class="headerlink" title="17.2 活动抢券"></a>17.2 活动抢券</h3><p>需要解决问题：</p>
+<ul>
+<li>系统的高并发压力</li>
+<li>大量用户抢同一张优惠券带来数据一致性问题</li>
+<li>券不能超发、重复发</li>
+<li>由于券涉及到资金,也带资金安全的问题</li>
+</ul>
+<p>场景主要的技术挑战是高并发、高响应、一致性、安全性等。</p>
+<p>解决方案：</p>
+<p>(1)提前把访问量蓄水,预热活跃用户,降低活动开始后的登录和风控压力。</p>
+
+
+<p>(2)对Redis进行全局数据化处理,基于Redis内存高读写高QPS的特性,解决热点数据的高并发问题。热点数据均存储在内存中,采取Redis CLUSTER 特性,进行多分片部署，通过高并发读写特性，提升系统吞吐量。下图为热数据的结构和场景描述。</p>
+<table>
+<thead>
+<tr>
+<th>存储数据</th>
+<th>数据结构</th>
+<th>场景描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>卷数量</td>
+<td>STRING</td>
+<td>热数据初始化卷数量，抢卷时通过DECR扣减</td>
+</tr>
+<tr>
+<td>抢卷资格</td>
+<td>HASH</td>
+<td>抢卷时判断计数器进行资格校验拦截不符合资格</td>
+</tr>
+<tr>
+<td>卷类型</td>
+<td>LIST</td>
+<td>按顺序从LIST获取卷类型</td>
+</tr>
+<tr>
+<td>卷基本信息</td>
+<td>HASH</td>
+<td>抢卷时初始化卷总数、总类型等信息</td>
+</tr>
+<tr>
+<td>卷分布式锁</td>
+<td>STRING</td>
+<td>抢卷时加锁，抢完后删除锁，一个用户只允许有一个线程在抢卷</td>
+</tr>
+<tr>
+<td>抢卷记录</td>
+<td>STRING</td>
+<td>判断用户是否抢卷，抢卷后新增抢卷记录信息</td>
+</tr>
+</tbody></table>
+<p>（3）分布式锁的应用</p>
+<p>问题：在抢卷时，可能出现多个用户同时在抢同一张卷，或同一用户抢多张卷的问题。当用户点击过快时，可能同一用户的两个线程同时通过了抢卷资格的校验，这种情况下该用户可以同时抢两张卷。</p>
+<p>针对上面问题可以通过对抢卷号码、用户账号两个维度进行加分布式锁来解决。</p>
+<h3 id="17-3-支付渠道限额"><a href="#17-3-支付渠道限额" class="headerlink" title="17.3 支付渠道限额"></a>17.3 支付渠道限额</h3><p>本场景是支付路由场景下支付渠道限额的设计,是为了通过执行渠道路由支付时,避免资金不足时缺乏渠道控制,造成大量交易失败,导致处理异常。以下为路由示例图。</p>
+
+
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>INCR KEY</td>
+<td>在原字段上加1</td>
+<td>只能对整数操作</td>
+</tr>
+<tr>
+<td>INCRBY KEY INCREMENT</td>
+<td>在原字段上加上整数(INCREMENT)</td>
+<td>只能对整数操作</td>
+</tr>
+<tr>
+<td>DECR KEY</td>
+<td>在原字段上减1</td>
+<td>只能对整数操作</td>
+</tr>
+<tr>
+<td>DECRBY KEY DECREMENT</td>
+<td>在原字段上减去 整数(DECREMENT)</td>
+<td>只能对整数操作</td>
+</tr>
+</tbody></table>
+<pre><code class="hljs">二、活动抢券是互联网金融公司最常用的营销手段,对于互联网金融公司来说,本业务场景带来了几个需要解决的问题,;;;。由此可见,本
+我们引用了电力行业的一种措施“削峰填谷”,顾名思义,就是在流量洪峰到来之前在系统负载较低的时候进行冷热数据的交换,和券数据的预热,用来分担领券活动后的高并发流量。而领券销售活动的业务特点是定时的洪峰流量对关联系统造成的巨大的并发访问的冲击。在此,从业务场景来说,如下图所示。
+</code></pre>
+<p>参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/agonie201218/article/details/123640871">https://blog.csdn.net/agonie201218/article/details/123640871</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" class="category-chain-item">应用场景</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/redis/" class="category-chain-item">redis</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/redis/">#redis</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>redis常见使用场景</div>
+      <div>https://leellun.github.io/2022/09/27/业务场景/2022-09-28-redis常见使用场景/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年9月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/09/27/%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/2022-09-27-Java%E5%B7%A5%E7%A8%8B%E5%B8%88%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E5%9B%BE/" title="Java工程师学习路线图">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Java工程师学习路线图</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/09/26/%E9%9D%A2%E8%AF%95%E9%A2%98/2022-09-26-Redis%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/" title="Redis常见面试题">
+                        <span class="hidden-mobile">Redis常见面试题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
