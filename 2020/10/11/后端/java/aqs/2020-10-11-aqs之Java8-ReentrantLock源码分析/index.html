@@ -19,7 +19,7 @@
     <meta name="description" content="一、介绍一个可重入互斥锁，其基本行为和语义与使用同步方法和语句访问的隐式监视锁相同，但具有扩展功能。  ReentrantLock由上次成功锁定但尚未解锁的线程拥有。当锁不属于另一个线程时，调用锁的线程返回成功则获得锁。如果当前线程已经拥有锁，该方法将立即返回。  公平锁： 在争用状态下，锁倾向于将访问权授予等待时间最长的线程。使用公平锁被多个线程访问的程序可能显示较低的总体吞吐量 非公平锁： 此">
 <meta property="og:type" content="article">
 <meta property="og:title" content="aqs之Java8 ReentrantLock源码分析">
-<meta property="og:url" content="https://leellun.github.io/2020/10/11/%E5%90%8E%E7%AB%AF/java/2020-10-11-aqs%E4%B9%8BJava8-ReentrantLock%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.html">
+<meta property="og:url" content="https://leellun.github.io/2020/10/11/%E5%90%8E%E7%AB%AF/java/aqs/2020-10-11-aqs%E4%B9%8BJava8-ReentrantLock%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.html">
 <meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
 <meta property="og:description" content="一、介绍一个可重入互斥锁，其基本行为和语义与使用同步方法和语句访问的隐式监视锁相同，但具有扩展功能。  ReentrantLock由上次成功锁定但尚未解锁的线程拥有。当锁不属于另一个线程时，调用锁的线程返回成功则获得锁。如果当前线程已经拥有锁，该方法将立即返回。  公平锁： 在争用状态下，锁倾向于将访问权授予等待时间最长的线程。使用公平锁被多个线程访问的程序可能显示较低的总体吞吐量 非公平锁： 此">
 <meta property="og:locale" content="zh_CN">
@@ -345,7 +345,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>aqs之Java8 ReentrantLock源码分析</div>
-      <div>https://leellun.github.io/2020/10/11/后端/java/2020-10-11-aqs之Java8-ReentrantLock源码分析/</div>
+      <div>https://leellun.github.io/2020/10/11/后端/java/aqs/2020-10-11-aqs之Java8-ReentrantLock源码分析/</div>
     </div>
     <div class="license-meta">
       
@@ -389,9 +389,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/05/05/centos/keepalived+haproxy/keepalived%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" title="keepalived配置文件">
+                      <a href="/2020/10/13/%E5%90%8E%E7%AB%AF/java/aqs/2020-10-13-aqs%E4%B9%8BJava8-CountDownLatch%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="aqs之Java8 CountDownLatch源码分析">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">keepalived配置文件</span>
+                        <span class="hidden-mobile">aqs之Java8 CountDownLatch源码分析</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -399,8 +399,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/09/30/%E5%90%8E%E7%AB%AF/java/2020-09-27-aqs%E4%B9%8BJava8-Condition%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="aqs之Java8 Condition源码分析">
-                        <span class="hidden-mobile">aqs之Java8 Condition源码分析</span>
+                      <a href="/2020/10/11/%E5%90%8E%E7%AB%AF/java/aqs/2020-10-11-aqs%E4%B9%8BJava8-Semaphore%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="aqs之Java8 Semaphore源码分析">
+                        <span class="hidden-mobile">aqs之Java8 Semaphore源码分析</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
