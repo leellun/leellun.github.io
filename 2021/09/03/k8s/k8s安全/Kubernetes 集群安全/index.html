@@ -24,11 +24,10 @@
 <meta property="og:description" content="机制说明Kubernetes 作为一个分布式集群的管理工具,保证集群的安全性是其一个重要的任务。API Server是集群内部各个组件通信的中介,也是外部控制的入口。所以Kubernetes的安全机制基本就是围绕保护API Server来设计的。Kubernetes 使用了认证(Authentication) 、鉴权(Authorization)、准入控制(AdmissionControl)三步来">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-09-03T13:14:02.000Z">
-<meta property="article:modified_time" content="2022-09-24T05:00:37.953Z">
+<meta property="article:modified_time" content="2022-09-26T13:05:09.792Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="kubernetes">
 <meta property="article:tag" content="k8s">
-<meta property="article:tag" content="认证授权">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -367,7 +366,7 @@
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">Role</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1beta1</span><br><span class="hljs-attr">metadata:</span><br><span class="hljs-attr">namespace:</span> <span class="hljs-string">default</span><br><span class="hljs-attr">name:</span> <span class="hljs-string">pod-and-pod-logs-reader</span><br><span class="hljs-attr">rules:</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroups:</span> [<span class="hljs-string">&quot;&quot;</span>]<br>  <span class="hljs-attr">resources:</span> [<span class="hljs-string">&quot;pods/log&quot;</span>]<br>  <span class="hljs-attr">verbs:</span> [<span class="hljs-string">&quot;get&quot;</span>,<span class="hljs-string">&quot;list&quot;</span>]<br></code></pre></td></tr></table></figure>
 
 <h2 id="to-Subjects"><a href="#to-Subjects" class="headerlink" title="to Subjects"></a>to Subjects</h2><p>RoleBinding 和 ClusterRoleBinding 可以 Role 定到 Subjects; Subjects 可以是 groups, users 或者service accounts</p>
-<p>Subjects 中 Users 使用字符串表示,它可以是一个普通的名字字符串,如”alice”,也可以是email地址,如“<a href="mailto:&#108;&#x65;&#x65;&#108;&#108;&#117;&#110;&#x40;&#x73;&#105;&#110;&#x61;&#46;&#x63;&#x6e;">&#108;&#x65;&#x65;&#108;&#108;&#117;&#110;&#x40;&#x73;&#105;&#110;&#x61;&#46;&#x63;&#x6e;</a>”；甚至是一组字符串形式的数字ID。但是users的前缀system：是系统保留的，集群管理员应该确保普通用户不会使用这个前缀格式。</p>
+<p>Subjects 中 Users 使用字符串表示,它可以是一个普通的名字字符串,如”alice”,也可以是email地址,如“<a href="mailto:&#108;&#x65;&#101;&#108;&#x6c;&#117;&#110;&#64;&#x73;&#105;&#110;&#97;&#x2e;&#x63;&#x6e;">&#108;&#x65;&#101;&#108;&#x6c;&#117;&#110;&#64;&#x73;&#105;&#110;&#97;&#x2e;&#x63;&#x6e;</a>”；甚至是一组字符串形式的数字ID。但是users的前缀system：是系统保留的，集群管理员应该确保普通用户不会使用这个前缀格式。</p>
 <p>Groups 书写格式与Users相同,都为一个字符串,并且没有特定的格式要求;同样system:前缀为系统保留</p>
 <h1 id="准入控制"><a href="#准入控制" class="headerlink" title="准入控制"></a>准入控制</h1><p>准入控制是API Server的插件集合,通过添加不同的插件,实现额外的准入控制规则。甚至于API Server的一些主要的功能都需要通过Admission Controllers 实现,比如ServiceAccount官方文档上有一份针对不同版本的准入控制器推荐列表,其中最新的1.14的推荐列表是:</p>
 <p>NamespaceLifecycle, LimitRanger, ServiceAccount, DefaultStorageClass,DefaultTolerationSeconds, Mutat<br>ingAdmissionWebhook, ValidatingAdmissionWebhook, ResourceQuota</p>
@@ -399,6 +398,13 @@
   <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
   
   
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+  
 
       </span>
     
@@ -414,8 +420,6 @@
         <a href="/tags/kubernetes/">#kubernetes</a>
       
         <a href="/tags/k8s/">#k8s</a>
-      
-        <a href="/tags/%E8%AE%A4%E8%AF%81%E6%8E%88%E6%9D%83/">#认证授权</a>
       
     </div>
   
@@ -472,9 +476,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/03/02/centos/VMware%20%E5%AE%89%E8%A3%85openwrt%EF%BC%8C%E5%A6%82%E4%BD%95%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" title="VMware 安装openwrt，如何科学上网">
+                      <a href="/2022/01/06/nosql/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/" title="redis数据结构及内部编码">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">VMware 安装openwrt，如何科学上网</span>
+                        <span class="hidden-mobile">redis数据结构及内部编码</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
