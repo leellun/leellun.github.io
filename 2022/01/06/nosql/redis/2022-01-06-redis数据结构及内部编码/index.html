@@ -16,15 +16,15 @@
   <meta name="author" content="leellun">
   <meta name="keywords" content="">
   
-    <meta name="description" content="redis底层数据结构123456789101112typedef struct redisObject&amp;#123;     &#x2F;&#x2F;类型     unsigned type:4;     &#x2F;&#x2F;编码     unsigned encoding:4;     &#x2F;&#x2F;指向底层数据结构的指针     void *ptr;     &#x2F;&#x2F;引用计数     int refcount;     &#x2F;&#x2F;记录最后一次被程序">
+    <meta name="description" content="redis底层数据结构1234567891011121314151617181920212223typedef struct redisObject&amp;#123;     &#x2F;&#x2F;类型     unsigned type:4;&#x2F;&#x2F; 4bit     &#x2F;&#x2F;编码     unsigned encoding:4;&#x2F;&#x2F; 4bit     &#x2F;&#x2F;指向底层数据结构的指针     void *ptr;&#x2F;&#x2F; 8字节">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis数据结构及内部编码">
 <meta property="og:url" content="https://leellun.github.io/2022/01/06/nosql/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/index.html">
 <meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
-<meta property="og:description" content="redis底层数据结构123456789101112typedef struct redisObject&amp;#123;     &#x2F;&#x2F;类型     unsigned type:4;     &#x2F;&#x2F;编码     unsigned encoding:4;     &#x2F;&#x2F;指向底层数据结构的指针     void *ptr;     &#x2F;&#x2F;引用计数     int refcount;     &#x2F;&#x2F;记录最后一次被程序">
+<meta property="og:description" content="redis底层数据结构1234567891011121314151617181920212223typedef struct redisObject&amp;#123;     &#x2F;&#x2F;类型     unsigned type:4;&#x2F;&#x2F; 4bit     &#x2F;&#x2F;编码     unsigned encoding:4;&#x2F;&#x2F; 4bit     &#x2F;&#x2F;指向底层数据结构的指针     void *ptr;&#x2F;&#x2F; 8字节">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-01-06T12:14:02.000Z">
-<meta property="article:modified_time" content="2022-10-03T06:22:13.392Z">
+<meta property="article:modified_time" content="2022-10-03T08:00:49.297Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="redis">
 <meta name="twitter:card" content="summary_large_image">
@@ -219,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.6k 字
+          5.5k 字
         
       </span>
     
@@ -230,7 +230,7 @@
         
         
         
-          39 分钟
+          47 分钟
         
       </span>
     
@@ -273,7 +273,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="redis底层数据结构"><a href="#redis底层数据结构" class="headerlink" title="redis底层数据结构"></a>redis底层数据结构</h1><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> redisObject&#123;<br>     <span class="hljs-comment">//类型</span><br>     <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">type</span>:<span class="hljs-number">4</span>;<br>     <span class="hljs-comment">//编码</span><br>     <span class="hljs-keyword">unsigned</span> encoding:<span class="hljs-number">4</span>;<br>     <span class="hljs-comment">//指向底层数据结构的指针</span><br>     <span class="hljs-keyword">void</span> *ptr;<br>     <span class="hljs-comment">//引用计数</span><br>     <span class="hljs-keyword">int</span> refcount;<br>     <span class="hljs-comment">//记录最后一次被程序访问的时间</span><br>     <span class="hljs-keyword">unsigned</span> lru:<span class="hljs-number">22</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+                <h1 id="redis底层数据结构"><a href="#redis底层数据结构" class="headerlink" title="redis底层数据结构"></a>redis底层数据结构</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">redisObject</span>&#123;<br>     <span class="hljs-comment">//类型</span><br>     <span class="hljs-type">unsigned</span> type:<span class="hljs-number">4</span>;<span class="hljs-comment">// 4bit</span><br>     <span class="hljs-comment">//编码</span><br>     <span class="hljs-type">unsigned</span> encoding:<span class="hljs-number">4</span>;<span class="hljs-comment">// 4bit</span><br>     <span class="hljs-comment">//指向底层数据结构的指针</span><br>     <span class="hljs-type">void</span> *ptr;<span class="hljs-comment">// 8字节</span><br>     <span class="hljs-comment">//引用计数</span><br>     <span class="hljs-type">int</span> refcount;<span class="hljs-comment">// ４字节</span><br>     <span class="hljs-comment">//记录最后一次被程序访问的时间</span><br>     <span class="hljs-type">unsigned</span> lru:<span class="hljs-number">22</span>;<span class="hljs-comment">// 24bit</span><br>&#125;<br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * 保存字符串对象的结构</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">sdshdr</span> &#123;<br>    <span class="hljs-comment">// buf 中已占用空间的长度</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> len;<br>    <span class="hljs-comment">// buf 中剩余可用空间的长度</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> free;<br>    <span class="hljs-comment">// 数据空间</span><br>    <span class="hljs-type">char</span> buf[];<br>&#125;;<br></code></pre></td></tr></table></figure>
 
 <p>获取编码类型：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-built_in">object</span> encoding <span class="hljs-built_in">str</span> //获取<span class="hljs-built_in">str</span>的编码类型<br></code></pre></td></tr></table></figure>
@@ -289,6 +289,8 @@
 </ul>
 <h1 id="1-字符串"><a href="#1-字符串" class="headerlink" title="1 字符串"></a>1 字符串</h1><p>字符串的长度不能超过512M。</p>
 <p>内部编码有3种，int（8字节长整型）/embstr（小于等于39字节字符串，redis3.2之后使44字节）/raw（大于39个字节字符串，redis3.2是44字节）</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ada">SDS_TYPE_5　<span class="hljs-comment">-- 32 Byte</span><br>SDS_TYPE_8　<span class="hljs-comment">-- 256 Byte</span><br>SDS_TYPE_16 <span class="hljs-comment">-- 64KＢ</span><br>SDS_TYPE_32 <span class="hljs-comment">-- ...</span><br>SDS_TYPE_64 <span class="hljs-comment">-- ...</span><br></code></pre></td></tr></table></figure>
+
 <h2 id="1-1-int"><a href="#1-1-int" class="headerlink" title="1.1  int"></a>1.1  int</h2><p>数字型字符串（long）：最大值=2^(8x8-1)-1=9223372036854775807</p>
 <p>incr/decr/incrby/decrby 数字操作，一定要是数字才能进行加减，当操作的结果大于long的最大值时会报错。</p>
 <figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1:6379</span>&gt; set str <span class="hljs-number">9223372036854775807</span><br>OK<br><span class="hljs-number">127.0.0.1:6379</span>&gt; object encoding str<br><span class="hljs-string">&quot;int&quot;</span><br><span class="hljs-number">127.0.0.1:6379</span>&gt; set str <span class="hljs-number">9223372036854775808</span><br>OK<br><span class="hljs-number">127.0.0.1:6379</span>&gt; object encoding str<br><span class="hljs-string">&quot;embstr&quot;</span><br></code></pre></td></tr></table></figure>
@@ -297,10 +299,16 @@
 <figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1:6379</span>&gt; set str <span class="hljs-number">9223372036854775807</span><br>OK<br><span class="hljs-number">127.0.0.1:6379</span>&gt; object encoding str<br><span class="hljs-string">&quot;int&quot;</span><br><span class="hljs-number">127.0.0.1:6379</span>&gt; incr str<br>(error) ERR increment or decrement would overflow<br></code></pre></td></tr></table></figure>
 
 <p>上面的问题我没有测试成功，当超过long的最大值，就会报错。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">127</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">1</span>:<span class="hljs-number">6379</span>&gt; set str <span class="hljs-number">1</span><br><span class="hljs-attribute">OK</span><br><span class="hljs-attribute">127</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">1</span>:<span class="hljs-number">6379</span>&gt; debug object str<br><span class="hljs-attribute">Value</span> at:<span class="hljs-number">00007</span>FA524C0D370 refcount:<span class="hljs-number">8</span> encoding:int serializedlength:<span class="hljs-number">2</span> lru:<span class="hljs-number">3830714</span> lru_seconds_idle:<span class="hljs-number">5562</span><br></code></pre></td></tr></table></figure>
+
 <h2 id="1-2-embstr"><a href="#1-2-embstr" class="headerlink" title="1.2 embstr"></a>1.2 embstr</h2><p>优点：创建时少分配一次空间，删除时释放一次空间，数据相连查找方便。</p>
 <p>缺点：字符串的长度增加需要重新分配内存时，整个redisObject和sds都需要重新分配空间，因此redis中的embstr实现为只读。</p>
 
 
+<p>embstr，这种形式使得 RedisObject和SDS 内存地址是连续的。 </p>
+
+
+<p>64字节，减去RedisObject头信息19字节，再减去３字节SDS头信息，剩下45字节，再去除\0结尾。这样最后可以存储44字节。 </p>
 <figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1:6379</span>&gt; set str a<br>OK<br><span class="hljs-number">127.0.0.1:6379</span>&gt; object encoding str<br><span class="hljs-string">&quot;embstr&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>在对embstr对象进行修改时，都会先转化为raw再进行修改，因此，只要是修改embstr对象，修改后的对象一定是raw的，无论是否达到了44个字节。 </p>
@@ -327,6 +335,8 @@
 <p> 不能满足这两个条件的时候使用 linkedlist 编码。</p>
 <p> 两个条件可以在redis.conf 配置文件中的 list-max-ziplist-value选项和 list-max-ziplist-entries 选项进行配置。</p>
 <figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1:6379</span>&gt; lpush strs <span class="hljs-number">1</span><br>(integer) <span class="hljs-number">1</span><br><span class="hljs-number">127.0.0.1:6379</span>&gt; object encoding strs<br><span class="hljs-string">&quot;ziplist&quot;</span><br><span class="hljs-number">127.0.0.1:6379</span>&gt; lpush strs 1222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br>(integer) <span class="hljs-number">2</span><br><span class="hljs-number">127.0.0.1:6379</span>&gt; object encoding strs<br><span class="hljs-string">&quot;linkedlist&quot;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">zlentry</span> &#123;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> prevrawlensize; <span class="hljs-comment">/* 内存中编码后的prevrawlen用了多少字节 */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> prevrawlen;     <span class="hljs-comment">/* 前一个entry占用的长度，主要是为了entry之间跳转 */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> lensize;        <span class="hljs-comment">/* 内存中编码后的len用了多少字节 */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> len;            <span class="hljs-comment">/* 当前entry的长度，如果是string则表示string的长度，如果是整数，则len依赖于具体数值大小。*/</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> headersize;     <span class="hljs-comment">/* prevrawlensize + lensize. entry的head部分用了多少字节 */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> encoding;      <span class="hljs-comment">/* 当前entry的编码格式 */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *p;            <span class="hljs-comment">/* 指向数据域的指针 */</span><br>&#125; zlentry;<br></code></pre></td></tr></table></figure>
 
 <h1 id="3-hash"><a href="#3-hash" class="headerlink" title="3 hash"></a>3 hash</h1><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs armasm">简介：在Redis中，哈希类型是指v（值）本身又是一个键值对（k-v）结构<br>简单使用举例：hset key <span class="hljs-meta">field</span> value 、hget key <span class="hljs-meta">field</span><br>内部编码：ziplist（压缩列表） 、hashtable（哈希表）<br>应用场景：缓存用户信息等。<br>注意点：如果开发使用hgetall，哈希元素比较多的话，可能导致Redis阻塞，可以使用hscan。而如果只是获取部分<span class="hljs-meta">field</span>，建议使用hmget。<br></code></pre></td></tr></table></figure>
 
