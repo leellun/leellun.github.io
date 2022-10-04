@@ -24,7 +24,7 @@
 <meta property="og:description" content="1 数据库轮询通常是在小型项目中使用，即通过一个线程定时的去扫描数据库，通过订单时间来判断是否有超时的订单，然后进行update或delete等操作. 用quartz来实现的。 123456789101112131415161718&#x2F;&#x2F; 创建任务JobDetail jobDetail &#x3D; JobBuilder.newJob(MyJob.class).withIdentity(&quot;job1&amp;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-24T10:14:02.000Z">
-<meta property="article:modified_time" content="2022-10-03T16:44:25.476Z">
+<meta property="article:modified_time" content="2022-10-04T17:12:22.885Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="定时任务">
 <meta name="twitter:card" content="summary_large_image">
@@ -219,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k 字
+          2k 字
         
       </span>
     
@@ -230,7 +230,7 @@
         
         
         
-          15 分钟
+          17 分钟
         
       </span>
     
@@ -287,7 +287,8 @@
 <li>集群扩展相当麻烦</li>
 <li>因为内存条件限制的原因，比如下单未付款的订单数太多，那么很容易就出现OOM异常</li>
 </ul>
-<h2 id="4-redis缓存"><a href="#4-redis缓存" class="headerlink" title="4 redis缓存"></a>4 redis缓存</h2><h2 id="5-使用消息队列"><a href="#5-使用消息队列" class="headerlink" title="5 使用消息队列"></a>5 使用消息队列</h2><h3 id="5-1-rabbitmq"><a href="#5-1-rabbitmq" class="headerlink" title="5.1 rabbitmq"></a>5.1 rabbitmq</h3><p>可以采用rabbitMQ的延时队列。RabbitMQ具有以下两个特性，可以实现延迟队列：</p>
+<h2 id="4-redis缓存"><a href="#4-redis缓存" class="headerlink" title="4 redis缓存"></a>4 redis缓存</h2><p>该方案使用redis的Keyspace Notifications，中文翻译就是键空间机制，就是利用该机制可以在key失效之后，提供一个回调，实际上是redis会给客户端发送一个消息。 </p>
+<h2 id="5-使用消息队列"><a href="#5-使用消息队列" class="headerlink" title="5 使用消息队列"></a>5 使用消息队列</h2><h3 id="5-1-rabbitmq"><a href="#5-1-rabbitmq" class="headerlink" title="5.1 rabbitmq"></a>5.1 rabbitmq</h3><p>可以采用rabbitMQ的延时队列。RabbitMQ具有以下两个特性，可以实现延迟队列：</p>
 <ul>
 <li>RabbitMQ可以针对Queue和Message设置 x-message-tt，来控制消息的生存时间，如果超时，则消息变为dead letter</li>
 <li>lRabbitMQ的Queue可以配置x-dead-letter-exchange 和x-dead-letter-routing-key（可选）两个参数，用来控制队列内出现了deadletter，则按照这两个参数重新路由。</li>
@@ -299,8 +300,10 @@
 
 
 
-<p>参考文档：</p>
-<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/J6jb_Dt3C49CIjYBTrN4gQ">https://mp.weixin.qq.com/s/J6jb_Dt3C49CIjYBTrN4gQ</a></p>
+<h1 id="参考文档："><a href="#参考文档：" class="headerlink" title="参考文档："></a>参考文档：</h1><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/J6jb_Dt3C49CIjYBTrN4gQ">https://mp.weixin.qq.com/s/J6jb_Dt3C49CIjYBTrN4gQ</a></p>
+<h1 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h1><p><a target="_blank" rel="noopener" href="https://github.com/leellun/javasvc-learn/tree/main/svc-delaytask">https://github.com/leellun/javasvc-learn/tree/main/svc-delaytask</a></p>
+<p>rabbitmq死信队列：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/leellun/rabbitmq-learn/tree/main/RabbitMQDemo/src/main/java/com/newland/rabbitmq/advance/rabbitexchnage02">https://github.com/leellun/rabbitmq-learn/tree/main/RabbitMQDemo/src/main/java/com/newland/rabbitmq/advance/rabbitexchnage02</a></p>
 
                 
               </div>

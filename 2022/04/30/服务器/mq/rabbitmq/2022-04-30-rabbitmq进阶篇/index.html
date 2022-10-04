@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://leellun.github.io/2022/04/30/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/2022-04-30-rabbitmq%E8%BF%9B%E9%98%B6%E7%AF%87/1664880714968.png">
 <meta property="og:image" content="https://leellun.github.io/2022/04/30/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/2022-04-30-rabbitmq%E8%BF%9B%E9%98%B6%E7%AF%87/1664880656862.png">
 <meta property="article:published_time" content="2022-04-30T11:18:02.000Z">
-<meta property="article:modified_time" content="2022-10-04T14:52:09.577Z">
+<meta property="article:modified_time" content="2022-10-04T18:24:58.460Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="rabbitmq">
 <meta name="twitter:card" content="summary_large_image">
@@ -226,7 +226,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          16k 字
+          19k 字
         
       </span>
     
@@ -237,7 +237,7 @@
         
         
         
-          132 分钟
+          156 分钟
         
       </span>
     
@@ -460,8 +460,63 @@
 <li>mandatory标志说明开启了消息故障检测模式，只会让RabbitMq向你通知失败，而不会通知成功。 或者通过备份交换器来确保消息能够从交换器路由到队列中，进而能够保存下来而不会被丢弃。 </li>
 <li>消息和队列都需要进行持久化处理 </li>
 </ul>
-<p>源码分享：</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/leelun/rabbitmq-learn">https://github.com/leelun/rabbitmq-learn</a></p>
+<h1 id="十一、RabbitMQ-可靠性、重复消费、顺序性、消息积压解决方案"><a href="#十一、RabbitMQ-可靠性、重复消费、顺序性、消息积压解决方案" class="headerlink" title="十一、RabbitMQ 可靠性、重复消费、顺序性、消息积压解决方案"></a>十一、RabbitMQ 可靠性、重复消费、顺序性、消息积压解决方案</h1><p>1 消息确认机制、消息未路由机制</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@Slf4j</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RabbitMQConfig</span> &#123;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> RabbitTemplate rabbitTemplate;<br><br>    <span class="hljs-meta">@PostConstruct</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">enableConfirmCallback</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">//ack true:当消息成功发到交换机 false:没有发送到交换机 </span><br>        <span class="hljs-comment">//correlationData:可在发送时指定消息唯一 id</span><br>        rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -&gt; &#123;<br>            <span class="hljs-keyword">if</span>(!ack)&#123;<br>                <span class="hljs-comment">//记录日志、发送邮件通知、落库定时任务扫描重发</span><br>            &#125;<br>        &#125;);<br>        <br>        <span class="hljs-comment">//当消息成功发送到交换机没有路由到队列触发此监听</span><br>        rabbitTemplate.setReturnsCallback(returned -&gt; &#123;<br>            <span class="hljs-comment">//记录日志、发送邮件通知、落库定时任务扫描重发</span><br>        &#125;);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>对于消息未路由到消息队列可以通过设置alternate-exchange备份交换机交给rabbitmq去做可靠性</p>
+<p>2 可靠性保障</p>
+<ul>
+<li>为了防止rabbitmq 宕机或者重启弄丢消息，加入持久化</li>
+<li>创建镜像队列做高可用机制</li>
+<li>消费者手动应答（ack）机制 </li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">rabbitmq:</span><br>    <span class="hljs-attr">listener:</span><br>      <span class="hljs-attr">simple:</span><br>        <span class="hljs-attr">acknowledge-mode:</span> <span class="hljs-string">manual</span> <span class="hljs-comment">#手动应答</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ruby">channel.basicNack(deliveryTag, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>);<span class="hljs-regexp">//</span>容易出现问题，不管第三个参数<span class="hljs-literal">true</span>还是<span class="hljs-literal">false</span>，<span class="hljs-literal">true</span>表示重新回到队列顶部，<span class="hljs-literal">false</span>表示抛弃<br></code></pre></td></tr></table></figure>
+
+<p>真实的场景一般是三种选择</p>
+<ul>
+<li><strong>当消费失败后将此消息存到 Redis，记录消费次数，如果消费了三次还是失败，就丢弃掉消息，记录日志落库保存</strong></li>
+<li><strong>直接填 false ，不重回队列，记录日志、发送邮件等待开发手动处理</strong></li>
+<li><strong>不启用手动 ack ，使用 SpringBoot 提供的消息重试</strong></li>
+</ul>
+<p> springboot消息解决方式：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">rabbitmq:</span><br>    <span class="hljs-attr">listener:</span><br>      <span class="hljs-attr">simple:</span><br>        <span class="hljs-attr">retry:</span><br>          <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br>          <span class="hljs-attr">max-attempts:</span> <span class="hljs-number">3</span> <span class="hljs-comment">#重试次数</span><br></code></pre></td></tr></table></figure>
+
+<p>3 消息重复消费（幂等性）</p>
+<p>(1)确保消费端只执行一次</p>
+<p>通过redis设置状态，比如订单：redis.set(“order”+订单id)</p>
+<p>(2)允许消费端执行多次，保证数据不受影响 </p>
+<ul>
+<li>数据库唯一键约束 </li>
+<li>数据库乐观锁思想 </li>
+</ul>
+<p>4 顺序性</p>
+<p>顺序消费的业务，我们可以只部署一个消费者实例，然后设置 RabbitMQ 每次只推送一个消息 </p>
+<h1 id="十二、-消息（堆积）积压"><a href="#十二、-消息（堆积）积压" class="headerlink" title="十二、 消息（堆积）积压"></a>十二、 消息（堆积）积压</h1><p>可能消费者突然挂了我们没有发现，可能消费者处理消费能力出现问题，与生产者产生消息速度不匹配。 </p>
+<p>问题：</p>
+<ul>
+<li>消息存留时间过长，导致失效消失；</li>
+<li>消息队列集群磁盘被写满；</li>
+<li>长时间挤压，哪怕是消费者恢复了消费速度还是要很久才能慢慢消费完</li>
+</ul>
+<p>解决方式：</p>
+<p>1、申请资源新建一个topic增加partition分区，比如原来是3个，那我们就增加到30个，并且建立30个消费者去同时消费，那速度自然就增加了10倍。原来的3个就需要将原本的数据也写入新的topic中。等到积压消息处理完了，再改回原本的消费者中。</p>
+<p>2、如果用了rabbitMQ，并且设置了超时时间，消息积压的时候就有可能会出现超时丢失的情况。一般情况下生产环境是不会设置超时时间的，但是万一设置了出现这种情况，我们首先是要排除问题保证后续消息处理正常，不会再造成丢失。然后等过了数据高峰期再写个临时程序，将丢失的数据一点点查询出来，重新写入topic中。</p>
+<p>3、如果长时间没有消费导致磁盘满了怎么办，如果不能临时扩容，那么只有两种方案，要么将消息扔掉等过了高峰期走上面的第二种方案，去补偿数据；要么新建立一个消费者，将消息快速消费存入一个新的地方。</p>
+<h1 id="十三、延迟插件"><a href="#十三、延迟插件" class="headerlink" title="十三、延迟插件"></a>十三、延迟插件</h1><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>下载对应版本插件<br>https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/rabbitmq/</span>rabbitmq-delayed-message-exchange/releases<br><br>wget -c https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/rabbitmq/</span>rabbitmq-delayed-message-exchange<span class="hljs-regexp">/releases/</span>download<span class="hljs-regexp">/v3.8.0/</span>rabbitmq_delayed_message_exchange-<span class="hljs-number">3.8</span>.<span class="hljs-number">0</span>.ez<br>cp rabbitmq_delayed_message_exchange-<span class="hljs-number">3.8</span>.<span class="hljs-number">0</span>.ez  <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/rabbitmq/</span>plugins/.<br><span class="hljs-comment">#启用插件</span><br>rabbitmq-plugins enable rabbitmq_delayed_message_exchange<br><span class="hljs-comment">#查看插件列表</span><br>rabbitmq-plugins list<br></code></pre></td></tr></table></figure>
+
+<p>代码分析：</p>
+<p>生产者</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java">Map&lt;String, Object&gt; arguments = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;String, Object&gt;();<br>arguments.put(<span class="hljs-string">&quot;x-delayed-type&quot;</span>, <span class="hljs-string">&quot;direct&quot;</span>);<br><span class="hljs-comment">// 声明普通交换器和队列</span><br>channel.exchangeDeclare(exchangeName, <span class="hljs-string">&quot;x-delayed-message&quot;</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, arguments);<br>channel.queueDeclare(queueName, <span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">null</span>);<br>channel.queueBind(queueName, exchangeName, <span class="hljs-string">&quot;&quot;</span>);<br><br><span class="hljs-comment">// 发送带有TTL过期时间的消息</span><br>System.out.println(<span class="hljs-string">&quot;[Sender] Send Message...&quot;</span>);<br><span class="hljs-type">String</span> <span class="hljs-variable">message</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;exchange delay message&quot;</span>;<br>Map&lt;String, Object&gt; headers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>headers.put(<span class="hljs-string">&quot;x-delay&quot;</span>, <span class="hljs-number">5000</span>);<br>AMQP.<span class="hljs-type">BasicProperties</span> <span class="hljs-variable">properties</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AMQP</span>.BasicProperties.Builder()<br>    .headers(headers)<br>    .build();<br>channel.basicPublish(exchangeName, <span class="hljs-string">&quot;&quot;</span>, properties, message.getBytes());<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="源码分享："><a href="#源码分享：" class="headerlink" title="源码分享："></a>源码分享：</h1><p><a target="_blank" rel="noopener" href="https://github.com/leelun/rabbitmq-learn">https://github.com/leelun/rabbitmq-learn</a></p>
 
                 
               </div>
