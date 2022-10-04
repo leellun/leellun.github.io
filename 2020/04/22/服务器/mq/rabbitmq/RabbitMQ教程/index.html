@@ -31,9 +31,9 @@
 <meta property="og:image" content="https://leellun.github.io/2020/04/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/RabbitMQ%E6%95%99%E7%A8%8B/20190420133237576.png">
 <meta property="og:image" content="https://leellun.github.io/2020/04/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/RabbitMQ%E6%95%99%E7%A8%8B/20190420133447136.png">
 <meta property="og:image" content="https://leellun.github.io/2020/04/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/RabbitMQ%E6%95%99%E7%A8%8B/1323383-20200730003807268-172253195.png">
-<meta property="og:image" content="https://leellun.github.io/2020/04/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/RabbitMQ%E6%95%99%E7%A8%8B/RabbitMQ%E6%95%99%E7%A8%8B/1323383-20200730004139693-1457985890.png">
+<meta property="og:image" content="https://leellun.github.io/2020/04/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/RabbitMQ%E6%95%99%E7%A8%8B/1323383-20200730004139693-1457985890.png">
 <meta property="article:published_time" content="2020-04-22T11:14:02.000Z">
-<meta property="article:modified_time" content="2022-10-04T06:07:28.995Z">
+<meta property="article:modified_time" content="2022-10-04T06:11:31.161Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="rabbitmq">
 <meta name="twitter:card" content="summary_large_image">
@@ -488,7 +488,8 @@
 <p>消息存入队列后，不是固定不变的，它会随着系统的负载在队列中不断流动，消息的状态会不断发送变化。持久化的消息，索引和内容都必须先保存在磁盘上，才会处于上述状态中的一种，gama状态只有持久化消息才会有的状态。</p>
 <p>在运行时，RabbitMQ会根据消息传递的速度定期计算一个当前内存中能够保存的最大消息数量（target_ram_count），如果alpha状态的消息数量大于此值，则会引起消息的状态转换，多余的消息可能会转换到beta、gama或者delta状态。区分这4种状态的主要作用是满足不同的内存和CPU需求。</p>
 <p>对于普通没有设置优先级和镜像的队列来说，backing_queue的默认实现是rabbit_variable_queue，其内部通过5个子队列Q1、Q2、delta、Q3、Q4来体现消息的各个状态。</p>
-<p><a target="_blank" rel="noopener" href="https://img2020.cnblogs.com/blog/1323383/202007/1323383-20200730004139693-1457985890.png"><img src="RabbitMQ%E6%95%99%E7%A8%8B/1323383-20200730004139693-1457985890.png" srcset="/img/loading.gif" lazyload alt="img"></a></p>
+<img src="/2020/04/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/RabbitMQ%E6%95%99%E7%A8%8B/1323383-20200730004139693-1457985890.png" srcset="/img/loading.gif" lazyload class="" title="img">
+
 <p>消费者获取消息也会引起消息的状态转换。</p>
 <ul>
 <li>当消费者获取消息时，首先会从Q4中获取消息，如果获取成功则返回。</li>
