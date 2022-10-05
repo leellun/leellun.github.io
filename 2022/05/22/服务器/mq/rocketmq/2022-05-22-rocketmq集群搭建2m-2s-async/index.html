@@ -1,0 +1,704 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、rocketmq集群模式介绍 RocketMQ支持多种集群策略     2m-2s-async(本文采用模式)-2主2从异步刷盘(吞吐量较大，但是消息可能丢失)      2m-2s-sync：2主2从同步刷盘(吞吐量会下降，但是消息更安全)      2m-noslave ：2主无从(单点故障)，然后还可以直接配置broker.conf，进行单点环境配置      dledger：用来实现主">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rocketmq集群搭建2m-2s-async">
+<meta property="og:url" content="https://leellun.github.io/2022/05/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rocketmq/2022-05-22-rocketmq%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA2m-2s-async/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="一、rocketmq集群模式介绍 RocketMQ支持多种集群策略     2m-2s-async(本文采用模式)-2主2从异步刷盘(吞吐量较大，但是消息可能丢失)      2m-2s-sync：2主2从同步刷盘(吞吐量会下降，但是消息更安全)      2m-noslave ：2主无从(单点故障)，然后还可以直接配置broker.conf，进行单点环境配置      dledger：用来实现主">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-22T10:14:02.000Z">
+<meta property="article:modified_time" content="2022-10-05T10:35:40.167Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="rocketmq">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>rocketmq集群搭建2m-2s-async - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="rocketmq集群搭建2m-2s-async"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-05-22 18:14" pubdate>
+          2022年5月22日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">rocketmq集群搭建2m-2s-async</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、rocketmq集群模式介绍"><a href="#一、rocketmq集群模式介绍" class="headerlink" title="一、rocketmq集群模式介绍"></a>一、rocketmq集群模式介绍</h1><p> RocketMQ支持多种集群策略</p>
+<pre><code class="hljs">    2m-2s-async(本文采用模式)-2主2从异步刷盘(吞吐量较大，但是消息可能丢失)
+
+    2m-2s-sync：2主2从同步刷盘(吞吐量会下降，但是消息更安全)
+
+    2m-noslave ：2主无从(单点故障)，然后还可以直接配置broker.conf，进行单点环境配置
+
+    dledger：用来实现主从切换的。集群中的节点会基于Raft协议随机选举出一个leader，
+</code></pre>
+<p>其他的就都是follower。通常正式环境都会采用这种方式来搭建集群。</p>
+<h1 id="二、配置文件说明"><a href="#二、配置文件说明" class="headerlink" title="二、配置文件说明"></a>二、配置文件说明</h1><h2 id="2-1-namesrv配置文件"><a href="#2-1-namesrv配置文件" class="headerlink" title="2.1 namesrv配置文件"></a>2.1 namesrv配置文件</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs matlab">vi namesrv.<span class="hljs-keyword">properties</span><br></code></pre></td></tr></table></figure>
+
+<p>内容：</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">listenPort</span><span class="hljs-operator">=</span><span class="hljs-number">8876</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="2-2-broker配置文件"><a href="#2-2-broker配置文件" class="headerlink" title="2.2 broker配置文件"></a>2.2 broker配置文件</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">vi broker-<span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.properties</span> <br></code></pre></td></tr></table></figure>
+
+<p>内容：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-comment">#所属集群名字，名字一样的节点就在同一个集群内</span><br><span class="hljs-attr">brokerClusterName</span>=rocketmq-cluster<br><span class="hljs-comment">#broker名字，名字一样的节点就是一组主从节点。</span><br><span class="hljs-attr">brokerName</span>=broker-a<br><span class="hljs-comment">#brokerid,0就表示是Master，&gt;0的都是表示 Slave</span><br><span class="hljs-attr">brokerId</span>=<span class="hljs-number">0</span><br><span class="hljs-comment">#nameServer地址，分号分割</span><br><span class="hljs-attr">namesrvAddr</span>=node1:<span class="hljs-number">9876</span><span class="hljs-comment">;node1:9876;node1:9876</span><br><span class="hljs-comment">#在发送消息时，自动创建服务器不存在的topic，默认创建的队列数</span><br><span class="hljs-attr">defaultTopicQueueNums</span>=<span class="hljs-number">4</span><br><span class="hljs-comment">#是否允许 Broker 自动创建Topic，建议线下开启，线上关闭</span><br><span class="hljs-attr">autoCreateTopicEnable</span>=<span class="hljs-literal">true</span><br><span class="hljs-comment">#是否允许 Broker 自动创建订阅组，建议线下开启，线上关闭</span><br><span class="hljs-attr">autoCreateSubscriptionGroup</span>=<span class="hljs-literal">true</span><br><span class="hljs-comment">#Broker 对外服务的监听端口</span><br><span class="hljs-attr">listenPort</span>=<span class="hljs-number">10911</span><br><span class="hljs-comment">#删除文件时间点，默认凌晨 4点</span><br><span class="hljs-attr">deleteWhen</span>=<span class="hljs-number">04</span><br><span class="hljs-comment">#文件保留时间，默认 48 小时</span><br><span class="hljs-attr">fileReservedTime</span>=<span class="hljs-number">120</span><br><span class="hljs-comment">#commitLog每个文件的大小默认1G</span><br><span class="hljs-attr">mapedFileSizeCommitLog</span>=<span class="hljs-number">1073741824</span><br><span class="hljs-comment">#ConsumeQueue每个文件默认存30W条，根据业务情况调整</span><br><span class="hljs-attr">mapedFileSizeConsumeQueue</span>=<span class="hljs-number">300000</span><br><span class="hljs-comment">#destroyMapedFileIntervalForcibly=120000</span><br><span class="hljs-comment">#redeleteHangedFileInterval=120000</span><br><span class="hljs-comment">#检测物理文件磁盘空间</span><br><span class="hljs-attr">diskMaxUsedSpaceRatio</span>=<span class="hljs-number">88</span><br><span class="hljs-comment">#存储路径</span><br><span class="hljs-attr">storePathRootDir</span>=/app/rocketmq/store<br><span class="hljs-comment">#commitLog 存储路径</span><br><span class="hljs-attr">storePathCommitLog</span>=/app/rocketmq/store/commitlog<br><span class="hljs-comment">#消费队列存储路径存储路径</span><br><span class="hljs-attr">storePathConsumeQueue</span>=/app/rocketmq/store/consumequeue<br><span class="hljs-comment">#消息索引存储路径</span><br><span class="hljs-attr">storePathIndex</span>=/app/rocketmq/store/index<br><span class="hljs-comment">#checkpoint 文件存储路径</span><br><span class="hljs-attr">storeCheckpoint</span>=/app/rocketmq/store/checkpoint<br><span class="hljs-comment">#abort 文件存储路径</span><br><span class="hljs-attr">abortFile</span>=/app/rocketmq/store/abort<br><span class="hljs-comment">#限制的消息大小</span><br><span class="hljs-attr">maxMessageSize</span>=<span class="hljs-number">65536</span><br><span class="hljs-comment">#flushCommitLogLeastPages=4</span><br><span class="hljs-comment">#flushConsumeQueueLeastPages=2</span><br><span class="hljs-comment">#flushCommitLogThoroughInterval=10000</span><br><span class="hljs-comment">#flushConsumeQueueThoroughInterval=60000</span><br><span class="hljs-comment">#Broker 的角色</span><br><span class="hljs-comment">#- ASYNC_MASTER 异步复制Master</span><br><span class="hljs-comment">#- SYNC_MASTER 同步双写Master</span><br><span class="hljs-comment">#- SLAVE</span><br><span class="hljs-attr">brokerRole</span>=ASYNC_MASTER<br><span class="hljs-comment">#刷盘方式</span><br><span class="hljs-comment">#- ASYNC_FLUSH 异步刷盘</span><br><span class="hljs-comment">#- SYNC_FLUSH 同步刷盘</span><br><span class="hljs-attr">flushDiskType</span>=ASYNC_FLUSH<br><span class="hljs-comment">#checkTransactionMessageEnable=false</span><br><span class="hljs-comment">#发消息线程池数量 </span><br><br><span class="hljs-comment">#sendMessageThreadPoolNums=128</span><br><br><span class="hljs-comment">#拉消息线程池数量</span><br><br><span class="hljs-comment">#pullMessageThreadPoolNums=128</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">vi broker-<span class="hljs-selector-tag">a</span>-s<span class="hljs-selector-class">.properties</span><br></code></pre></td></tr></table></figure>
+
+<p>修改brokerId和brokerRole</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">brokerId</span><span class="hljs-operator">=</span><span class="hljs-number">1</span><br><span class="hljs-attribute">brokerRole</span><span class="hljs-operator">=</span>SLAVE<br></code></pre></td></tr></table></figure>
+
+<h1 id="三、环境准备"><a href="#三、环境准备" class="headerlink" title="三、环境准备"></a>三、环境准备</h1><table>
+<thead>
+<tr>
+<th>节点</th>
+<th>nameServer节点</th>
+<th>broker节点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>node1</td>
+<td>nameserver</td>
+<td></td>
+</tr>
+<tr>
+<td>node2</td>
+<td>nameserver</td>
+<td>broker-a,broker-b-s</td>
+</tr>
+<tr>
+<td>node3</td>
+<td>nameserver</td>
+<td>broker-a,broker-b-s</td>
+</tr>
+</tbody></table>
+<h1 id="四、启动服务"><a href="#四、启动服务" class="headerlink" title="四、启动服务"></a>四、启动服务</h1><p>启动nameserver服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">nohup</span> sh bin/mqnamesrv -c conf/namesrv.properties &amp;<br></code></pre></td></tr></table></figure>
+
+<p>启动broker服务</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">nohup <span class="hljs-keyword">sh</span> bin/mqbroker -n localhos<span class="hljs-variable">t:8876</span> -<span class="hljs-keyword">c</span> <span class="hljs-keyword">conf</span>/broker.<span class="hljs-keyword">conf</span> &amp;<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/" class="category-chain-item">mq</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/rocketmq/">#rocketmq</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>rocketmq集群搭建2m-2s-async</div>
+      <div>https://leellun.github.io/2022/05/22/服务器/mq/rocketmq/2022-05-22-rocketmq集群搭建2m-2s-async/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年5月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/05/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rocketmq/2022-05-22-rocketmq%E4%BC%AA%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA2m-2s-async/" title="rocketmq伪集群搭建2m-2s-async">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">rocketmq伪集群搭建2m-2s-async</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/05/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/2022-05-07-rabbitmq%E3%80%81kafka%E3%80%81activemq%E3%80%81rocketmq%E9%80%89%E5%9E%8B%E5%AF%B9%E6%AF%94/" title="rabbitmq、kafka、activemq、rocketmq选型对比">
+                        <span class="hidden-mobile">rabbitmq、kafka、activemq、rocketmq选型对比</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

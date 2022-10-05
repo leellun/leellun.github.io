@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://leellun.github.io/2022/04/30/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/2022-04-30-rabbitmq%E8%BF%9B%E9%98%B6%E7%AF%87/1664880714968.png">
 <meta property="og:image" content="https://leellun.github.io/2022/04/30/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/2022-04-30-rabbitmq%E8%BF%9B%E9%98%B6%E7%AF%87/1664880656862.png">
 <meta property="article:published_time" content="2022-04-30T11:18:02.000Z">
-<meta property="article:modified_time" content="2022-10-04T18:24:58.460Z">
+<meta property="article:modified_time" content="2022-10-05T04:01:52.347Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="rabbitmq">
 <meta name="twitter:card" content="summary_large_image">
@@ -237,7 +237,7 @@
         
         
         
-          156 分钟
+          158 分钟
         
       </span>
     
@@ -510,6 +510,10 @@
 <p>生产者</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java">Map&lt;String, Object&gt; arguments = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;String, Object&gt;();<br>arguments.put(<span class="hljs-string">&quot;x-delayed-type&quot;</span>, <span class="hljs-string">&quot;direct&quot;</span>);<br><span class="hljs-comment">// 声明普通交换器和队列</span><br>channel.exchangeDeclare(exchangeName, <span class="hljs-string">&quot;x-delayed-message&quot;</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, arguments);<br>channel.queueDeclare(queueName, <span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">null</span>);<br>channel.queueBind(queueName, exchangeName, <span class="hljs-string">&quot;&quot;</span>);<br><br><span class="hljs-comment">// 发送带有TTL过期时间的消息</span><br>System.out.println(<span class="hljs-string">&quot;[Sender] Send Message...&quot;</span>);<br><span class="hljs-type">String</span> <span class="hljs-variable">message</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;exchange delay message&quot;</span>;<br>Map&lt;String, Object&gt; headers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>headers.put(<span class="hljs-string">&quot;x-delay&quot;</span>, <span class="hljs-number">5000</span>);<br>AMQP.<span class="hljs-type">BasicProperties</span> <span class="hljs-variable">properties</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AMQP</span>.BasicProperties.Builder()<br>    .headers(headers)<br>    .build();<br>channel.basicPublish(exchangeName, <span class="hljs-string">&quot;&quot;</span>, properties, message.getBytes());<br></code></pre></td></tr></table></figure>
 
+<h1 id="十四、镜像队列"><a href="#十四、镜像队列" class="headerlink" title="十四、镜像队列"></a>十四、镜像队列</h1><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">rabbitmqctl <span class="hljs-keyword">set</span>_policy <span class="hljs-params">--priority</span> 0 <span class="hljs-params">--apply-to</span> queues mirror_queue <span class="hljs-string">&quot;^mirror_&quot;</span> &#x27;&#123;<span class="hljs-string">&quot;ha-mode&quot;</span>:<span class="hljs-string">&quot;exactly&quot;</span>,<span class="hljs-string">&quot;ha-params&quot;</span><span class="hljs-function">:3</span>,<span class="hljs-string">&quot;ha-sync-mode&quot;</span>:<span class="hljs-string">&quot;automatic&quot;</span>&#125;&#x27;<br></code></pre></td></tr></table></figure>
+
+<p>说明：添加镜像队列mirror_queue，匹配规则为”mirror_”开头队列，匹配到队列，规则为exactly指定代理生成ha-params=3的个数上生成镜像，并且ha-sync-mode为异步</p>
+<p>通过界面添加镜像队列：</p>
 
 
 
@@ -614,9 +618,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/06/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-06-06-redis%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F%E5%8F%8A%E5%8E%9F%E7%90%86/" title="redis持久化方式及原理">
+                      <a href="/2022/05/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/2022-05-07-rabbitmq%E3%80%81kafka%E3%80%81activemq%E3%80%81rocketmq%E9%80%89%E5%9E%8B%E5%AF%B9%E6%AF%94/" title="rabbitmq、kafka、activemq、rocketmq选型对比">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">redis持久化方式及原理</span>
+                        <span class="hidden-mobile">rabbitmq、kafka、activemq、rocketmq选型对比</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -624,8 +628,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/04/04/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E5%AD%98%E5%82%A8/minio%E5%85%A5%E9%97%A8%E6%96%87%E6%A1%A3/" title="minio入门文档">
-                        <span class="hidden-mobile">minio入门文档</span>
+                      <a href="/2022/04/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/2022-04-22-rabbitmq%E4%BC%AA%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" title="rabbitmq伪集群搭建">
+                        <span class="hidden-mobile">rabbitmq伪集群搭建</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
