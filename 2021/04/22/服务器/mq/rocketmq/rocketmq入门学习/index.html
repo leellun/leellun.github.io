@@ -23,11 +23,14 @@
 <meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
 <meta property="og:description" content="一、概念特性1.1 概念1 消息模型（Message Model） RocketMQ主要由 Producer、Broker、Consumer 三部分组成，其中Producer 负责生产消息，Consumer 负责消费消息，Broker 负责存储消息。Broker 在实际部署过程中对应一台服务器，每个 Broker 可以存储多个Topic的消息，每个Topic的消息也可以分片存储于不同的 Broke">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leellun.github.io/2021/04/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rocketmq/rocketmq%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1660959600410.png">
+<meta property="og:image" content="https://leellun.github.io/2021/04/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rocketmq/rocketmq%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/p69402.png">
 <meta property="article:published_time" content="2021-04-22T10:14:02.000Z">
-<meta property="article:modified_time" content="2022-10-05T07:50:42.680Z">
+<meta property="article:modified_time" content="2022-10-05T16:34:17.206Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="rocketmq">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://leellun.github.io/2021/04/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rocketmq/rocketmq%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1660959600410.png">
   
   
   
@@ -219,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5.3k 字
+          5.6k 字
         
       </span>
     
@@ -230,7 +233,7 @@
         
         
         
-          45 分钟
+          47 分钟
         
       </span>
     
@@ -314,7 +317,7 @@
 <p>回溯消费是指Consumer已经消费成功的消息，由于业务上需求需要重新消费，要支持此功能，Broker在向Consumer投递成功消息后，消息仍然需要保留。并且重新消费一般是按照时间维度，例如由于Consumer系统故障，恢复后需要重新消费1小时前的数据，那么Broker要提供一种机制，可以按照时间维度来回退消费进度。RocketMQ支持按照时间回溯消费，时间维度精确到毫秒。</p>
 <p>7 事务消息</p>
 <p>RocketMQ事务消息（Transactional Message）是指应用本地事务和发送消息操作可以被定义到全局事务中，要么同时成功，要么同时失败。RocketMQ的事务消息提供类似 X/Open XA 的分布事务功能，通过事务消息能达到分布式事务的最终一致。</p>
-<h1 id="二、架构"><a href="#二、架构" class="headerlink" title="二、架构"></a>二、架构</h1>
+<h1 id="二、架构"><a href="#二、架构" class="headerlink" title="二、架构"></a>二、架构</h1><img src="/2021/04/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rocketmq/rocketmq%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1660959600410.png" srcset="/img/loading.gif" lazyload class="" width="1660959600410">
 
 <ul>
 <li>Producer：消息发布的角色，支持分布式集群方式部署。Producer通过MQ的负载均衡模块选择相应的Broker集群队列进行消息投递，投递的过程支持快速失败并且低延迟。</li>
@@ -375,12 +378,41 @@
 <li>Pull：消息由Consumer主动从消息队列RocketMQ版拉取。</li>
 </ul>
 <p>Pull Consumer提供了更多接收消息的选择。相比于Push Consumer，您可以使用Pull Consumer更加自由地控制消息拉取。 </p>
-<h2 id="4-4-顺序消息"><a href="#4-4-顺序消息" class="headerlink" title="4.4 顺序消息"></a>4.4 顺序消息</h2><p>顺序消息分为两类：</p>
+<h2 id="4-4-顺序消息"><a href="#4-4-顺序消息" class="headerlink" title="4.4 顺序消息"></a>4.4 顺序消息</h2><table>
+<thead>
+<tr>
+<th>生产顺序</th>
+<th>消费顺序</th>
+<th>顺序性效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>设置消息组，保证消息顺序发送。</td>
+<td>顺序消费</td>
+<td>按照消息组粒度，严格保证消息顺序。同一消息组内的消息的消费顺序和发送顺序完全一致。</td>
+</tr>
+<tr>
+<td>设置消息组，保证消息顺序发送。</td>
+<td>并发消费</td>
+<td>并发消费，尽可能按时间顺序处理。</td>
+</tr>
+<tr>
+<td>未设置消息组，消息乱序发送。</td>
+<td>顺序消费</td>
+<td>按队列存储粒度，严格顺序。基于消息队列RocketMQ版本身队列的属性，消费顺序和队列存储的顺序一致，但不保证和发送顺序一致。</td>
+</tr>
+<tr>
+<td>未设置消息组，消息乱序发送。</td>
+<td>并发消费</td>
+<td>并发消费，尽可能按照时间顺序处理。</td>
+</tr>
+</tbody></table>
+<p>顺序消息分为两类：</p>
 <ul>
 <li>全局顺序：对于指定的一个Topic，所有消息按照严格的先入先出FIFO（First In First Out）的顺序进行发布和消费。</li>
 <li>分区顺序：对于指定的一个Topic，所有消息根据Sharding Key进行区块分区。同一个分区内的消息按照严格的FIFO顺序进行发布和消费。Sharding Key是顺序消息中用来区分不同分区的关键字段，和普通消息的Key是完全不同的概念。</li>
 </ul>
-<h2 id="4-5-事务消息"><a href="#4-5-事务消息" class="headerlink" title="4.5 事务消息"></a>4.5 事务消息</h2>
+<h2 id="4-5-事务消息"><a href="#4-5-事务消息" class="headerlink" title="4.5 事务消息"></a>4.5 事务消息</h2><img src="/2021/04/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rocketmq/rocketmq%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/p69402.png" srcset="/img/loading.gif" lazyload class="" title="img">
 
 <p> 发送事务消息包含以下两个步骤： </p>
 <p>1 发送半事务消息（Half Message）及执行本地事务 </p>
@@ -409,6 +441,7 @@
 <p><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/29547.html">https://help.aliyun.com/document_detail/29547.html</a></p>
 <p>源码：</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/leellun/springcloud-learn">leellun/springcloud-learn (github.com)</a> </p>
+<p><a target="_blank" rel="noopener" href="https://github.com/leellun/rocketmq-learn.git">https://github.com/leellun/rocketmq-learn.git</a></p>
 
                 
               </div>
