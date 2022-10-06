@@ -1,0 +1,720 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Logstash学习教程一、介绍logstash是一个数据抽取工具，将数据从一个地方转移到另一个地方。logstash之所以功能强大和流行，还与其丰富的过滤器插件是分不开的，过滤器提供的并不单单是过滤的功能，还可以对进入过滤器的原始数据进行复杂的逻辑处理，甚至添加独特的事件到后续流程中。 Logstash配置文件有如下三部分组成，其中input、output部分是必须配置，filter部分是可选配">
+<meta property="og:type" content="article">
+<meta property="og:title" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:url" content="https://leellun.github.io/2022/10/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticstack/Logstash%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="Logstash学习教程一、介绍logstash是一个数据抽取工具，将数据从一个地方转移到另一个地方。logstash之所以功能强大和流行，还与其丰富的过滤器插件是分不开的，过滤器提供的并不单单是过滤的功能，还可以对进入过滤器的原始数据进行复杂的逻辑处理，甚至添加独特的事件到后续流程中。 Logstash配置文件有如下三部分组成，其中input、output部分是必须配置，filter部分是可选配">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-06T07:51:10.444Z">
+<meta property="article:modified_time" content="2022-09-01T15:36:21.501Z">
+<meta property="article:author" content="leellun">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-10-06 15:51" pubdate>
+          2022年10月6日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          17k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          143 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Logstash学习教程"><a href="#Logstash学习教程" class="headerlink" title="Logstash学习教程"></a>Logstash学习教程</h1><h1 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h1><p>logstash是一个数据抽取工具，将数据从一个地方转移到另一个地方。logstash之所以功能强大和流行，还与其丰富的过滤器插件是分不开的，过滤器提供的并不单单是过滤的功能，还可以对进入过滤器的原始数据进行复杂的逻辑处理，甚至添加独特的事件到后续流程中。</p>
+<p>Logstash配置文件有如下三部分组成，其中input、output部分是必须配置，filter部分是可选配置，而filter就是过滤器插件，可以在这部分实现各种日志过滤功能。</p>
+<h1 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h1><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">wget -c https:<span class="hljs-regexp">//</span>artifacts.elastic.co<span class="hljs-regexp">/downloads/</span>logstash/logstash-<span class="hljs-number">7.17</span>.<span class="hljs-number">5</span>-linux-x86_64.tar.gz<br></code></pre></td></tr></table></figure>
+
+<h1 id="三、开始"><a href="#三、开始" class="headerlink" title="三、开始"></a>三、开始</h1><p>logback的 <code>logstash-sample.conf</code> 一般不进行配置，而是在config目录下新建一个配置文件进行配置。配置完毕后，通过下面命令指定配置文件启动</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">logstash.bat -f ../config/配置文件<br></code></pre></td></tr></table></figure>
+
+<h2 id="3-1-input输入插件"><a href="#3-1-input输入插件" class="headerlink" title="3.1 input输入插件"></a>3.1 input输入插件</h2><p><strong>读取文件</strong></p>
+<p>logstash使用一个名为filewatch的ruby gem库来监听文件变化,并通过一个叫.sincedb的数据库文件来记录被监听的日志文件的读取进度（时间戳），这个sincedb数据文件的默认路径在 &lt;path.data&gt;/plugins/inputs/file下面，文件名类似于.sincedb_123456，而&lt;path.data&gt;表示logstash插件存储目录，默认是LOGSTASH_HOME/data。</p>
+<p>input通常有以下几个配置项，只能选用其中一种</p>
+<ul>
+<li>file：从文件系统中读取一个文件，很像UNIX命令 “tail -0a”</li>
+<li>syslog：监听514端口，按照RFC3164标准解析日志数据</li>
+<li>redis：从redis服务器读取数据，支持channel(发布订阅)和list模式。redis一般在Logstash消费集群中作为”broker”角色，保存events队列共Logstash消费。</li>
+<li>tcp：从网络中获取数据</li>
+<li>stdin：标准输如，从控制台获取</li>
+<li>其他扩展，如jdbc</li>
+</ul>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs livescript">stdin &#123; &#125; <span class="hljs-comment"># 从控制台中输入来源</span><br><br><br>file &#123; <span class="hljs-comment"># 从文件中来</span><br>    path =&gt; <span class="hljs-string">&quot;/data/*&quot;</span> <span class="hljs-comment">#单一文件</span><br>     <span class="hljs-comment">#监听文件的多个路径</span><br>    path =&gt; [<span class="hljs-string">&quot;/data/*.log&quot;</span>,<span class="hljs-string">&quot;F:/*.log&quot;</span>]<br>    <span class="hljs-comment">#排除不想监听的文件</span><br>    exclude =&gt; <span class="hljs-string">&quot;1.log&quot;</span><br>    <br>    <span class="hljs-comment">#添加自定义的字段</span><br>    add_field =&gt; &#123;<span class="hljs-string">&quot;test&quot;</span>=&gt;<span class="hljs-string">&quot;test&quot;</span>&#125;<br>    <span class="hljs-comment">#增加标签</span><br>    tags =&gt; <span class="hljs-string">&quot;tag1&quot;</span><br><br>    <span class="hljs-comment">#设置新事件的标志</span><br>    delimiter =&gt; <span class="hljs-string">&quot;\n&quot;</span><br><br>    <span class="hljs-comment">#设置多长时间扫描目录，发现新文件</span><br>    discover_interval =&gt; <span class="hljs-number">15</span><br>    <span class="hljs-comment">#设置多长时间检测文件是否修改</span><br>    stat_interval =&gt; <span class="hljs-number">1</span><br><br>     <span class="hljs-comment">#监听文件的起始位置，默认是end</span><br>    start_position =&gt; beginning<br><br>    <span class="hljs-comment">#监听文件读取信息记录的位置</span><br>    sincedb_path =&gt; <span class="hljs-string">&quot;\/test.txt&quot;</span><br>    <span class="hljs-comment">#设置多长时间会写入读取的位置信息</span><br>    sincedb_write_interval =&gt; <span class="hljs-number">15</span><br>&#125;<br><br><br>syslog &#123; <span class="hljs-comment"># 系统日志方式</span><br>    type =&gt; <span class="hljs-string">&quot;system-syslog&quot;</span>  <span class="hljs-comment"># 定义类型</span><br>    port =&gt; <span class="hljs-number">10514</span>    <span class="hljs-comment"># 定义监听端口</span><br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="3-2-output输出插件"><a href="#3-2-output输出插件" class="headerlink" title="3.2 output输出插件"></a>3.2 output输出插件</h2><p>output用于向外输出，一个事件可以经过多个输出，而一旦所有输出处理完成，整个事件就执行完成。 一些常用的输出包括（输出的模式可以选用多种）：</p>
+<ul>
+<li>file：  表示将数据写入磁盘上的文件。</li>
+<li>elasticsearch：表示将数据发送给Elasticsearch。Elasticsearch可以高效方便和易于查询的保存数据。</li>
+<li>stdout：输出到控制台</li>
+</ul>
+<p>（1）输出到标准输出(stdout)</p>
+<figure class="highlight puppet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs puppet"><span class="hljs-keyword">output</span> &#123;<br>    stdout &#123;<br>        <span class="hljs-attr">codec</span> =&gt; rubydebug<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>（2）保存为文件（file）</p>
+<figure class="highlight puppet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs puppet"><span class="hljs-keyword">output</span> &#123;<br>    file &#123;<br>        <span class="hljs-attr">path</span> =&gt; <span class="hljs-string">&quot;/data/log/%&#123;+yyyy-MM-dd&#125;/%&#123;host&#125;_%&#123;+HH&#125;.log&quot;</span><br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>（3）输出到elasticsearch</p>
+<figure class="highlight puppet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs puppet"><span class="hljs-keyword">output</span> &#123;<br>    elasticsearch &#123;<br>        <span class="hljs-attr">hosts</span> =&gt; [<span class="hljs-string">&quot;192.168.1.1:9200&quot;</span>]<br>        <span class="hljs-attr">index</span> =&gt; <span class="hljs-string">&quot;logstash-%&#123;+YYYY.MM.dd&#125;&quot;</span>       <br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>hosts：是一个数组类型的值，后面跟的值是elasticsearch节点的地址与端口，默认端口是9200。可添加多个地址。</li>
+<li>index：写入elasticsearch的索引的名称，这里可以使用变量。Logstash提供了%{+YYYY.MM.dd}这种写法。在语法解析的时候，看到以+ 号开头的，就会自动认为后面是时间格式，尝试用时间格式来解析后续字符串。这种以天为单位分割的写法，可以很容易的删除老的数据或者搜索指定时间范围内的数据。此外，注意索引名中不能有大写字母。</li>
+</ul>
+<h2 id="3-4-简单示例"><a href="#3-4-简单示例" class="headerlink" title="3.4 简单示例"></a>3.4 简单示例</h2><p>（1）控制栏输入输出</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs fsharp"><span class="hljs-keyword">input</span> &#123;<br>    <span class="hljs-keyword">stdin</span> &#123; &#125; # 从控制台中输入来源<br>&#125;<br><br><span class="hljs-keyword">output</span> &#123;<br>    <span class="hljs-keyword">stdout</span> &#123;<br>        codec <span class="hljs-operator">=&gt;</span> rubydebug<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-number">234234234234234234</span><br>&#123;<br>    <span class="hljs-string">&quot;@timestamp&quot;</span> =&gt; <span class="hljs-number">2022</span><span class="hljs-number">-09</span><span class="hljs-number">-01</span>T14:<span class="hljs-number">44</span>:<span class="hljs-number">04.277</span>Z,<br>       <span class="hljs-string">&quot;message&quot;</span> =&gt; <span class="hljs-string">&quot;234234234234234234&quot;</span>,<br>      <span class="hljs-string">&quot;@version&quot;</span> =&gt; <span class="hljs-string">&quot;1&quot;</span>,<br>          <span class="hljs-string">&quot;host&quot;</span> =&gt; <span class="hljs-string">&quot;k8s-master01&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="3-5-filter过滤器插件"><a href="#3-5-filter过滤器插件" class="headerlink" title="3.5 filter过滤器插件"></a>3.5 filter过滤器插件</h2><p>filter是可选配置，用来过滤从input中读取的数据，一般用于日志处理</p>
+<h3 id="Grok-正则捕获"><a href="#Grok-正则捕获" class="headerlink" title="Grok 正则捕获"></a>Grok 正则捕获</h3><p>grok是一个十分强大的 <code>filter</code> 插件，他可以通过正则解析任意文本，将非结构化日志数据弄成结构化和方便查询的结构。他是目前logstash 中解析非结构化日志数据最好的方式。</p>
+<p>Grok 的语法规则是：</p>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs haml"><span class="hljs-tag">%&#123;语法: 语义&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>例如输入的内容为：</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">172.16.213.132</span> <span class="hljs-string">[07/Feb/2019:16:24:19 +0800]</span> <span class="hljs-string">&quot;<span class="hljs-keyword">GET</span> / HTTP/1.1&quot;</span> <span class="hljs-number">403</span> <span class="hljs-number">5039</span><br></code></pre></td></tr></table></figure>
+
+<p>%{IP:ip}匹配模式将获得的结果为：ip: 192.168.0.1</p>
+<p>%{HTTPDATE:timestamp}匹配模式将获得的结果为：timestamp: 07/Feb/2018:16:24:19 +0800</p>
+<p>而%{QS:referrer}匹配模式将获得的结果为：referrer: “GET / HTTP/1.1”</p>
+<p>下面是一个组合匹配模式，它可以获取上面输入的所有内容：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">%&#123;IP:clientip&#125;\ \<span class="hljs-selector-attr">[%&#123;HTTPDATE:timestamp&#125;\]</span>\ %&#123;QS:referrer&#125;\ %&#123;NUMBER:response&#125;\ %&#123;NUMBER:bytes&#125;<br></code></pre></td></tr></table></figure>
+
+<p>通过上面这个组合匹配模式，我们将输入的内容分成了五个部分，即五个字段，将输入内容分割为不同的数据字段，这对于日后解析和查询日志数据非常有用，这正是使用grok的目的。</p>
+<p>例子：</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs fsharp"><span class="hljs-keyword">input</span>&#123;<br>    <span class="hljs-keyword">stdin</span>&#123;&#125;<br>&#125;<br><span class="hljs-keyword">filter</span>&#123;<br>    <span class="hljs-keyword">grok</span>&#123;<br>        <span class="hljs-keyword">match</span> <span class="hljs-operator">=&gt;</span> [<span class="hljs-string">&quot;message&quot;</span>,<span class="hljs-string">&quot;%&#123;IP:clientip&#125;\ \[%&#123;HTTPDATE:timestamp&#125;\]\ %&#123;QS:referrer&#125;\ %&#123;NUMBER:response&#125;\ %&#123;NUMBER:bytes&#125;&quot;</span>]<br>    &#125;<br>&#125;<br><span class="hljs-keyword">output</span>&#123;<br>    <span class="hljs-keyword">stdout</span>&#123;<br>        codec <span class="hljs-operator">=&gt;</span> <span class="hljs-string">&quot;rubydebug&quot;</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>输入输出内容：</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-number">172.16</span><span class="hljs-number">.213</span><span class="hljs-number">.132</span> [<span class="hljs-number">07</span>/Feb/<span class="hljs-number">2019</span>:<span class="hljs-number">16</span>:<span class="hljs-number">24</span>:<span class="hljs-number">19</span> +<span class="hljs-number">0800</span>] <span class="hljs-string">&quot;GET / HTTP/1.1&quot;</span> <span class="hljs-number">403</span> <span class="hljs-number">5039</span><br>&#123;<br>          <span class="hljs-string">&quot;host&quot;</span> =&gt; <span class="hljs-string">&quot;k8s-master01&quot;</span>,<br>       <span class="hljs-string">&quot;message&quot;</span> =&gt; <span class="hljs-string">&quot;172.16.213.132 [07/Feb/2019:16:24:19 +0800] \&quot;GET / HTTP/1.1\&quot; 403 5039&quot;</span>,<br>      <span class="hljs-string">&quot;@version&quot;</span> =&gt; <span class="hljs-string">&quot;1&quot;</span>,<br>      <span class="hljs-string">&quot;clientip&quot;</span> =&gt; <span class="hljs-string">&quot;172.16.213.132&quot;</span>,<br>      <span class="hljs-string">&quot;referrer&quot;</span> =&gt; <span class="hljs-string">&quot;\&quot;GET / HTTP/1.1\&quot;&quot;</span>,<br>     <span class="hljs-string">&quot;timestamp&quot;</span> =&gt; <span class="hljs-string">&quot;07/Feb/2019:16:24:19 +0800&quot;</span>,<br>      <span class="hljs-string">&quot;response&quot;</span> =&gt; <span class="hljs-string">&quot;403&quot;</span>,<br>         <span class="hljs-string">&quot;bytes&quot;</span> =&gt; <span class="hljs-string">&quot;5039&quot;</span>,<br>    <span class="hljs-string">&quot;@timestamp&quot;</span> =&gt; <span class="hljs-number">2022</span><span class="hljs-number">-09</span><span class="hljs-number">-01</span>T14:<span class="hljs-number">48</span>:<span class="hljs-number">40.999</span>Z<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>grok 内置类型</strong></p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><code class="hljs inform7">USERNAME ：<span class="hljs-comment">[a-zA-Z0-9._-]</span>+<br>USER ：%&#123;USERNAME&#125;<br>INT ：(?:<span class="hljs-comment">[+-]</span>?(?:<span class="hljs-comment">[0-9]</span>+))<br>BASE10NUM ：(?&lt;!<span class="hljs-comment">[0-9.+-]</span>)(?&gt;<span class="hljs-comment">[+-]</span>?(?:(?:<span class="hljs-comment">[0-9]</span>+(?:\.<span class="hljs-comment">[0-9]</span>+)?)|(?:\.<span class="hljs-comment">[0-9]</span>+)))<br>NUMBER ：(?:%&#123;BASE10NUM&#125;)<br>BASE16NUM ：(?&lt;!<span class="hljs-comment">[0-9A-Fa-f]</span>)(?:<span class="hljs-comment">[+-]</span>?(?:0x)?(?:<span class="hljs-comment">[0-9A-Fa-f]</span>+))<br>BASE16FLOAT ：\b(?&lt;!<span class="hljs-comment">[0-9A-Fa-f.]</span>)(?:<span class="hljs-comment">[+-]</span>?(?:0x)?(?:(?:<span class="hljs-comment">[0-9A-Fa-f]</span>+(?:\.<span class="hljs-comment">[0-9A-Fa-f]</span>*)?)|(?:\.<span class="hljs-comment">[0-9A-Fa-f]</span>+)))\b<br><br>POSINT ：\b(?:<span class="hljs-comment">[1-9]</span><span class="hljs-comment">[0-9]</span>*)\b<br>NONNEGINT ：\b(?:<span class="hljs-comment">[0-9]</span>+)\b<br>WORD ：\b\w+\b<br>NOTSPACE ：\S+<br>SPACE ：\s*<br>DATA ：.*?<br>GREEDYDATA ：.*<br>QUOTEDSTRING ：(?&gt;(?&lt;!\\)(?&gt;<span class="hljs-string">&quot;(?&gt;\\.|<span class="hljs-subst">[^\\&quot;]</span>+)+&quot;</span>|<span class="hljs-string">&quot;&quot;</span>|(?&gt;&#x27;(?&gt;\\.|<span class="hljs-comment">[^\\&#x27;]</span>+)+&#x27;)|&#x27;&#x27;|(?&gt;`(?&gt;\\.|<span class="hljs-comment">[^\\`]</span>+)+`)|``))<br>UUID ：<span class="hljs-comment">[A-Fa-f0-9]</span>&#123;8&#125;-(?:<span class="hljs-comment">[A-Fa-f0-9]</span>&#123;4&#125;-)&#123;3&#125;<span class="hljs-comment">[A-Fa-f0-9]</span>&#123;12&#125;<br><br># Networking<br>MAC ：(?:%&#123;CISCOMAC&#125;|%&#123;WINDOWSMAC&#125;|%&#123;COMMONMAC&#125;)<br>CISCOMAC ：(?:(?:<span class="hljs-comment">[A-Fa-f0-9]</span>&#123;4&#125;\.)&#123;2&#125;<span class="hljs-comment">[A-Fa-f0-9]</span>&#123;4&#125;)<br>WINDOWSMAC ：(?:(?:<span class="hljs-comment">[A-Fa-f0-9]</span>&#123;2&#125;-)&#123;5&#125;<span class="hljs-comment">[A-Fa-f0-9]</span>&#123;2&#125;)<br>COMMONMAC ：(?:(?:<span class="hljs-comment">[A-Fa-f0-9]</span>&#123;2&#125;:)&#123;5&#125;<span class="hljs-comment">[A-Fa-f0-9]</span>&#123;2&#125;)<br>IPV6 ：(((<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;:)&#123;7&#125;(<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;|:))|((<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;:)&#123;6&#125;(:<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;|((25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span>\d|1\d\d|<span class="hljs-comment">[1-9]</span>?\d)(\.(25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span>\d|1\d\d|<span class="hljs-comment">[1-9]</span>?\d))&#123;3&#125;)|:))|((<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;:)&#123;5&#125;(((:<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;)&#123;1,2&#125;)|:((25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span>\d|1\d\d|<span class="hljs-comment">[1-9]</span>?\d)(\.(25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span>\d|1\d\d|<span class="hljs-comment">[1-9]</span>?\d))&#123;3&#125;)|:))|((<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;:)&#123;4&#125;(((:<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;)&#123;1,3&#125;)|((:<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;)?:((25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span>\d|1\d\d|<span class="hljs-comment">[1-9]</span>?\d)(\.(25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span>\d|1\d\d|<span class="hljs-comment">[1-9]</span>?\d))&#123;3&#125;))|:))|((<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;:)&#123;3&#125;(((:<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;)&#123;1,4&#125;)|((:<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;)&#123;0,2&#125;:((25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span>\d|1\d\d|<span class="hljs-comment">[1-9]</span>?\d)(\.(25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span>\d|1\d\d|<span class="hljs-comment">[1-9]</span>?\d))&#123;3&#125;))|:))|((<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;:)&#123;2&#125;(((:<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;)&#123;1,5&#125;)|((:<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;)&#123;0,3&#125;:((25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span>\d|1\d\d|<span class="hljs-comment">[1-9]</span>?\d)(\.(25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span>\d|1\d\d|<span class="hljs-comment">[1-9]</span>?\d))&#123;3&#125;))|:))|((<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;:)&#123;1&#125;(((:<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;)&#123;1,6&#125;)|((:<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;)&#123;0,4&#125;:((25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span>\d|1\d\d|<span class="hljs-comment">[1-9]</span>?\d)(\.(25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span>\d|1\d\d|<span class="hljs-comment">[1-9]</span>?\d))&#123;3&#125;))|:))|(:(((:<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;)&#123;1,7&#125;)|((:<span class="hljs-comment">[0-9A-Fa-f]</span>&#123;1,4&#125;)&#123;0,5&#125;:((25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span>\d|1\d\d|<span class="hljs-comment">[1-9]</span>?\d)(\.(25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span>\d|1\d\d|<span class="hljs-comment">[1-9]</span>?\d))&#123;3&#125;))|:)))(%.+)?<br>IPV4 (?&lt;!<span class="hljs-comment">[0-9]</span>)(?:(?:25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span><span class="hljs-comment">[0-9]</span>|<span class="hljs-comment">[0-1]</span>?<span class="hljs-comment">[0-9]</span>&#123;1,2&#125;)<span class="hljs-comment">[.]</span>(?:25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span><span class="hljs-comment">[0-9]</span>|<span class="hljs-comment">[0-1]</span>?<span class="hljs-comment">[0-9]</span>&#123;1,2&#125;)<span class="hljs-comment">[.]</span>(?:25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span><span class="hljs-comment">[0-9]</span>|<span class="hljs-comment">[0-1]</span>?<span class="hljs-comment">[0-9]</span>&#123;1,2&#125;)<span class="hljs-comment">[.]</span>(?:25<span class="hljs-comment">[0-5]</span>|2<span class="hljs-comment">[0-4]</span><span class="hljs-comment">[0-9]</span>|<span class="hljs-comment">[0-1]</span>?<span class="hljs-comment">[0-9]</span>&#123;1,2&#125;))(?!<span class="hljs-comment">[0-9]</span>)<br>IP ：(?:%&#123;IPV6&#125;|%&#123;IPV4&#125;)<br>HOSTNAME ：\b(?:<span class="hljs-comment">[0-9A-Za-z]</span><span class="hljs-comment">[0-9A-Za-z-]</span>&#123;0,62&#125;)(?:\.(?:<span class="hljs-comment">[0-9A-Za-z]</span><span class="hljs-comment">[0-9A-Za-z-]</span>&#123;0,62&#125;))*(\.?|\b)<br>HOST ：%&#123;HOSTNAME&#125;<br>IPORHOST ：(?:%&#123;HOSTNAME&#125;|%&#123;IP&#125;)<br>HOSTPORT ：%&#123;IPORHOST&#125;:%&#123;POSINT&#125;<br><br># paths<br>PATH ：(?:%&#123;UNIXPATH&#125;|%&#123;WINPATH&#125;)<br>UNIXPATH ：(?&gt;/(?&gt;<span class="hljs-comment">[\w_%!$@:.,-]</span>+|\\.)*)+<br>TTY ：(?:/dev/(pts|tty(<span class="hljs-comment">[pq]</span>)?)(\w+)?/?(?:<span class="hljs-comment">[0-9]</span>+))<br>WINPATH ：(?&gt;<span class="hljs-comment">[A-Za-z]</span>+:|\\)(?:\\<span class="hljs-comment">[^\\?*]</span>*)+<br>URIPROTO ：<span class="hljs-comment">[A-Za-z]</span>+(\+<span class="hljs-comment">[A-Za-z+]</span>+)?<br>URIHOST ：%&#123;IPORHOST&#125;(?::%&#123;POSINT:port&#125;)?<br># uripath comes loosely from RFC1738, but mostly from what Firefox<br># doesn&#x27;t turn into %XX<br>URIPATH ：(?:/<span class="hljs-comment">[A-Za-z0-9$.+!*&#x27;()&#123;&#125;,~:;=@#%_\-]</span>*)+<br>#URIPARAM \?(?:<span class="hljs-comment">[A-Za-z0-9]</span>+(?:=(?:<span class="hljs-comment">[^&amp;]</span>*))?(?:&amp;(?:<span class="hljs-comment">[A-Za-z0-9]</span>+(?:=(?:<span class="hljs-comment">[^&amp;]</span>*))?)?)*)?<br>URIPARAM ：\?<span class="hljs-comment">[A-Za-z0-9$.+!*&#x27;|()&#123;&#125;,~@#%&amp;/=:;_?\-\<span class="hljs-comment">[\]</span>]</span>*<br>URIPATHPARAM ：%&#123;URIPATH&#125;(?:%&#123;URIPARAM&#125;)?<br>URI ：%&#123;URIPROTO&#125;://(?:%&#123;USER&#125;(?::<span class="hljs-comment">[^@]</span>*)?@)?(?:%&#123;URIHOST&#125;)?(?:%&#123;URIPATHPARAM&#125;)?<br><br># Months: January, Feb, 3, 03, 12, December<br>MONTH ：\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\b<br>MONTHNUM ：(?:0?<span class="hljs-comment">[1-9]</span>|1<span class="hljs-comment">[0-2]</span>)<br>MONTHNUM2 ：(?:0<span class="hljs-comment">[1-9]</span>|1<span class="hljs-comment">[0-2]</span>)<br>MONTHDAY ：(?:(?:0<span class="hljs-comment">[1-9]</span>)|(?:<span class="hljs-comment">[12]</span><span class="hljs-comment">[0-9]</span>)|(?:3<span class="hljs-comment">[01]</span>)|<span class="hljs-comment">[1-9]</span>)<br><br># Days: Monday, Tue, Thu, etc...<br>DAY ：(?:Mon(?:day)?|Tue(?:sday)?|Wed(?:nesday)?|Thu(?:rsday)?|Fri(?:day)?|Sat(?:urday)?|Sun(?:day)?)<br><br># Years?<br>YEAR ：(?&gt;\d\d)&#123;1,2&#125;<br>HOUR ：(?:2<span class="hljs-comment">[0123]</span>|<span class="hljs-comment">[01]</span>?<span class="hljs-comment">[0-9]</span>)<br>MINUTE ：(?:<span class="hljs-comment">[0-5]</span><span class="hljs-comment">[0-9]</span>)<br># &#x27;60&#x27; <span class="hljs-keyword">is</span> a leap second in most time standards and thus <span class="hljs-keyword">is</span> valid.<br>SECOND ：(?:(?:<span class="hljs-comment">[0-5]</span>?<span class="hljs-comment">[0-9]</span>|60)(?:<span class="hljs-comment">[:.,]</span><span class="hljs-comment">[0-9]</span>+)?)<br>TIME ：(?!&lt;<span class="hljs-comment">[0-9]</span>)%&#123;HOUR&#125;:%&#123;MINUTE&#125;(?::%&#123;SECOND&#125;)(?!<span class="hljs-comment">[0-9]</span>)<br># datestamp <span class="hljs-keyword">is</span> YYYY/MM/DD-HH:MM:SS.UUUU (or something like it)<br>DATE_US ：%&#123;MONTHNUM&#125;<span class="hljs-comment">[/-]</span>%&#123;MONTHDAY&#125;<span class="hljs-comment">[/-]</span>%&#123;YEAR&#125;<br>DATE_EU ：%&#123;MONTHDAY&#125;<span class="hljs-comment">[./-]</span>%&#123;MONTHNUM&#125;<span class="hljs-comment">[./-]</span>%&#123;YEAR&#125;<br>ISO8601_TIMEZONE ：(?:Z|<span class="hljs-comment">[+-]</span>%&#123;HOUR&#125;(?::?%&#123;MINUTE&#125;))<br>ISO8601_SECOND ：(?:%&#123;SECOND&#125;|60)<br>TIMESTAMP_ISO8601 ：%&#123;YEAR&#125;-%&#123;MONTHNUM&#125;-%&#123;MONTHDAY&#125;<span class="hljs-comment">[T ]</span>%&#123;HOUR&#125;:?%&#123;MINUTE&#125;(?::?%&#123;SECOND&#125;)?%&#123;ISO8601_TIMEZONE&#125;?<br>DATE ：%&#123;DATE_US&#125;|%&#123;DATE_EU&#125;<br>DATESTAMP ：%&#123;DATE&#125;<span class="hljs-comment">[- ]</span>%&#123;TIME&#125;<br>TZ ：(?:<span class="hljs-comment">[PMCE]</span><span class="hljs-comment">[SD]</span>T|UTC)<br>DATESTAMP_RFC822 ：%&#123;DAY&#125; %&#123;MONTH&#125; %&#123;MONTHDAY&#125; %&#123;YEAR&#125; %&#123;TIME&#125; %&#123;TZ&#125;<br>DATESTAMP_RFC2822 ：%&#123;DAY&#125;, %&#123;MONTHDAY&#125; %&#123;MONTH&#125; %&#123;YEAR&#125; %&#123;TIME&#125; %&#123;ISO8601_TIMEZONE&#125;<br>DATESTAMP_OTHER ：%&#123;DAY&#125; %&#123;MONTH&#125; %&#123;MONTHDAY&#125; %&#123;TIME&#125; %&#123;TZ&#125; %&#123;YEAR&#125;<br>DATESTAMP_EVENTLOG ：%&#123;YEAR&#125;%&#123;MONTHNUM2&#125;%&#123;MONTHDAY&#125;%&#123;HOUR&#125;%&#123;MINUTE&#125;%&#123;SECOND&#125;<br><br># Syslog Dates: Month Day HH:MM:SS<br>SYSLOGTIMESTAMP ：%&#123;MONTH&#125; +%&#123;MONTHDAY&#125; %&#123;TIME&#125;<br>PROG ：(?:<span class="hljs-comment">[\w._/%-]</span>+)<br>SYSLOGPROG ：%&#123;PROG:program&#125;(?:\<span class="hljs-comment">[%&#123;POSINT:pid&#125;\]</span>)?<br>SYSLOGHOST ：%&#123;IPORHOST&#125;<br>SYSLOGFACILITY ：&lt;%&#123;NONNEGINT:facility&#125;.%&#123;NONNEGINT:priority&#125;&gt;<br>HTTPDATE ：%&#123;MONTHDAY&#125;/%&#123;MONTH&#125;/%&#123;YEAR&#125;:%&#123;TIME&#125; %&#123;INT&#125;<br><br># Shortcuts<br>QS ：%&#123;QUOTEDSTRING&#125;<br><br># Log formats<br>SYSLOGBASE ：%&#123;SYSLOGTIMESTAMP:timestamp&#125; (?:%&#123;SYSLOGFACILITY&#125; )?%&#123;SYSLOGHOST:logsource&#125; %&#123;SYSLOGPROG&#125;:<br>COMMONAPACHELOG ：%&#123;IPORHOST:clientip&#125; %&#123;USER:ident&#125; %&#123;USER:auth&#125; \<span class="hljs-comment">[%&#123;HTTPDATE:timestamp&#125;\]</span> <span class="hljs-string">&quot;(?:%&#123;WORD:verb&#125; %&#123;NOTSPACE:request&#125;(?: HTTP/%&#123;NUMBER:httpversion&#125;)?|%&#123;DATA:rawrequest&#125;)&quot;</span> %&#123;NUMBER:response&#125; (?:%&#123;NUMBER:bytes&#125;|-)<br>COMBINEDAPACHELOG ：%&#123;COMMONAPACHELOG&#125; %&#123;QS:referrer&#125; %&#123;QS:agent&#125;<br><br># Log Levels<br>LOGLEVEL ：(<span class="hljs-comment">[Aa]</span>lert|ALERT|<span class="hljs-comment">[Tt]</span>race|TRACE|<span class="hljs-comment">[Dd]</span>ebug|DEBUG|<span class="hljs-comment">[Nn]</span>otice|NOTICE|<span class="hljs-comment">[Ii]</span>nfo|INFO|<span class="hljs-comment">[Ww]</span>arn?(?:ing)?|WARN?(?:ING)?|<span class="hljs-comment">[Ee]</span>rr?(?:or)?|ERR?(?:OR)?|<span class="hljs-comment">[Cc]</span>rit?(?:ical)?|CRIT?(?:ICAL)?|<span class="hljs-comment">[Ff]</span>atal|FATAL|<span class="hljs-comment">[Ss]</span>evere|SEVERE|EMERG(?:ENCY)?|<span class="hljs-comment">[Ee]</span>merg(?:ency)?)<br></code></pre></td></tr></table></figure>
+
+<h3 id="时间处理-Date"><a href="#时间处理-Date" class="headerlink" title="时间处理(Date)"></a>时间处理(Date)</h3><p>date插件是对于排序事件和回填旧数据尤其重要，它可以用来转换日志记录中的时间字段，变成LogStash::Timestamp对象，然后转存到@timestamp字段里。</p>
+<p>下面是date插件的一个配置示例（这里仅仅列出filter部分）：</p>
+<figure class="highlight puppet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs puppet"><span class="hljs-keyword">filter</span> &#123;<br>    grok &#123;<br>        <span class="hljs-attr">match</span> =&gt; [<span class="hljs-string">&quot;message&quot;</span>, <span class="hljs-string">&quot;%&#123;HTTPDATE:timestamp&#125;&quot;</span>] <span class="hljs-comment"># 提取HTTPDATE赋值给timestamp</span><br>    &#125;<br>    <span class="hljs-keyword">date</span> &#123;<br>        <span class="hljs-attr">match</span> =&gt; [<span class="hljs-string">&quot;timestamp&quot;</span>, <span class="hljs-string">&quot;dd/MMM/yyyy:HH:mm:ss Z&quot;</span>] <span class="hljs-comment"># 提取timestamp并转换，然后赋值给target指向的timestamp</span><br>        <span class="hljs-attr">target</span> =&gt; <span class="hljs-string">&quot;timestamp&quot;</span><br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="数据修改-Mutate"><a href="#数据修改-Mutate" class="headerlink" title="数据修改(Mutate)"></a>数据修改(Mutate)</h3><ul>
+<li>正则表达式替换匹配字段</li>
+</ul>
+<p>gsub可以通过正则表达式替换字段中匹配到的值，只对字符串字段有效，下面是一个关于mutate插件中gsub的示例（仅列出filter部分）：</p>
+<figure class="highlight puppet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs puppet"><span class="hljs-keyword">filter</span> &#123;<br>    mutate &#123;<br>        <span class="hljs-attr">gsub</span> =&gt; [<span class="hljs-string">&quot;filed_name_1&quot;</span>, <span class="hljs-string">&quot;/&quot;</span> , <span class="hljs-string">&quot;_&quot;</span>]<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>这个示例表示将filed_name_1字段中所有”/“字符替换为”_”。</p>
+<ul>
+<li>分隔符分割字符串为数组</li>
+</ul>
+<p>split可以通过指定的分隔符分割字段中的字符串为数组，下面是一个关于mutate插件中split的示例（仅列出filter部分）：</p>
+<figure class="highlight puppet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs puppet"><span class="hljs-keyword">filter</span> &#123;<br>    mutate &#123;<br>        <span class="hljs-attr">split</span> =&gt; [<span class="hljs-string">&quot;filed_name_2&quot;</span>, <span class="hljs-string">&quot;|&quot;</span>]<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>这个示例表示将filed_name_2字段以”|”为区间分隔为数组。</p>
+<ul>
+<li>重命名字段</li>
+</ul>
+<p>rename可以实现重命名某个字段的功能，下面是一个关于mutate插件中rename的示例（仅列出filter部分）：</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs coq">filter &#123;<br>    mutate &#123;<br>        <span class="hljs-built_in">rename</span> =&gt; &#123; <span class="hljs-string">&quot;old_field&quot;</span> =&gt; <span class="hljs-string">&quot;new_field&quot;</span> &#125;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>这个示例表示将字段old_field重命名为new_field。</p>
+<ul>
+<li>删除字段</li>
+</ul>
+<p>remove_field可以实现删除某个字段的功能，下面是一个关于mutate插件中remove_field的示例（仅列出filter部分）：</p>
+<figure class="highlight puppet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs puppet"><span class="hljs-keyword">filter</span> &#123;<br>    mutate &#123;<br>        <span class="hljs-attr">remove_field</span>  =&gt;  [<span class="hljs-string">&quot;timestamp&quot;</span>]<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>这个示例表示将字段timestamp删除。</p>
+<ul>
+<li>GeoIP 地址查询归类</li>
+</ul>
+<figure class="highlight puppet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs puppet"><span class="hljs-keyword">filter</span> &#123;<br>    geoip &#123;<br>        <span class="hljs-attr">source</span> =&gt; <span class="hljs-string">&quot;ip_field&quot;</span><br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>综合例子：</li>
+</ul>
+<figure class="highlight puppet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs puppet"><span class="hljs-keyword">input</span> &#123;<br>  <span class="hljs-comment"># stdin &#123;&#125;</span><br><br>  file &#123;<br>    <span class="hljs-attr">path</span> =&gt; <span class="hljs-string">&quot;/home/es/elastic-stack/logstash/example/test.log&quot;</span><br>    <span class="hljs-attr">start_position</span> =&gt; beginning<br>        <span class="hljs-comment">#添加自定义的字段</span><br>    <span class="hljs-attr">add_field</span> =&gt; &#123;<span class="hljs-string">&quot;test&quot;</span>=&gt;<span class="hljs-string">&quot;test&quot;</span>&#125;<br>    #增加标签<br>    stat_interval =&gt; 1<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">filter</span> &#123;<br>  grok &#123;<br>    <span class="hljs-comment"># 127.0.0.1 - - [11/Nov/2022:17:10:00 +0800] &quot;GET / HTTP/1.1&quot; 200 2384 &quot;-&quot; &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0&quot;</span><br>    <span class="hljs-attr">match</span> =&gt; [<span class="hljs-string">&quot;message&quot;</span>, <span class="hljs-string">&quot;%&#123;IP:clientIp&#125;\ \-\ \-\ \[%&#123;HTTPDATE:timestamp&#125;\]\ %&#123;QS:referrer&#125;\ %&#123;NUMBER:response&#125;\ %&#123;NUMBER:bytes&#125;\ %&#123;GREEDYDATA:ua&#125;&quot;</span>]<br>  &#125;<br>  <span class="hljs-keyword">date</span> &#123;<br>    <span class="hljs-attr">match</span> =&gt; [<span class="hljs-string">&quot;timestamp&quot;</span>, <span class="hljs-string">&quot;dd/MMM/yyyy:HH:mm:ss Z&quot;</span>]<br>    <span class="hljs-attr">target</span> =&gt; <span class="hljs-string">&quot;timestamp&quot;</span><br>  &#125;<br>  <span class="hljs-keyword">mutate</span> &#123;<br>    <span class="hljs-attr">gsub</span> =&gt; [<span class="hljs-string">&quot;ua&quot;</span>, <span class="hljs-string">&quot;\&quot;-\&quot; &quot;</span>, <span class="hljs-string">&quot;&quot;</span>]<br>    <span class="hljs-attr">gsub</span> =&gt; [<span class="hljs-string">&quot;ua&quot;</span>, <span class="hljs-string">&quot;\&quot;&quot;</span>, <span class="hljs-string">&quot;&quot;</span>]<br>    <span class="hljs-attr">gsub</span> =&gt; [<span class="hljs-string">&quot;ua&quot;</span>, <span class="hljs-string">&quot;\r&quot;</span>, <span class="hljs-string">&quot;&quot;</span>]<br>    <span class="hljs-attr">gsub</span> =&gt; [<span class="hljs-string">&quot;referrer&quot;</span>, <span class="hljs-string">&quot;\&quot;&quot;</span>, <span class="hljs-string">&quot;&quot;</span>]<br><br>    <span class="hljs-attr">split</span> =&gt; [<span class="hljs-string">&quot;clientIp&quot;</span>, <span class="hljs-string">&quot;.&quot;</span>]<br><br>    <span class="hljs-attr">rename</span> =&gt; [<span class="hljs-string">&quot;timestamp&quot;</span>, <span class="hljs-string">&quot;create_time&quot;</span>]<br>    <span class="hljs-attr">remove_field</span> =&gt; [<span class="hljs-string">&quot;message&quot;</span>]<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">output</span> &#123;<br>  stdout &#123;<br>    <span class="hljs-attr">codec</span> =&gt; rubydebug<br>  &#125;<br>  # <span class="hljs-keyword">file</span> &#123;<br>  <span class="hljs-comment">#   path =&gt; &quot;H:/logstash-7.3.0/logdata/%&#123;host&#125;_%&#123;+HH&#125;.log&quot;</span><br>  <span class="hljs-comment"># &#125;</span><br>  <span class="hljs-comment"># elasticsearch &#123;</span><br>  <span class="hljs-comment">#   hosts =&gt; [&quot;39.102.41.53:9200&quot;]</span><br>  <span class="hljs-comment">#   index =&gt; &quot;nginxlog-%&#123;+YYYY.MM.dd&#125;&quot;</span><br>  <span class="hljs-comment"># &#125;</span><br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h1 id="三-、配置文件"><a href="#三-、配置文件" class="headerlink" title="三 、配置文件"></a>三 、配置文件</h1><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># ---------- Node identity ----------</span><br><br><span class="hljs-comment"># 节点名称，默认主机名</span><br><span class="hljs-attr">node.name:</span> <span class="hljs-string">test</span><br><br><br><span class="hljs-comment"># ---------- Data path ----------</span><br><br><span class="hljs-comment"># 数据存储路径，默认LOGSTASH_HOME/data</span><br><span class="hljs-attr">path.data:</span><br><br><br><span class="hljs-comment"># ---------- Pipeline Settings ----------</span><br><br><span class="hljs-comment"># pipeline ID，默认main</span><br><span class="hljs-attr">pileline.id:</span> <span class="hljs-string">main</span><br><br><span class="hljs-comment"># 输出通道的工作workers数据量，默认cpu核心数</span><br><span class="hljs-attr">pipeline.workers:</span><br><br><span class="hljs-comment"># 单个工作线程尝试执行其过滤器和输出之前将从输入手机的最大事件数量，默认125</span><br><span class="hljs-attr">pipeline.batch.size:</span> <span class="hljs-number">125</span><br><br><span class="hljs-comment"># 将较小的批处理分派给管道之前，等待的毫秒数，默认50ms</span><br><span class="hljs-attr">pipeline.batch.delay:</span> <span class="hljs-number">50</span><br><br><span class="hljs-comment"># 此值为true时，即使内存中仍然有运行中事件，也会强制Logstash在关机期间退出</span><br><span class="hljs-attr">pipeline.unsafe_shutdown:</span> <span class="hljs-literal">false</span><br><br><span class="hljs-comment"># 管道事件排序</span><br><span class="hljs-comment"># 可选项: auto,true,false,默认auto</span><br><span class="hljs-attr">pipeline.ordered:</span> <span class="hljs-string">auto</span><br><br><br><span class="hljs-comment"># ---------- Pipeline Configuration Settings ----------</span><br><br><span class="hljs-comment"># 配置文件路径</span><br><span class="hljs-attr">path.config:</span><br><br><span class="hljs-comment"># 主管道的管道配置字符串</span><br><span class="hljs-attr">config.string:</span><br><br><span class="hljs-comment"># 该值为true时，检查配置是否有效，然后退出，默认false</span><br><span class="hljs-attr">config.test_and_exit:</span> <span class="hljs-literal">false</span><br><br><span class="hljs-comment"># 该值为true时，会定期检查配置是否已更改，并在更改后重新加载配置，默认false</span><br><span class="hljs-attr">config.reload.automatic:</span> <span class="hljs-literal">false</span><br><br><span class="hljs-comment"># 检查配置文件更改的时间间隔，默认3s</span><br><span class="hljs-attr">config.reload.interval:</span> <span class="hljs-string">3s</span><br><br><span class="hljs-comment"># 该值为true时，将完整编译的配置显示为调试日志消息，默认为false</span><br><span class="hljs-attr">config.debug:</span> <span class="hljs-literal">false</span><br><br><span class="hljs-comment"># 该值为true时，开启转移</span><br><span class="hljs-attr">config.support_escapes:</span> <span class="hljs-literal">false</span><br><br><br><span class="hljs-comment"># ---------- HTTP API Settings ----------</span><br><br><span class="hljs-comment"># 是否开启htp访问，默认true</span><br><span class="hljs-attr">http.enabled:</span> <span class="hljs-literal">true</span><br><br><span class="hljs-comment"># 绑定主机地址，可以是ip，主机名，默认127.0.0.1</span><br><span class="hljs-attr">http.host:</span> <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span><br><br><span class="hljs-comment"># 服务监听端口，可以是单个端口，也可以是范围端口，默认9600-9700</span><br><span class="hljs-attr">http.port:</span> <span class="hljs-number">9600</span><span class="hljs-number">-9700</span><br><br><br><span class="hljs-comment"># ---------- Module Settings ----------</span><br><br><span class="hljs-comment"># 模块定义，必须为数组</span><br><span class="hljs-comment"># 模块变量名格式必须为var.PLUGIN_TYPE.PLUGIN_NAME.KEY</span><br><span class="hljs-attr">modules:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">MODULE_NAME</span><br>        <span class="hljs-attr">var.PLUGINTYPE1.PLUGINNAME1.KEY1:</span> <span class="hljs-string">VALUE</span><br>        <span class="hljs-attr">var.PLUGINTYPE1.PLUGINNAME1.KEY2:</span> <span class="hljs-string">VALUE</span><br>        <span class="hljs-attr">var.PLUGINTYPE2.PLUGINNAME1.KEY1:</span> <span class="hljs-string">VALUE</span><br>        <span class="hljs-attr">var.PLUGINTYPE3.PLUGINNAME3.KEY1:</span> <span class="hljs-string">VALUE</span><br><br><br><span class="hljs-comment"># ---------- Queuing Settings ----------</span><br><br><span class="hljs-comment"># 事件缓冲的内部排队模型，可选项：memory，persisted，默认memory</span><br><span class="hljs-attr">queue.type:</span> <span class="hljs-string">memory</span><br><br><span class="hljs-comment"># 启用持久队列(queue.type: persisted)后将在其中存储数据文件的目录路径</span><br><span class="hljs-comment"># 默认path.data/queue</span><br><span class="hljs-attr">path.queue:</span><br><br><span class="hljs-comment"># 启用持久队列(queue.type: persisted)后，队列中未读事件的最大数量</span><br><span class="hljs-comment"># 默认0</span><br><span class="hljs-attr">queue.max_events:</span> <span class="hljs-number">0</span><br><br><span class="hljs-comment"># 启用持久队列(queue.type: persisted)后，队列的总容量，单位字节，默认1024mb</span><br><span class="hljs-attr">queue.max_bytes:</span> <span class="hljs-string">1024mb</span><br><br><span class="hljs-comment"># 启用持久队列(queue.type: persisted)后，在强制检查点之前的最大ACKed事件数，默认1024</span><br><span class="hljs-attr">queue.checkpoint.acks:</span> <span class="hljs-number">1024</span><br><br><span class="hljs-comment"># 启用持久队列(queue.type: persisted)后，在强制检查点之前的最大书面时间数，默认1024</span><br><span class="hljs-attr">queue.checkpoint.writes:</span> <span class="hljs-number">1024</span><br><br><span class="hljs-comment"># 启用持久队列(queue.type: persisted)后，执行检查点的时间间隔，单位ms，默认1000ms</span><br><span class="hljs-attr">queue.checkpoint.interval:</span> <span class="hljs-number">1000</span><br><br><br><span class="hljs-comment"># ---------- Dead-Letter Queue Settings ----------</span><br><br><span class="hljs-comment"># 是否启用插件支持的DLQ功能的标志，默认false</span><br><span class="hljs-attr">dead_letter_queue.enable:</span> <span class="hljs-literal">false</span><br><br><span class="hljs-comment"># dead_letter_queue.enable为true时，每个死信队列的最大大小</span><br><span class="hljs-comment"># 若死信队列的大小超出该值，则被删除，默认1024mb</span><br><span class="hljs-attr">dead_letter_queue.max_bytes:</span> <span class="hljs-string">1024mb</span><br><br><span class="hljs-comment"># 死信队列存储路径，默认path.data/dead_letter_queue</span><br><span class="hljs-attr">path.dead_letter_queue:</span><br><br><br><span class="hljs-comment"># ---------- Debugging Settings ----------</span><br><br><span class="hljs-comment"># 日志输出级别，选项：fatal，error，warn，info，debug，trace，默认info</span><br><span class="hljs-attr">log.level:</span> <span class="hljs-string">info</span><br><br><span class="hljs-comment"># 日志格式，选项：json，plain，默认plain</span><br><span class="hljs-attr">log.format:</span><br><br><span class="hljs-comment"># 日志路径，默认LOGSTASH_HOME/logs</span><br><span class="hljs-attr">path.logs:</span><br><br><br><span class="hljs-comment"># ---------- Other Settings ----------</span><br><br><span class="hljs-comment"># 插件存储路径</span><br><span class="hljs-attr">path.plugins:</span> []<br><br><span class="hljs-comment"># 是否启用每个管道在不同日志文件中的日志分隔</span><br><span class="hljs-comment"># 默认false</span><br><span class="hljs-attr">pipeline.separate_logs:</span> <span class="hljs-literal">false</span><br><br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>https://leellun.github.io/2022/10/06/服务器/elasticsearch/elasticstack/Logstash配置文件/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年10月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/10/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticstack/Kibana%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
