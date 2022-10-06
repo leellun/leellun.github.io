@@ -101,12 +101,13 @@ brokerRole=ASYNC_MASTER
 flushDiskType=ASYNC_FLUSH
 #checkTransactionMessageEnable=false
 #发消息线程池数量 
-
 #sendMessageThreadPoolNums=128
 
 #拉消息线程池数量
-
 #pullMessageThreadPoolNums=128
+
+#acl权限开启
+aclEnable=true
 ```
 
 ```

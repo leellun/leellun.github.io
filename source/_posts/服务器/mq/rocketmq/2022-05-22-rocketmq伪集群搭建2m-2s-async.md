@@ -29,7 +29,13 @@ broker节点：
 
 # 二、配置
 
-## 2.1 nameserver配置
+## 2.1 安装
+
+```
+wget -c wget -c https://archive.apache.org/dist/rocketmq/5.0.0/rocketmq-all-5.0.0-bin-release.zip
+```
+
+## 2.2 nameserver配置
 
 nameserver-1：
 
@@ -55,7 +61,7 @@ vi namesrv-c.properties
 listenPort=8879
 ```
 
-## 2.2 broker配置
+## 2.3 broker配置
 
 broker-a：
 
@@ -63,11 +69,11 @@ broker-a：
 brokerClusterName=DefaultCluster
 brokerName=broker-a
 brokerId=0
-namesrvAddr=192.168.66.70:8876;192.168.66.70:8878;192.168.66.70:8879
 deleteWhen=04
 fileReservedTime=48
 brokerRole=ASYNC_MASTER
 flushDiskType=ASYNC_FLUSH
+namesrvAddr=192.168.66.70:8876;192.168.66.70:8878;192.168.66.70:8879
 #检测物理文件磁盘空间
 diskMaxUsedSpaceRatio=88
 #存储路径
@@ -84,6 +90,8 @@ storeCheckpoint=/app/rocketmq/store-a/checkpoint
 abortFile=/app/rocketmq/store-a/abort
 #限制的消息大小
 maxMessageSize=65536
+#acl权限开启
+aclEnable=true
 #Broker 对外服务的监听端口
 listenPort=10911
 ```
@@ -94,11 +102,11 @@ broker-a-s：
 brokerClusterName=DefaultCluster
 brokerName=broker-a
 brokerId=1
-namesrvAddr=192.168.66.70:8876;192.168.66.70:8878;192.168.66.70:8879
 deleteWhen=04
 fileReservedTime=48
 brokerRole=SLAVE
 flushDiskType=ASYNC_FLUSH
+namesrvAddr=192.168.66.70:8876;192.168.66.70:8878;192.168.66.70:8879
 #检测物理文件磁盘空间
 diskMaxUsedSpaceRatio=88
 #存储路径
@@ -115,6 +123,8 @@ storeCheckpoint=/app/rocketmq/store-a-s/checkpoint
 abortFile=/app/rocketmq/store-a-s/abort
 #限制的消息大小
 maxMessageSize=65536
+#acl权限开启
+aclEnable=true
 listenPort=10921
 ```
 
@@ -124,11 +134,11 @@ broker-b：
 brokerClusterName=DefaultCluster
 brokerName=broker-b
 brokerId=0
-namesrvAddr=192.168.66.70:8876;192.168.66.70:8878;192.168.66.70:8879
 deleteWhen=04
 fileReservedTime=48
 brokerRole=ASYNC_MASTER
 flushDiskType=ASYNC_FLUSH
+namesrvAddr=192.168.66.70:8876;192.168.66.70:8878;192.168.66.70:8879
 #检测物理文件磁盘空间
 diskMaxUsedSpaceRatio=88
 #存储路径
@@ -145,6 +155,8 @@ storeCheckpoint=/app/rocketmq/store-b/checkpoint
 abortFile=/app/rocketmq/store-b/abort
 #限制的消息大小
 maxMessageSize=65536
+#acl权限开启
+aclEnable=true
 listenPort=10931
 ```
 
@@ -154,11 +166,11 @@ broker-b-s:
 brokerClusterName=DefaultCluster
 brokerName=broker-b
 brokerId=1
-namesrvAddr=192.168.66.70:8876;192.168.66.70:8878;192.168.66.70:8879
 deleteWhen=04
 fileReservedTime=48
 brokerRole=SLAVE
 flushDiskType=ASYNC_FLUSH
+namesrvAddr=192.168.66.70:8876;192.168.66.70:8878;192.168.66.70:8879
 #检测物理文件磁盘空间
 diskMaxUsedSpaceRatio=88
 #存储路径
@@ -175,6 +187,8 @@ storeCheckpoint=/app/rocketmq/store-b-s/checkpoint
 abortFile=/app/rocketmq/store-b-s/abort
 #限制的消息大小
 maxMessageSize=65536
+#acl权限开启
+aclEnable=true
 listenPort=10941
 ```
 
