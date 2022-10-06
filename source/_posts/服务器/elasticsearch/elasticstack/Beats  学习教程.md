@@ -1,4 +1,12 @@
-# Beats  学习教程
+---
+title: Beats学习教程
+date: 2022-07-25 18:14:02
+categories:
+  - 服务器
+  - elasticsearch
+tags:
+  - beats
+---
 
 # 一、介绍
 
@@ -17,7 +25,7 @@ Beats是开源的数据托运人，你可以将其作为代理安装在服务器
 
  Beats可以直接将数据发送到Elasticsearch或通过Logstash，在那里你可以进一步处理和增强数据，然后在Kibana中可视化它。 
 
-![1662049179902](Beats  学习教程.assets/1662049179902.png)
+![1662049179902](Beats  学习教程/1662049179902.png)
 
 https://blog.csdn.net/hwjcmozw/article/details/109473925
 

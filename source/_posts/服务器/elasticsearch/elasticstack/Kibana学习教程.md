@@ -1,4 +1,12 @@
-# Kibana学习教程
+---
+title: Kibana学习教程
+date: 2022-07-25 18:14:02
+categories:
+  - 服务器
+  - elasticsearch
+tags:
+  - kibana
+---
 
 # 一、介绍
 

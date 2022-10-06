@@ -1,4 +1,12 @@
-# Logstash学习教程
+---
+title: Logstash学习教程
+date: 2022-07-25 18:14:02
+categories:
+  - 服务器
+  - elasticsearch
+tags:
+  - logstash
+---
 
 # 一、介绍
 
