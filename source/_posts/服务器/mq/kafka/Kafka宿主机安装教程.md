@@ -62,7 +62,7 @@ bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
 bin/zookeeper-server-stop.sh -daemon config/zookeeper.properties
 ```
 
-## 2.3 启动及停止kafka 
+## 3.2 启动及停止kafka 
 
 ```
 # 启动
