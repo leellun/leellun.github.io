@@ -856,6 +856,33 @@
   
   
   <entry>
+    <title>Kafka-Eagle 监控系统搭建</title>
+    <link href="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-Kafka-Eagle-%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F%E6%90%AD%E5%BB%BA/"/>
+    <url>/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-Kafka-Eagle-%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F%E6%90%AD%E5%BB%BA/</url>
+    
+    <content type="html"><![CDATA[<h2 id="一、下载安装kafka-eagle"><a href="#一、下载安装kafka-eagle" class="headerlink" title="一、下载安装kafka-eagle"></a>一、下载安装kafka-eagle</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">wget</span> -c https://github.com/smartloli/kafka-eagle-bin/archive/v3.<span class="hljs-number">0</span>.<span class="hljs-number">1</span>.tar.gz<br><span class="hljs-attribute">tar</span> -zxf v3.<span class="hljs-number">0</span>.<span class="hljs-number">1</span>.tar.gz<br><span class="hljs-attribute">tar</span> -zxf efak-web-<span class="hljs-number">3</span>.<span class="hljs-number">0</span>.<span class="hljs-number">1</span>-bin.tar.gz<br></code></pre></td></tr></table></figure><p>配置kafka：</p><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs gradle">vi <span class="hljs-regexp">/etc/</span>profile<br><br>export KE_HOME=<span class="hljs-regexp">/root/</span>efak-web-<span class="hljs-number">3.0</span>.<span class="hljs-number">1</span><br><br><span class="hljs-keyword">source</span> <span class="hljs-regexp">/etc/</span>profile<br></code></pre></td></tr></table></figure><p>配置文件配置</p><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">efak.zk.cluster.alias</span>=cluster1<br><span class="hljs-attr">cluster1.zk.list</span>=localhost:<span class="hljs-number">2181</span><br><br><span class="hljs-comment"># offset 保存在 kafka</span><br><span class="hljs-attr">cluster1.efak.offset.storage</span>=kafka<br><br><span class="hljs-comment">#jdbc</span><br><span class="hljs-attr">efak.driver</span>=com.mysql.cj.jdbc.Driver<br><span class="hljs-attr">efak.url</span>=jdbc:mysql://<span class="hljs-number">192.168</span>.<span class="hljs-number">66.2</span>:<span class="hljs-number">3308</span>/ke?autoReconnect=<span class="hljs-literal">true</span>&amp;userUnicode=<span class="hljs-literal">true</span>&amp;characterEncoding=UTF8&amp;useSSL=<span class="hljs-literal">false</span>&amp;serverTimezone=GMT%<span class="hljs-number">2</span>B8&amp;rewriteBatchedStatements=<span class="hljs-literal">true</span>&amp;allowMultiQueries=<span class="hljs-literal">true</span>&amp;allowPublicKeyRetrieval=<span class="hljs-literal">true</span><br><span class="hljs-attr">efak.username</span>=leellun<br><span class="hljs-attr">efak.password</span>=xx<br></code></pre></td></tr></table></figure><h2 id="二、服务启动"><a href="#二、服务启动" class="headerlink" title="二、服务启动"></a>二、服务启动</h2><p>开启JMX_PORT，并启动kafka，推荐方式：</p><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">JMX_PORT=<span class="hljs-number">9999</span> bin/kafka-<span class="hljs-keyword">server</span>-<span class="hljs-keyword">start</span>.sh config/<span class="hljs-keyword">server</span>.properties<br></code></pre></td></tr></table></figure><p>开启efak：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">bin/ke.sh start<br></code></pre></td></tr></table></figure><p>开启efak会由默认的用户名和密码，需要修改密码的可以配置文件ke_users表进行修改</p><h2 id="三、查看"><a href="#三、查看" class="headerlink" title="三、查看"></a>三、查看</h2><h2 id="四、遇到的坑"><a href="#四、遇到的坑" class="headerlink" title="四、遇到的坑"></a>四、遇到的坑</h2><p>1 因为我是在虚拟机搭建的kafka、euak，为了节省资源，用的mysql是实体机window10的，一直连不上，没有想到window10防火墙问题，关了防火墙就可以登录进去了；</p><p>2 还是mysql问题，kafka一直没有节点显示，最后查看日志，提示timezone问题，但是在连接上添加了serverTimezone=GMT%2B8各种都使用了还是不行，最后只好去mysql修改，查看mysql的timezone值是system，修改配置my.ini设置</p><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[mysqld]</span> <br><span class="hljs-attr">default-time_zone</span> = <span class="hljs-string">&#x27;+8:00&#x27;</span><br></code></pre></td></tr></table></figure><p>然后重启mysql，终于连上了</p><p>最后我想说，操。。。</p><p>这TM，这种问题居然也能让我饶头，这问题也能遇到，这么简单的东西，居然解决半天。。。。。。。。。。。。。。。。。。。。。。。。。。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>服务器</category>
+      
+      <category>mq</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>kafka</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>二进制部署kubernetes集群</title>
     <link href="/2022/03/16/k8s/%E9%9B%86%E7%BE%A4/%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4/"/>
     <url>/2022/03/16/k8s/%E9%9B%86%E7%BE%A4/%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4/</url>
