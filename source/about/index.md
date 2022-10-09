@@ -4,51 +4,49 @@ layout: abount
 date: 2022-09-23 13:19:04
 ---
 
-长风破浪会有时，直挂云帆济沧海
+不是在技术学习，就是在技术学习的路上
 
-## 联系
+## 技术分享
 
-- GitHub：[@leellun](https://github.com/leellun)
-- CSDN：[@leellun](https://blog.csdn.net/liu289747235) [@weixincsdn](https://blog.csdn.net/weixin_44416039) 
+GitHub：
+
+https://github.com/leellun
+
+Gitee：
+
+https://gitee.com/myselfyou
+
+CSDN：
+
+https://blog.csdn.net/liu289747235
+
+https://blog.csdn.net/weixin_44416039
 
 ## 语言技能
 
-- Java 
-- Js
-- Kotlin 
+Java、Js、Kotlin   了解会写语言：C、C++、PHP
 
-##  Java技术
+## 技术栈
 
-- Spring
-- SpringBoot
-- SpringCloud
-- SpringCloudAlibaba
-- Security+Oauth2
-- JVM
-- Rabbitmq
-- Rocketmq
-- Kafka
-- Mysql
-- Oracle
-- MybatisPlus
-- Mybatis
-- Redis
-- Elasticsearch
-- Seata
-- HamilyTcc
-- Tcc
+### 服务端
 
-## 流水线技术
+Spring、hibernate、SpringMVC、SpringBoot、SpringCloud、SpringCloudAlibaba、Security+Oauth2、Dubbo、JVM、Rabbitmq、Rocketmq、Kafka、Canal、Mybatis、MybatisPlus、Redis、Elasticsearch、Seata、HamilyTcc、AQS、Java并发编程、minio
 
-- Jenkins
-- SonarQube
-- KubeSphere
+### 数据库
 
-## 容器技术
+Mysql、Oracle、postsqlgresql、SQLServer、mongodb、Mybatis
 
-- Docker
-- Harbor
-- Kubernetes（kubeadm部署、keepalived+haproxy高可用部署、二进制部署）
-- Containerd
-- Etcd
-- openelb
+### 前端
+
+JQuery（早期项目实战）、Vue（个人网站前端）、JavaScript、TypeScript（个人网站后台）、CSS、SASS
+
+应用网站：https://www.uutoolkit.com
+
+## 云计算
+
+Kubernetes、Docker、Containerd、Etcd、openelb、Helm
+
+## DevOps
+
+Kubesphere、Jenkins、Gitlab、Harbor、SonarQube
+
