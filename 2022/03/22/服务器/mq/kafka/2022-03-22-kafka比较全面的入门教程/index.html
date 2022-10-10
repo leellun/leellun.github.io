@@ -23,11 +23,44 @@
 <meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
 <meta property="og:description" content="一、介绍Kafka是一个分布式、分区的、多副本的、多订阅者的基于发布&#x2F;订阅模式的消息队列（Message Queue），基于zookeeper协调的分布式日志系统（也可以当做MQ系统），常见可以用于web&#x2F;nginx日志、访问日志，消息服务等等. 发布&#x2F;订阅：消息的发布者不会将消息直接发送给特定的订阅者，而是将发布的消息分为不同的类别，订阅者只接收感兴趣的消息。 发布&#x2F;订阅模式的消息队列（Mess">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665118407596.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665119023923.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665129357957.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665138063266.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665140518667.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665140628430.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665145677229.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665146232918.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665146287448.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148022462.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148093117.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148113321.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148160678.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148210215.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148406781.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148667342.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148841520.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148867998.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148907848.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665150140798.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665150186980.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665150198537.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665150760722.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665151538617.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665152442793.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665152499671.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665152585632.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665152743890.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665152823707.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665152902665.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665152914849.png">
+<meta property="og:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665292124978.png">
 <meta property="article:published_time" content="2022-03-22T10:14:02.000Z">
-<meta property="article:modified_time" content="2022-10-07T14:37:05.032Z">
+<meta property="article:modified_time" content="2022-10-09T05:39:46.335Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="kafka">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://leellun.github.io/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665118407596.png">
   
   
   
@@ -219,7 +252,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          23k 字
+          25k 字
         
       </span>
     
@@ -230,7 +263,7 @@
         
         
         
-          196 分钟
+          206 分钟
         
       </span>
     
@@ -277,7 +310,7 @@
 <p>发布/订阅：消息的发布者不会将消息直接发送给特定的订阅者，而是将发布的消息分为不同的类别，订阅者只接收感兴趣的消息。</p>
 <p>发布/订阅模式的消息队列（Message Queue），主要应用于大数据实时处理领域。 </p>
 <p>同时Kafka是 一个开源的分布式事件流平台 （Event Streaming Platform），被用于高性能数据管道、流分析、数据集成和关键任务应用。 </p>
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665118407596.png" srcset="/img/loading.gif" lazyload class="" width="1665118407596">
 
 <p>例如：对于网站浏览、收藏、点赞、评论日志。</p>
 <h1 id="二、应用场景"><a href="#二、应用场景" class="headerlink" title="二、应用场景"></a>二、应用场景</h1><ul>
@@ -292,7 +325,7 @@
 <p><strong>发布订阅模式</strong></p>
 <p>生产者将消息发布到topic中，topic可以被多个消费者订阅，且发布到topic的消息会被所有订阅者消费。</p>
 <p>消息者通过指定offset来指定要消费的消息。可以通过log.retention.hours=168来指定消息保存时间。</p>
-<h1 id="四、Kafka-基础架构"><a href="#四、Kafka-基础架构" class="headerlink" title="四、Kafka 基础架构"></a>四、Kafka 基础架构</h1>
+<h1 id="四、Kafka-基础架构"><a href="#四、Kafka-基础架构" class="headerlink" title="四、Kafka 基础架构"></a>四、Kafka 基础架构</h1><img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665119023923.png" srcset="/img/loading.gif" lazyload class="" width="1665119023923">
 
 <ul>
 <li><ol>
@@ -453,7 +486,7 @@
 <p>把主题中所有的数据都读取出来（包括历史数据）:</p>
 <figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns">bin/kafka-console-consumer.sh --bootstrap-server <span class="hljs-number">192.168.66.70</span>:<span class="hljs-number">9092,192.168</span>.<span class="hljs-number">66.70:9093</span>,<span class="hljs-number">192.168.66.70</span>:<span class="hljs-number">9094</span> --from-beginning --topic first<br></code></pre></td></tr></table></figure>
 
-<h1 id="七、Kafka-生产者"><a href="#七、Kafka-生产者" class="headerlink" title="七、Kafka 生产者"></a>七、Kafka 生产者</h1>
+<h1 id="七、Kafka-生产者"><a href="#七、Kafka-生产者" class="headerlink" title="七、Kafka 生产者"></a>七、Kafka 生产者</h1><img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665129357957.png" srcset="/img/loading.gif" lazyload class="" width="1665129357957">
 
 <h2 id="7-1-发送"><a href="#7-1-发送" class="headerlink" title="7.1 发送"></a>7.1 发送</h2><p>在消息发送的过程中，涉及到了两个线程——main 线程和 Sender 线程。在 main 线程中创建了一个双端队列 RecordAccumulator。main 线程将消息发送给 RecordAccumulator，Sender 线程不断从 RecordAccumulator 中拉取消息发送到 Kafka Broker。</p>
 <p>  生产者重要参数列表 </p>
@@ -511,7 +544,7 @@
 </tbody></table>
 <h2 id="7-2-生产者分区"><a href="#7-2-生产者分区" class="headerlink" title="7.2 生产者分区"></a>7.2 生产者分区</h2><p>（1）便于合理使用存储资源，每个Partition在一个Broker上存储，可以把海量的数据按照分区切割成一块一块数据存储在多台Broker上。合理控制分区的任务，可以实现负载均衡的效果。 </p>
 <p>（2）提高并行度，生产者可以以分区为单位发送数据；消费者可以以分区为单位进行消费数据。 </p>
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665138063266.png" srcset="/img/loading.gif" lazyload class="" width="1665138063266">
 
 <p>生产者分区策略：</p>
 <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-symbol">DefaultPartitioner</span> <span class="hljs-symbol">implements</span> <span class="hljs-symbol">Partitioner</span> &#123;<br> … …<br>&#125;<br></code></pre></td></tr></table></figure>
@@ -571,11 +604,11 @@
 <p> 原因说明：因为在kafka1.x以后，启用幂等后，kafka服务端会缓存producer发来的最近5个request的元数据， 故无论如何，都可以保证最近5个request的数据都是有序的。</p>
 <h1 id="八、Kafka-Broker"><a href="#八、Kafka-Broker" class="headerlink" title="八、Kafka Broker"></a>八、Kafka Broker</h1><h2 id="8-1-kafka信息"><a href="#8-1-kafka信息" class="headerlink" title="8.1 kafka信息"></a>8.1 kafka信息</h2> <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">bin/zkCli.sh</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> /kafka</span><br></code></pre></td></tr></table></figure>
 
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665140518667.png" srcset="/img/loading.gif" lazyload class="" width="1665140518667">
 
 
 
-
-<h2 id="8-2-Kafka-Broker-总体工作流程"><a href="#8-2-Kafka-Broker-总体工作流程" class="headerlink" title="8.2  Kafka Broker 总体工作流程"></a>8.2  Kafka Broker 总体工作流程</h2> 
+<h2 id="8-2-Kafka-Broker-总体工作流程"><a href="#8-2-Kafka-Broker-总体工作流程" class="headerlink" title="8.2  Kafka Broker 总体工作流程"></a>8.2  Kafka Broker 总体工作流程</h2> <img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665140628430.png" srcset="/img/loading.gif" lazyload class="" width="1665140628430">
 
 <p> 查看/kafka/brokers/ids 路径上的节点：</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">ls <span class="hljs-regexp">/brokers/i</span>ds<br>[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>]<br></code></pre></td></tr></table></figure>
@@ -705,7 +738,7 @@
 <p>OSR，表示 Follower 与 Leader 副本同步时，延迟过多的副本。 </p>
 <h3 id="8-5-2-Leader-选举流程"><a href="#8-5-2-Leader-选举流程" class="headerlink" title="8.5.2 Leader 选举流程"></a>8.5.2 Leader 选举流程</h3><p>Kafka 集群中有一个 broker 的 Controller 会被选举为 Controller Leader，负责管理集群broker 的上下线，所有 topic 的分区副本分配和 Leader 选举等工作。</p>
 <p>Controller 的信息同步工作是依赖于 Zookeeper 的。 </p>
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665145677229.png" srcset="/img/loading.gif" lazyload class="" width="1665145677229">
 
 <p>（1）创建一个新的 topic，4 个分区，4 个副本 </p>
 <figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-title">[</span><span class="hljs-comment">root@localhost kafka</span><span class="hljs-title">]</span><span class="hljs-comment"># bin/kafka</span><span class="hljs-literal">-</span><span class="hljs-comment">topics</span><span class="hljs-string">.</span><span class="hljs-comment">sh</span> <span class="hljs-literal">--</span><span class="hljs-comment">bootstrap</span><span class="hljs-literal">-</span><span class="hljs-comment">server 192</span><span class="hljs-string">.</span><span class="hljs-comment">168</span><span class="hljs-string">.</span><span class="hljs-comment">66</span><span class="hljs-string">.</span><span class="hljs-comment">70:9092</span> <span class="hljs-literal">--</span><span class="hljs-comment">create</span> <span class="hljs-literal">--</span><span class="hljs-comment">topic test2</span> <span class="hljs-literal">--</span><span class="hljs-comment">partitions 3</span> <span class="hljs-literal">--</span><span class="hljs-comment">replication</span><span class="hljs-literal">-</span><span class="hljs-comment">factor 3</span> <br><span class="hljs-comment">Created topic test2</span><span class="hljs-string">.</span><br></code></pre></td></tr></table></figure>
@@ -715,9 +748,9 @@
 
 <h2 id="8-6-Leader-和-Follower-故障处理细节"><a href="#8-6-Leader-和-Follower-故障处理细节" class="headerlink" title="8.6 Leader 和 Follower 故障处理细节"></a>8.6 Leader 和 Follower 故障处理细节</h2><p> LEO（Log End Offset）：每个副本的最后一个offset，LEO其实就是最新的offset + 1。 </p>
 <p>HW（High Watermark）：所有副本中最小的LEO 。 </p>
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665146232918.png" srcset="/img/loading.gif" lazyload class="" width="1665146232918">
 
-
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665146287448.png" srcset="/img/loading.gif" lazyload class="" width="1665146287448">
 
 <h2 id="8-7-手动调整分区副本存储"><a href="#8-7-手动调整分区副本存储" class="headerlink" title="8.7 手动调整分区副本存储"></a>8.7 手动调整分区副本存储</h2><p> 在生产环境中，每台服务器的配置和性能不一致，但是Kafka只会根据自己的代码规则创建对应的分区副本，就会导致个别服务器存储压力较大。所有需要手动调整分区副本的存储。 </p>
 <p>创建副本存储计划 :</p>
@@ -738,13 +771,13 @@
 <figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sqf">auto.<span class="hljs-built_in">leader</span>.rebalance.enable，默认是<span class="hljs-literal">true</span>。 自动<span class="hljs-built_in">Leader</span> Partition 平衡 <br><span class="hljs-built_in">leader</span>.imbalance.per.broker.percentage， 默认是<span class="hljs-number">10</span>%。每个broker允许的不平衡的<span class="hljs-built_in">leader</span>的比率。如果每个broker超过了这个值，控制器会触发<span class="hljs-built_in">leader</span>的平衡。 <br><span class="hljs-built_in">leader</span>.imbalance.check.interval.seconds， 默认值<span class="hljs-number">300</span>秒。检查<span class="hljs-built_in">leader</span>负载是否平衡的间隔时间。<br></code></pre></td></tr></table></figure>
 
 <h1 id="九、文件存储"><a href="#九、文件存储" class="headerlink" title="九、文件存储"></a>九、文件存储</h1><h2 id="9-1-文件存储机制"><a href="#9-1-文件存储机制" class="headerlink" title="9.1 文件存储机制"></a>9.1 文件存储机制</h2><p>Topic是逻辑上的概念，而partition是物理上的概念，每个partition对应于一个log文件，该log文件中存储的就是Producer生产的数据。Producer生产的数据会被不断追加到该log文件末端，为防止log文件过大导致数据定位效率低下，Kafka采取了分片和索引机制，将每个partition分为多个segment。每个segment包括：“.index”文件、“.log”文件和.timeindex等文件。这些文件位于一个文件夹下，该文件夹的命名规则为：topic名称+分区序号，例如：first-0。</p>
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148022462.png" srcset="/img/loading.gif" lazyload class="" width="1665148022462">
 
 <p>index 文件和 log 文件详解：</p>
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148093117.png" srcset="/img/loading.gif" lazyload class="" width="1665148093117">
 
 <p>日志存储参数配置 ：</p>
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148113321.png" srcset="/img/loading.gif" lazyload class="" width="1665148113321">
 
 <h2 id="9-2-文件清理策略"><a href="#9-2-文件清理策略" class="headerlink" title="9.2 文件清理策略"></a>9.2 文件清理策略</h2><p> Kafka 中默认的日志保存时间为 7 天，可以通过调整如下参数修改保存时间。 </p>
 <p>⚫ log.retention.hours，最低优先级小时，默认 7 天。 </p>
@@ -758,10 +791,10 @@
 <p>（2）基于大小：默认关闭。超过设置的所有日志总大小，删除最早的 segment。 </p>
 <p>log.retention.bytes，默认等于-1，表示无穷大。 </p>
 <p>思考：如果一个 segment 中有一部分数据过期，一部分没有过期，怎么处理？ </p>
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148160678.png" srcset="/img/loading.gif" lazyload class="" width="1665148160678">
 
 <p>2）compact 日志压缩 </p>
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148210215.png" srcset="/img/loading.gif" lazyload class="" width="1665148210215">
 
 <p>压缩后的offset可能是不连续的，比如上图中没有6，当从这些offset消费消息时，将会拿到比这个offset大的offset对应的消息，实际上会拿到offset为7的消息，并从这个位置开始消费。 </p>
 <p>这种策略只适合特殊场景，比如消息的key是用户ID，value是用户的资料，通过这种压缩策略，整个消息集里就保存了所有用户最新的资料。</p>
@@ -770,14 +803,14 @@
 <p>3）顺序写磁盘</p>
 <p>Kafka 的 producer 生产数据，要写入到 log 文件中，写的过程是一直追加到文件末端，为顺序写。同样的磁盘，顺序写能到 600M/s，而随机写只有 100K/s。这 </p>
 <p>与磁盘的机械机构有关，顺序写之所以快，是因为其省去了大量磁头寻址的时间。 </p>
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148406781.png" srcset="/img/loading.gif" lazyload class="" width="1665148406781">
 
 <p>4）页缓存 + 零拷贝技术 </p>
 <p>零拷贝：</p>
 <p>Kafka的数据加工处理操作交由Kafka生产者和Kafka消费者处理。Kafka Broker应用层不关心存储的数据，所以就不用走应用层，传输效率高。</p>
 <p>PageCache页缓存：</p>
 <p>Kafka重度依赖底层操作系统提供的PageCache功 能。当上层有写操作时，操作系统只是将数据写入PageCache。当读操作发生时，先从PageCache中查找，如果找不到，再去磁盘中读取。实际上PageCache是把尽可能多的空闲内存都当做了磁盘缓存来使用。</p>
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148667342.png" srcset="/img/loading.gif" lazyload class="" width="1665148667342">
 
 <table>
 <thead>
@@ -798,25 +831,25 @@
 <h1 id="十、Kafka-消费者"><a href="#十、Kafka-消费者" class="headerlink" title="十、Kafka 消费者"></a>十、Kafka 消费者</h1><h2 id="10-1-Kafka-消费方式"><a href="#10-1-Kafka-消费方式" class="headerlink" title="10.1 Kafka 消费方式"></a>10.1 Kafka 消费方式</h2><p>pull（拉）模 式： </p>
 <p>consumer采用从broker中主动拉取数据。 Kafka采用这种方式。 </p>
 <p>pull模式不足之处是，如 果Kafka没有数据，消费者可能会陷入循环中，一直返回空数据。</p>
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148841520.png" srcset="/img/loading.gif" lazyload class="" width="1665148841520">
 
-
-<h2 id="10-2-Kafka-消费者工作流程"><a href="#10-2-Kafka-消费者工作流程" class="headerlink" title="10.2 Kafka 消费者工作流程"></a>10.2 Kafka 消费者工作流程</h2>
+<h2 id="10-2-Kafka-消费者工作流程"><a href="#10-2-Kafka-消费者工作流程" class="headerlink" title="10.2 Kafka 消费者工作流程"></a>10.2 Kafka 消费者工作流程</h2><img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148867998.png" srcset="/img/loading.gif" lazyload class="" width="1665148867998">
 
 <h2 id="10-3-消费者组原理"><a href="#10-3-消费者组原理" class="headerlink" title="10.3 消费者组原理"></a>10.3 消费者组原理</h2><p>Consumer Group（CG）：消费者组，由多个consumer组成。形成一个消费者组的条件，是所有消费者的groupid相同。  </p>
 <p>• 消费者组内每个消费者负责消费不同分区的数据，一个分区只能由一个组内消费者消费。 </p>
 <p>• 消费者组之间互不影响。所有的消费者都属于某个消费者组，即消费者组是逻辑上的一个订阅者。 </p>
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665148907848.png" srcset="/img/loading.gif" lazyload class="" width="1665148907848">
 
-
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665150140798.png" srcset="/img/loading.gif" lazyload class="" width="1665150140798">
 
 <p>消费者组初始化流程 ：</p>
 <p>1、coordinator：辅助实现消费者组的初始化和分区的分配。 </p>
 <p>coordinator节点选择 = groupid的hashcode值 % 50（ __consumer_offsets的分区数量） </p>
 <p>例如： groupid的hashcode值 = 1，1% 50 = 1，那么__consumer_offsets 主题的1号分区，在哪个broker上，就选择这个节点的coordinator </p>
 <p>作为这个消费者组的老大。消费者组下的所有的消费者提交offset的时候就往这个分区去提交offset。 </p>
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665150186980.png" srcset="/img/loading.gif" lazyload class="" width="1665150186980">
 
-
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665150198537.png" srcset="/img/loading.gif" lazyload class="" width="1665150198537">
 
 <h2 id="10-4-消费者重要参数"><a href="#10-4-消费者重要参数" class="headerlink" title="10.4 消费者重要参数"></a>10.4 消费者重要参数</h2><table>
 <thead>
@@ -911,9 +944,9 @@
 <p>通过 partitions数/consumer数 来决定每个消费者应该消费几个分区。如果除不尽，那么前面几个消费者将会多消费 1 个分区。 </p>
 <p>注意：如果只是针对 1 个 topic 而言，C0消费者多消费1个分区影响不是很大。但是如果有 N 多个 topic，那么针对每个 topic，消费者 C0都将多消费 1 个分区，topic越多，C0消费的分区会比其他消费者明显多消费 N 个分区。 </p>
 <p>容易产生数据倾斜！ </p>
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665150760722.png" srcset="/img/loading.gif" lazyload class="" width="1665150760722">
 
-
-<h3 id="10-5-2-RoundRobin"><a href="#10-5-2-RoundRobin" class="headerlink" title="10.5.2 RoundRobin"></a>10.5.2 RoundRobin</h3> 
+<h3 id="10-5-2-RoundRobin"><a href="#10-5-2-RoundRobin" class="headerlink" title="10.5.2 RoundRobin"></a>10.5.2 RoundRobin</h3> <img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665151538617.png" srcset="/img/loading.gif" lazyload class="" width="1665151538617">
 
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 修改分区分配策略<br>properties.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG, <span class="hljs-string">&quot;org.apache.kafka.clients.consumer.RoundRobinAssignor&quot;</span>);<br></code></pre></td></tr></table></figure>
 
@@ -921,7 +954,7 @@
 <p>粘性分区是 Kafka 从 0.11.x 版本开始引入这种分配策略，首先会尽量均衡的放置分区到消费者上面，在出现同一消费者组内消费者出现问题的时候，会尽量保持原有分配的分区不变化。 </p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">org<span class="hljs-selector-class">.apache</span><span class="hljs-selector-class">.kafka</span><span class="hljs-selector-class">.clients</span><span class="hljs-selector-class">.consumer</span>.StickyAssignor<br></code></pre></td></tr></table></figure>
 
-<h2 id="10-6-offset-位移"><a href="#10-6-offset-位移" class="headerlink" title="10.6 offset 位移"></a>10.6 offset 位移</h2>
+<h2 id="10-6-offset-位移"><a href="#10-6-offset-位移" class="headerlink" title="10.6 offset 位移"></a>10.6 offset 位移</h2><img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665152442793.png" srcset="/img/loading.gif" lazyload class="" width="1665152442793">
 
 <p>__consumer_offsets 主题里面采用 key 和 value 的方式存储数据。key 是 group.id+topic+分区号，value 就是当前 offset 的值。每隔一段时间，kafka 内部会对这个 topic 进行compact，也就是每个 group.id+topic+分区号就保留最新数据。</p>
 <p>自动提交 offset :</p>
@@ -929,7 +962,7 @@
 <li>enable.auto.commit：是否开启自动提交offset功能，默认是true </li>
 <li>auto.commit.interval.ms：自动提交offset的时间间隔，默认是5s</li>
 </ul>
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665152499671.png" srcset="/img/loading.gif" lazyload class="" width="1665152499671">
 
 <p>手动提交：</p>
 <p>commitSync（同步提交）：必须等待offset提交完毕，再去消费下一批数据。 </p>
@@ -940,24 +973,46 @@
 <p>（1）earliest：自动将偏移量重置为最早的偏移量，–from-beginning。 </p>
 <p>（2）latest（默认值）：自动将偏移量重置为最新偏移量。 </p>
 <p>（3）none：如果未找到消费者组的先前偏移量，则向消费者抛出异常。 </p>
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665152585632.png" srcset="/img/loading.gif" lazyload class="" width="1665152585632">
 
 
 
 <h2 id="10-7-漏消费和重复消费"><a href="#10-7-漏消费和重复消费" class="headerlink" title="10.7 漏消费和重复消费"></a>10.7 漏消费和重复消费</h2><p> 重复消费：已经消费了数据，但是 offset 没提交。 </p>
 <p>漏消费：先提交 offset 后消费，有可能会造成数据的漏消费</p>
-
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665152743890.png" srcset="/img/loading.gif" lazyload class="" width="1665152743890">
 
 <h2 id="10-8-消费者事务"><a href="#10-8-消费者事务" class="headerlink" title="10.8 消费者事务"></a>10.8 消费者事务</h2><p>Kafka消费端将消费过程和提交offset过程做原子绑定</p>
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665152823707.png" srcset="/img/loading.gif" lazyload class="" width="1665152823707">
+
+<h2 id="10-9-数据积压（消费者如何提高吞吐量）"><a href="#10-9-数据积压（消费者如何提高吞吐量）" class="headerlink" title="10.9 数据积压（消费者如何提高吞吐量）"></a>10.9 数据积压（消费者如何提高吞吐量）</h2><img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665152902665.png" srcset="/img/loading.gif" lazyload class="" width="1665152902665">
+
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665152914849.png" srcset="/img/loading.gif" lazyload class="" width="1665152914849">
 
 
-<h2 id="10-9-数据积压（消费者如何提高吞吐量）"><a href="#10-9-数据积压（消费者如何提高吞吐量）" class="headerlink" title="10.9 数据积压（消费者如何提高吞吐量）"></a>10.9 数据积压（消费者如何提高吞吐量）</h2>
 
+<h1 id="十一、Kafka-Kraft-集群部署"><a href="#十一、Kafka-Kraft-集群部署" class="headerlink" title="十一、Kafka-Kraft 集群部署"></a>十一、Kafka-Kraft 集群部署</h1><p>Kafka-Kraft 架构 </p>
+<img src="/2022/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/kafka/2022-03-22-kafka%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2%E7%9A%84%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/1665292124978.png" srcset="/img/loading.gif" lazyload class="" width="1665292124978">
 
+<p>左图为 Kafka 现有架构，元数据在 zookeeper 中，运行时动态选举 controller，由controller 进行 Kafka 集群管理。右图为 kraft 模式架构（实验性），不再依赖 zookeeper 集群，而是用三台 controller 节点代替 zookeeper，元数据保存在 controller 中，由 controller 直接进行 Kafka 集群管理。 </p>
+<p>好处：</p>
+<ul>
+<li>Kafka 不再依赖外部框架，而是能够独立运行； </li>
+<li>controller 管理集群时，不再需要从 zookeeper 中先读取数据，集群性能上升； </li>
+<li>由于不依赖 zookeeper，集群扩展时不再受到 zookeeper 读写能力限制； </li>
+<li> controller 不再动态选举，而是由配置文件规定。这样我们可以有针对性的加强 </li>
+<li>controller 节点的配置，而不是像以前一样对随机 controller 节点的高负载束手无策。 </li>
+</ul>
+<p>配置文件配置</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs ruby">vi server.properties<br><br><span class="hljs-comment">#kafka 的角色（controller 相当于主机、broker 节点相当于从机，主机类似 zk 功 能）</span><br>process.roles=broker, controller<br><br><span class="hljs-comment">#controller 服务协议别名</span><br>controller.listener.names=<span class="hljs-variable constant_">CONTROLLER</span><br><span class="hljs-comment">#全 Controller 列表</span><br>controller.quorum.voters=<span class="hljs-number">2</span><span class="hljs-variable">@hadoop102</span><span class="hljs-symbol">:</span><span class="hljs-number">9093</span>,<span class="hljs-number">3</span><span class="hljs-variable">@hadoop103</span><span class="hljs-symbol">:</span><span class="hljs-number">9093</span>,<span class="hljs-number">4</span><span class="hljs-variable">@hado</span><br><span class="hljs-symbol">op104:</span><span class="hljs-number">9093</span><br><span class="hljs-comment">#不同服务器绑定的端口</span><br>listeners=<span class="hljs-variable constant_">PLAINTEXT</span><span class="hljs-symbol">://</span><span class="hljs-symbol">:</span><span class="hljs-number">9092</span>,<span class="hljs-variable constant_">CONTROLLER</span><span class="hljs-symbol">://</span><span class="hljs-symbol">:</span><span class="hljs-number">9093</span><br><span class="hljs-comment">#broker 服务协议别名</span><br>inter.broker.listener.name=<span class="hljs-variable constant_">PLAINTEXT</span><br><span class="hljs-comment">#broker 对外暴露的地址</span><br>advertised.Listeners=<span class="hljs-variable constant_">PLAINTEXT</span><span class="hljs-symbol">://hadoop102</span><span class="hljs-symbol">:</span><span class="hljs-number">9092</span><br><span class="hljs-comment">#协议别名到安全协议的映射</span><br>listener.security.protocol.map=<span class="hljs-variable constant_">CONTROLLER</span><span class="hljs-symbol">:PLAINTEXT</span>,<span class="hljs-variable constant_">PLAINTEXT</span><span class="hljs-symbol">:PLA</span><br><span class="hljs-variable constant_">INTEXT</span>,<span class="hljs-variable constant_">SSL</span><span class="hljs-symbol">:SSL</span>,<span class="hljs-variable constant_">SASL_PLAINTEXT</span><span class="hljs-symbol">:SASL_PLAINTEXT</span>,<span class="hljs-variable constant_">SASL_SSL</span><span class="hljs-symbol">:SASL_SSL</span><br><span class="hljs-comment">#kafka 数据存储目录</span><br>log.dirs=<span class="hljs-regexp">/opt/module</span><span class="hljs-regexp">/kafka2/data</span><br></code></pre></td></tr></table></figure>
 
+<p>首先生成存储目录唯一 ID</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">bin/kafka-storage.sh </span><span class="hljs-built_in">random</span>-uuid<br><span class="hljs-keyword">J7s9e8PPTKOO47PxzI39VA</span><br><span class="hljs-keyword"></span><br><br></code></pre></td></tr></table></figure>
 
+<p>用该 ID 格式化 kafka 存储目录 </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">bin<span class="hljs-regexp">/kafka-storage.sh format -t J7s9e8PPTKOO47PxzI39VA -c /</span>opt<span class="hljs-regexp">/module/</span>kafka2<span class="hljs-regexp">/config/</span>kraft/server.properties<br></code></pre></td></tr></table></figure>
 
-
+<p>启动kafka</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">bin/kafka-<span class="hljs-keyword">server</span>-<span class="hljs-keyword">start</span>.sh -daemon config/kraft/<span class="hljs-keyword">server</span>.properties<br></code></pre></td></tr></table></figure>
 
 
 
