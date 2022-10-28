@@ -67,6 +67,8 @@ bin/zookeeper-server-stop.sh -daemon config/zookeeper.properties
 ```
 # 启动
 bin/kafka-server-start.sh -daemon config/server.properties
+# JMX启动方式
+JMX_PORT=9999 bin/kafka-server-start.sh -daemon config/server.properties
 # 关闭 
 bin/kafka-server-stop.sh config/server.properties
 #启动日志查看

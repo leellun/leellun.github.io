@@ -40,7 +40,7 @@ Mysql、Oracle、postsqlgresql、SQLServer、mongodb、Mybatis
 
 JQuery（早期项目实战）、Vue（个人网站前端）、JavaScript、TypeScript（个人网站后台）、CSS、SASS
 
-应用网站：https://www.uutoolkit.com
+个人网站：https://www.uutoolkit.com
 
 ## 云计算
 
