@@ -1,0 +1,760 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、基本算法 1)插入排序(直接插入排序、希尔排序) 2)交换排序(冒泡排序、快速排序) 3)选择排序(直接选择排序、堆排序) 4)归并排序 5)分配排序(基数排序)  分析：  所需辅助空间最多：归并排序 所需辅助空间最少：堆排序 平均速度最快：快速排序 不稳定：快速排序，希尔排序，堆排序。    1.1 直接插入排序基本思想 在要排序的一组数中，假设前面(n-1)[n&#x3D;2]个数已经是排好顺序的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java基本算法">
+<meta property="og:url" content="https://leellun.github.io/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="一、基本算法 1)插入排序(直接插入排序、希尔排序) 2)交换排序(冒泡排序、快速排序) 3)选择排序(直接选择排序、堆排序) 4)归并排序 5)分配排序(基数排序)  分析：  所需辅助空间最多：归并排序 所需辅助空间最少：堆排序 平均速度最快：快速排序 不稳定：快速排序，希尔排序，堆排序。    1.1 直接插入排序基本思想 在要排序的一组数中，假设前面(n-1)[n&#x3D;2]个数已经是排好顺序的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leellun.github.io/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/wps4.jpg">
+<meta property="og:image" content="https://leellun.github.io/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659859904665.png">
+<meta property="og:image" content="https://leellun.github.io/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659861837987.png">
+<meta property="og:image" content="https://leellun.github.io/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659861981235.png">
+<meta property="og:image" content="https://leellun.github.io/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659862216644.png">
+<meta property="og:image" content="https://leellun.github.io/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659862264740.png">
+<meta property="og:image" content="https://leellun.github.io/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659862292390.png">
+<meta property="og:image" content="https://leellun.github.io/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659862809780.png">
+<meta property="og:image" content="https://leellun.github.io/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659862985399.png">
+<meta property="og:image" content="https://leellun.github.io/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659863361285.png">
+<meta property="og:image" content="https://leellun.github.io/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659863814006.png">
+<meta property="article:published_time" content="2019-01-25T02:14:02.000Z">
+<meta property="article:modified_time" content="2022-10-03T17:56:36.424Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="基本算法">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://leellun.github.io/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/wps4.jpg">
+  
+  
+  
+  <title>Java基本算法 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Java基本算法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-01-25 10:14" pubdate>
+          2019年1月25日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          69 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Java基本算法</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、基本算法"><a href="#一、基本算法" class="headerlink" title="一、基本算法"></a>一、基本算法</h1><ul>
+<li>1)插入排序(直接插入排序、希尔排序)</li>
+<li>2)交换排序(冒泡排序、快速排序)</li>
+<li>3)选择排序(直接选择排序、堆排序)</li>
+<li>4)归并排序</li>
+<li>5)分配排序(基数排序)</li>
+</ul>
+<p>分析：</p>
+<ul>
+<li>所需辅助空间最多：归并排序</li>
+<li>所需辅助空间最少：堆排序</li>
+<li>平均速度最快：快速排序</li>
+<li>不稳定：快速排序，希尔排序，堆排序。</li>
+</ul>
+<img src="/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/wps4.jpg" srcset="/img/loading.gif" lazyload class="" title="img">
+
+<h2 id="1-1-直接插入排序"><a href="#1-1-直接插入排序" class="headerlink" title="1.1 直接插入排序"></a>1.1 直接插入排序</h2><p>基本思想</p>
+<p>在要排序的一组数中，假设前面(n-1)[n=2]个数已经是排好顺序的,现在要把第n个数插到前面的有序数中,使得这n个数也是排好顺序的。如此反复循环,直到全部排好顺序。</p>
+<img src="/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659859904665.png" srcset="/img/loading.gif" lazyload class="" width="1659859904665">
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-built_in">public</span> static <span class="hljs-type">int</span>[] insertSort() &#123;<br>       <span class="hljs-type">int</span>[] a = <span class="hljs-built_in">new</span> <span class="hljs-type">int</span>[]&#123;<span class="hljs-number">57</span>, <span class="hljs-number">68</span>, <span class="hljs-number">59</span>, <span class="hljs-number">52</span>&#125;;<br>        // 算法实际次数<br>        <span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; a.length; i++) &#123;<br>            <span class="hljs-type">int</span> j = i - <span class="hljs-number">1</span>;<br>            <span class="hljs-type">int</span> <span class="hljs-keyword">temp</span> = a[i];<br>            <span class="hljs-keyword">if</span> (a[j] &lt; <span class="hljs-keyword">temp</span>) &#123;<br>                count++;<br>            &#125;<br>            <span class="hljs-keyword">for</span> (; j &gt;= <span class="hljs-number">0</span> &amp;&amp; a[j] &gt; <span class="hljs-keyword">temp</span>; j<span class="hljs-comment">--) &#123;</span><br>                a[j + <span class="hljs-number">1</span>] = a[j];<br>                count++;<br>                <span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(Arrays.toString(a));<br>            &#125;<br>            a[j + <span class="hljs-number">1</span>] = <span class="hljs-keyword">temp</span>;<br>            <span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(Arrays.toString(a));<br>        &#125;<br>        <span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(a.length + &quot;---&quot; + count);<br>        <span class="hljs-keyword">return</span> a;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印：</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-string">[57, 68, 59, 52]</span><br><span class="hljs-string">[57, 68, 68, 52]</span><br><span class="hljs-string">[57, 59, 68, 52]</span><br><span class="hljs-string">[57, 59, 68, 68]</span><br><span class="hljs-string">[57, 59, 59, 68]</span><br><span class="hljs-string">[57, 57, 59, 68]</span><br><span class="hljs-string">[52, 57, 59, 68]</span><br><span class="hljs-number">4</span>---<span class="hljs-number">5</span><br></code></pre></td></tr></table></figure>
+
+<p>过程：</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs tap">第一次：<br>57<span class="hljs-number"> 68 </span> 一次<br>57<span class="hljs-number"> 68 </span>59 =》57<span class="hljs-number"> 59 </span>68 一次<br>57<span class="hljs-number"> 59 </span>68<span class="hljs-number"> 52 </span>=》57<span class="hljs-number"> 59 </span>52 68=》57<span class="hljs-number"> 52 </span>59 68=》52<span class="hljs-number"> 57 </span>59<span class="hljs-number"> 68 </span>三次<br></code></pre></td></tr></table></figure>
+
+<p>所以实际算法次数5次</p>
+<h2 id="1-2-希尔排序-最小增量排序"><a href="#1-2-希尔排序-最小增量排序" class="headerlink" title="1.2 希尔排序(最小增量排序)"></a>1.2 希尔排序(最小增量排序)</h2><p><strong>基本思想</strong></p>
+<p>算法先将要排序的一组数按某个增量d(n/2，n为要排序数的个数)分成若干组,每组中记录的下标相差d.对每组中全部元素进行直接插入排序,然后再用一个较小的增量(d/2)对它进行分组,在每组中再进行直接插入排序。当增量减到1时,进行直接插入排序后,排序完成。</p>
+<img src="/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659861837987.png" srcset="/img/loading.gif" lazyload class="" width="1659861837987">
+
+<p>实例</p>
+<p>方式一：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-built_in">public</span> <span class="hljs-keyword">class</span> ShellSortTest &#123;<br>    <span class="hljs-built_in">public</span> static <span class="hljs-type">int</span>[] shellSort(<span class="hljs-type">int</span>[] a) &#123;<br>        <span class="hljs-type">double</span> d1 = a.length;<br>        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) &#123;<br>            d1 = Math.ceil(d1 / <span class="hljs-number">2</span>);<br>            <span class="hljs-type">int</span> d = (<span class="hljs-type">int</span>) d1;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = d; i &lt; a.length; i = i + <span class="hljs-number">1</span>) &#123;<br>                <span class="hljs-type">int</span> j = i - d;<br>                <span class="hljs-type">int</span> <span class="hljs-keyword">temp</span> = a[i];<br>                <span class="hljs-keyword">for</span> (; j &gt;= <span class="hljs-number">0</span> &amp;&amp; a[j] &gt; <span class="hljs-keyword">temp</span>; j = j - d) &#123;<br>                    a[j + d] = a[j];<br>                &#125;<br>                a[j + d] = <span class="hljs-keyword">temp</span>;<br>            &#125;<br>            <span class="hljs-keyword">if</span> (d == <span class="hljs-number">1</span>) &#123;<br>                break;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> a;<br>    &#125;<br><br>    <span class="hljs-built_in">public</span> static <span class="hljs-type">void</span> main(String[] args) &#123;<br>        <span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(Arrays.toString(shellSort(<span class="hljs-built_in">new</span> <span class="hljs-type">int</span>[]&#123;<span class="hljs-number">57</span>, <span class="hljs-number">68</span>, <span class="hljs-number">59</span>, <span class="hljs-number">52</span>, <span class="hljs-number">72</span>, <span class="hljs-number">28</span>, <span class="hljs-number">96</span>, <span class="hljs-number">33</span>, <span class="hljs-number">24</span>, <span class="hljs-number">19</span>&#125;)));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>方式二：方式一的简写，跨度d没有向上的四舍五入，算法复杂都一样</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span>[] shellSort2(<span class="hljs-keyword">int</span>[] a) &#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> d = a.length <span class="hljs-regexp">/ 2; d&gt;0; d /</span>= <span class="hljs-number">2</span>) &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = d; i &lt; a.length; i = i + <span class="hljs-number">1</span> ) &#123;<br>            <span class="hljs-keyword">int</span> j = i - d;<br>            <span class="hljs-keyword">int</span> temp = a[i];<br>            <span class="hljs-keyword">for</span> (; j &gt;= <span class="hljs-number">0</span> &amp;&amp; a[j] &gt; temp; j = j - d) &#123;<br>                a[j + d] = a[j];<br>            &#125;<br>            a[j + d] = temp;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> a;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="1-3-简单选择排序"><a href="#1-3-简单选择排序" class="headerlink" title="1.3 简单选择排序"></a>1.3 简单选择排序</h2><p>基本思想</p>
+<p>在要排序的一组数中,选出最小的一个数与第一个位置的数交换；然后在剩下的数当中再找最小的与第二个位置的数交换,如此循环到倒数第二个数和最后一个数比较为止。</p>
+<img src="/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659861981235.png" srcset="/img/loading.gif" lazyload class="" width="1659861981235">
+
+<p>实例</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SelectSortTest</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">static</span> <span class="hljs-type">int</span>[] <span class="hljs-built_in">selectSort</span>(<span class="hljs-type">int</span>[] a) &#123;<br>        <span class="hljs-type">int</span> position = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; a.length; i++) &#123;<br>            position = i;<br>            <span class="hljs-type">int</span> temp = a[i];<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = i + <span class="hljs-number">1</span>; j &lt; a.length; j++) &#123;<br>                <span class="hljs-keyword">if</span> (a[j] &lt; a[i]) &#123;<br>                    temp = a[j];<br>                    position = j;<br>                &#125;<br>            &#125;<br>            a[position] = a[i];<br>            a[i] = temp;<br>        &#125;<br>        <span class="hljs-keyword">return</span> a;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">String</span>[] args)</span> </span>&#123;<br>        System.out.<span class="hljs-built_in">println</span>(Arrays.<span class="hljs-built_in">toString</span>(<span class="hljs-built_in">selectSort</span>(<span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[]&#123;<span class="hljs-number">57</span>, <span class="hljs-number">68</span>, <span class="hljs-number">59</span>, <span class="hljs-number">52</span>&#125;)));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="1-4-堆排序"><a href="#1-4-堆排序" class="headerlink" title="1.4 堆排序"></a>1.4 堆排序</h2><p>基本思想</p>
+<p>堆排序是一种树形选择排序,是对直接选择排序的有效改进。</p>
+<p>堆的定义如下:具有n个元素的序列(h1,h2,.,hn),当且仅当满足(hi&gt;-h2i,hi&gt;=2i+1)或(hi&lt;=h2i,hi&lt;=2i+1) (i=1,2,…n/2)时称之为堆。在这里只讨论满足前者条件的堆。由堆的定义可以看出,堆顶元素(即第一个元素)必为最大项(大顶堆)。完全二叉树可以很直观地表示堆的结构。堆顶为根,其它为左子树、右子树。初始时把要排序的数的序列看作是棵顺序存储的二叉树,调整它们的存储序,使之成为一个堆,这时堆的根节点的数最大。然后将根节点与堆的最后一个节点交换。然后对前面(n-1)个数重新调整使之成为堆。依此类推,直到只有两个节点的堆,并对它们作交换,最后得到有n个节点的有序序列。从算法描述来看,堆排序需要两个过程,一是建立堆,二是堆顶与堆的最后一个元素交换位置。所以堆排序有两个函数组成。一是建堆的渗透函数,二是反复调用渗透函数实现排序的函数。</p>
+<p>实例</p>
+<p>初始序列： 46,79,56,38,40,84</p>
+<p>建堆</p>
+<img src="/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659862216644.png" srcset="/img/loading.gif" lazyload class="" width="1659862216644">
+
+<p>交换,从堆中踢出最大数</p>
+<img src="/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659862264740.png" srcset="/img/loading.gif" lazyload class="" width="1659862264740">
+
+<p>剩余结点再建堆,再交换踢出最大数</p>
+<img src="/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659862292390.png" srcset="/img/loading.gif" lazyload class="" width="1659862292390">
+
+<p>依次类推：最后堆中剩余的最后两个结点交换,踢出一个,排序完成。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-symbol">HeapSortTest</span> &#123;<br>    <span class="hljs-keyword">private</span> static <span class="hljs-built_in">void</span> buildMaxHeap(<span class="hljs-built_in">int</span>[] <span class="hljs-built_in">array</span>, <span class="hljs-built_in">int</span> lastIndex) &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = (lastIndex - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>; i &gt;= <span class="hljs-number">0</span>; i--) &#123;<br>            <span class="hljs-built_in">int</span> k = i;<br>            <span class="hljs-keyword">while</span> (<span class="hljs-number">2</span> * k + <span class="hljs-number">1</span>&lt;= lastIndex) &#123;<br>                <span class="hljs-built_in">int</span> bigIndex = <span class="hljs-number">2</span> * k + <span class="hljs-number">1</span>;<br>                <span class="hljs-keyword">if</span> (bigIndex &lt; lastIndex) &#123;<br>                    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">array</span>[bigIndex] &lt; <span class="hljs-built_in">array</span>[bigIndex + <span class="hljs-number">1</span>]) &#123;<br>                        bigIndex++;<br>                    &#125;<br>                &#125;<br>                <span class="hljs-keyword">if</span> (<span class="hljs-built_in">array</span>[k] &lt; <span class="hljs-built_in">array</span>[bigIndex]) &#123;<br>                    swap(<span class="hljs-built_in">array</span>, k, bigIndex);<br>                    k = bigIndex;<br>                &#125; <span class="hljs-keyword">else</span> &#123;<br>                    <span class="hljs-keyword">break</span>;<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 堆排序</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * @return</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> static <span class="hljs-built_in">int</span>[] heapSort(<span class="hljs-built_in">int</span>[] <span class="hljs-built_in">array</span>) &#123;<br>        <span class="hljs-built_in">int</span> <span class="hljs-built_in">array</span>Length = <span class="hljs-built_in">array</span>.length;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">array</span>.length; i++) &#123;<br>            buildMaxHeap(<span class="hljs-built_in">array</span>, <span class="hljs-built_in">array</span>Length<span class="hljs-number">-1</span>-i);<br>            swap(<span class="hljs-built_in">array</span>, <span class="hljs-number">0</span>,<span class="hljs-built_in">array</span>Length<span class="hljs-number">-1</span>-i);<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">array</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> static <span class="hljs-built_in">void</span> swap(<span class="hljs-built_in">int</span>[] <span class="hljs-built_in">array</span>, <span class="hljs-built_in">int</span> i, <span class="hljs-built_in">int</span> j) &#123;<br>        <span class="hljs-built_in">int</span> temp = <span class="hljs-built_in">array</span>[i];<br>        <span class="hljs-built_in">array</span>[i] = <span class="hljs-built_in">array</span>[j];<br>        <span class="hljs-built_in">array</span>[j] = temp;<br>    &#125;<br>    <span class="hljs-keyword">public</span> static <span class="hljs-built_in">void</span> main(String[] args) &#123;<br>        System.<span class="hljs-keyword">out</span>.println(Arrays.toString(heapSort(new <span class="hljs-built_in">int</span>[]&#123;<span class="hljs-number">46</span>, <span class="hljs-number">79</span>, <span class="hljs-number">56</span>, <span class="hljs-number">38</span>, <span class="hljs-number">40</span>, <span class="hljs-number">84</span>&#125;)));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>精简：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-keyword">public</span> static <span class="hljs-built_in">int</span>[] heapSort2(<span class="hljs-built_in">int</span>[] <span class="hljs-built_in">array</span>) &#123;<br>    <span class="hljs-built_in">int</span> <span class="hljs-built_in">array</span>Length = <span class="hljs-built_in">array</span>.length;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">array</span>.length; i++) &#123;<br>        <span class="hljs-built_in">int</span> lastIndex=<span class="hljs-built_in">array</span>Length - <span class="hljs-number">1</span> - i;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> j = lastIndex / <span class="hljs-number">2</span>; j &gt;= <span class="hljs-number">0</span>; j--) &#123;<br>            <span class="hljs-built_in">int</span> bigIndex=<span class="hljs-number">2</span>*j+<span class="hljs-number">1</span>;<br>            <span class="hljs-keyword">if</span>(bigIndex&lt;=lastIndex)&#123;<br>                <span class="hljs-keyword">if</span>(bigIndex&lt;lastIndex&amp;&amp;<span class="hljs-built_in">array</span>[bigIndex]&lt;<span class="hljs-built_in">array</span>[bigIndex+<span class="hljs-number">1</span>])&#123;<br>                    bigIndex++;<br>                &#125;<br>                <span class="hljs-keyword">if</span>(<span class="hljs-built_in">array</span>[j]&lt;<span class="hljs-built_in">array</span>[bigIndex])&#123;<br>                    swap(<span class="hljs-built_in">array</span>,j,bigIndex);<br>                &#125;<br>            &#125;<br>        &#125;<br>        swap(<span class="hljs-built_in">array</span>, <span class="hljs-number">0</span>, lastIndex);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">array</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="1-5-冒泡排序"><a href="#1-5-冒泡排序" class="headerlink" title="1.5 冒泡排序"></a>1.5 冒泡排序</h2><p>基本思想</p>
+<p>在要排序的一组数中,对当前还未排好序的范围内的全部数,自上而下对相邻的两个数依次进行比较和调整,让较大的数往下沉,较小的往上冒。即:每当两相邻的<br>数比较后发现它们的排序与排序要求相反时,就将它们互换。</p>
+<p>实例</p>
+<img src="/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659862809780.png" srcset="/img/loading.gif" lazyload class="" width="1659862809780">
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">int</span>[] <span class="hljs-title">bubbleSort</span>()</span> &#123;<br>    <span class="hljs-built_in">int</span> a[] =&#123;<span class="hljs-number">57</span>, <span class="hljs-number">68</span>, <span class="hljs-number">59</span>, <span class="hljs-number">52</span>&#125;;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">1</span>; i &lt; a.length; i++) &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> j = <span class="hljs-number">0</span>; j &lt; a.length - i; j++) &#123;<br>            <span class="hljs-keyword">if</span> (a[j] &gt; a[j + <span class="hljs-number">1</span>]) &#123;<br>                <span class="hljs-built_in">int</span> temp = a[j];<br>                a[j] = a[j + <span class="hljs-number">1</span>];<br>                a[j + <span class="hljs-number">1</span>] = temp;<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> a;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="1-6-快速排序"><a href="#1-6-快速排序" class="headerlink" title="1.6 快速排序"></a>1.6 快速排序</h2><p>基本思想</p>
+<p>选择一个基准元素,通常选择第一个元素或者最后一个元素.通过一趟扫描,将待排序列分成两部分,一部分比基准元素小,一部分大于等于基准元素,此时基准元素在其<br>排好序后的正确位置,然后再用同样的方法递归地排序划分的两部分。</p>
+<img src="/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659862985399.png" srcset="/img/loading.gif" lazyload class="" width="1659862985399">
+
+<p>实例：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">public <span class="hljs-keyword">class</span> QuictSortTest &#123;<br>    <span class="hljs-keyword">private</span> static <span class="hljs-built_in">int</span> get<span class="hljs-constructor">Middle(<span class="hljs-params">int</span>[] <span class="hljs-params">array</span>, <span class="hljs-params">int</span> <span class="hljs-params">low</span>, <span class="hljs-params">int</span> <span class="hljs-params">high</span>)</span> &#123;<br>        <span class="hljs-built_in">int</span> temp = <span class="hljs-built_in">array</span><span class="hljs-literal">[<span class="hljs-identifier">low</span>]</span>;<br>        <span class="hljs-keyword">while</span> (low &lt; high) &#123;<br>            <span class="hljs-comment">// 找到大于temp的左边界</span><br>            <span class="hljs-keyword">while</span> (low &lt; high<span class="hljs-operator"> &amp;&amp; </span><span class="hljs-built_in">array</span><span class="hljs-literal">[<span class="hljs-identifier">high</span>]</span> &gt;= temp) &#123;<br>                high--;<br>            &#125;<br>            <span class="hljs-comment">// 将小于temp的放到low的位置</span><br>            <span class="hljs-built_in">array</span><span class="hljs-literal">[<span class="hljs-identifier">low</span>]</span> = <span class="hljs-built_in">array</span><span class="hljs-literal">[<span class="hljs-identifier">high</span>]</span>;<br>            <span class="hljs-comment">// 找到小于temp的右边界</span><br>            <span class="hljs-keyword">while</span> (low &lt; high<span class="hljs-operator"> &amp;&amp; </span><span class="hljs-built_in">array</span><span class="hljs-literal">[<span class="hljs-identifier">low</span>]</span> &lt;= temp) &#123;<br>                low++;<br>            &#125;<br>            <span class="hljs-comment">//交换 大于temp的放到hign位置</span><br>            <span class="hljs-built_in">array</span><span class="hljs-literal">[<span class="hljs-identifier">high</span>]</span> = <span class="hljs-built_in">array</span><span class="hljs-literal">[<span class="hljs-identifier">low</span>]</span>;<br>        &#125;<br>        <span class="hljs-comment">//将开始的temp放到最终的位置</span><br>        <span class="hljs-built_in">array</span><span class="hljs-literal">[<span class="hljs-identifier">low</span>]</span> = temp;<br>        return low;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 快速排序</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * @param array</span><br><span class="hljs-comment">     * @param low</span><br><span class="hljs-comment">     * @param high</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> static void <span class="hljs-constructor">_quick(<span class="hljs-params">int</span>[] <span class="hljs-params">array</span>, <span class="hljs-params">int</span> <span class="hljs-params">low</span>, <span class="hljs-params">int</span> <span class="hljs-params">high</span>)</span> &#123;<br>        <span class="hljs-keyword">if</span> (low &lt; high) &#123;<br>            <span class="hljs-built_in">int</span> middle = get<span class="hljs-constructor">Middle(<span class="hljs-params">array</span>, <span class="hljs-params">low</span>, <span class="hljs-params">high</span>)</span>;<br>            <span class="hljs-constructor">_quick(<span class="hljs-params">array</span>, <span class="hljs-params">low</span>, <span class="hljs-params">middle</span> - 1)</span>;<br>            <span class="hljs-constructor">_quick(<span class="hljs-params">array</span>, <span class="hljs-params">middle</span> + 1, <span class="hljs-params">high</span>)</span>;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 快速排序</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * @return</span><br><span class="hljs-comment">     */</span><br>    public static <span class="hljs-built_in">int</span><span class="hljs-literal">[]</span> quict<span class="hljs-constructor">Sort(<span class="hljs-params">int</span>[] <span class="hljs-params">array</span>)</span> &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">array</span>.length &gt; <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-constructor">_quick(<span class="hljs-params">array</span>, 0, <span class="hljs-params">array</span>.<span class="hljs-params">length</span> - 1)</span>;<br>        &#125;<br>        return <span class="hljs-built_in">array</span>;<br>    &#125;<br><br>    public static void main(String<span class="hljs-literal">[]</span> args) &#123;<br>        <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">System</span>.</span></span>out.println(<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Arrays</span>.</span></span><span class="hljs-keyword">to</span><span class="hljs-constructor">String(<span class="hljs-params">quictSort</span>(<span class="hljs-params">new</span> <span class="hljs-params">int</span>[]&#123;57, 68, 59, 52, 72, 28, 96, 33, 24, 19&#125;)</span>));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="1-7-归并排序"><a href="#1-7-归并排序" class="headerlink" title="1.7 归并排序"></a>1.7 归并排序</h2><p>基本排序</p>
+<p>归并(Merge)排序法是将两个(或两个以上)有序表合并成一个新的有序表,即把待排序序列分为若干个子序列,每个子序列是有序的。然后再把有序子序列合并<br>为整体有序序列。</p>
+<img src="/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659863361285.png" srcset="/img/loading.gif" lazyload class="" width="1659863361285">
+
+<p>实例:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MergeSortTest</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span>[] mergeSort(<span class="hljs-type">int</span>[] array) &#123;<br>        sort(array, <span class="hljs-number">0</span>, array.length - <span class="hljs-number">1</span>);<br>        <span class="hljs-keyword">return</span> array;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">merge</span><span class="hljs-params">(<span class="hljs-type">int</span>[] array, <span class="hljs-type">int</span> left, <span class="hljs-type">int</span> center, <span class="hljs-type">int</span> right)</span> &#123;<br>        <span class="hljs-type">int</span>[] tempArray = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[array.length];<br>        <span class="hljs-type">int</span> <span class="hljs-variable">middle</span> <span class="hljs-operator">=</span> center + <span class="hljs-number">1</span>;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">third</span> <span class="hljs-operator">=</span> left;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> left;<br>        <span class="hljs-keyword">while</span> (left &lt;= center &amp;&amp; middle &lt;= right) &#123;<br>            <span class="hljs-keyword">if</span> (array[left] &lt; array[middle]) &#123;<br>                tempArray[third++] = array[left++];<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                tempArray[third++] = array[middle++];<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">while</span> (left &lt;= center) &#123;<br>            tempArray[third++] = array[left++];<br>        &#125;<br>        <span class="hljs-keyword">while</span> (middle &lt;= right) &#123;<br>            tempArray[third++] = array[middle++];<br>        &#125;<br>        <span class="hljs-keyword">while</span> (temp &lt;= right) &#123;<br>            array[temp] = tempArray[temp++];<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sort</span><span class="hljs-params">(<span class="hljs-type">int</span>[] array, <span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> &#123;<br>        <span class="hljs-keyword">if</span> (left &lt; right) &#123;<br>            <span class="hljs-type">int</span> <span class="hljs-variable">center</span> <span class="hljs-operator">=</span> (left + right) / <span class="hljs-number">2</span>;<br>            sort(array, left, center);<br>            sort(array, center + <span class="hljs-number">1</span>, right);<br>            merge(array, left, center, right);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        System.out.println(Arrays.toString(mergeSort(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]&#123;<span class="hljs-number">57</span>, <span class="hljs-number">68</span>, <span class="hljs-number">59</span>, <span class="hljs-number">52</span>, <span class="hljs-number">72</span>, <span class="hljs-number">28</span>, <span class="hljs-number">96</span>, <span class="hljs-number">33</span>&#125;)));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="1-8-基数排序"><a href="#1-8-基数排序" class="headerlink" title="1.8 基数排序"></a>1.8 基数排序</h2><p>基本思想</p>
+<p>将所有待比较数值(正整数)统一为同样的数位长度,数位较短的数前面补零。然后,从最低位开始,依次进行一次排序。这样从最低位排序一直到最高位排序完成<br>以后.数列就变成一个有序序列。</p>
+<img src="/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/1659863814006.png" srcset="/img/loading.gif" lazyload class="" width="1659863814006">
+
+<p>实例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RadixSortTest</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span>[] radixSort(<span class="hljs-type">int</span>[] array) &#123;<br>        List&lt;List&lt;Integer&gt;&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;List&lt;Integer&gt;&gt;();<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>            queue.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());<br>        &#125;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">max</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> arr : array) &#123;<br>            <span class="hljs-keyword">if</span> (arr &gt; max) &#123;<br>                max = arr;<br>            &#125;<br>            <span class="hljs-type">int</span> <span class="hljs-variable">time</span> <span class="hljs-operator">=</span> max / <span class="hljs-number">10</span>;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; time; i++) &#123;<br>                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; array.length; j++) &#123;<br>                    <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> array[j] % (<span class="hljs-type">int</span>) Math.pow(<span class="hljs-number">10</span>, i + <span class="hljs-number">1</span>) / (<span class="hljs-type">int</span>) Math.pow(<span class="hljs-number">10</span>, i);<br>                    List&lt;Integer&gt; list = queue.get(x);<br>                    list.add(array[j]);<br>                    queue.set(x, list);<br>                &#125;<br>                <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; k &lt; <span class="hljs-number">10</span>; k++) &#123;<br>                    <span class="hljs-keyword">while</span> (queue.get(k).size() &gt; <span class="hljs-number">0</span>) &#123;<br>                        array[count++] = queue.get(k).get(<span class="hljs-number">0</span>);<br>                        queue.get(k).remove(<span class="hljs-number">0</span>);<br>                    &#125;<br>                &#125;<br>            &#125;<br><br>        &#125;<br>        <span class="hljs-keyword">return</span> array;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        System.out.println(Arrays.toString(radixSort(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]&#123;<span class="hljs-number">49</span>, <span class="hljs-number">38</span>, <span class="hljs-number">65</span>, <span class="hljs-number">97</span>, <span class="hljs-number">76</span>, <span class="hljs-number">13</span>, <span class="hljs-number">27</span>, <span class="hljs-number">49</span>, <span class="hljs-number">78</span>, <span class="hljs-number">34</span>, <span class="hljs-number">12</span>, <span class="hljs-number">64</span>, <span class="hljs-number">5</span>, <span class="hljs-number">4</span>, <span class="hljs-number">62</span>, <span class="hljs-number">99</span>, <span class="hljs-number">98</span>, <span class="hljs-number">54</span>, <span class="hljs-number">101</span>, <span class="hljs-number">56</span>, <span class="hljs-number">17</span>, <span class="hljs-number">18</span>, <span class="hljs-number">23</span>, <span class="hljs-number">34</span>, <span class="hljs-number">15</span>, <span class="hljs-number">35</span>, <span class="hljs-number">25</span>, <span class="hljs-number">53</span>, <span class="hljs-number">51</span>&#125;)));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>源码练习：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/leellun/javasvc-learn/tree/main/svc-datastruct/src/com/newland/algorithm/basic">https://github.com/leellun/javasvc-learn/tree/main/svc-datastruct/src/com/newland/algorithm/basic</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/">#基本算法</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Java基本算法</div>
+      <div>https://leellun.github.io/2019/01/25/后端/java/算法结构/基本算法/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2019年1月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/02/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/zookeeper/zookeeper%E7%AC%94%E8%AE%B0/" title="ZooKeeper入门文档">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ZooKeeper入门文档</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/01/23/%E5%89%8D%E7%AB%AF/%E5%A6%82%E4%BD%95%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/" title="如何用hexo在github上搭建自己的博客">
+                        <span class="hidden-mobile">如何用hexo在github上搭建自己的博客</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

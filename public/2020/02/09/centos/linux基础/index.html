@@ -1,0 +1,872 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一 系统文件夹介绍 &#x2F;    根目录分区  &#x2F;boot启动Linux的核心文件  &#x2F;bin：存放最常用命令；   &#x2F;dev：设备文件；  &#x2F;etc：存放各种配置文件；  &#x2F;home：用户主目录；  &#x2F;lib：系统最基本的动态链接共享库；  &#x2F;mnt：一般是空的，用来临时挂载别的文件系统；  &#x2F;proc：虚拟目录，是内存的映射；  &#x2F;sbin：系统管理员命令存放目录；  &#x2F;usr：最大的目录，存许应">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux基础">
+<meta property="og:url" content="https://leellun.github.io/2020/02/09/centos/linux%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="一 系统文件夹介绍 &#x2F;    根目录分区  &#x2F;boot启动Linux的核心文件  &#x2F;bin：存放最常用命令；   &#x2F;dev：设备文件；  &#x2F;etc：存放各种配置文件；  &#x2F;home：用户主目录；  &#x2F;lib：系统最基本的动态链接共享库；  &#x2F;mnt：一般是空的，用来临时挂载别的文件系统；  &#x2F;proc：虚拟目录，是内存的映射；  &#x2F;sbin：系统管理员命令存放目录；  &#x2F;usr：最大的目录，存许应">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-09T12:14:02.000Z">
+<meta property="article:modified_time" content="2022-09-26T13:05:09.755Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="centos">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>linux基础 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="linux基础"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-02-09 20:14" pubdate>
+          2020年2月9日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">linux基础</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一-系统文件夹介绍"><a href="#一-系统文件夹介绍" class="headerlink" title="一 系统文件夹介绍"></a>一 系统文件夹介绍</h1><ul>
+<li><p>/    根目录分区</p>
+</li>
+<li><p>/boot启动Linux的核心文件</p>
+</li>
+<li><p>/bin：存放最常用命令； </p>
+</li>
+<li><p>/dev：设备文件；</p>
+</li>
+<li><p>/etc：存放各种配置文件；</p>
+</li>
+<li><p>/home：用户主目录；</p>
+</li>
+<li><p>/lib：系统最基本的动态链接共享库；</p>
+</li>
+<li><p>/mnt：一般是空的，用来临时挂载别的文件系统；</p>
+</li>
+<li><p>/proc：虚拟目录，是内存的映射；</p>
+</li>
+<li><p>/sbin：系统管理员命令存放目录；</p>
+</li>
+<li><p>/usr：最大的目录，存许应用程序和文件；</p>
+</li>
+<li><p>/usr/X11R6：X-Window目录；</p>
+</li>
+<li><p>/usr/src：Linux源代码；</p>
+</li>
+<li><p>/usr/include：系统头文件；</p>
+</li>
+<li><p>/usr/lib：存放常用动态链接共享库、静态档案库；</p>
+</li>
+<li><p>/usr/bin、/usr/sbin：这是对/bin、/sbin的一个补充；</p>
+</li>
+</ul>
+<h1 id="二-常用命令"><a href="#二-常用命令" class="headerlink" title="二 常用命令"></a><strong>二 常用命令</strong></h1><h2 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h2><p><strong>ls</strong></p>
+<p>指定路径或者当前路径下，文件夹详细信息。</p>
+<p>参数：-a 获取详细信息</p>
+<p>​      -l  列表形似展示</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">ls -l <span class="hljs-regexp">/usr/</span>local<br></code></pre></td></tr></table></figure>
+
+<p><strong>su</strong></p>
+<p>用户切换</p>
+<p>su 用户名、su切换成root 、su -进入root</p>
+<p><strong>whoami</strong></p>
+<p>查看当前用户。</p>
+<p><strong>exit</strong></p>
+<p>退出当前用户登录</p>
+<p><strong>which</strong></p>
+<p>查看当前命令的路径</p>
+<p>如which ls获取ls命令的文件路径</p>
+<p><strong>du</strong></p>
+<p>du -h 文件：大小查看</p>
+<h2 id="文件操作命令"><a href="#文件操作命令" class="headerlink" title="文件操作命令"></a><strong>文件操作命令</strong></h2><p><strong>mkdir</strong></p>
+<p>单级文件夹创建，例如：mkdir test 创建test文件夹。</p>
+<p>多级文件夹创建，例如：mkdir -p a/b/c 创建多级文件夹。</p>
+<p><strong>mv</strong></p>
+<p>文件/文件夹移动</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">mv <span class="hljs-built_in">file</span> <span class="hljs-built_in">folder</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>cp</strong></p>
+<p>文件复制</p>
+<p>文件复制：cp file dir</p>
+<p>递归文件复制：cp -r dir1 dir2</p>
+<p><strong>rm</strong></p>
+<p>文件删除</p>
+<p>参数：</p>
+<p>-r 递归删除</p>
+<p>-f 强制删除</p>
+<p>rm dir</p>
+<p>rm -r -f dir</p>
+<p><strong>touch</strong></p>
+<p>创建文件</p>
+<p>touch file1</p>
+<h2 id="文件查看命令"><a href="#文件查看命令" class="headerlink" title="文件查看命令"></a><strong>文件查看命令</strong></h2><p><strong>cat</strong></p>
+<p>查看文件内容</p>
+<p>如 cat a.txt</p>
+<p><strong>more</strong></p>
+<p>一页一页的查看</p>
+<p><strong>less</strong></p>
+<p>一页查看可以回滚</p>
+<p><strong>head</strong></p>
+<p>通过-n指定查看文件的开始部分内容</p>
+<p>例如：head -100 file 查看文件的开头100行</p>
+<p><strong>tail</strong></p>
+<p>通过-n指定查看文件的末尾部分内容</p>
+<p>例如：tail -100 file 查看文件的末尾100行.</p>
+<h2 id="权限操作"><a href="#权限操作" class="headerlink" title="权限操作"></a><strong>权限操作</strong></h2><p><strong>chmod</strong></p>
+<p>u:当前用户 g:当前组 o:其它用户</p>
+<p>chmod u+rwx file 为当前用户添加读写执行权限。</p>
+<p>chmod g-rx file 为同组用户删除读和执行权限</p>
+<p>chmod 777 为所有用户(当前用户、同组用户、其它用户)添加读、写、执行权限</p>
+<p>7的二进制对应 111，分别表示 读 写 执行，即：r=4，w=2，x=1 </p>
+<p>递归设置需要加入参数 -R</p>
+<p><strong>chown</strong></p>
+<p>文文件设置用户、用户组。</p>
+<p>chown 用户 file</p>
+<p>chown 用户.组 file</p>
+<p>chown  .组 file</p>
+<p>递归设置：</p>
+<p>chown -R 用户.组 dir</p>
+<h2 id="系统命令"><a href="#系统命令" class="headerlink" title="系统命令"></a><strong>系统命令</strong></h2><p><strong>grep</strong></p>
+<p>将文本中指定的信息进行匹配</p>
+<p>grep 关键字 路径名</p>
+<p><strong>ps</strong> </p>
+<p>查看系统进程</p>
+<p>ps  -A  或者 ps -ef</p>
+<p><strong>date</strong> </p>
+<p>查看系统时间</p>
+<p>date -s “2019-09-13 11：11：11”设置系统时间</p>
+<p><strong>df</strong></p>
+<p>查看系统分区情况</p>
+<p>df -lh</p>
+<p><strong>kill</strong></p>
+<p>进程杀死</p>
+<p>kill -9 pid</p>
+<p><strong>find</strong></p>
+<p>文件查找</p>
+<p>-name 查找文件名</p>
+<p>-maxdepth最大深度</p>
+<p>-mindepth最小深度</p>
+<p>-size 大小筛选，+/-数字</p>
+<p>+表示大于指定范围</p>
+<p>-表示小于指定范围</p>
+<p>单位：</p>
+<p>未指定：512字节</p>
+<p>c:字节</p>
+<p>K和M和文件系统一样</p>
+<p><strong>ln</strong></p>
+<p>链接创建</p>
+<p>ln -s 文件 软连接文件</p>
+<p>ln  [-d] 文件 硬链接文件</p>
+<p>注：1 硬链接不需要使用绝对路径 2 普通文件才能创建硬链接，目录不可3硬链接与源文件在同一个硬盘同一个分区里。</p>
+<p><strong>crontab</strong></p>
+<p>查看调度信息crontab -l</p>
+<p>编辑调度信息crontab -e</p>
+<p>分钟    小时    日期    月份    星期    执行命令</p>
+<p><strong>mount</strong></p>
+<p>挂载：mount 硬件  挂载目录</p>
+<p>卸载：unmount 硬件    </p>
+<p><strong>eject</strong></p>
+<p>弹出光盘</p>
+<h1 id="三-vi操作"><a href="#三-vi操作" class="headerlink" title="三 vi操作"></a><strong>三 vi操作</strong></h1><p>进入文件，进行内容查看、编辑</p>
+<p>vi test.txt</p>
+<p><strong>进入编辑模式</strong></p>
+<ul>
+<li>a:光标向后移动一位</li>
+<li>i:光标和所在字符不发生任何变化</li>
+<li>o:给新起一行</li>
+<li>s:删除光标所在字符</li>
+</ul>
+<p><strong>行号设置</strong></p>
+<p>显示行号</p>
+<p>:set number或者:set nu</p>
+<p>取消行号显示</p>
+<p>:set nonumber或者:set nonu</p>
+<p><strong>内容查找</strong></p>
+<p>查找指定内容，小写n下一个、大写N上一个。</p>
+<p>:/内容/ 或者 :/内容</p>
+<p>跳转到第n行</p>
+<p>:n</p>
+<p><strong>内容替换</strong></p>
+<p>替换光标所在行的第一个content1</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-symbol">:s/content1/content2/</span><br></code></pre></td></tr></table></figure>
+
+<p>替换光标所在行的全部content1</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-symbol">:s/content1/content2/g</span><br></code></pre></td></tr></table></figure>
+
+<p>全局替换</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-symbol">:%s/content1/content2/g</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>编辑操作</strong></p>
+<p>dd：删除当前光标行</p>
+<p>ndd：包含当前行在内，向后删除n行内容</p>
+<p>x：删除光标所在字符。</p>
+<p>c+w：从光标所在位置删除至单词结尾，并进入编辑模式</p>
+<p> yy：复制光标当前行</p>
+<p>nyy：包含当前行在内，向后复制n行内容</p>
+<p>p：粘贴</p>
+<p> u：撤销</p>
+<p>J：合并上下行</p>
+<p>r：当个字符替换</p>
+<p>.：重复执行上次执行的命令。</p>
+<h1 id="四、-管道"><a href="#四、-管道" class="headerlink" title="四、 管道"></a>四、 管道</h1><p>对于grep、head、tail、wc、ls等都可以当作管道符号使用。</p>
+<p>ls -l|wc    //计算当前目录共有多少文件</p>
+<p>grep sbin passwd | wc  //passwd文件出现sbin的行数统计</p>
+<p>cat file|grep ssss   //内容查找过滤</p>
+<h1 id="五、系统信息"><a href="#五、系统信息" class="headerlink" title="五、系统信息"></a>五、系统信息</h1><p><strong>查看版本当前操作系统内核信息</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">uname</span> -a<br></code></pre></td></tr></table></figure>
+
+<p><strong>查看当前操作系统版本信息</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">cat <span class="hljs-regexp">/proc/</span>version<br></code></pre></td></tr></table></figure>
+
+<p><strong>查看版本当前操作系统发行版信息</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">cat <span class="hljs-regexp">/etc/i</span>ssue  或cat <span class="hljs-regexp">/etc/</span>redhat-release<br></code></pre></td></tr></table></figure>
+
+<p><strong>查看cpu相关信息，包括型号、主频、内核信息</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">cat <span class="hljs-regexp">/proc/</span>cpuinfo<br></code></pre></td></tr></table></figure>
+
+<p><strong>查看位数</strong></p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">getconf LONG_BIT</span><br></code></pre></td></tr></table></figure>
+
+<p>vmstat</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-title">[</span><span class="hljs-comment">root@k8s</span><span class="hljs-literal">-</span><span class="hljs-comment">master01 redis</span><span class="hljs-title">]</span><span class="hljs-comment"># vmstat</span><br><span class="hljs-comment">procs</span> <span class="hljs-literal">-----------</span><span class="hljs-comment">memory</span><span class="hljs-literal">----------</span> <span class="hljs-literal">---</span><span class="hljs-comment">swap</span><span class="hljs-literal">--</span> <span class="hljs-literal">-----</span><span class="hljs-comment">io</span><span class="hljs-literal">----</span> <span class="hljs-literal">-</span><span class="hljs-comment">system</span><span class="hljs-literal">--</span> <span class="hljs-literal">------</span><span class="hljs-comment">cpu</span><span class="hljs-literal">-----</span><br> <span class="hljs-comment">r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st</span><br> <span class="hljs-comment">1  0      0 405900      0 1099844    0    0    17    20   47   66  4  3 93  0  0</span><br></code></pre></td></tr></table></figure>
+
+<p>结果解释如下：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs vim">procs<br>r 列表示运行和等待cpu时间片的进程数，如果长期大于<span class="hljs-number">1</span>，说明cpu不足，需要增加cpu。<br><span class="hljs-keyword">b</span> 列表示在等待资源的进程数，比如正在等待I/O、或者内存交换等。<br>cpu 表示cpu的使用状态<br>us 列显示了用户方式下所花费 CPU 时间的百分比。us的值比较高时，说明用户进程消耗的cpu时间多，但是如果长期大于<span class="hljs-number">50</span>%，需要考虑优化用户的程序。<br><span class="hljs-keyword">sy</span> 列显示了内核进程所花费的cpu时间的百分比。这里us + <span class="hljs-keyword">sy</span>的参考值为<span class="hljs-number">80</span>%，如果us+<span class="hljs-keyword">sy</span> 大于 <span class="hljs-number">80</span>%说明可能存在CPU不足。<br><span class="hljs-keyword">wa</span> 列显示了IO等待所占用的CPU时间的百分比。这里<span class="hljs-keyword">wa</span>的参考值为<span class="hljs-number">30</span>%，如果<span class="hljs-keyword">wa</span>超过<span class="hljs-number">30</span>%，说明IO等待严重，这可能是磁盘大量随机访问造成的，也可能磁盘或者磁盘访问控制器的带宽瓶颈造成的(主要是块操作)。 <br>id 列显示了cpu处在空闲状态的时间百分比 <br><span class="hljs-built_in">system</span> 显示采集间隔内发生的中断数<br>in 列表示在某一时间间隔中观测到的每秒设备中断数。<br><span class="hljs-keyword">cs</span>列表示每秒产生的上下文切换次数，如当 <span class="hljs-keyword">cs</span> 比磁盘 I/O 和网络信息包速率高得多，都应进行进一步调查。<br>memory<br>swpd 切换到内存交换区的内存数量(<span class="hljs-keyword">k</span>表示)。如果swpd的值不为<span class="hljs-number">0</span>，或者比较大，比如超过了<span class="hljs-number">100</span><span class="hljs-keyword">m</span>，只要si、<span class="hljs-keyword">so</span>的值长期为<span class="hljs-number">0</span>，系统性能还是正常 <br>free 当前的空闲页面列表中内存数量(<span class="hljs-keyword">k</span>表示) <br>buff 作为<span class="hljs-keyword">buffer</span> cache的内存数量，一般对块设备的读写才需要缓冲。 <br>cache: 作为page cache的内存数量，一般作为文件系统的cache，如果cache较大，说明用到cache的文件较多，如果此时IO中bi比较小，说明文件系统效率比较好。 <br>swap<br>si 由内存进入内存交换区数量。<br><span class="hljs-keyword">so</span>由内存交换区进入内存数量。 <br>IO<br>bi 从块设备读入数据的总量（读磁盘）（每秒kb）。<br><span class="hljs-keyword">bo</span> 块设备写入数据的总量（写磁盘）（每秒kb）<br></code></pre></td></tr></table></figure>
+
+<h1 id="六、创建分区"><a href="#六、创建分区" class="headerlink" title="六、创建分区"></a>六、创建分区</h1><p>列出系统分区 </p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">fdisk -l</span><br></code></pre></td></tr></table></figure>
+
+<p>给硬盘分区 </p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">fdisk</span> 设备文件名<br></code></pre></td></tr></table></figure>
+
+<p>重新加载 /etc/fstab</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">umount -<span class="hljs-selector-tag">a</span> &amp; mount -<span class="hljs-selector-tag">a</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="七、将任务转到前后台执行"><a href="#七、将任务转到前后台执行" class="headerlink" title="七、将任务转到前后台执行"></a>七、将任务转到前后台执行</h1><p>前台执行按ctrl + z 可以放到后台并暂停，jobs 可以查看后台执行的任务，后台进程。 </p>
+<p>bg 将一个在后台暂停的命令，变成继续执行 （在后台执行）</p>
+<p> fg 放在前台</p>
+<p>ctrl + c 即刻停止。 </p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/linux/" class="category-chain-item">linux</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/centos/">#centos</a>
+      
+        <a href="/tags/linux/">#linux</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>linux基础</div>
+      <div>https://leellun.github.io/2020/02/09/centos/linux基础/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年2月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/03/centos/Centos%20%E2%80%93%20%E6%9F%A5%E7%9C%8B%E3%80%81%E4%BF%AE%E6%94%B9%E3%80%81%E6%9B%B4%E6%96%B0%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/" title="Centos – 查看、修改、更新系统时间">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Centos – 查看、修改、更新系统时间</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/01/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/redis%E9%9B%86%E7%BE%A4/" title="redis集群">
+                        <span class="hidden-mobile">redis集群</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

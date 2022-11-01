@@ -1,0 +1,705 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、介绍RabbitMQ作为一款热门的消息队列中间件，具备高效可靠的消息异步传递机制，主要用于不同系统间的数据交流和传递，在企业解决方案、金融支付、电信、电子商务、社交、即时通信、视频、物联网、车联网等众多领域都有广泛应用。  二、使用方向2.1 异步通信将业务中属于非核心或不重要的流程部分，使用消息异步通知的方式发给目标系统，这样主业务流程无需同步等待其他系统的处理结果，从而达到系统快速响应的目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rabbitmq常见使用场景">
+<meta property="og:url" content="https://leellun.github.io/2022/09/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-09-28-rabbitmq%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="一、介绍RabbitMQ作为一款热门的消息队列中间件，具备高效可靠的消息异步传递机制，主要用于不同系统间的数据交流和传递，在企业解决方案、金融支付、电信、电子商务、社交、即时通信、视频、物联网、车联网等众多领域都有广泛应用。  二、使用方向2.1 异步通信将业务中属于非核心或不重要的流程部分，使用消息异步通知的方式发给目标系统，这样主业务流程无需同步等待其他系统的处理结果，从而达到系统快速响应的目">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leellun.github.io/2022/09/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-09-28-rabbitmq%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/1664786728881.png">
+<meta property="article:published_time" content="2022-09-28T12:14:02.000Z">
+<meta property="article:modified_time" content="2022-10-06T15:43:49.115Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="rabbitmq">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://leellun.github.io/2022/09/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-09-28-rabbitmq%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/1664786728881.png">
+  
+  
+  
+  <title>rabbitmq常见使用场景 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="rabbitmq常见使用场景"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-28 20:14" pubdate>
+          2022年9月28日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">rabbitmq常见使用场景</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h1><p>RabbitMQ作为一款热门的消息队列中间件，具备高效可靠的消息异步传递机制，主要用于不同系统间的数据交流和传递，在企业解决方案、金融支付、电信、电子商务、社交、即时通信、视频、物联网、车联网等众多领域都有广泛应用。 </p>
+<h1 id="二、使用方向"><a href="#二、使用方向" class="headerlink" title="二、使用方向"></a>二、使用方向</h1><h2 id="2-1-异步通信"><a href="#2-1-异步通信" class="headerlink" title="2.1 异步通信"></a>2.1 异步通信</h2><p>将业务中属于非核心或不重要的流程部分，使用消息异步通知的方式发给目标系统，这样主业务流程无需同步等待其他系统的处理结果，从而达到系统快速响应的目的。 </p>
+<p>如网站的用户注册场景，在用户注册成功后，还需要发送注册邮件与注册短信，这两个流程使用RabbitMQ消息服务通知邮件发送系统与短信发送系统，从而提升注册流程的响应速度。 </p>
+<p>例如：</p>
+<p>串行操作：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs">用    ——&gt;    注册信    ——&gt;  发送  ——&gt;    发送<br>户    &lt;——    息发送    &lt;——  邮件  &lt;——    短信<br></code></pre></td></tr></table></figure>
+
+<p>消息队列异步操作</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs">用    ——&gt;    注册信    ——&gt;  消息  &lt;——    发送<br>户    &lt;——    息发送         队列  &lt;——    短信<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-2-错峰流控与流量削峰"><a href="#2-2-错峰流控与流量削峰" class="headerlink" title="2.2 错峰流控与流量削峰"></a>2.2 错峰流控与流量削峰</h2><p>在电子商务系统或大型网站中，上下游系统处理能力存在差异，处理能力高的上游系统的突发流量可能会对处理能力低的某些下游系统造成冲击，需要提高系统的可用性的同时降低系统实现的复杂性。电商大促销等流量洪流突然来袭时，可以通过队列服务堆积缓存订单等信息，在下游系统有能力处理消息的时候再处理，避免下游订阅系统因突发流量崩溃。消息队列提供亿级消息堆积能力，3天的默认保留时长，消息消费系统可以错峰进行消息处理。</p>
+<p>另外，在商品秒杀、抢购等流量短时间内暴增场景中，为了防止后端应用被压垮，可在前后端系统间使用RabbitMQ消息队列传递请求。</p>
+<figure class="highlight bnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bnf">用户（秒杀订单发起）         ——&gt;    消      <span class="hljs-attribute">&lt;——    订单处理（根据消息进行处理）</span><br><span class="hljs-attribute">用户（秒杀订单发起）         ——&gt;</span>    息      <br>用户（秒杀订单发起）         ——&gt;    队      <br>用户（订单已满，秒杀失败）    ——&gt;    列      <br></code></pre></td></tr></table></figure>
+
+<img src="/2022/09/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-09-28-rabbitmq%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/1664786728881.png" srcset="/img/loading.gif" lazyload class="" width="1664786728881">
+
+<h2 id="2-3-系统解耦"><a href="#2-3-系统解耦" class="headerlink" title="2.3 系统解耦"></a>2.3 系统解耦</h2><p>以电商秒杀、抢购等流量短时间内暴增场景为例，传统做法是，用户下单后，订单系统发送查询请求到库存系统，等待库存系统返回请求结果给订单系统。如果库存系统发生故障，订单系统获取不到数据，订单失败。这种情况下，订单系统和库存系统两个子系统高耦合。 </p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">订单系统   —<span class="hljs-comment">--查询—&gt;   库存系统</span><br></code></pre></td></tr></table></figure>
+
+<p>引入RabbitMQ消息队列，当用户下单后，将消息写入到RabbitMQ消息队列中，然后返回用户下单成功。</p>
+<p>库存系统订阅下单的消息，消费下单消息，然后进行库操作。即使库存系统出现故障，也不影响用户下单。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">订单系统（库存消息发送）——&gt;    消息队列    &lt;——    库存系统（根据消息进行处理） <br></code></pre></td></tr></table></figure>
+
+<h2 id="2-4-高可用"><a href="#2-4-高可用" class="headerlink" title="2.4 高可用"></a>2.4 高可用</h2><p>镜像队列是开源RabbitMQ 2.6.0版本新增的一个功能，允许集群将队列镜像到其他代理上，当集群某一代理宕机后，队列能自动切换到镜像中的其他代理，保证服务的可用性。这就是消息队列的高可用性，不会因为宕机出现消息的丢失。</p>
+<p>普通队列，由于队列以及队列内容仅存储在单代理上，当该代理故障后，对应的队列不可用。</p>
+<h2 id="2-5-解耦刷新缓存"><a href="#2-5-解耦刷新缓存" class="headerlink" title="2.5 解耦刷新缓存"></a>2.5 解耦刷新缓存</h2><p>当然我们直接在商品后台更新完商品数据后，同步操作操作memcache也是可以的，但是不推荐这么做，理由如下：</p>
+<blockquote>
+<p>操作缓存的应用,最好是离缓存最近的应用,如上面的C端商品服务,像后台服务、定时任务等,最好不要直接操作C端缓存,需要做解耦操作,将刷缓存的逻辑收拢到同一个地方。</p>
+</blockquote>
+<p>如果时存储数据后可以借助canal+kafka这种方式，监听mysql的数据，并且通过kafka发送消息，然后更新redis的缓存数据</p>
+<h1 id="三、使用场景"><a href="#三、使用场景" class="headerlink" title="三、使用场景"></a>三、使用场景</h1><h2 id="3-1-订单支付成功后消息"><a href="#3-1-订单支付成功后消息" class="headerlink" title="3.1 订单支付成功后消息"></a>3.1 订单支付成功后消息</h2><p>当订单api收到支付成功的消息后，将订单状态扭转为已支付后，需要发布一条订单已成功支付的消息，有两个应用需要订阅这条消息，一个是pms营销系统，一个是大数据。pms需要订阅订单支付成功的消息的理由有好几个，例如：</p>
+<blockquote>
+<p>用户下了一个拼团订单,当订单支付成功后,需要更新团的状态以及已参团人数;</p>
+<p>用户的订单可能还用了优惠券,订单支付成功后,需要将用户的优惠券状态扭转为已使用:</p>
+</blockquote>
+<p>而大数据侧则可以利用这条消息做一个实时的已支付订单dashboard。当然像WMS侧也足需要感知已支付订单的.用于扣减仓库的库存。</p>
+<h2 id="3-2-用户注册时发送短信验证码"><a href="#3-2-用户注册时发送短信验证码" class="headerlink" title="3.2 用户注册时发送短信验证码"></a>3.2 用户注册时发送短信验证码</h2><p>注册时，用户会先点击发送验证码，将消息发送到消息队列，同时保存验证码到redis(后续校验验证码)，此时接口应快速返回验证码已发送。 </p>
+<h2 id="3-3-在对商品增删改查的时候发送消息"><a href="#3-3-在对商品增删改查的时候发送消息" class="headerlink" title="3.3 在对商品增删改查的时候发送消息"></a>3.3 在对商品增删改查的时候发送消息</h2><p>1、 新增/修改商品后台数据库信息<br> 2、数据库修改后，发送商品id消息到消息队列<br> 3、第三方微服务（前台显示微服务，商品搜索微服务）接受消息，更新对于微服务的商品数据。（商品搜索微服务逻辑—先去查询商品后台的数据，获得最新的商品数据，生产搜索dto,保存到搜索数据库中（es/solr））</p>
+<p> canal+kafka+es的架构模式</p>
+<h2 id="3-4-电子邮件"><a href="#3-4-电子邮件" class="headerlink" title="3.4 电子邮件"></a>3.4 电子邮件</h2><p>将发送的电子邮件放到消息队列，然后邮件服务在队列中获取邮件并发送给收件人</p>
+<h2 id="3-5-消费指定routing-key的消息"><a href="#3-5-消费指定routing-key的消息" class="headerlink" title="3.5 消费指定routing key的消息"></a>3.5 消费指定routing key的消息</h2><p> 如在商品库存中增加了1台iphone12，iphone12促销活动消费者指定routing key为iphone12，只有此促销活动会接收到消息，其它促销活动不关心也不会消费此routing key的消息 </p>
+<h2 id="3-6-钱包扣款"><a href="#3-6-钱包扣款" class="headerlink" title="3.6 钱包扣款"></a>3.6 钱包扣款</h2><p>对于消息可靠性要求较高，比如钱包扣款 </p>
+<h2 id="3-7-订单定时取消"><a href="#3-7-订单定时取消" class="headerlink" title="3.7 订单定时取消"></a>3.7 订单定时取消</h2><p>更多方案：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/J6jb_Dt3C49CIjYBTrN4gQ">https://mp.weixin.qq.com/s/J6jb_Dt3C49CIjYBTrN4gQ</a></p>
+<p>会用到死信队列：</p>
+<ul>
+<li>RabbitMQ可以针对Queue和Message设置 x-message-tt，来控制消息的生存时间，如果超时，则消息变为dead letter</li>
+<li>lRabbitMQ的Queue可以配置x-dead-letter-exchange 和x-dead-letter-routing-key（可选）两个参数，用来控制队列内出现了deadletter，则按照这两个参数重新路由。</li>
+</ul>
+<h1 id="四、死信队列"><a href="#四、死信队列" class="headerlink" title="四、死信队列"></a>四、死信队列</h1><p><code>DLX ，全称为 Dead-Letter-Exchange</code> ，可以称之为死信交换机。当消息在一个队列中变成死信（ dead message ）之后，它能被重新被发送到另一个交换器中，这个交换器就是 DLX ，<strong>绑定 DLX 的队列就称之为死信队列</strong>。</p>
+<p>消息变成死信一般是由于以下几种情况造成的：</p>
+<ul>
+<li>1、消息过期，也就是笔者在上篇提到的 TTL。消息在队列的存活时间超过所设置的 TTL 时间。</li>
+<li>2、消息被拒绝，调用了 <code>channel.basicNack</code> 或 <code>channel.basicReject</code>方法，井且设置 <code>requeue</code> 参数为<code>false</code>。</li>
+<li>3、队列的消息达到最大长度。</li>
+</ul>
+<p>DLX 也是一个正常的交换器，和一般的交换器没有区别，它能在任何的队列上被指定，实际上就是设置某个队列的属性。当这个队列中存在死信时 <code>RabbitMQ</code> 就会自动地将这个消息新发布到设置的 DLX 上去，进而被路由到另一个队列，即死信队列。可以监听这个队列中的消息、以进行相应的处理。</p>
+<p> 在 <code>channel.queueDeclare</code> 方法中设置 <code>x-dead-letter-exchange</code> 参数来为这个队列添加 DLX。下面就第一种和第二种情况来介绍一下死信队列的配置与使用。 </p>
+<p>参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6976778266472366087">https://juejin.cn/post/6976778266472366087</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/938794">https://developer.aliyun.com/article/938794</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" class="category-chain-item">应用场景</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/mq/" class="category-chain-item">mq</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/rabbitmq/">#rabbitmq</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>rabbitmq常见使用场景</div>
+      <div>https://leellun.github.io/2022/09/28/业务场景/2022-09-28-rabbitmq常见使用场景/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年9月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/09/27/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-09-27-%E9%AB%98%E5%B9%B6%E5%8F%91redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%AE%9E%E6%88%98%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF/" title="高并发redis分布式锁实战进阶之路">
+                        <span class="hidden-mobile">高并发redis分布式锁实战进阶之路</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,715 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、配置文件创建redis-conf：redis.conf 123456cluster-enabled yes #开启集群cluster-config-file nodes.conf #集群nodecluster-node-timeout 5000 # 集群延迟appendonly yes # aof文件开启masterauth 123456 # 密码requirepass 123456 # 认证">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kubesphere快速部署redis">
+<meta property="og:url" content="https://leellun.github.io/2022/07/27/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2redis/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="一、配置文件创建redis-conf：redis.conf 123456cluster-enabled yes #开启集群cluster-config-file nodes.conf #集群nodecluster-node-timeout 5000 # 集群延迟appendonly yes # aof文件开启masterauth 123456 # 密码requirepass 123456 # 认证">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leellun.github.io/2022/07/27/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2redis/1663220903688.png">
+<meta property="og:image" content="https://leellun.github.io/2022/07/27/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2redis/1663213016039.png">
+<meta property="article:published_time" content="2022-07-27T11:38:02.000Z">
+<meta property="article:modified_time" content="2022-09-26T13:05:09.784Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="k8s">
+<meta property="article:tag" content="kubesphere">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://leellun.github.io/2022/07/27/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2redis/1663220903688.png">
+  
+  
+  
+  <title>kubesphere快速部署redis - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="kubesphere快速部署redis"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-27 19:38" pubdate>
+          2022年7月27日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          57 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">kubesphere快速部署redis</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、配置文件创建"><a href="#一、配置文件创建" class="headerlink" title="一、配置文件创建"></a>一、配置文件创建</h1><p>redis-conf：redis.conf</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">cluster-enabled yes <span class="hljs-comment">#开启集群</span><br>cluster-config-file nodes.conf <span class="hljs-comment">#集群node</span><br>cluster-<span class="hljs-keyword">node</span><span class="hljs-title">-timeout</span> <span class="hljs-number">5000</span> <span class="hljs-comment"># 集群延迟</span><br>appendonly yes <span class="hljs-comment"># aof文件开启</span><br>masterauth <span class="hljs-number">123456</span> <span class="hljs-comment"># 密码</span><br>requirepass <span class="hljs-number">123456</span> <span class="hljs-comment"># 认证密码</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="二、redis有状态服务副本集创建"><a href="#二、redis有状态服务副本集创建" class="headerlink" title="二、redis有状态服务副本集创建"></a>二、redis有状态服务副本集创建</h1><p>存储卷模板：</p>
+<img src="/2022/07/27/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2redis/1663220903688.png" srcset="/img/loading.gif" lazyload class="" width="1663220903688">
+
+<p>redis 容器设置即启动命令配置</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">redis-server <span class="hljs-regexp">/etc/</span>redis/redis.conf<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/07/27/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2redis/1663213016039.png" srcset="/img/loading.gif" lazyload class="" width="1663213016039">
+
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs subunit">[root@k8s-master01 kubesphere]# kubectl get pod,pvc -n gulimall<br>NAME                    READY   STATUS    RESTARTS   AGE<br>pod/mysql-master-v1<span class="hljs-string">-0</span>   1/1     Running   0          13h<br>pod/redis-cluster<span class="hljs-string">-0</span>     1/1     Running   0          30m<br>pod/redis-cluster<span class="hljs-string">-1</span>     1/1     Running   0          26m<br>pod/redis-cluster<span class="hljs-string">-2</span>     1/1     Running   0          26m<br>pod/redis-cluster<span class="hljs-string">-3</span>     1/1     Running   0          26m<br>pod/redis-cluster<span class="hljs-string">-4</span>     1/1     Running   0          26m<br>pod/redis-cluster<span class="hljs-string">-5</span>     1/1     Running   0          26m<br><br>NAME                                              STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS       AGE<br>persistentvolumeclaim/mysql-pvc                   Bound    pvc-c912ac48-fce5<span class="hljs-string">-4</span>ced<span class="hljs-string">-9763</span><span class="hljs-string">-2</span>b4c31687fab   30Gi       RWO            openebs-hostpath   14h<br>persistentvolumeclaim/pvc-redis-redis-cluster<span class="hljs-string">-0</span>   Bound    pvc<span class="hljs-string">-9638569</span>c<span class="hljs-string">-0095</span><span class="hljs-string">-4022</span><span class="hljs-string">-9</span>a10<span class="hljs-string">-31</span>b50602ad6d   10Gi       RWO            openebs-hostpath   30m<br>persistentvolumeclaim/pvc-redis-redis-cluster<span class="hljs-string">-1</span>   Bound    pvc-b2f190ed<span class="hljs-string">-720</span>b<span class="hljs-string">-491</span>b<span class="hljs-string">-8</span>d09<span class="hljs-string">-7350854</span>c3f46   10Gi       RWO            openebs-hostpath   26m<br>persistentvolumeclaim/pvc-redis-redis-cluster<span class="hljs-string">-2</span>   Bound    pvc<span class="hljs-string">-36</span>a96ab2<span class="hljs-string">-7</span>dc1<span class="hljs-string">-4</span>cfd<span class="hljs-string">-8</span>c7d<span class="hljs-string">-7</span>f733d37e817   10Gi       RWO            openebs-hostpath   26m<br>persistentvolumeclaim/pvc-redis-redis-cluster<span class="hljs-string">-3</span>   Bound    pvc<span class="hljs-string">-0</span>a37fdd9<span class="hljs-string">-4</span>b74<span class="hljs-string">-4</span>fc0-b009-a5ed06ecac9c   10Gi       RWO            openebs-hostpath   26m<br>persistentvolumeclaim/pvc-redis-redis-cluster<span class="hljs-string">-4</span>   Bound    pvc-ff8a3d3b<span class="hljs-string">-2</span>ec2<span class="hljs-string">-4132</span><span class="hljs-string">-9</span>d09<span class="hljs-string">-498</span>a25dcc506   10Gi       RWO            openebs-hostpath   26m<br>persistentvolumeclaim/pvc-redis-redis-cluster<span class="hljs-string">-5</span>   Bound    pvc<span class="hljs-string">-20635271</span>-fb88<span class="hljs-string">-4904</span>-af26<span class="hljs-string">-77754</span>bd64385   10Gi       RWO            openebs-hostpath   26m<br></code></pre></td></tr></table></figure>
+
+<h1 id="三、查看ip"><a href="#三、查看ip" class="headerlink" title="三、查看ip"></a>三、查看ip</h1><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dns">[root@k8s-master01 kubesphere]# kubectl get pods -l app=redis-cluster -n gulimall -o jsonpath=&#x27;&#123;range.items[*]&#125;&#123;.status.podIP&#125;:<span class="hljs-number">6379</span> &#x27;      <br><span class="hljs-number">10.244.0.79</span>:<span class="hljs-number">6379 10.244</span>.<span class="hljs-number">0.81:6379</span> <span class="hljs-number">10.244.0.83</span>:<span class="hljs-number">6379 10.244</span>.<span class="hljs-number">0.85:6379</span> <span class="hljs-number">10.244.0.87</span>:<span class="hljs-number">6379 10.244</span>.<span class="hljs-number">0.89:6379</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="四、集群"><a href="#四、集群" class="headerlink" title="四、集群"></a>四、集群</h1><p>这里通过ip集群，最好通过pod.svc。例如：redis-cluster-0.redis-cluster-85pg,redis-cluster-1.redis-cluster-85pg,redis-cluster-2.redis-cluster-85pg,redis-cluster-3.redis-cluster-85pg,redis-cluster-4.redis-cluster-85pg,redis-cluster-5.redis-cluster-85pg</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">kubectl exec -it redis-cluster-<span class="hljs-number">0</span> -n gulimall -- redis-cli --cluster create --cluster-replicas <span class="hljs-number">1</span> <span class="hljs-constructor">$(<span class="hljs-params">kubectl</span> <span class="hljs-params">get</span> <span class="hljs-params">pods</span> -<span class="hljs-params">l</span> <span class="hljs-params">app</span>=<span class="hljs-params">redis</span>-<span class="hljs-params">cluster</span> -<span class="hljs-params">n</span> <span class="hljs-params">gulimall</span> -<span class="hljs-params">o</span> <span class="hljs-params">jsonpath</span>=&#x27;&#123;<span class="hljs-params">range</span>.<span class="hljs-params">items</span>[<span class="hljs-operator">*</span>]&#125;&#123;.<span class="hljs-params">status</span>.<span class="hljs-params">podIP</span>&#125;:6379 &#x27;)</span> -a <span class="hljs-number">123456</span><br></code></pre></td></tr></table></figure>
+
+<p>结果打印：</p>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs vbnet"><span class="hljs-symbol">Warning:</span> <span class="hljs-keyword">Using</span> a password <span class="hljs-keyword">with</span> <span class="hljs-comment">&#x27;-a&#x27; or &#x27;-u&#x27; option on the command line interface may not be safe.</span><br>&gt;&gt;&gt; Performing hash slots allocation <span class="hljs-keyword">on</span> <span class="hljs-number">6</span> nodes...<br>Master[<span class="hljs-number">0</span>] -&gt; Slots <span class="hljs-number">0</span> - <span class="hljs-number">5460</span><br>Master[<span class="hljs-number">1</span>] -&gt; Slots <span class="hljs-number">5461</span> - <span class="hljs-number">10922</span><br>Master[<span class="hljs-number">2</span>] -&gt; Slots <span class="hljs-number">10923</span> - <span class="hljs-number">16383</span><br>Adding replica <span class="hljs-number">10.244</span>.<span class="hljs-number">0.87</span>:<span class="hljs-number">6379</span> <span class="hljs-keyword">to</span> <span class="hljs-number">10.244</span>.<span class="hljs-number">0.79</span>:<span class="hljs-number">6379</span><br>Adding replica <span class="hljs-number">10.244</span>.<span class="hljs-number">0.89</span>:<span class="hljs-number">6379</span> <span class="hljs-keyword">to</span> <span class="hljs-number">10.244</span>.<span class="hljs-number">0.81</span>:<span class="hljs-number">6379</span><br>Adding replica <span class="hljs-number">10.244</span>.<span class="hljs-number">0.85</span>:<span class="hljs-number">6379</span> <span class="hljs-keyword">to</span> <span class="hljs-number">10.244</span>.<span class="hljs-number">0.83</span>:<span class="hljs-number">6379</span><br><span class="hljs-symbol">M:</span> <span class="hljs-number">6</span>a8be8e3baaff7e6569484b68173f9ae929687a4 <span class="hljs-number">10.244</span>.<span class="hljs-number">0.79</span>:<span class="hljs-number">6379</span><br>   slots:[<span class="hljs-number">0</span>-<span class="hljs-number">5460</span>] (<span class="hljs-number">5461</span> slots) master<br><span class="hljs-symbol">M:</span> c902a47a859884e9d8e9e98463c998bafa8c456b <span class="hljs-number">10.244</span>.<span class="hljs-number">0.81</span>:<span class="hljs-number">6379</span><br>   slots:[<span class="hljs-number">5461</span>-<span class="hljs-number">10922</span>] (<span class="hljs-number">5462</span> slots) master<br><span class="hljs-symbol">M:</span> edbddb2005e23a357f371fed804fc490bcabbdc0 <span class="hljs-number">10.244</span>.<span class="hljs-number">0.83</span>:<span class="hljs-number">6379</span><br>   slots:[<span class="hljs-number">10923</span>-<span class="hljs-number">16383</span>] (<span class="hljs-number">5461</span> slots) master<br><span class="hljs-symbol">S:</span> <span class="hljs-number">6255</span>f444e9f53ba7d4e0c3714111820347f60ab8 <span class="hljs-number">10.244</span>.<span class="hljs-number">0.85</span>:<span class="hljs-number">6379</span><br>   replicates edbddb2005e23a357f371fed804fc490bcabbdc0<br><span class="hljs-symbol">S:</span> <span class="hljs-number">4563856</span>b15f4a6325c9f22dcc4f3b49b5867adc4 <span class="hljs-number">10.244</span>.<span class="hljs-number">0.87</span>:<span class="hljs-number">6379</span><br>   replicates <span class="hljs-number">6</span>a8be8e3baaff7e6569484b68173f9ae929687a4<br><span class="hljs-symbol">S:</span> db1d355eb2cf0ffa12240658aceadf737e00cfd3 <span class="hljs-number">10.244</span>.<span class="hljs-number">0.89</span>:<span class="hljs-number">6379</span><br>   replicates c902a47a859884e9d8e9e98463c998bafa8c456b<br>Can I <span class="hljs-keyword">set</span> the above configuration? (type <span class="hljs-comment">&#x27;yes&#x27; to accept): yes</span><br>&gt;&gt;&gt; Nodes configuration updated<br>&gt;&gt;&gt; Assign a different config epoch <span class="hljs-keyword">to</span> <span class="hljs-keyword">each</span> node<br>&gt;&gt;&gt; Sending CLUSTER MEET messages <span class="hljs-keyword">to</span> <span class="hljs-keyword">join</span> the cluster<br>Waiting <span class="hljs-keyword">for</span> the cluster <span class="hljs-keyword">to</span> <span class="hljs-keyword">join</span><br>.<br>&gt;&gt;&gt; Performing Cluster Check (<span class="hljs-keyword">using</span> node <span class="hljs-number">10.244</span>.<span class="hljs-number">0.79</span>:<span class="hljs-number">6379</span>)<br><span class="hljs-symbol">M:</span> <span class="hljs-number">6</span>a8be8e3baaff7e6569484b68173f9ae929687a4 <span class="hljs-number">10.244</span>.<span class="hljs-number">0.79</span>:<span class="hljs-number">6379</span><br>   slots:[<span class="hljs-number">0</span>-<span class="hljs-number">5460</span>] (<span class="hljs-number">5461</span> slots) master<br>   <span class="hljs-number">1</span> additional replica(s)<br><span class="hljs-symbol">S:</span> db1d355eb2cf0ffa12240658aceadf737e00cfd3 <span class="hljs-number">10.244</span>.<span class="hljs-number">0.89</span>:<span class="hljs-number">6379</span><br>   slots: (<span class="hljs-number">0</span> slots) slave<br>   replicates c902a47a859884e9d8e9e98463c998bafa8c456b<br><span class="hljs-symbol">S:</span> <span class="hljs-number">6255</span>f444e9f53ba7d4e0c3714111820347f60ab8 <span class="hljs-number">10.244</span>.<span class="hljs-number">0.85</span>:<span class="hljs-number">6379</span><br>   slots: (<span class="hljs-number">0</span> slots) slave<br>   replicates edbddb2005e23a357f371fed804fc490bcabbdc0<br><span class="hljs-symbol">S:</span> <span class="hljs-number">4563856</span>b15f4a6325c9f22dcc4f3b49b5867adc4 <span class="hljs-number">10.244</span>.<span class="hljs-number">0.87</span>:<span class="hljs-number">6379</span><br>   slots: (<span class="hljs-number">0</span> slots) slave<br>   replicates <span class="hljs-number">6</span>a8be8e3baaff7e6569484b68173f9ae929687a4<br><span class="hljs-symbol">M:</span> c902a47a859884e9d8e9e98463c998bafa8c456b <span class="hljs-number">10.244</span>.<span class="hljs-number">0.81</span>:<span class="hljs-number">6379</span><br>   slots:[<span class="hljs-number">5461</span>-<span class="hljs-number">10922</span>] (<span class="hljs-number">5462</span> slots) master<br>   <span class="hljs-number">1</span> additional replica(s)<br><span class="hljs-symbol">M:</span> edbddb2005e23a357f371fed804fc490bcabbdc0 <span class="hljs-number">10.244</span>.<span class="hljs-number">0.83</span>:<span class="hljs-number">6379</span><br>   slots:[<span class="hljs-number">10923</span>-<span class="hljs-number">16383</span>] (<span class="hljs-number">5461</span> slots) master<br>   <span class="hljs-number">1</span> additional replica(s)<br>[OK] All nodes agree about slots configuration.<br>&gt;&gt;&gt; Check <span class="hljs-keyword">for</span> open slots...<br>&gt;&gt;&gt; Check slots coverage...<br>[OK] All <span class="hljs-number">16384</span> slots covered.<br></code></pre></td></tr></table></figure>
+
+<p>验证集群：</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">kubectl exec -<span class="hljs-keyword">it</span> redis-cluster<span class="hljs-number">-0</span> -n gulimall <span class="hljs-comment">-- redis-cli cluster info </span><br></code></pre></td></tr></table></figure>
+
+<p>角色查看：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">[root@k8s-master01 src]# <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> $(seq <span class="hljs-number">0</span> <span class="hljs-number">5</span>); <span class="hljs-keyword">do</span> echo &quot;redis-cluster-$x&quot;; kubectl exec redis-<span class="hljs-keyword">cluster</span>-$x -n gulimall <span class="hljs-comment">-- redis-cli -a 123456 role; echo; done </span><br>redis-<span class="hljs-keyword">cluster</span><span class="hljs-number">-0</span><br><span class="hljs-built_in">Warning</span>: <span class="hljs-keyword">Using</span> a <span class="hljs-keyword">password</span> <span class="hljs-keyword">with</span> <span class="hljs-string">&#x27;-a&#x27;</span> <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;-u&#x27;</span> <span class="hljs-keyword">option</span> <span class="hljs-keyword">on</span> the command <span class="hljs-type">line</span> interface may <span class="hljs-keyword">not</span> be safe.<br>master<br><span class="hljs-number">2215</span><br><span class="hljs-number">10.244</span><span class="hljs-number">.0</span><span class="hljs-number">.87</span><br><span class="hljs-number">6379</span><br><span class="hljs-number">2215</span><br><br>redis-<span class="hljs-keyword">cluster</span><span class="hljs-number">-1</span><br>master<br><span class="hljs-number">2156</span><br><span class="hljs-number">10.244</span><span class="hljs-number">.0</span><span class="hljs-number">.89</span><br><span class="hljs-number">6379</span><br><span class="hljs-number">2156</span><br><span class="hljs-built_in">Warning</span>: <span class="hljs-keyword">Using</span> a <span class="hljs-keyword">password</span> <span class="hljs-keyword">with</span> <span class="hljs-string">&#x27;-a&#x27;</span> <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;-u&#x27;</span> <span class="hljs-keyword">option</span> <span class="hljs-keyword">on</span> the command <span class="hljs-type">line</span> interface may <span class="hljs-keyword">not</span> be safe.<br><br>redis-<span class="hljs-keyword">cluster</span><span class="hljs-number">-2</span><br><span class="hljs-built_in">Warning</span>: <span class="hljs-keyword">Using</span> a <span class="hljs-keyword">password</span> <span class="hljs-keyword">with</span> <span class="hljs-string">&#x27;-a&#x27;</span> <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;-u&#x27;</span> <span class="hljs-keyword">option</span> <span class="hljs-keyword">on</span> the command <span class="hljs-type">line</span> interface may <span class="hljs-keyword">not</span> be safe.<br>master<br><span class="hljs-number">2156</span><br><span class="hljs-number">10.244</span><span class="hljs-number">.0</span><span class="hljs-number">.85</span><br><span class="hljs-number">6379</span><br><span class="hljs-number">2156</span><br><br>redis-<span class="hljs-keyword">cluster</span><span class="hljs-number">-3</span><br><span class="hljs-built_in">Warning</span>: <span class="hljs-keyword">Using</span> a <span class="hljs-keyword">password</span> <span class="hljs-keyword">with</span> <span class="hljs-string">&#x27;-a&#x27;</span> <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;-u&#x27;</span> <span class="hljs-keyword">option</span> <span class="hljs-keyword">on</span> the command <span class="hljs-type">line</span> interface may <span class="hljs-keyword">not</span> be safe.<br>slave<br><span class="hljs-number">10.244</span><span class="hljs-number">.0</span><span class="hljs-number">.83</span><br><span class="hljs-number">6379</span><br>connected<br><span class="hljs-number">2156</span><br><br>redis-<span class="hljs-keyword">cluster</span><span class="hljs-number">-4</span><br><span class="hljs-built_in">Warning</span>: <span class="hljs-keyword">Using</span> a <span class="hljs-keyword">password</span> <span class="hljs-keyword">with</span> <span class="hljs-string">&#x27;-a&#x27;</span> <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;-u&#x27;</span> <span class="hljs-keyword">option</span> <span class="hljs-keyword">on</span> the command <span class="hljs-type">line</span> interface may <span class="hljs-keyword">not</span> be safe.<br>slave<br><span class="hljs-number">10.244</span><span class="hljs-number">.0</span><span class="hljs-number">.79</span><br><span class="hljs-number">6379</span><br>connected<br><span class="hljs-number">2229</span><br><br>redis-<span class="hljs-keyword">cluster</span><span class="hljs-number">-5</span><br>slave<br><span class="hljs-number">10.244</span><span class="hljs-number">.0</span><span class="hljs-number">.81</span><br><span class="hljs-number">6379</span><br>connected<br><span class="hljs-number">2156</span><br><span class="hljs-built_in">Warning</span>: <span class="hljs-keyword">Using</span> a <span class="hljs-keyword">password</span> <span class="hljs-keyword">with</span> <span class="hljs-string">&#x27;-a&#x27;</span> <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;-u&#x27;</span> <span class="hljs-keyword">option</span> <span class="hljs-keyword">on</span> the command <span class="hljs-type">line</span> interface may <span class="hljs-keyword">not</span> be safe.<br></code></pre></td></tr></table></figure>
+
+<p>启动集群：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stata">kubectl exec -it redis-<span class="hljs-keyword">cluster</span>-0 -<span class="hljs-keyword">n</span> gulimall -- redis-<span class="hljs-keyword">cli</span> redis-<span class="hljs-keyword">cli</span> -c -p 6379<br></code></pre></td></tr></table></figure>
+
+<p>测试：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">[root@k8s-master01 src]# kubectl exec redis-<span class="hljs-keyword">cluster</span><span class="hljs-number">-3</span> -n gulimall -it <span class="hljs-comment">-- /bin/sh</span><br># redis-cli -c -a <span class="hljs-number">123456</span><br><span class="hljs-built_in">Warning</span>: <span class="hljs-keyword">Using</span> a <span class="hljs-keyword">password</span> <span class="hljs-keyword">with</span> <span class="hljs-string">&#x27;-a&#x27;</span> <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;-u&#x27;</span> <span class="hljs-keyword">option</span> <span class="hljs-keyword">on</span> the command <span class="hljs-type">line</span> interface may <span class="hljs-keyword">not</span> be safe.<br><span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>:<span class="hljs-number">6379</span>&gt; <span class="hljs-keyword">get</span> aa<br>-&gt; Redirected <span class="hljs-keyword">to</span> slot [<span class="hljs-number">1180</span>] located at <span class="hljs-number">10.244</span><span class="hljs-number">.0</span><span class="hljs-number">.79</span>:<span class="hljs-number">6379</span><br>&quot;234234&quot;<br></code></pre></td></tr></table></figure>
+
+<h1 id="五、整理操作"><a href="#五、整理操作" class="headerlink" title="五、整理操作"></a>五、整理操作</h1><p>软件版本：redis:5.0</p>
+<p>配置文件：redis-conf：redis.conf</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">cluster-enabled yes <span class="hljs-comment">#开启集群</span><br>cluster-config-file nodes.conf <span class="hljs-comment">#集群node</span><br>cluster-<span class="hljs-keyword">node</span><span class="hljs-title">-timeout</span> <span class="hljs-number">5000</span> <span class="hljs-comment"># 集群延迟</span><br>appendonly yes <span class="hljs-comment"># aof文件开启</span><br>masterauth <span class="hljs-number">123456</span> <span class="hljs-comment"># 密码</span><br>requirepass <span class="hljs-number">123456</span> <span class="hljs-comment"># 认证密码</span><br></code></pre></td></tr></table></figure>
+
+<p>配置文件挂载：/etc/redis/redis.conf</p>
+<p>数据挂载：/data</p>
+<p>启动命令：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">redis-server <span class="hljs-regexp">/etc/</span>redis/redis.conf<br></code></pre></td></tr></table></figure>
+
+<p>集群：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">kubectl exec -it redis-cluster-<span class="hljs-number">0</span> -n gulimall -- redis-cli <span class="hljs-attr">--cluster</span> create <span class="hljs-attr">--cluster-replicas</span> <span class="hljs-number">1</span> redis-cluster-<span class="hljs-number">0</span><span class="hljs-selector-class">.redis-cluster</span><span class="hljs-selector-class">.gulimall</span>,redis-cluster-<span class="hljs-number">1</span><span class="hljs-selector-class">.redis-cluster</span><span class="hljs-selector-class">.gulimall</span>,redis-cluster-<span class="hljs-number">2</span><span class="hljs-selector-class">.redis-cluster</span><span class="hljs-selector-class">.gulimall</span>,redis-cluster-<span class="hljs-number">3</span><span class="hljs-selector-class">.redis-cluster</span><span class="hljs-selector-class">.gulimall</span>,redis-cluster-<span class="hljs-number">4</span><span class="hljs-selector-class">.redis-cluster</span><span class="hljs-selector-class">.gulimall</span>,redis-cluster-<span class="hljs-number">5</span><span class="hljs-selector-class">.redis-cluster</span><span class="hljs-selector-class">.gulimall</span> -<span class="hljs-selector-tag">a</span> <span class="hljs-number">123456</span><br></code></pre></td></tr></table></figure>
+
+<p>验证集群：</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">kubectl exec -<span class="hljs-keyword">it</span> redis-cluster<span class="hljs-number">-0</span> -n gulimall <span class="hljs-comment">-- redis-cli cluster info </span><br></code></pre></td></tr></table></figure>
+
+<p>角色查看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">seq</span> 0 5); <span class="hljs-keyword">do</span> <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;redis-cluster-<span class="hljs-variable">$x</span>&quot;</span>; kubectl <span class="hljs-built_in">exec</span> redis-cluster-<span class="hljs-variable">$x</span> -n gulimall -- redis-cli -a 123456 role; <span class="hljs-built_in">echo</span>; <span class="hljs-keyword">done</span> <br></code></pre></td></tr></table></figure>
+
+<p>启动集群：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stata">kubectl exec -it redis-<span class="hljs-keyword">cluster</span>-0 -<span class="hljs-keyword">n</span> gulimall -- redis-<span class="hljs-keyword">cli</span> redis-<span class="hljs-keyword">cli</span> -c -p 6379<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/kubernetes/">#kubernetes</a>
+      
+        <a href="/tags/k8s/">#k8s</a>
+      
+        <a href="/tags/kubesphere/">#kubesphere</a>
+      
+        <a href="/tags/redis/">#redis</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>kubesphere快速部署redis</div>
+      <div>https://leellun.github.io/2022/07/27/k8s/devops/kubesphere快速部署redis/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/09/06/k8s/%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2/2022-09-06-k8s%E9%83%A8%E7%BD%B2seata/" title="k8s部署seata">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">k8s部署seata</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/26/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2mysql/" title="kubesphere快速部署mysql">
+                        <span class="hidden-mobile">kubesphere快速部署mysql</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

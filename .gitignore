@@ -4,7 +4,6 @@ node_modules
 dist
 dist.zip
 dist-ssr
-public
 *.local
  vite.config.js
 yarn.lock
