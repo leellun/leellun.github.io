@@ -219,15 +219,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/10/23/k8s/%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1/%E4%BD%BF%E7%94%A8k8s%E6%89%8B%E5%8A%A8%E9%83%A8%E7%BD%B2rabbitmq%E9%9B%86%E7%BE%A4/" target="_self">
-          使用k8s手动部署rabbitmq集群
+        <a href="/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/" target="_self">
+          redis数据结构及内部编码
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/10/23/k8s/%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1/%E4%BD%BF%E7%94%A8k8s%E6%89%8B%E5%8A%A8%E9%83%A8%E7%BD%B2rabbitmq%E9%9B%86%E7%BE%A4/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/" target="_self">
         <div>
-          1 创建namespace1234567rabbitmq-cluster## All resources will be created in this namespace## To delete all resources created by this example, simply delete this namespace:## kubectl delete -f rabbitmq_sta
+          redis底层数据结构1234567891011121314151617181920212223typedef struct redisObject&#123;     //类型     unsigned type:4;// 4bit     //编码     unsigned encoding:4;// 4bit     //指向底层数据结构的指针     void *ptr;// 8字节
         </div>
       </a>
 
@@ -235,8 +235,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2021-10-23 20:14" pubdate>
-              2021-10-23
+            <time datetime="2022-01-06 20:14" pubdate>
+              2022-01-06
             </time>
           </div>
         
@@ -256,7 +256,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/" class="category-chain-item">mq</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/" class="category-chain-item">redis</a>
   
   
 
@@ -273,9 +273,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/rabbitmq/">#rabbitmq</a>
-            
-              <a href="/tags/k8s/">#k8s</a>
+              <a href="/tags/redis/">#redis</a>
             
           </div>
         
