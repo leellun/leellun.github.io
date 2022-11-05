@@ -6,7 +6,7 @@ categories:
 tags:
   - rabbitmq
   - k8s
-date: 2021-10-23 20:14:02
+date: 2022-10-23 20:14:02
 ---
 
 ## 1 创建namespace
