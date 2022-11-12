@@ -10,3 +10,9 @@ date: 2022-10-26 20:14:02
 ---
 
 https://github.com/openzipkin/zipkin/tree/master/charts/zipkin
+
+```
+helm repo add openzipkin https://openzipkin.github.io/zipkin
+
+```
+
