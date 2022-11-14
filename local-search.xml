@@ -31,6 +31,33 @@
   
   
   <entry>
+    <title>剑指offer算法题</title>
+    <link href="/2022/11/12/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E7%AE%97%E6%B3%95%E9%A2%98/2022-11-12-%E5%89%91%E6%8C%87offer%E7%AE%97%E6%B3%95%E9%A2%98/"/>
+    <url>/2022/11/12/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E7%AE%97%E6%B3%95%E9%A2%98/2022-11-12-%E5%89%91%E6%8C%87offer%E7%AE%97%E6%B3%95%E9%A2%98/</url>
+    
+    <content type="html"><![CDATA[<h2 id="1-题目描述"><a href="#1-题目描述" class="headerlink" title="1 题目描述"></a>1 题目描述</h2><p>给定一个数组A[0,1,…,n-1],请构建一个数组B[0,1,…,n-1],其中B中的元素B[i]=A[0]<em>A[1]</em>…*A[i-1]<em>A[i+1]</em>…*A[n-1]。不能使用除法。</p><p>分析：</p><p>直接元素A[i]左右两侧各个元素的乘积left和right，它俩的乘积left x right就是最终的结果啊。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] constructArr(<span class="hljs-type">int</span>[] a) &#123;<br>        <span class="hljs-keyword">if</span>(a.length==<span class="hljs-number">0</span>)<span class="hljs-keyword">return</span> a;<br>        <span class="hljs-type">int</span>[] lefts=<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[a.length];<br>        <span class="hljs-type">int</span>[] rights=<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[a.length];<br>        lefts[<span class="hljs-number">0</span>]=a[<span class="hljs-number">0</span>];<br>        rights[a.length-<span class="hljs-number">1</span>]=a[a.length-<span class="hljs-number">1</span>];<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;a.length-<span class="hljs-number">1</span>;i++)&#123;<br>            lefts[i]=lefts[i-<span class="hljs-number">1</span>]*a[i];<br>            rights[a.length-<span class="hljs-number">1</span>-i]=rights[a.length-i]*a[a.length-<span class="hljs-number">1</span>-i];<br>        &#125;<br>        <span class="hljs-type">int</span>[] results=<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[a.length];<br>        results[<span class="hljs-number">0</span>]=rights[<span class="hljs-number">1</span>];<br>        results[a.length-<span class="hljs-number">1</span>]=lefts[a.length-<span class="hljs-number">2</span>];<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;a.length-<span class="hljs-number">1</span>;i++)&#123;<br>            results[i]=lefts[i-<span class="hljs-number">1</span>]*rights[i+<span class="hljs-number">1</span>];<br>        &#125;<br>        <span class="hljs-keyword">return</span> results;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><p>提交结果：</p><img src="/2022/11/12/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E7%AE%97%E6%B3%95%E9%A2%98/2022-11-12-%E5%89%91%E6%8C%87offer%E7%AE%97%E6%B3%95%E9%A2%98/1668434797367.png" class="" width="1668434797367"><p>面试字节的时候没有想法，看了一下网上的解答思路，发现这么简单，哭晕在路上。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>后台</category>
+      
+      <category>算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>算法</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>postgresql源码安装</title>
     <link href="/2022/11/10/%E6%9C%8D%E5%8A%A1%E5%99%A8/postgresql/2022-11-10-postgresql%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/"/>
     <url>/2022/11/10/%E6%9C%8D%E5%8A%A1%E5%99%A8/postgresql/2022-11-10-postgresql%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</url>

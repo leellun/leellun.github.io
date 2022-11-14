@@ -219,6 +219,80 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2022/07/27/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2redis/" target="_self">
+          kubesphere快速部署redis
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/27/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2redis/" target="_self">
+        <div>
+          一、配置文件创建redis-conf：redis.conf 123456cluster-enabled yes #开启集群cluster-config-file nodes.conf #集群nodecluster-node-timeout 5000 # 集群延迟appendonly yes # aof文件开启masterauth 123456 # 密码requirepass 123456 # 认证
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-07-27 19:38" pubdate>
+              2022-07-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/kubesphere/">#kubesphere</a>
+            
+              <a href="/tags/redis/">#redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2022/07/26/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2mysql/" target="_self">
           kubesphere快速部署mysql
         </a>
@@ -842,74 +916,6 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/redis/">#redis</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/05/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-05-28-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%9C%A8%E5%A4%A7%E5%9E%8B%E5%88%86%E5%B8%83%E5%BC%8F%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/" target="_self">
-          消息队列在大型分布式项目中的应用
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/05/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-05-28-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%9C%A8%E5%A4%A7%E5%9E%8B%E5%88%86%E5%B8%83%E5%BC%8F%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/" target="_self">
-        <div>
-          1 异步处理传统的处理方式有两种 串行处理：注册信息入库——发送注册邮件——发送注册短信，3个任务完成后在返回客户端。 1 用户提交注册信息 2 发送注册邮件 3 发送注册短信   并行处理：注册信息入库——发送注册邮件同时发送注册短信，3个任务完成后返回客户端。区别：并行可以提交时间。 1 用户提交注册信息 2 发送注册邮件同时发送注册短信 注：传统方式应该这种方式用的稍多   异步解耦   用
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-05-28 20:18" pubdate>
-              2022-05-28
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" class="category-chain-item">应用场景</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/mq/" class="category-chain-item">mq</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">#消息队列</a>
             
           </div>
         
