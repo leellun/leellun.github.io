@@ -219,15 +219,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/27/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2redis/" target="_self">
-          kubesphere快速部署redis
+        <a href="/2022/10/26/k8s/%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1/2022-10-26-k8s-%E9%83%A8%E7%BD%B2rocketmq%E5%AE%98%E6%96%B9%E9%95%9C%E5%83%8F/" target="_self">
+          k8s 部署rocketmq官方镜像
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/27/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2redis/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/10/26/k8s/%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1/2022-10-26-k8s-%E9%83%A8%E7%BD%B2rocketmq%E5%AE%98%E6%96%B9%E9%95%9C%E5%83%8F/" target="_self">
         <div>
-          一、配置文件创建redis-conf：redis.conf 123456cluster-enabled yes #开启集群cluster-config-file nodes.conf #集群nodecluster-node-timeout 5000 # 集群延迟appendonly yes # aof文件开启masterauth 123456 # 密码requirepass 123456 # 认证
+          1、安装CRDS1.1  下载安装crds12git clone https://github.com/apache/rocketmq-operatorcd rocketmq-operator &amp;&amp; make deploy  1.2 检查是否安装成功12345678[root@k8s-master01 rocketmq-operator]# kubectl get crd | gr
         </div>
       </a>
 
@@ -235,8 +235,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-27 19:38" pubdate>
-              2022-07-27
+            <time datetime="2022-10-26 20:14" pubdate>
+              2022-10-26
             </time>
           </div>
         
@@ -256,505 +256,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/kubernetes/">#kubernetes</a>
-            
-              <a href="/tags/k8s/">#k8s</a>
-            
-              <a href="/tags/kubesphere/">#kubesphere</a>
-            
-              <a href="/tags/redis/">#redis</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/07/26/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2mysql/" target="_self">
-          kubesphere快速部署mysql
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/26/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2mysql/" target="_self">
-        <div>
-          一、docker部署方式1docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:8.0 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci    二、k8s有状态部署方式2.1 准备配置文件创建my-cnf的Config
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-26 18:38" pubdate>
-              2022-07-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/kubernetes/">#kubernetes</a>
-            
-              <a href="/tags/k8s/">#k8s</a>
-            
-              <a href="/tags/kubesphere/">#kubesphere</a>
-            
-              <a href="/tags/mysql/">#mysql</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/07/26/k8s/devops/devops%E4%B9%8BKubeSphere%E6%B5%81%E6%B0%B4%E7%BA%BF%E9%83%A8%E7%BD%B2/" target="_self">
-          devops之KubeSphere流水线部署
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/26/k8s/devops/devops%E4%B9%8BKubeSphere%E6%B5%81%E6%B0%B4%E7%BA%BF%E9%83%A8%E7%BD%B2/" target="_self">
-        <div>
-          阶段 1：Checkout SCM：从 GitHub 仓库检出源代码。 阶段 2：单元测试：待该测试通过后才会进行下一阶段。 阶段 3：SonarQube 分析：SonarQube 代码质量分析。 阶段 4：构建并推送快照镜像：根据策略设置中选定的分支来构建镜像，并将 SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER 标签推送至 Docker Hub，其中 $BUIL
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-26 12:38" pubdate>
-              2022-07-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/kubernetes/">#kubernetes</a>
-            
-              <a href="/tags/k8s/">#k8s</a>
-            
-              <a href="/tags/kubesphere/">#kubesphere</a>
-            
-              <a href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BF/">#流水线</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/07/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticstack/Beats%20%20%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/" target="_self">
-          Beats学习教程
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticstack/Beats%20%20%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/" target="_self">
-        <div>
-          一、介绍轻量化方式分析、解析和传输数据 Beats是开源的数据托运人，你可以将其作为代理安装在服务器上，将运营数据发送给Elasticsearch。Elastic提供Beats:    Audit data Auditbeat    日志文件 和 journals Filebeat   Cloud data Functionbeat   Availability Heartbeat   度量 Me
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-25 18:14" pubdate>
-              2022-07-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/" class="category-chain-item">elasticsearch</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/beats/">#beats</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/07/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticstack/Kibana%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/" target="_self">
-          Kibana学习教程
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticstack/Kibana%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/" target="_self">
-        <div>
-          一、介绍Kibana是一个针对Elasticsearch的开源分析及可视化平台，用来搜索、查看交互存储在Elasticsearch索引中的数据。使用Kibana，可以通过各种图表进行高级数据分析及展示。 Kibana让海量数据更容易理解。它操作简单，基于浏览器的用户界面可以快速创建仪表板（dashboard）实时显示Elasticsearch查询动态。 设置Kibana非常简单。无需编码或者额外的
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-25 18:14" pubdate>
-              2022-07-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/" class="category-chain-item">elasticsearch</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/kibana/">#kibana</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/07/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticstack/Logstash%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" target="_self">
-          Logstash学习教程
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticstack/Logstash%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" target="_self">
-        <div>
-          一、介绍logstash是一个数据抽取工具，将数据从一个地方转移到另一个地方。logstash之所以功能强大和流行，还与其丰富的过滤器插件是分不开的，过滤器提供的并不单单是过滤的功能，还可以对进入过滤器的原始数据进行复杂的逻辑处理，甚至添加独特的事件到后续流程中。 Logstash配置文件有如下三部分组成，其中input、output部分是必须配置，filter部分是可选配置，而filter就是过
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-25 18:14" pubdate>
-              2022-07-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/" class="category-chain-item">elasticsearch</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/logstash/">#logstash</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/07/25/k8s/devops/devops%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AESonarQube/" target="_self">
-          devops安装配置SonarQube
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/25/k8s/devops/devops%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AESonarQube/" target="_self">
-        <div>
-          一、介绍SonarQube 是一种主流的代码质量持续检测工具。您可以将其用于代码库的静态和动态分析。SonarQube 集成到 KubeSphere 流水线后，如果在运行的流水线中检测到问题，您可以直接在仪表板上查看常见代码问题，例如 Bug 和漏洞。 需要启用 KubeSphere DevOps 系统。 二、安装 SonarQube 服务器1helm upgrade --install sona
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-25 17:38" pubdate>
-              2022-07-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/kubernetes/">#kubernetes</a>
-            
-              <a href="/tags/k8s/">#k8s</a>
-            
-              <a href="/tags/sonarqube/">#sonarqube</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/07/24/k8s/devops/k8s%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90KubeSphere/" target="_self">
-          k8s快速集成KubeSphere
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/24/k8s/devops/k8s%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90KubeSphere/" target="_self">
-        <div>
-          一、KubeSphere 介绍KubeSphere 是在 Kubernetes 之上构建的面向云原生应用的分布式操作系统，完全开源，支持多云与多集群管理，提供全栈的 IT 自动化运维能力，简化企业的 DevOps 工作流。它的架构可以非常方便地使第三方应用与云原生生态组件进行即插即用 (plug-and-play) 的集成。  功能：  多云与多集群管理 Kubernetes 资源管理 DevOp
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-24 17:38" pubdate>
-              2022-07-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
   
   
 
@@ -773,9 +275,7 @@
             
               <a href="/tags/k8s/">#k8s</a>
             
-              <a href="/tags/kubesphere/">#kubesphere</a>
-            
-              <a href="/tags/kubernetes/">#kubernetes </a>
+              <a href="/tags/rocketmq/">#rocketmq</a>
             
           </div>
         
@@ -789,15 +289,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/23/k8s/persistence/k8s%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%E4%B9%8BOpenEBS/" target="_self">
-          k8s持久化存储之OpenEBS
+        <a href="/2022/10/26/k8s/%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1/2022-10-26-k8s%E9%80%9A%E8%BF%87helm%E9%83%A8%E7%BD%B2zipkin%E5%AE%98%E6%96%B9%E9%95%9C%E5%83%8F/" target="_self">
+          k8s通过helm部署zipkin官方镜像
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/23/k8s/persistence/k8s%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%E4%B9%8BOpenEBS/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/10/26/k8s/%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1/2022-10-26-k8s%E9%80%9A%E8%BF%87helm%E9%83%A8%E7%BD%B2zipkin%E5%AE%98%E6%96%B9%E9%95%9C%E5%83%8F/" target="_self">
         <div>
-          一、介绍OpenEBS 是 CNCF 项目的一部分，采用 Apache v2 许可证。是 Kubernetes 部署使用最广泛且易用的开源存储解决方案。 目的： 让持久化工作负载的存储和存储服务完全集成到环境中，这样每个团队和工作负载都可以从控制的粒度和 Kubernetes 原生行为中获益。 特点：  微服务架构，使用 Kubernetes 自身的能力来编排管理 OpenEBS 组件。  Ope
+          https://github.com/openzipkin/zipkin/tree/master/charts/zipkin 12helm repo add openzipkin https://openzipkin.github.io/zipkin
         </div>
       </a>
 
@@ -805,8 +305,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-23 17:38" pubdate>
-              2022-07-23
+            <time datetime="2022-10-26 20:14" pubdate>
+              2022-10-26
             </time>
           </div>
         
@@ -826,7 +326,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
   
   
 
@@ -843,11 +343,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/kubernetes/">#kubernetes</a>
-            
               <a href="/tags/k8s/">#k8s</a>
             
-              <a href="/tags/openebs/">#openebs</a>
+              <a href="/tags/zipkin/">#zipkin</a>
             
           </div>
         
@@ -861,15 +359,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/06/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-06-06-redis%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F%E5%8F%8A%E5%8E%9F%E7%90%86/" target="_self">
-          redis持久化方式及原理
+        <a href="/2022/10/25/k8s/%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1/2021-10-25-k8s%E9%80%9A%E8%BF%87helm%E9%83%A8%E7%BD%B2nacos%E5%AE%98%E6%96%B9%E9%95%9C%E5%83%8F/" target="_self">
+          k8s通过helm部署nacos官方镜像
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/06/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-06-06-redis%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F%E5%8F%8A%E5%8E%9F%E7%90%86/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/10/25/k8s/%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1/2021-10-25-k8s%E9%80%9A%E8%BF%87helm%E9%83%A8%E7%BD%B2nacos%E5%AE%98%E6%96%B9%E9%95%9C%E5%83%8F/" target="_self">
         <div>
-          一、Redis持久化方式1.1 RDB快照（snapshot）1234567891011121314151617181920212223###################################SNAPSHOTTING快照#################################### RDB是整个内存的压缩过的Snapshot快照配置# 注释掉“save”这一行配置项就可以让
+          一、官方部署介绍github仓库地址 1https://github.com/nacos-group/nacos-k8s.git  官方部署方案： 123cd nacos-k8schmod +x quick-startup.sh./quick-startup.sh  说明： quick-startup.sh 脚本部署了mysql和nacos 12345678#!/usr/bin/env bashe
         </div>
       </a>
 
@@ -877,8 +375,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-06-06 20:14" pubdate>
-              2022-06-06
+            <time datetime="2022-10-25 20:14" pubdate>
+              2022-10-25
             </time>
           </div>
         
@@ -898,7 +396,215 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/" class="category-chain-item">redis</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/nacos/">#nacos</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/10/23/k8s/%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1/%E4%BD%BF%E7%94%A8k8s%E6%89%8B%E5%8A%A8%E9%83%A8%E7%BD%B2rabbitmq%E9%9B%86%E7%BE%A4/" target="_self">
+          使用k8s手动部署rabbitmq集群
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/10/23/k8s/%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1/%E4%BD%BF%E7%94%A8k8s%E6%89%8B%E5%8A%A8%E9%83%A8%E7%BD%B2rabbitmq%E9%9B%86%E7%BE%A4/" target="_self">
+        <div>
+          1 创建namespace1234567rabbitmq-cluster## All resources will be created in this namespace## To delete all resources created by this example, simply delete this namespace:## kubectl delete -f rabbitmq_sta
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-10-23 20:14" pubdate>
+              2022-10-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/" class="category-chain-item">mq</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/rabbitmq/">#rabbitmq</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/09/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-09-28-rabbitmq%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" target="_self">
+          rabbitmq常见使用场景
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/09/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-09-28-rabbitmq%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" target="_self">
+        <div>
+          一、介绍RabbitMQ作为一款热门的消息队列中间件，具备高效可靠的消息异步传递机制，主要用于不同系统间的数据交流和传递，在企业解决方案、金融支付、电信、电子商务、社交、即时通信、视频、物联网、车联网等众多领域都有广泛应用。  二、使用方向2.1 异步通信将业务中属于非核心或不重要的流程部分，使用消息异步通知的方式发给目标系统，这样主业务流程无需同步等待其他系统的处理结果，从而达到系统快速响应的目
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-09-28 20:14" pubdate>
+              2022-09-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" class="category-chain-item">应用场景</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/mq/" class="category-chain-item">mq</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/rabbitmq/">#rabbitmq</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/09/27/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-09-27-%E9%AB%98%E5%B9%B6%E5%8F%91redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%AE%9E%E6%88%98%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF/" target="_self">
+          高并发redis分布式锁实战进阶之路
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/09/27/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-09-27-%E9%AB%98%E5%B9%B6%E5%8F%91redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%AE%9E%E6%88%98%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF/" target="_self">
+        <div>
+          1 分布式锁基础方案12345678910111213141516171819@Overridepublic String payment(String account, int money, String orderId) &#123;    //redis 核心原理还是setnx orderId TokenLock 命令方式    boolean lock = redisTemplate.op
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-09-27 21:14" pubdate>
+              2022-09-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
   
   
 
@@ -916,6 +622,277 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/redis/">#redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/09/27/%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/2022-09-27-Java%E5%B7%A5%E7%A8%8B%E5%B8%88%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E5%9B%BE/" target="_self">
+          Java工程师学习路线图
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/09/27/%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/2022-09-27-Java%E5%B7%A5%E7%A8%8B%E5%B8%88%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E5%9B%BE/" target="_self">
+        <div>
+          Java架构路线图 https://www.processon.com/view/link/617be37ee0b34d7894fcf545#map 面试视频+面试题和简历模板资料:  https://pan.baidu.com/s/1V1cTOj2CGEv0h_Ue4WKlGA 提取码: kgi6  所有文档最新技术资料链接： https://pan.baidu.com/s/1S3SbGwR0X
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-09-27 20:14" pubdate>
+              2022-09-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E8%B7%AF%E7%BA%BF/">#路线</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/09/27/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-09-28-redis%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" target="_self">
+          redis常见使用场景
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/09/27/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-09-28-redis%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" target="_self">
+        <div>
+          1、数据缓存123456789101112131415161718192021222324252627@Bean@SuppressWarnings(&quot;all&quot;)public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory factory) &#123;    RedisTempla
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-09-27 20:14" pubdate>
+              2022-09-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" class="category-chain-item">应用场景</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/redis/" class="category-chain-item">redis</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/redis/">#redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/09/26/%E9%9D%A2%E8%AF%95%E9%A2%98/2022-09-26-Redis%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_self">
+          Redis常见面试题
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/09/26/%E9%9D%A2%E8%AF%95%E9%A2%98/2022-09-26-Redis%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_self">
+        <div>
+          1、什么是Redis？ Redis本质上是一个Key-Value类型的内存数据库，很像memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过10万次读写操作，是已知性能最快的Key-Value DB。 Redis的出色之处不仅仅是性能，Redis最大的魅力是支持保存多种数据结构，
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-09-26 20:14" pubdate>
+              2022-09-26
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="category-chain-item">面试题</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/redis/">#redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/09/25/k8s/k8s%E6%8E%A7%E5%88%B6%E5%99%A8/k8s%E7%A7%81%E6%9C%89%E7%8E%AF%E5%A2%83%E4%B8%AD%E9%80%9A%E8%BF%87OpenELB%20%E6%9A%B4%E9%9C%B2%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%8F%A3%E5%B9%B6%E7%BB%93%E5%90%88ingress%E9%85%8D%E7%BD%AE%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99%E8%AE%BF%E9%97%AE/" target="_self">
+          k8s私有环境中通过OpenELB 暴露服务端口并结合ingress配置路由规则访问
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/09/25/k8s/k8s%E6%8E%A7%E5%88%B6%E5%99%A8/k8s%E7%A7%81%E6%9C%89%E7%8E%AF%E5%A2%83%E4%B8%AD%E9%80%9A%E8%BF%87OpenELB%20%E6%9A%B4%E9%9C%B2%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%8F%A3%E5%B9%B6%E7%BB%93%E5%90%88ingress%E9%85%8D%E7%BD%AE%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99%E8%AE%BF%E9%97%AE/" target="_self">
+        <div>
+          一、节点信息   节点 ip    k8s-master01 192.168.66.10   说明：当前搭建的微服务项目服务太多，资源有限就只搭建了一个节点 二、在 kube-proxy 设置strictARP1kubectl edit configmap kube-proxy -n kube-system  修改： data.config.conf.ipvs.strictARP to true.
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-09-25 10:14" pubdate>
+              2022-09-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/ingress/">#ingress</a>
+            
+              <a href="/tags/openeelb/">#openeelb</a>
             
           </div>
         
@@ -927,7 +904,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#board">12</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/#board">13</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

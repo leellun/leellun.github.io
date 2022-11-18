@@ -219,15 +219,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/05/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-05-28-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%9C%A8%E5%A4%A7%E5%9E%8B%E5%88%86%E5%B8%83%E5%BC%8F%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/" target="_self">
-          消息队列在大型分布式项目中的应用
+        <a href="/2022/09/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-09-07-Redis%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%93%E5%AD%98%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" target="_self">
+          Redis高并发缓存设计问题与性能优化
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/05/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-05-28-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%9C%A8%E5%A4%A7%E5%9E%8B%E5%88%86%E5%B8%83%E5%BC%8F%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/09/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-09-07-Redis%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%93%E5%AD%98%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" target="_self">
         <div>
-          1 异步处理传统的处理方式有两种 串行处理：注册信息入库——发送注册邮件——发送注册短信，3个任务完成后在返回客户端。 1 用户提交注册信息 2 发送注册邮件 3 发送注册短信   并行处理：注册信息入库——发送注册邮件同时发送注册短信，3个任务完成后返回客户端。区别：并行可以提交时间。 1 用户提交注册信息 2 发送注册邮件同时发送注册短信 注：传统方式应该这种方式用的稍多   异步解耦   用
+          缓存穿透  一、缓存穿透1.1 说明缓存穿透是指查询一个根本不存在的数据， 缓存层和存储层都不会命中， 通常出于容错的考虑， 如果从存储层查不到数据则不写入缓存层。  缓存穿透将导致不存在的数据每次请求都要到存储层去查询， 失去了缓存保护后端存储的意义。  造成缓存穿透的基本原因有两个：   第一， 自身业务代码或者数据出现问题。  第二， 一些恶意攻击、 爬虫等造成大量空命中。   1.2 解决
         </div>
       </a>
 
@@ -235,144 +235,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-05-28 20:18" pubdate>
-              2022-05-28
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" class="category-chain-item">应用场景</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/mq/" class="category-chain-item">mq</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">#消息队列</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/05/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-09-28-rocketmq%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" target="_self">
-          rocketmq常见使用场景
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/05/28/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-09-28-rocketmq%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" target="_self">
-        <div>
-          一、介绍向项目应用场景中，了解rocketmq的功能，以便更好地判断如何在业务中使用消息队列RocketMQ版。 例如，对于互联网电商项目，业务涉及注册、订单、库存、物流等；同时，也会涉及许多业务峰值时刻，如秒杀活动、周年庆、定期特惠等。这些活动都对分布性系统中的各项微服务应用的处理性能带来很大的挑战。 消息队列RocketMQ版作为分布式系统中的重要组件，可用于应对这些挑战，例如解决应用的异步解
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-05-28 20:18" pubdate>
-              2022-05-28
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" class="category-chain-item">应用场景</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/mq/" class="category-chain-item">mq</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/rocketmq/">#rocketmq</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/05/24/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rocketmq/2022-05-24-rocketmq-acl%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/" target="_self">
-          rocketmq acl权限控制
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/05/24/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rocketmq/2022-05-24-rocketmq-acl%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/" target="_self">
-        <div>
-          1 介绍acl权限控制主要为rabbitmq提供topic资源级别的访问控制。Broker端对AccessKey所拥有的权限进行校验，校验不过，抛出异常；权限控制属性包括Topic访问权限、IP白名单和AccessKey和SecretKey签名等。 2 权限控制定义   权限 含义    DENY 拒绝   ANY PUB 或者 SUB 权限   PUB 发送权限   SUB 订阅权限   3 相
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-05-24 18:14" pubdate>
-              2022-05-24
+            <time datetime="2022-09-07 20:14" pubdate>
+              2022-09-07
             </time>
           </div>
         
@@ -392,7 +256,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/" class="category-chain-item">mq</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/" class="category-chain-item">redis</a>
   
   
 
@@ -409,7 +273,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/rocketmq/">#rocketmq</a>
+              <a href="/tags/redis/">#redis</a>
             
           </div>
         
@@ -423,15 +287,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/05/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rocketmq/2022-05-22-rocketmq%E4%BC%AA%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA2m-2s-async/" target="_self">
-          rocketmq伪集群搭建2m-2s-async
+        <a href="/2022/09/06/k8s/%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2/2022-09-06-k8s%E9%83%A8%E7%BD%B2seata/" target="_self">
+          k8s部署seata
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/05/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rocketmq/2022-05-22-rocketmq%E4%BC%AA%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA2m-2s-async/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/09/06/k8s/%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2/2022-09-06-k8s%E9%83%A8%E7%BD%B2seata/" target="_self">
         <div>
-          一、环境nameserver节点    节点 端口    nameserver-1 8876   nameserver-2 8878   nameserver-3 8879   broker节点：    节点 端口    broker-a 10911   broker-a-s 10921   broker-b 10931   broker-b-s 10941   二、配置2.1 安装1wget -
+          一、选择版本1seataio/seata-server:1.4.2  二、参数配置单配置： 123MODE: standalone JVM_XMS: 2048MJVM_XMX: 2048M  三、nacos配置创建空间seata-server,得到：f303fe99-86f9-41b5-8fa3-41e66f1d61b3 在seata的github得到nacos-config.sh脚本执行如下命令
         </div>
       </a>
 
@@ -439,8 +303,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-05-22 18:14" pubdate>
-              2022-05-22
+            <time datetime="2022-09-06 20:14" pubdate>
+              2022-09-06
             </time>
           </div>
         
@@ -460,7 +324,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/" class="category-chain-item">mq</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
   
   
 
@@ -477,7 +341,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/rocketmq/">#rocketmq</a>
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/seata/">#seata</a>
             
           </div>
         
@@ -491,15 +357,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/05/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rocketmq/2022-05-22-rocketmq%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA2m-2s-async/" target="_self">
-          rocketmq集群搭建2m-2s-async
+        <a href="/2022/07/27/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2redis/" target="_self">
+          kubesphere快速部署redis
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/05/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rocketmq/2022-05-22-rocketmq%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA2m-2s-async/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/27/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2redis/" target="_self">
         <div>
-          一、rocketmq集群模式介绍 RocketMQ支持多种集群策略     2m-2s-async(本文采用模式)-2主2从异步刷盘(吞吐量较大，但是消息可能丢失)      2m-2s-sync：2主2从同步刷盘(吞吐量会下降，但是消息更安全)      2m-noslave ：2主无从(单点故障)，然后还可以直接配置broker.conf，进行单点环境配置      dledger：用来实现主
+          一、配置文件创建redis-conf：redis.conf 123456cluster-enabled yes #开启集群cluster-config-file nodes.conf #集群nodecluster-node-timeout 5000 # 集群延迟appendonly yes # aof文件开启masterauth 123456 # 密码requirepass 123456 # 认证
         </div>
       </a>
 
@@ -507,8 +373,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-05-22 18:14" pubdate>
-              2022-05-22
+            <time datetime="2022-07-27 19:38" pubdate>
+              2022-07-27
             </time>
           </div>
         
@@ -528,7 +394,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/" class="category-chain-item">mq</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
   
   
 
@@ -545,7 +411,13 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/rocketmq/">#rocketmq</a>
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/kubesphere/">#kubesphere</a>
+            
+              <a href="/tags/redis/">#redis</a>
             
           </div>
         
@@ -559,15 +431,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/05/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/2022-05-07-rabbitmq%E3%80%81kafka%E3%80%81activemq%E3%80%81rocketmq%E9%80%89%E5%9E%8B%E5%AF%B9%E6%AF%94/" target="_self">
-          rabbitmq、kafka、activemq、rocketmq选型对比
+        <a href="/2022/07/26/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2mysql/" target="_self">
+          kubesphere快速部署mysql
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/05/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/2022-05-07-rabbitmq%E3%80%81kafka%E3%80%81activemq%E3%80%81rocketmq%E9%80%89%E5%9E%8B%E5%AF%B9%E6%AF%94/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/26/k8s/devops/kubesphere%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2mysql/" target="_self">
         <div>
-          一、指标对比   指标 ActiveMQ RabbitMQ RocketMQ Kafka    开发语言 java erlang java scala   单机吞吐量 万级 万级 10万级 10万级   时效性 ms级 us级 ms级 ms级内   可用性 高(主从架构) 高(主从架构) 非常高(分布式架构) 非常高(分布式架构)   客户端 Java, .NET, C++ etc. AMQP协议
+          一、docker部署方式1docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:8.0 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci    二、k8s有状态部署方式2.1 准备配置文件创建my-cnf的Config
         </div>
       </a>
 
@@ -575,8 +447,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-05-07 18:14" pubdate>
-              2022-05-07
+            <time datetime="2022-07-26 18:38" pubdate>
+              2022-07-26
             </time>
           </div>
         
@@ -596,7 +468,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/" class="category-chain-item">mq</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
   
   
 
@@ -613,13 +485,13 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/rabbitmq/">#rabbitmq</a>
+              <a href="/tags/kubernetes/">#kubernetes</a>
             
-              <a href="/tags/kafka/">#kafka</a>
+              <a href="/tags/k8s/">#k8s</a>
             
-              <a href="/tags/rocketmq/">#rocketmq</a>
+              <a href="/tags/kubesphere/">#kubesphere</a>
             
-              <a href="/tags/activemq/">#activemq</a>
+              <a href="/tags/mysql/">#mysql</a>
             
           </div>
         
@@ -633,15 +505,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/04/30/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/2022-04-30-rabbitmq%E8%BF%9B%E9%98%B6%E7%AF%87/" target="_self">
-          rabbitmq进阶篇
+        <a href="/2022/07/26/k8s/devops/devops%E4%B9%8BKubeSphere%E6%B5%81%E6%B0%B4%E7%BA%BF%E9%83%A8%E7%BD%B2/" target="_self">
+          devops之KubeSphere流水线部署
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/04/30/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/2022-04-30-rabbitmq%E8%BF%9B%E9%98%B6%E7%AF%87/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/26/k8s/devops/devops%E4%B9%8BKubeSphere%E6%B5%81%E6%B0%B4%E7%BA%BF%E9%83%A8%E7%BD%B2/" target="_self">
         <div>
-          一、未匹配消息最终走向1.1 未被路由的情况1void basicPublish(String exchange, String routingKey, boolean mandatory, boolean immediate, BasicProperties props, byte[] body) throws IOException;  参数说明：  mandatory： 交换器无法根据自身的
+          阶段 1：Checkout SCM：从 GitHub 仓库检出源代码。 阶段 2：单元测试：待该测试通过后才会进行下一阶段。 阶段 3：SonarQube 分析：SonarQube 代码质量分析。 阶段 4：构建并推送快照镜像：根据策略设置中选定的分支来构建镜像，并将 SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER 标签推送至 Docker Hub，其中 $BUIL
         </div>
       </a>
 
@@ -649,8 +521,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-04-30 19:18" pubdate>
-              2022-04-30
+            <time datetime="2022-07-26 12:38" pubdate>
+              2022-07-26
             </time>
           </div>
         
@@ -670,7 +542,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/" class="category-chain-item">mq</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
   
   
 
@@ -687,7 +559,13 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/rabbitmq/">#rabbitmq</a>
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/kubesphere/">#kubesphere</a>
+            
+              <a href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BF/">#流水线</a>
             
           </div>
         
@@ -701,15 +579,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/04/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/2022-04-22-rabbitmq%E4%BC%AA%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" target="_self">
-          rabbitmq伪集群搭建
+        <a href="/2022/07/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticstack/Beats%20%20%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/" target="_self">
+          Beats学习教程
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/04/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/2022-04-22-rabbitmq%E4%BC%AA%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticstack/Beats%20%20%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/" target="_self">
         <div>
-          1 清理单机内容要搭建集群,先将之前单机版中历史记录干掉,删除rabbitmq /var/lib/rabbitmq/mnesia下的所有内容。 2 启动伪集群实例123RABBITMQ_NODE_IP_ADDRESS=0.0.0.0 RABBITMQ_NODE_PORT=5672 RABBITMQ_SERVER_START_ARGS=&quot;-rabbitmq_management liste
+          一、介绍轻量化方式分析、解析和传输数据 Beats是开源的数据托运人，你可以将其作为代理安装在服务器上，将运营数据发送给Elasticsearch。Elastic提供Beats:    Audit data Auditbeat    日志文件 和 journals Filebeat   Cloud data Functionbeat   Availability Heartbeat   度量 Me
         </div>
       </a>
 
@@ -717,8 +595,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-04-22 19:18" pubdate>
-              2022-04-22
+            <time datetime="2022-07-25 18:14" pubdate>
+              2022-07-25
             </time>
           </div>
         
@@ -738,7 +616,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/" class="category-chain-item">mq</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/" class="category-chain-item">elasticsearch</a>
   
   
 
@@ -755,7 +633,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/rabbitmq/">#rabbitmq</a>
+              <a href="/tags/beats/">#beats</a>
             
           </div>
         
@@ -769,15 +647,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/04/04/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E5%AD%98%E5%82%A8/minio%E5%85%A5%E9%97%A8%E6%96%87%E6%A1%A3/" target="_self">
-          minio入门文档
+        <a href="/2022/07/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticstack/Kibana%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/" target="_self">
+          Kibana学习教程
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/04/04/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E5%AD%98%E5%82%A8/minio%E5%85%A5%E9%97%A8%E6%96%87%E6%A1%A3/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticstack/Kibana%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/" target="_self">
         <div>
-          一、介绍MinIO 是在 GNU Affero 通用公共许可证 v3.0 下发布的高性能对象存储。  对于 Kubernetes 环境，请使用 MinIO Kubernetes Operator。  二、安装非k8s 123456yum install -y podmanwget -c https://dl.min.io/server/minio/release/linux-amd64/minio
+          一、介绍Kibana是一个针对Elasticsearch的开源分析及可视化平台，用来搜索、查看交互存储在Elasticsearch索引中的数据。使用Kibana，可以通过各种图表进行高级数据分析及展示。 Kibana让海量数据更容易理解。它操作简单，基于浏览器的用户界面可以快速创建仪表板（dashboard）实时显示Elasticsearch查询动态。 设置Kibana非常简单。无需编码或者额外的
         </div>
       </a>
 
@@ -785,8 +663,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-04-04 20:14" pubdate>
-              2022-04-04
+            <time datetime="2022-07-25 18:14" pubdate>
+              2022-07-25
             </time>
           </div>
         
@@ -806,7 +684,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E5%AD%98%E5%82%A8/" class="category-chain-item">存储</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/" class="category-chain-item">elasticsearch</a>
   
   
 
@@ -823,7 +701,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/minio/">#minio</a>
+              <a href="/tags/kibana/">#kibana</a>
             
           </div>
         
@@ -837,15 +715,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/03/24/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-03-24-%E7%94%9F%E6%88%90%E8%AE%A2%E5%8D%9530%E5%88%86%E9%92%9F%E6%9C%AA%E6%94%AF%E4%BB%98%EF%BC%8C%E5%88%99%E8%87%AA%E5%8A%A8%E5%8F%96%E6%B6%88%EF%BC%8C%E8%AF%A5%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%EF%BC%9F/" target="_self">
-          生成订单30分钟未支付，则自动取消，该怎么实现？
+        <a href="/2022/07/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticstack/Logstash%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" target="_self">
+          Logstash学习教程
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/03/24/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/2022-03-24-%E7%94%9F%E6%88%90%E8%AE%A2%E5%8D%9530%E5%88%86%E9%92%9F%E6%9C%AA%E6%94%AF%E4%BB%98%EF%BC%8C%E5%88%99%E8%87%AA%E5%8A%A8%E5%8F%96%E6%B6%88%EF%BC%8C%E8%AF%A5%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%EF%BC%9F/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticstack/Logstash%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" target="_self">
         <div>
-          1 数据库轮询通常是在小型项目中使用，即通过一个线程定时的去扫描数据库，通过订单时间来判断是否有超时的订单，然后进行update或delete等操作. 用quartz来实现的。 123456789101112131415161718// 创建任务JobDetail jobDetail = JobBuilder.newJob(MyJob.class).withIdentity(&quot;job1&
+          一、介绍logstash是一个数据抽取工具，将数据从一个地方转移到另一个地方。logstash之所以功能强大和流行，还与其丰富的过滤器插件是分不开的，过滤器提供的并不单单是过滤的功能，还可以对进入过滤器的原始数据进行复杂的逻辑处理，甚至添加独特的事件到后续流程中。 Logstash配置文件有如下三部分组成，其中input、output部分是必须配置，filter部分是可选配置，而filter就是过
         </div>
       </a>
 
@@ -853,8 +731,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-03-24 18:14" pubdate>
-              2022-03-24
+            <time datetime="2022-07-25 18:14" pubdate>
+              2022-07-25
             </time>
           </div>
         
@@ -874,7 +752,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/" class="category-chain-item">业务场景</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/" class="category-chain-item">elasticsearch</a>
   
   
 
@@ -891,7 +769,151 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/">#定时任务</a>
+              <a href="/tags/logstash/">#logstash</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/07/25/k8s/devops/devops%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AESonarQube/" target="_self">
+          devops安装配置SonarQube
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/25/k8s/devops/devops%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AESonarQube/" target="_self">
+        <div>
+          一、介绍SonarQube 是一种主流的代码质量持续检测工具。您可以将其用于代码库的静态和动态分析。SonarQube 集成到 KubeSphere 流水线后，如果在运行的流水线中检测到问题，您可以直接在仪表板上查看常见代码问题，例如 Bug 和漏洞。 需要启用 KubeSphere DevOps 系统。 二、安装 SonarQube 服务器1helm upgrade --install sona
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-07-25 17:38" pubdate>
+              2022-07-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/sonarqube/">#sonarqube</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/07/24/k8s/devops/k8s%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90KubeSphere/" target="_self">
+          k8s快速集成KubeSphere
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/24/k8s/devops/k8s%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90KubeSphere/" target="_self">
+        <div>
+          一、KubeSphere 介绍KubeSphere 是在 Kubernetes 之上构建的面向云原生应用的分布式操作系统，完全开源，支持多云与多集群管理，提供全栈的 IT 自动化运维能力，简化企业的 DevOps 工作流。它的架构可以非常方便地使第三方应用与云原生生态组件进行即插即用 (plug-and-play) 的集成。  功能：  多云与多集群管理 Kubernetes 资源管理 DevOp
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-07-24 17:38" pubdate>
+              2022-07-24
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/kubesphere/">#kubesphere</a>
+            
+              <a href="/tags/kubernetes/">#kubernetes </a>
             
           </div>
         
@@ -903,7 +925,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/2/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/#board">4</a><a class="page-number" href="/page/5/#board">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#board">12</a><a class="extend next" rel="next" href="/page/4/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/2/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/#board">4</a><a class="page-number" href="/page/5/#board">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/#board">13</a><a class="extend next" rel="next" href="/page/4/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
