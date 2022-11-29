@@ -1,0 +1,844 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、指标对比   指标 ActiveMQ RabbitMQ RocketMQ Kafka    开发语言 java erlang java scala   单机吞吐量 万级 万级 10万级 10万级   时效性 ms级 us级 ms级 ms级内   可用性 高(主从架构) 高(主从架构) 非常高(分布式架构) 非常高(分布式架构)   客户端 Java, .NET, C++ etc. AMQP协议">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rabbitmq、kafka、activemq、rocketmq选型对比">
+<meta property="og:url" content="https://leellun.github.io/2022/05/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/2022-05-07-rabbitmq%E3%80%81kafka%E3%80%81activemq%E3%80%81rocketmq%E9%80%89%E5%9E%8B%E5%AF%B9%E6%AF%94/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="一、指标对比   指标 ActiveMQ RabbitMQ RocketMQ Kafka    开发语言 java erlang java scala   单机吞吐量 万级 万级 10万级 10万级   时效性 ms级 us级 ms级 ms级内   可用性 高(主从架构) 高(主从架构) 非常高(分布式架构) 非常高(分布式架构)   客户端 Java, .NET, C++ etc. AMQP协议">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leellun.github.io/2022/05/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/2022-05-07-rabbitmq%E3%80%81kafka%E3%80%81activemq%E3%80%81rocketmq%E9%80%89%E5%9E%8B%E5%AF%B9%E6%AF%94/1664947894054.png">
+<meta property="article:published_time" content="2022-05-07T10:14:02.000Z">
+<meta property="article:modified_time" content="2022-10-05T06:56:35.462Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="rabbitmq">
+<meta property="article:tag" content="kafka">
+<meta property="article:tag" content="rocketmq">
+<meta property="article:tag" content="activemq">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://leellun.github.io/2022/05/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/2022-05-07-rabbitmq%E3%80%81kafka%E3%80%81activemq%E3%80%81rocketmq%E9%80%89%E5%9E%8B%E5%AF%B9%E6%AF%94/1664947894054.png">
+  
+  
+  
+  <title>rabbitmq、kafka、activemq、rocketmq选型对比 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="rabbitmq、kafka、activemq、rocketmq选型对比"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-05-07 18:14" pubdate>
+          2022年5月7日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">rabbitmq、kafka、activemq、rocketmq选型对比</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、指标对比"><a href="#一、指标对比" class="headerlink" title="一、指标对比"></a>一、指标对比</h1><table>
+<thead>
+<tr>
+<th>指标</th>
+<th>ActiveMQ</th>
+<th>RabbitMQ</th>
+<th>RocketMQ</th>
+<th>Kafka</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>开发语言</td>
+<td>java</td>
+<td>erlang</td>
+<td>java</td>
+<td>scala</td>
+</tr>
+<tr>
+<td>单机吞吐量</td>
+<td>万级</td>
+<td>万级</td>
+<td>10万级</td>
+<td>10万级</td>
+</tr>
+<tr>
+<td>时效性</td>
+<td>ms级</td>
+<td>us级</td>
+<td>ms级</td>
+<td>ms级内</td>
+</tr>
+<tr>
+<td>可用性</td>
+<td>高(主从架构)</td>
+<td>高(主从架构)</td>
+<td>非常高(分布式架构)</td>
+<td>非常高(分布式架构)</td>
+</tr>
+<tr>
+<td>客户端</td>
+<td>Java, .NET, C++ etc.</td>
+<td>AMQP协议支持多语言SDK，而JMS仅支持Java SDK</td>
+<td>Java, C++, Go</td>
+<td>Java, Scala etc.</td>
+</tr>
+<tr>
+<td>协议</td>
+<td>OpenWire, STOMP, AMQP, MQTT, JMS</td>
+<td>RabbitMQ、STOMP、MQTT、AMQP 0-9-1、AMQP 1.0、HTTP、JMS</td>
+<td>TCP, JMS, OpenMessaging</td>
+<td>PLAINTEXT、SSL、SASL_PLAINTEXT、SASL_SSL</td>
+</tr>
+<tr>
+<td>消息获取</td>
+<td>push/pull</td>
+<td>push/pull</td>
+<td>push/pull</td>
+<td>push/pull</td>
+</tr>
+<tr>
+<td>功能特性</td>
+<td>成熟的产品，在很多公司得到应用；有较多的文档；各种协议支持较好</td>
+<td>基于erlang开发，所以并发能力很强，性能极其好，延时很低;管理界面较丰富</td>
+<td>MQ功能比较完备，扩展性佳</td>
+<td>只支持主要的MQ功能，像一些消息查询，消息回溯等功能没有提供，毕竟是为大数据准备的，在大数据领域应用广。</td>
+</tr>
+<tr>
+<td>有序消息</td>
+<td>独占消费者或独占队列可以确保排序</td>
+<td>不能。除非单消费者-单队列的点对点模型</td>
+<td>确保消息的严格顺序，并且可以优雅地向外扩展</td>
+<td>确保分区内消息的顺序</td>
+</tr>
+<tr>
+<td>定时消息</td>
+<td>支持</td>
+<td>支持（死信队列、延迟插件）</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>批次消息</td>
+<td>不支持</td>
+<td></td>
+<td>支持，具有同步模式，以避免消息丢失</td>
+<td>支持，使用异步生成器</td>
+</tr>
+<tr>
+<td>广播消息</td>
+<td>支持</td>
+<td>支持（fanout扇出也称之为广播）</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>消息过滤</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持，基于SQL92的属性过滤器表达式</td>
+<td>支持（ Kafka Streams ）</td>
+</tr>
+<tr>
+<td>Server Triggered Redelivery</td>
+<td>不支持</td>
+<td></td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>消息存储</td>
+<td>支持使用JDBC和高性能日志(如levelDB、kahaDB)快速持久</td>
+<td>文件来存储</td>
+<td>高性能、低时延的文件存储</td>
+<td>高性能文件存储</td>
+</tr>
+<tr>
+<td>信息追溯</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持timestamp和offset两个指标</td>
+<td>支持offset</td>
+</tr>
+<tr>
+<td>Priority</td>
+<td>支持</td>
+<td>支持</td>
+<td>不支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>高可用性和故障转移</td>
+<td>支持，取决于存储，如果使用levelDB，它需要一个ZooKeeper服务器</td>
+<td>支持</td>
+<td>支持，主从模式，不需要另一个工具包</td>
+<td>支持，需要ZooKeeper服务器</td>
+</tr>
+<tr>
+<td>消息追踪</td>
+<td>不支持</td>
+<td>不支持</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>配置</td>
+<td>默认配置为低级别，用户需要优化配置参数</td>
+<td>默认单机，集群需要配置</td>
+<td>开箱即用，用户只需要注意几个配置</td>
+<td>Kafka使用键值对格式进行配置。这些值可以通过文件或编程方式提供。</td>
+</tr>
+<tr>
+<td>管理和操作工具</td>
+<td>支持</td>
+<td>支持（web和终端）</td>
+<td>支持，富web和终端命令暴露核心指标</td>
+<td>支持，使用终端命令公开核心指标</td>
+</tr>
+</tbody></table>
+<p>1 RabbitMQ，erlang语言天生具备高并发的特性，而且他的管理界面用起来十分方便。</p>
+<p>2 kafka，根据业务场景选择，如果有日志采集功能，肯定是首选kafka了。</p>
+<h1 id="二、mq线上方案"><a href="#二、mq线上方案" class="headerlink" title="二、mq线上方案"></a>二、mq线上方案</h1><h2 id="2-1-如何保证消息队列不被重复消费"><a href="#2-1-如何保证消息队列不被重复消费" class="headerlink" title="2.1 如何保证消息队列不被重复消费"></a>2.1 如何保证消息队列不被重复消费</h2><p>1 数据库唯一性</p>
+<p>2 消息做redis的set的操作 </p>
+<h2 id="2-2-如何保证消费的可靠性传输"><a href="#2-2-如何保证消费的可靠性传输" class="headerlink" title="2.2 如何保证消费的可靠性传输?"></a>2.2 如何保证消费的可靠性传输?</h2><h3 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h3><p>生产者：</p>
+<p>（1）RabbitMQ提供transaction和confirm模式来确保生产者不丢消息 </p>
+<p>（2）生产者confirm 确认</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">ConfirmListener add<span class="hljs-constructor">ConfirmListener(ConfirmCallback <span class="hljs-params">ackCallback</span>, ConfirmCallback <span class="hljs-params">nackCallback</span>)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>消息队列丢数据:</p>
+<p>(1)队列持久化、消息持久化</p>
+<p>deliveryMode ：设置消息持久化</p>
+<p>duration：true设置队列持久化</p>
+<p>消费者丢数据：</p>
+<p>（1）手动确认消息</p>
+<h3 id="kafka"><a href="#kafka" class="headerlink" title="kafka"></a>kafka</h3><img src="/2022/05/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/2022-05-07-rabbitmq%E3%80%81kafka%E3%80%81activemq%E3%80%81rocketmq%E9%80%89%E5%9E%8B%E5%AF%B9%E6%AF%94/1664947894054.png" srcset="/img/loading.gif" lazyload class="" width="1664947894054">
+
+<p>Producer在发布消息到某个Partition时，先通过zk找到该Partition的Leader，然后无论该Topic的Replication Factor为多少（也即该Partition有多少个Replica），Producer只将该消息发送到该Partition的Leader。Leader会将该消息写入其本地Log。每个Follower都从Leader中pull数据。</p>
+<p>生产者丢数据：</p>
+<p>在producer端设置acks=all。这个配置保证了，follwer同步完成后，才认为消息发送成功。<br>在producer端设置retries=MAX，一旦写入失败，这无限重试</p>
+<p>消息队列丢数据：</p>
+<p>针对消息队列丢数据的情况，无外乎就是，数据还没同步，leader就挂了，这时zookpeer会将其他的follwer切换为leader,那数据就丢失了。针对这种情况，应该做两个配置。</p>
+<p>replication.factor参数，这个值必须大于1，即要求每个partition必须有至少2个副本<br>min.insync.replicas参数，这个值必须大于1，这个是要求一个leader至少感知到有至少一个follower还跟自己保持联系<br>这两个配置加上上面生产者的配置联合起来用，基本可确保kafka不丢数据</p>
+<p>消费者丢数据：</p>
+<p>手动提交</p>
+<h2 id="2-3-如何保证消息的顺序性？"><a href="#2-3-如何保证消息的顺序性？" class="headerlink" title="2.3 如何保证消息的顺序性？"></a>2.3 如何保证消息的顺序性？</h2><p>将需要保持先后顺序的消息放到同一个消息队列中(kafka中就是partition,rabbitMq中就是queue)。然后只用一个消费者去消费该队列。 </p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/" class="category-chain-item">mq</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/rabbitmq/">#rabbitmq</a>
+      
+        <a href="/tags/kafka/">#kafka</a>
+      
+        <a href="/tags/rocketmq/">#rocketmq</a>
+      
+        <a href="/tags/activemq/">#activemq</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>rabbitmq、kafka、activemq、rocketmq选型对比</div>
+      <div>https://leellun.github.io/2022/05/07/服务器/mq/2022-05-07-rabbitmq、kafka、activemq、rocketmq选型对比/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年5月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/05/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rocketmq/2022-05-22-rocketmq%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA2m-2s-async/" title="rocketmq集群搭建2m-2s-async">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">rocketmq集群搭建2m-2s-async</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/04/30/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/rabbitmq/2022-04-30-rabbitmq%E8%BF%9B%E9%98%B6%E7%AF%87/" title="rabbitmq进阶篇">
+                        <span class="hidden-mobile">rabbitmq进阶篇</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

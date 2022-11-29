@@ -1,0 +1,710 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1 项目初始化官网文档配置文档说明 123456# 创建目录进入目录mkdir webpack-demo &amp;&amp; cd webpack-demo# 项目初始化npx webpack-cli init# 接下来根据提示选择自己需要的插件包...  选择TypeScript而不是es6理由——官网说明：TypeScript 是 JavaScript 的超集，为其增加了类型系统，可以编译为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack 浅尝辄止系列——第一个webpack项目搭建">
+<meta property="og:url" content="https://leellun.github.io/2019/01/26/%E5%89%8D%E7%AB%AF/webpack%20%E6%B5%85%E5%B0%9D%E8%BE%84%E6%AD%A2%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E7%AC%AC%E4%B8%80%E4%B8%AAwebpack%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="1 项目初始化官网文档配置文档说明 123456# 创建目录进入目录mkdir webpack-demo &amp;&amp; cd webpack-demo# 项目初始化npx webpack-cli init# 接下来根据提示选择自己需要的插件包...  选择TypeScript而不是es6理由——官网说明：TypeScript 是 JavaScript 的超集，为其增加了类型系统，可以编译为">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-26T09:38:02.000Z">
+<meta property="article:modified_time" content="2022-11-29T08:53:27.212Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="webpack">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>webpack 浅尝辄止系列——第一个webpack项目搭建 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="webpack 浅尝辄止系列——第一个webpack项目搭建"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-01-26 17:38" pubdate>
+          2019年1月26日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          76 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">webpack 浅尝辄止系列——第一个webpack项目搭建</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="1-项目初始化"><a href="#1-项目初始化" class="headerlink" title="1 项目初始化"></a>1 项目初始化</h1><p><a target="_blank" rel="noopener" href="https://webpack.docschina.org/configuration/">官网文档配置文档说明</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 创建目录进入目录</span><br><span class="hljs-built_in">mkdir</span> webpack-demo &amp;&amp; <span class="hljs-built_in">cd</span> webpack-demo<br><span class="hljs-comment"># 项目初始化</span><br>npx webpack-cli init<br><span class="hljs-comment"># 接下来根据提示选择自己需要的插件包</span><br>...<br></code></pre></td></tr></table></figure>
+
+<p>选择TypeScript而不是es6理由——<a target="_blank" rel="noopener" href="https://webpack.docschina.org/guides/typescript/#root">官网说明</a>：TypeScript 是 JavaScript 的超集，为其增加了类型系统，可以编译为普通 JavaScript 代码。</p>
+<p>选择PostCSS理由——<a target="_blank" rel="noopener" href="https://github.com/postcss/postcss/blob/main/docs/README-cn.md">Github文档说明</a>,功能很强大</p>
+<p><strong>初始化完成,下面是我选择的依赖包</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">+ sass-<span class="hljs-symbol">loader@</span><span class="hljs-number">12.4</span><span class="hljs-number">.0</span><br>+ html-webpack-<span class="hljs-symbol">plugin@</span><span class="hljs-number">5.5</span><span class="hljs-number">.0</span><br>+ webpack-dev-<span class="hljs-symbol">server@</span><span class="hljs-number">4.7</span><span class="hljs-number">.3</span><br>+ css-<span class="hljs-symbol">loader@</span><span class="hljs-number">6.5</span><span class="hljs-number">.1</span><br>+ <span class="hljs-symbol">sass@</span><span class="hljs-number">1.48</span><span class="hljs-number">.0</span><br>+ webpack-<span class="hljs-symbol">cli@</span><span class="hljs-number">4.9</span><span class="hljs-number">.1</span><br>+ style-<span class="hljs-symbol">loader@</span><span class="hljs-number">3.3</span><span class="hljs-number">.1</span><br>+ ts-<span class="hljs-symbol">loader@</span><span class="hljs-number">9.2</span><span class="hljs-number">.6</span><br>+ <span class="hljs-symbol">typescript@</span><span class="hljs-number">4.5</span><span class="hljs-number">.4</span><br>+ <span class="hljs-symbol">postcss@</span><span class="hljs-number">8.4</span><span class="hljs-number">.5</span><br>+ <span class="hljs-symbol">prettier@</span><span class="hljs-number">2.5</span><span class="hljs-number">.1</span><br>+ <span class="hljs-built_in">auto</span><span class="hljs-symbol">prefixer@</span><span class="hljs-number">10.4</span><span class="hljs-number">.2</span><br>+ <span class="hljs-symbol">webpack@</span><span class="hljs-number">5.66</span><span class="hljs-number">.0</span><br>+ postcss-<span class="hljs-symbol">loader@</span><span class="hljs-number">6.2</span><span class="hljs-number">.1</span><br>added <span class="hljs-number">336</span> packages <span class="hljs-keyword">from</span> <span class="hljs-number">263</span> contributors, removed <span class="hljs-number">281</span> packages, updated <span class="hljs-number">3</span> packages <span class="hljs-keyword">and</span> moved <span class="hljs-number">19</span> packages <span class="hljs-keyword">in</span> <span class="hljs-number">44.959</span>s<br></code></pre></td></tr></table></figure>
+
+<p><strong>初始化后项目结构图</strong></p>
+<p>![1642305075375](webpack 浅尝辄止系列——第一个webpack项目搭建/1642305075375.png)</p>
+<p><strong>初始化后package.js</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1.0.0&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;My webpack project&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;my-webpack-project&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;build&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;webpack --mode=production --node-env=production&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;build:dev&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;webpack --mode=development&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;build:prod&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;webpack --mode=production --node-env=production&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;watch&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;webpack --watch&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;serve&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;webpack serve&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;devDependencies&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;autoprefixer&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^10.4.2&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;css-loader&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^6.5.1&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;html-webpack-plugin&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^5.5.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;postcss&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^8.4.5&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;postcss-loader&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^6.2.1&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;prettier&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.5.1&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;sass&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^1.48.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;sass-loader&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^12.4.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;style-loader&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^3.3.1&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;ts-loader&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^9.2.6&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;typescript&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^4.5.4&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;webpack&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^5.66.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;webpack-cli&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^4.9.1&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;webpack-dev-server&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^4.7.3&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>初始化自动得到配置文件</strong><br><a target="_blank" rel="noopener" href="https://webpack.docschina.org/configuration/">官方配置文档</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><code class="hljs json"><br><span class="hljs-comment">// Generated using webpack-cli https://github.com/webpack/webpack-cli</span><br><span class="hljs-comment">//path模块 路径处理工具</span><br>const path = require(<span class="hljs-string">&quot;path&quot;</span>);<br><span class="hljs-comment">//简化了HTML创建 该插件将为你生成一个 HTML5 文件， 在 body 中使用 script 标签引入所有 webpack 生成的 bundle。</span><br>const HtmlWebpackPlugin = require(<span class="hljs-string">&quot;html-webpack-plugin&quot;</span>);<br><br><span class="hljs-comment">//process.env.NODE_ENV 对应上面--node-env=production</span><br>const isProduction = process.env.NODE_ENV == <span class="hljs-string">&quot;production&quot;</span>;<br><br>const stylesHandler = <span class="hljs-string">&quot;style-loader&quot;</span>;<br><br>const config = <span class="hljs-punctuation">&#123;</span><br>  entry<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./src/index.ts&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-comment">//入口文件</span><br>  output<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-comment">//编译后输出目录 及通常npm run build后</span><br>    path<span class="hljs-punctuation">:</span> path.resolve(__dirname<span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;dist&quot;</span>)<span class="hljs-punctuation">,</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  devServer<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-comment">//web服务配置</span><br>    open<span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>    host<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;localhost&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  plugins<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-comment">//插件配置</span><br>    new HtmlWebpackPlugin(<span class="hljs-punctuation">&#123;</span><br>      template<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;index.html&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-punctuation">&#125;</span>)<span class="hljs-punctuation">,</span><br><br>    <span class="hljs-comment">// Add your plugins here</span><br>    <span class="hljs-comment">// Learn more about plugins from https://webpack.js.org/configuration/plugins/</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  module<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-comment">// 模块配置相关</span><br>    rules<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-comment">// 模块规则（配置 loader、解析器等选项）</span><br>      <span class="hljs-punctuation">&#123;</span><br>        test<span class="hljs-punctuation">:</span> /\.(ts|tsx)$/i<span class="hljs-punctuation">,</span><br>        loader<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ts-loader&quot;</span><span class="hljs-punctuation">,</span><br>        exclude<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;/node_modules/&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-punctuation">&#123;</span><br>        test<span class="hljs-punctuation">:</span> /\.s<span class="hljs-punctuation">[</span>ac<span class="hljs-punctuation">]</span>ss$/i<span class="hljs-punctuation">,</span><br>        use<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>stylesHandler<span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;css-loader&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;postcss-loader&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;sass-loader&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-punctuation">&#123;</span><br>        test<span class="hljs-punctuation">:</span> /\.css$/i<span class="hljs-punctuation">,</span><br>        use<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>stylesHandler<span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;css-loader&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;postcss-loader&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-punctuation">&#123;</span><br>        test<span class="hljs-punctuation">:</span> /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i<span class="hljs-punctuation">,</span><br>        type<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;asset&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br><br>      <span class="hljs-comment">// Add your rules for custom modules here</span><br>      <span class="hljs-comment">// Learn more about loaders from https://webpack.js.org/loaders/</span><br>    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  resolve<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        extensions<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>&#x27;.ts&#x27;<span class="hljs-punctuation">,</span> &#x27;.vue&#x27;<span class="hljs-punctuation">,</span> &#x27;.json&#x27;<span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;.js&quot;</span><span class="hljs-punctuation">,</span> &#x27;.png&#x27;<span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;.sass&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;.css&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>        alias<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>                &#x27;@&#x27;<span class="hljs-punctuation">:</span> resolve(&#x27;src&#x27;)<br>        <span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span>;<br><br>module.exports = () =&gt; <span class="hljs-punctuation">&#123;</span><br>  if (isProduction) <span class="hljs-punctuation">&#123;</span><br>    config.mode = <span class="hljs-string">&quot;production&quot;</span>;<br>  <span class="hljs-punctuation">&#125;</span> else <span class="hljs-punctuation">&#123;</span><br>    config.mode = <span class="hljs-string">&quot;development&quot;</span>;<br>  <span class="hljs-punctuation">&#125;</span><br>  return config;<br><span class="hljs-punctuation">&#125;</span>;<br><br></code></pre></td></tr></table></figure>
+
+<h1 id="2-安装js工具库"><a href="#2-安装js工具库" class="headerlink" title="2 安装js工具库"></a>2 安装js工具库</h1><p>Lodash 是一个一致性、模块化、高性能的 JavaScript 实用工具库 查看各个构件版本的区别并选择一个适合你的版本。功能强大，兼容性强。<br><a target="_blank" rel="noopener" href="https://www.lodashjs.com/">官网说明</a></p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">npm install <span class="hljs-comment">--save lodash</span><br></code></pre></td></tr></table></figure>
+<h1 id="3-对配置文件进行开发配置"><a href="#3-对配置文件进行开发配置" class="headerlink" title="3 对配置文件进行开发配置"></a>3 对配置文件进行开发配置</h1><p>webpack.config.js</p>
+<h5 id="output-配置"><a href="#output-配置" class="headerlink" title="output 配置"></a>output 配置</h5><figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xl">output: &#123;<br>    filename: <span class="hljs-string">&#x27;[name].bundle.js&#x27;</span>,<span class="hljs-comment">//name对应多入口</span><br>    <span class="hljs-built_in">path</span>: <span class="hljs-built_in">path</span>.resolve(__dirname, <span class="hljs-string">&#x27;dist&#x27;</span>),<br>   clean: <span class="hljs-literal">true</span>,<span class="hljs-comment">//每次构建时清空之前的dist输出目录</span><br>  &#125;<br></code></pre></td></tr></table></figure>
+<h5 id="设置title"><a href="#设置title" class="headerlink" title="设置title"></a>设置title</h5><figure class="highlight sas"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sas">plugins: [<br>     new HtmlWebpackPlugi<span class="hljs-meta">n</span>(&#123;<br>       <span class="hljs-keyword">title</span>: <span class="hljs-string">&#x27;网页显示title&#x27;</span>,//<span class="hljs-keyword">filename</span> <span class="hljs-keyword">title</span>不能同时配置<br>     &#125;),<br>   ]<br></code></pre></td></tr></table></figure>
+<h5 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h5><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">const</span> <span class="hljs-keyword">config</span> = &#123;<br>     mode: <span class="hljs-number">&#x27;de</span>velopment&#x27;,<br>     ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<h5 id="source-map-定位错误"><a href="#source-map-定位错误" class="headerlink" title="source map 定位错误"></a>source map 定位错误</h5><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">const</span> config = &#123;<br>     devtool: <span class="hljs-string">&#x27;inline-source-map&#x27;</span>,<br>     ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="配置引入文件"><a href="#配置引入文件" class="headerlink" title="配置引入文件@"></a>配置引入文件@</h5><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">resolve: &#123;<br>        extensions: [<span class="hljs-string">&#x27;.ts&#x27;</span>, <span class="hljs-string">&#x27;.vue&#x27;</span>, <span class="hljs-string">&#x27;.json&#x27;</span>, &quot;.js&quot;, <span class="hljs-string">&#x27;.png&#x27;</span>, &quot;.sass&quot;,&quot;.css&quot;],<br>        <span class="hljs-keyword">alias</span>: &#123;<br>            <span class="hljs-string">&#x27;@&#x27;</span>: <span class="hljs-type">path</span>.<span class="hljs-keyword">join</span>(__dirname, <span class="hljs-string">&#x27;.&#x27;</span>, <span class="hljs-string">&#x27;src&#x27;</span>)//<span class="hljs-string">&#x27;.&#x27;</span>根据当前配置webpack.config.js而定<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+<h5 id="将-CSS-提取到单独的文件中，为每个包含-CSS-的-JS-文件创建一个-CSS-文件"><a href="#将-CSS-提取到单独的文件中，为每个包含-CSS-的-JS-文件创建一个-CSS-文件" class="headerlink" title="将 CSS 提取到单独的文件中，为每个包含 CSS 的 JS 文件创建一个 CSS 文件"></a>将 CSS 提取到单独的文件中，为每个包含 CSS 的 JS 文件创建一个 CSS 文件</h5><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs applescript"><span class="hljs-comment"># 安装后的版本总是配置不成功，这里我是把它的版本号改为2.4.5</span><br>npm install <span class="hljs-comment">--save-dev mini-css-extract-plugin</span><br></code></pre></td></tr></table></figure>
+<p>配置</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-title class_">MiniCssExtractPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;mini-css-extract-plugin&quot;</span>);<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">plugins</span>: [<span class="hljs-keyword">new</span> <span class="hljs-title class_">MiniCssExtractPlugin</span>()],<br>  <span class="hljs-attr">module</span>: &#123;<br>    <span class="hljs-attr">rules</span>: [<br>      &#123;<br>        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.css$/</span>,<br>        <span class="hljs-attr">use</span>: [<span class="hljs-title class_">MiniCssExtractPlugin</span>.<span class="hljs-property">loader</span>, <span class="hljs-string">&quot;css-loader&quot;</span>],<br>      &#125;,<br>    ],<br>  &#125;,<br>&#125;<br></code></pre></td></tr></table></figure>
+<h5 id="优化和压缩-CSS。"><a href="#优化和压缩-CSS。" class="headerlink" title="优化和压缩 CSS。"></a>优化和压缩 CSS。</h5><p>[官网文档](<a target="_blank" rel="noopener" href="https://webpack.docschina.org/plugins/css-minimizer-webpack-plugin/#root">https://webpack.docschina.org/plugins/css-minimizer-webpack-plugin/#root</a></p>
+<figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs q">npm install css-minimizer-webpack-plugin --<span class="hljs-built_in">save</span>-<span class="hljs-built_in">dev</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-title class_">MiniCssExtractPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;mini-css-extract-plugin&quot;</span>);<br><span class="hljs-keyword">const</span> <span class="hljs-title class_">CssMinimizerPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;css-minimizer-webpack-plugin&quot;</span>);<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">module</span>: &#123;<br>    <span class="hljs-attr">rules</span>: [<br>      &#123;<br>        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/.s?css$/</span>,<br>        <span class="hljs-attr">use</span>: [<span class="hljs-title class_">MiniCssExtractPlugin</span>.<span class="hljs-property">loader</span>, <span class="hljs-string">&quot;css-loader&quot;</span>, <span class="hljs-string">&quot;sass-loader&quot;</span>],<br>      &#125;,<br>    ],<br>  &#125;,<br>  <span class="hljs-attr">optimization</span>: &#123;<br>    <span class="hljs-attr">minimizer</span>: [<br>      <span class="hljs-comment">// 在 webpack@5 中，你可以使用 `...` 语法来扩展现有的 minimizer（即 `terser-webpack-plugin`），将下一行取消注释</span><br>      <span class="hljs-comment">// `...`,</span><br>      <span class="hljs-keyword">new</span> <span class="hljs-title class_">CssMinimizerPlugin</span>(),<br>    ],<br>  &#125;,<br>  <span class="hljs-attr">plugins</span>: [<span class="hljs-keyword">new</span> <span class="hljs-title class_">MiniCssExtractPlugin</span>()],<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h5 id="生产环境下默认使用-TerserPlugin-，并且也是代码压缩方面比较好的选择"><a href="#生产环境下默认使用-TerserPlugin-，并且也是代码压缩方面比较好的选择" class="headerlink" title="生产环境下默认使用 TerserPlugin ，并且也是代码压缩方面比较好的选择"></a>生产环境下默认使用 TerserPlugin ，并且也是代码压缩方面比较好的选择</h5><p>安装</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">npm <span class="hljs-keyword">install </span>--save-dev <span class="hljs-keyword">closure-webpack-plugin </span>google-<span class="hljs-keyword">closure-compiler</span><br></code></pre></td></tr></table></figure>
+<p>配置</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs awk">const ClosurePlugin = require(<span class="hljs-string">&#x27;closure-webpack-plugin&#x27;</span>);<br><br>module.exports = &#123;<br>  optimization: &#123;<br>    minimizer: [<br>      new ClosurePlugin(&#123;mode: <span class="hljs-string">&#x27;STANDARD&#x27;</span>&#125;, &#123;<br>        <span class="hljs-regexp">//</span> compiler flags here<br>        <span class="hljs-regexp">//</span><br>        <span class="hljs-regexp">//</span> <span class="hljs-keyword">for</span> debugging help, try these:<br>        <span class="hljs-regexp">//</span><br>        <span class="hljs-regexp">//</span> formatting: <span class="hljs-string">&#x27;PRETTY_PRINT&#x27;</span><br>        <span class="hljs-regexp">//</span> debug: true,<br>        <span class="hljs-regexp">//</span> renaming: false<br>      &#125;)<br>    ]<br>  &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h5 id="4-安装vue开发需要包"><a href="#4-安装vue开发需要包" class="headerlink" title="4 安装vue开发需要包"></a>4 安装vue开发需要包</h5><p>vue 相关 qs请求转化 加密解密 请求相关</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">npm <span class="hljs-keyword">install </span>vue vuex vue-router qs crypto-<span class="hljs-keyword">js </span>axios<br></code></pre></td></tr></table></figure>
+<p>开发环境依赖包</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">npm install  vue-loader vue-<span class="hljs-keyword">template</span>-compiler <span class="hljs-comment">--save-dev</span><br></code></pre></td></tr></table></figure>
+<h5 id="5-配置vue环境"><a href="#5-配置vue环境" class="headerlink" title="5 配置vue环境"></a>5 配置vue环境</h5><p>(1) webpack.config.js</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> Generated using webpack-cli https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/webpack/</span>webpack-cli<br>const HtmlWebpackPlugin = require(<span class="hljs-string">&quot;html-webpack-plugin&quot;</span>);<br>const &#123; VueLoaderPlugin &#125; = require(<span class="hljs-string">&#x27;vue-loader&#x27;</span>);<br>...<br>const config = &#123;<br>...<br>    resolve: &#123;<span class="hljs-regexp">//</span>加入.vue解析<br>        extensions: [<span class="hljs-string">&#x27;.ts&#x27;</span>, <span class="hljs-string">&#x27;.vue&#x27;</span>, <span class="hljs-string">&#x27;.json&#x27;</span>, <span class="hljs-string">&quot;.js&quot;</span>, <span class="hljs-string">&#x27;.png&#x27;</span>, <span class="hljs-string">&quot;.sass&quot;</span>, <span class="hljs-string">&quot;.css&quot;</span>],<br>        alias: &#123;<br>            <span class="hljs-string">&#x27;@&#x27;</span>: path.join(__dirname, <span class="hljs-string">&#x27;.&#x27;</span>, <span class="hljs-string">&#x27;src&#x27;</span>)<br>        &#125;<br>    &#125;,<br>    plugins: [<br>    ...<br>        new HtmlWebpackPlugin(&#123;<br>            filename: <span class="hljs-string">&quot;index.html&quot;</span>,<br>            template: <span class="hljs-string">&quot;index.html&quot;</span> <span class="hljs-regexp">//</span>指定模板文件加入 &lt;div id=<span class="hljs-string">&quot;app&quot;</span>&gt;&lt;/div&gt;<br>        &#125;),<br>        new VueLoaderPlugin(),<span class="hljs-regexp">//</span>vue加载插件<br>    ],<br>    module: &#123;<br>    ...<br>        rules: [<br>            &#123;<span class="hljs-regexp">//</span>vue规则<br>                exclude: <span class="hljs-regexp">/node_modules/</span>,<br>                test: <span class="hljs-regexp">/\.vue$/</span>,<br>                loader: <span class="hljs-string">&#x27;vue-loader&#x27;</span>,<br>            &#125;,<br>        ],<br>    &#125;,<br> <br>&#125;;<br><br></code></pre></td></tr></table></figure>
+<p>(2) index.html</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span> /&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Webpack App<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Hello world!<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Tip: Check your console<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br>    <br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>(3) 将入口文件index.js内容修改,这里如果习惯之前的vue构建项目可以修改为main.js 把入口文件名称修改下就行</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Vue</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">App</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./App.vue&#x27;</span><br><span class="hljs-title class_">Vue</span>.<span class="hljs-title function_">directive</span>(<span class="hljs-string">&#x27;title&#x27;</span>, &#123;<br>    <span class="hljs-attr">inserted</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">el, binding</span>) &#123;<br>        <span class="hljs-variable language_">document</span>.<span class="hljs-property">title</span> = el.<span class="hljs-property">dataset</span>.<span class="hljs-property">title</span><br>    &#125;<br>&#125;)<br><br><span class="hljs-title class_">Vue</span>.<span class="hljs-property">config</span>.<span class="hljs-property">productionTip</span> = <span class="hljs-literal">false</span><br><br><span class="hljs-keyword">new</span> <span class="hljs-title class_">Vue</span>(&#123;<br>    <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;#app&#x27;</span>,<br>    <span class="hljs-attr">render</span>: <span class="hljs-function"><span class="hljs-params">h</span> =&gt;</span> <span class="hljs-title function_">h</span>(<span class="hljs-title class_">App</span>)<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p>(4) App.vue</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">hello-world</span>/&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">HelloWorld</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/components/HelloWorld&#x27;</span></span><br><span class="language-javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;</span><br><span class="language-javascript">  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;App&#x27;</span>,</span><br><span class="language-javascript">  <span class="hljs-attr">components</span>:&#123;</span><br><span class="language-javascript">    <span class="hljs-title class_">HelloWorld</span></span><br><span class="language-javascript">  &#125;</span><br><span class="language-javascript">&#125;</span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&#x27;scss&#x27;</span>&gt;</span><span class="language-css"></span><br><span class="language-css"><span class="hljs-selector-id">#app</span> &#123;</span><br><span class="language-css">    <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;</span><br><span class="language-css">    &gt; <span class="hljs-selector-tag">div</span> &#123;</span><br><span class="language-css">        <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;</span><br><span class="language-css">    &#125;</span><br><span class="language-css">&#125;</span><br><span class="language-css"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>(5) HelloWorld.vue</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>helloworld<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;ts&quot;</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;</span><br><span class="language-javascript">    <span class="hljs-attr">name</span>:<span class="hljs-string">&quot;HelloWorld&quot;</span></span><br><span class="language-javascript">&#125;</span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">scoped</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h5 id="6-快速开发"><a href="#6-快速开发" class="headerlink" title="6 快速开发"></a>6 快速开发</h5><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">npx webpack-cli init<br>npm <span class="hljs-keyword">install </span>--save lodash vue vuex vue-router qs crypto-<span class="hljs-keyword">js </span>axios<br>npm <span class="hljs-keyword">install </span>--save-dev mini-css-<span class="hljs-keyword">extract-plugin </span> vue-loader vue-template-compiler css-minimizer-webpack-plugin<br><span class="hljs-comment">#svg处理插件</span><br>npm <span class="hljs-keyword">install </span>svg-sprite-loader -D<br><span class="hljs-comment"># 图片处理</span><br>npm <span class="hljs-keyword">install </span>url-loader image-webpack-loader --save-dev<br></code></pre></td></tr></table></figure>
+
+<p>安装依赖<br>读取svg信息，去除svg中的无用标签，精简结构</p>
+<figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs q">npm install svgo svgo-loader --<span class="hljs-built_in">save</span>-<span class="hljs-built_in">dev</span><br></code></pre></td></tr></table></figure>
+
+<p>SVG Sprite插件</p>
+<figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs q">npm install svg-sprite-loader --<span class="hljs-built_in">save</span>-<span class="hljs-built_in">dev</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="7-开发问题"><a href="#7-开发问题" class="headerlink" title="7 开发问题"></a>7 开发问题</h5><p>vue webpack之vue-router 使用history模式报错Cannot GET /xxx</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">在webpack.config.js中的devServer内添加属性<span class="hljs-keyword">history</span>ApiFallback<br><span class="hljs-keyword">history</span>ApiFallback: &#123;<br>    index: &#x27;<span class="hljs-string">/index.html</span>&#x27;<span class="hljs-string">//</span>该路径为打包后的首页路径及dist目录下的index.html页面<br>  &#125;,<br><br></code></pre></td></tr></table></figure>
+
+<p>8 按需加载</p>
+<p>ts-loader label-loader</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">https:<span class="hljs-regexp">//</span>juejin.cn<span class="hljs-regexp">/post/</span><span class="hljs-number">6844904052094926855</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>····</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%89%8D%E7%AB%AF/" class="category-chain-item">前端</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/webpack/">#webpack</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>webpack 浅尝辄止系列——第一个webpack项目搭建</div>
+      <div>https://leellun.github.io/2019/01/26/前端/webpack 浅尝辄止系列——第一个webpack项目搭建/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2019年1月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/02/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/zookeeper/zookeeper%E7%AC%94%E8%AE%B0/" title="ZooKeeper入门文档">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ZooKeeper入门文档</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/01/25/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/" title="Java基本算法">
+                        <span class="hidden-mobile">Java基本算法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

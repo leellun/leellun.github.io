@@ -1,0 +1,1066 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、集群需要哪些证书？ Kubelet 的客户端证书，用于 API 服务器身份验证 Kubelet 服务端证书， 用于 API 服务器与 Kubelet 的会话 API 服务器端点的证书 集群管理员的客户端证书，用于 API 服务器身份认证 API 服务器的客户端证书，用于和 Kubelet 的会话 API 服务器的客户端证书，用于和 etcd 的会话 控制器管理器的客户端证书&#x2F;kubeconfi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8s 证书介绍">
+<meta property="og:url" content="https://leellun.github.io/2021/09/03/k8s/k8s%E8%AF%81%E4%B9%A6/k8s%20%E8%AF%81%E4%B9%A6%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="一、集群需要哪些证书？ Kubelet 的客户端证书，用于 API 服务器身份验证 Kubelet 服务端证书， 用于 API 服务器与 Kubelet 的会话 API 服务器端点的证书 集群管理员的客户端证书，用于 API 服务器身份认证 API 服务器的客户端证书，用于和 Kubelet 的会话 API 服务器的客户端证书，用于和 etcd 的会话 控制器管理器的客户端证书&#x2F;kubeconfi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="e:/BaiduSyncdisk/%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/%E9%9B%86%E7%BE%A4/%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4/1659365157408.png">
+<meta property="article:published_time" content="2021-09-03T13:14:02.000Z">
+<meta property="article:modified_time" content="2022-09-26T13:05:09.812Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="e:/BaiduSyncdisk/%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/%E9%9B%86%E7%BE%A4/%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4/1659365157408.png">
+  
+  
+  
+  <title>k8s 证书介绍 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="k8s 证书介绍"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-09-03 21:14" pubdate>
+          2021年9月3日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          102 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">k8s 证书介绍</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、集群需要哪些证书？"><a href="#一、集群需要哪些证书？" class="headerlink" title="一、集群需要哪些证书？"></a>一、集群需要哪些证书？</h1><ul>
+<li>Kubelet 的客户端证书，用于 API 服务器身份验证</li>
+<li>Kubelet 服务端证书， 用于 API 服务器与 Kubelet 的会话</li>
+<li>API 服务器端点的证书</li>
+<li>集群管理员的客户端证书，用于 API 服务器身份认证</li>
+<li>API 服务器的客户端证书，用于和 Kubelet 的会话</li>
+<li>API 服务器的客户端证书，用于和 etcd 的会话</li>
+<li>控制器管理器的客户端证书/kubeconfig，用于和 API 服务器的会话</li>
+<li>调度器的客户端证书/kubeconfig，用于和 API 服务器的会话</li>
+<li>前端代理 的客户端及服务端证书</li>
+</ul>
+<p>![img](k8s 证书介绍/9f2f070828381f30a6e6ca0ff84a44016f06f069.png)</p>
+<p><strong>说明：</strong> 只有当你运行 kube-proxy 并要支持 扩展 API 服务器 时，才需要 <code>front-proxy</code> 证书</p>
+<p>etcd 还实现了双向 TLS 来对客户端和对其他对等节点进行身份验证。</p>
+<h1 id="二、证书配置"><a href="#二、证书配置" class="headerlink" title="二、证书配置"></a>二、证书配置</h1><p>假如通过 kubeadm 安装 Kubernetes，大多数证书都存储在 <code>/etc/kubernetes/pki</code>。 本文档中的所有路径都是相对于该目录的，但用户账户证书除外，kubeadm 将其放在 <code>/etc/kubernetes</code> 中。</p>
+<h2 id="2-1-单根CA"><a href="#2-1-单根CA" class="headerlink" title="2.1 单根CA"></a>2.1 单根CA</h2><p>可以创建由管理员控制的单根 CA。该根 CA 可以创建多个中间 CA，并将所有进一步的创建委托给 Kubernetes。</p>
+<p>需要这些 CA：</p>
+<table>
+<thead>
+<tr>
+<th>路径</th>
+<th>默认 CN</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ca.crt,key</td>
+<td>kubernetes-ca</td>
+<td>Kubernetes 通用 CA</td>
+</tr>
+<tr>
+<td>etcd/ca.crt,key</td>
+<td>etcd-ca</td>
+<td>与 etcd 相关的所有功能</td>
+</tr>
+<tr>
+<td>front-proxy-ca.crt,key</td>
+<td>kubernetes-front-proxy-ca</td>
+<td>用于 前端代理</td>
+</tr>
+</tbody></table>
+<p>上面的 CA 之外，还需要获取用于服务账户管理的密钥对，也就是 <code>sa.key</code> 和 <code>sa.pub</code>。</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs console">/etc/kubernetes/pki/ca.crt<br>/etc/kubernetes/pki/ca.key<br>/etc/kubernetes/pki/etcd/ca.crt<br>/etc/kubernetes/pki/etcd/ca.key<br>/etc/kubernetes/pki/front-proxy-ca.crt<br>/etc/kubernetes/pki/front-proxy-ca.key<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-2-所有的证书"><a href="#2-2-所有的证书" class="headerlink" title="2.2 所有的证书"></a>2.2 所有的证书</h2><p>证书认证： <a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/rbac/">https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/rbac/</a></p>
+<p>如果不想将 CA 的私钥拷贝至你的集群中，你也可以自己生成全部的证书。</p>
+<table>
+<thead>
+<tr>
+<th>默认 CN</th>
+<th>父级 CA</th>
+<th>O (位于 Subject 中)</th>
+<th>类型</th>
+<th>主机 (SAN)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>kube-etcd</td>
+<td>etcd-ca</td>
+<td></td>
+<td>server, client</td>
+<td><code>&lt;hostname&gt;</code>, <code>&lt;Host_IP&gt;</code>, <code>localhost</code>, <code>127.0.0.1</code></td>
+</tr>
+<tr>
+<td>kube-etcd-peer</td>
+<td>etcd-ca</td>
+<td></td>
+<td>server, client</td>
+<td><code>&lt;hostname&gt;</code>, <code>&lt;Host_IP&gt;</code>, <code>localhost</code>, <code>127.0.0.1</code></td>
+</tr>
+<tr>
+<td>kube-etcd-healthcheck-client</td>
+<td>etcd-ca</td>
+<td></td>
+<td>client</td>
+<td></td>
+</tr>
+<tr>
+<td>kube-apiserver-etcd-client</td>
+<td>etcd-ca</td>
+<td>system:masters</td>
+<td>client</td>
+<td></td>
+</tr>
+<tr>
+<td>kube-apiserver</td>
+<td>kubernetes-ca</td>
+<td></td>
+<td>server</td>
+<td><code>&lt;hostname&gt;</code>, <code>&lt;Host_IP&gt;</code>, <code>&lt;advertise_IP&gt;</code>, <code>[1]</code></td>
+</tr>
+<tr>
+<td>kube-apiserver-kubelet-client</td>
+<td>kubernetes-ca</td>
+<td>system:masters</td>
+<td>client</td>
+<td></td>
+</tr>
+<tr>
+<td>front-proxy-client</td>
+<td>kubernetes-front-proxy-ca</td>
+<td></td>
+<td>client</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>用来连接到集群的不同 IP 或 DNS 名 （就像 <a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/reference/setup-tools/kubeadm/">kubeadm</a> 为负载均衡所使用的固定 IP 或 DNS 名，<code>kubernetes</code>、<code>kubernetes.default</code>、<code>kubernetes.default.svc</code>、 <code>kubernetes.default.svc.cluster</code>、<code>kubernetes.default.svc.cluster.local</code>）。</p>
+<table>
+<thead>
+<tr>
+<th>kind</th>
+<th>密钥用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>server</td>
+<td>数字签名、密钥加密、服务端认证</td>
+</tr>
+<tr>
+<td>client</td>
+<td>数字签名、密钥加密、客户端认证</td>
+</tr>
+</tbody></table>
+<p>对于 kubeadm 用户：</p>
+<ul>
+<li>不使用私钥，将证书复制到集群 CA 的方案，在 kubeadm 文档中将这种方案称为外部 CA。</li>
+<li>如果将以上列表与 kubeadm 生成的 PKI 进行比较，你会注意到，如果使用外部 etcd，则不会生成 <code>kube-etcd</code>、<code>kube-etcd-peer</code> 和 <code>kube-etcd-healthcheck-client</code> 证书。</li>
+</ul>
+<h3 id="证书路径"><a href="#证书路径" class="headerlink" title="证书路径"></a>证书路径</h3><table>
+<thead>
+<tr>
+<th>默认 CN</th>
+<th>建议的密钥路径</th>
+<th>建议的证书路径</th>
+<th>命令</th>
+<th>密钥参数</th>
+<th>证书参数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>etcd-ca</td>
+<td>etcd/ca.key</td>
+<td>etcd/ca.crt</td>
+<td>kube-apiserver</td>
+<td></td>
+<td>–etcd-cafile</td>
+</tr>
+<tr>
+<td>kube-apiserver-etcd-client</td>
+<td>apiserver-etcd-client.key</td>
+<td>apiserver-etcd-client.crt</td>
+<td>kube-apiserver</td>
+<td>–etcd-keyfile</td>
+<td>–etcd-certfile</td>
+</tr>
+<tr>
+<td>kubernetes-ca</td>
+<td>ca.key</td>
+<td>ca.crt</td>
+<td>kube-apiserver</td>
+<td></td>
+<td>–client-ca-file</td>
+</tr>
+<tr>
+<td>kubernetes-ca</td>
+<td>ca.key</td>
+<td>ca.crt</td>
+<td>kube-controller-manager</td>
+<td>–cluster-signing-key-file</td>
+<td>–client-ca-file, –root-ca-file, –cluster-signing-cert-file</td>
+</tr>
+<tr>
+<td>kube-apiserver</td>
+<td>apiserver.key</td>
+<td>apiserver.crt</td>
+<td>kube-apiserver</td>
+<td>–tls-private-key-file</td>
+<td>–tls-cert-file</td>
+</tr>
+<tr>
+<td>kube-apiserver-kubelet-client</td>
+<td>apiserver-kubelet-client.key</td>
+<td>apiserver-kubelet-client.crt</td>
+<td>kube-apiserver</td>
+<td>–kubelet-client-key</td>
+<td>–kubelet-client-certificate</td>
+</tr>
+<tr>
+<td>front-proxy-ca</td>
+<td>front-proxy-ca.key</td>
+<td>front-proxy-ca.crt</td>
+<td>kube-apiserver</td>
+<td></td>
+<td>–requestheader-client-ca-file</td>
+</tr>
+<tr>
+<td>front-proxy-ca</td>
+<td>front-proxy-ca.key</td>
+<td>front-proxy-ca.crt</td>
+<td>kube-controller-manager</td>
+<td></td>
+<td>–requestheader-client-ca-file</td>
+</tr>
+<tr>
+<td>front-proxy-client</td>
+<td>front-proxy-client.key</td>
+<td>front-proxy-client.crt</td>
+<td>kube-apiserver</td>
+<td>–proxy-client-key-file</td>
+<td>–proxy-client-cert-file</td>
+</tr>
+<tr>
+<td>etcd-ca</td>
+<td>etcd/ca.key</td>
+<td>etcd/ca.crt</td>
+<td>etcd</td>
+<td></td>
+<td>–trusted-ca-file, –peer-trusted-ca-file</td>
+</tr>
+<tr>
+<td>kube-etcd</td>
+<td>etcd/server.key</td>
+<td>etcd/server.crt</td>
+<td>etcd</td>
+<td>–key-file</td>
+<td>–cert-file</td>
+</tr>
+<tr>
+<td>kube-etcd-peer</td>
+<td>etcd/peer.key</td>
+<td>etcd/peer.crt</td>
+<td>etcd</td>
+<td>–peer-key-file</td>
+<td>–peer-cert-file</td>
+</tr>
+<tr>
+<td>etcd-ca</td>
+<td></td>
+<td>etcd/ca.crt</td>
+<td>etcdctl</td>
+<td></td>
+<td>–cacert</td>
+</tr>
+<tr>
+<td>kube-etcd-healthcheck-client</td>
+<td>etcd/healthcheck-client.key</td>
+<td>etcd/healthcheck-client.crt</td>
+<td>etcdctl</td>
+<td>–key</td>
+<td>–cert</td>
+</tr>
+</tbody></table>
+<p>服务帐户密钥对：</p>
+<table>
+<thead>
+<tr>
+<th>钥路径</th>
+<th>公钥路径</th>
+<th>命令</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sa.key</td>
+<td></td>
+<td>kube-controller-manager</td>
+<td>–service-account-private-key-file</td>
+</tr>
+<tr>
+<td></td>
+<td>sa.pub</td>
+<td>kube-apiserver</td>
+<td>–service-account-key-file</td>
+</tr>
+</tbody></table>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs console">/etc/kubernetes/pki/etcd/ca.key<br>/etc/kubernetes/pki/etcd/ca.crt<br>/etc/kubernetes/pki/apiserver-etcd-client.key<br>/etc/kubernetes/pki/apiserver-etcd-client.crt<br>/etc/kubernetes/pki/ca.key<br>/etc/kubernetes/pki/ca.crt<br>/etc/kubernetes/pki/apiserver.key<br>/etc/kubernetes/pki/apiserver.crt<br>/etc/kubernetes/pki/apiserver-kubelet-client.key<br>/etc/kubernetes/pki/apiserver-kubelet-client.crt<br>/etc/kubernetes/pki/front-proxy-ca.key<br>/etc/kubernetes/pki/front-proxy-ca.crt<br>/etc/kubernetes/pki/front-proxy-client.key<br>/etc/kubernetes/pki/front-proxy-client.crt<br>/etc/kubernetes/pki/etcd/server.key<br>/etc/kubernetes/pki/etcd/server.crt<br>/etc/kubernetes/pki/etcd/peer.key<br>/etc/kubernetes/pki/etcd/peer.crt<br>/etc/kubernetes/pki/etcd/healthcheck-client.key<br>/etc/kubernetes/pki/etcd/healthcheck-client.crt<br>/etc/kubernetes/pki/sa.key<br>/etc/kubernetes/pki/sa.pub<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-3-用户帐户配置证书"><a href="#2-3-用户帐户配置证书" class="headerlink" title="2.3 用户帐户配置证书"></a>2.3 用户帐户配置证书</h2><table>
+<thead>
+<tr>
+<th>文件名</th>
+<th>凭据名称</th>
+<th>默认 CN</th>
+<th>O (位于 Subject 中)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>admin.conf</td>
+<td>default-admin</td>
+<td>kubernetes-admin</td>
+<td>system:masters</td>
+</tr>
+<tr>
+<td>kubelet.conf</td>
+<td>default-auth</td>
+<td>system:node:<code>&lt;nodeName&gt;</code> （参阅注释）</td>
+<td>system:nodes</td>
+</tr>
+<tr>
+<td>controller-manager.conf</td>
+<td>default-controller-manager</td>
+<td>system:kube-controller-manager</td>
+<td></td>
+</tr>
+<tr>
+<td>scheduler.conf</td>
+<td>default-scheduler</td>
+<td>system:kube-scheduler</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>用途</p>
+<table>
+<thead>
+<tr>
+<th>文件名</th>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>admin.conf</td>
+<td>kubectl</td>
+<td>配置集群的管理员</td>
+</tr>
+<tr>
+<td>kubelet.conf</td>
+<td>kubelet</td>
+<td>集群中的每个节点都需要一份</td>
+</tr>
+<tr>
+<td>controller-manager.conf</td>
+<td>kube-controller-manager</td>
+<td>必需添加到 <code>manifests/kube-controller-manager.yaml</code> 清单中</td>
+</tr>
+<tr>
+<td>scheduler.conf</td>
+<td>kube-scheduler</td>
+<td>必需添加到 <code>manifests/kube-scheduler.yaml</code> 清单中</td>
+</tr>
+</tbody></table>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs console">/etc/kubernetes/admin.conf<br>/etc/kubernetes/kubelet.conf<br>/etc/kubernetes/controller-manager.conf<br>/etc/kubernetes/scheduler.conf<br></code></pre></td></tr></table></figure>
+
+<h1 id="三-证书结构"><a href="#三-证书结构" class="headerlink" title="三 证书结构"></a>三 证书结构</h1><h2 id="1-1-证书JSON配置文件"><a href="#1-1-证书JSON配置文件" class="headerlink" title="1.1 证书JSON配置文件"></a>1.1 证书JSON配置文件</h2><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs prolog">&#123;<br>  <span class="hljs-string">&quot;CN&quot;</span>: <span class="hljs-string">&quot;kubernetes&quot;</span>,<br>  <span class="hljs-string">&quot;key&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;algo&quot;</span>: <span class="hljs-string">&quot;rsa&quot;</span>,<br>    <span class="hljs-string">&quot;size&quot;</span>: <span class="hljs-number">2048</span><br>  &#125;,<br>  <span class="hljs-string">&quot;names&quot;</span>:[&#123;<br>    <span class="hljs-string">&quot;C&quot;</span>: <span class="hljs-string">&quot;&lt;country&gt;&quot;</span>,<br>    <span class="hljs-string">&quot;ST&quot;</span>: <span class="hljs-string">&quot;&lt;state&gt;&quot;</span>,<br>    <span class="hljs-string">&quot;L&quot;</span>: <span class="hljs-string">&quot;&lt;city&gt;&quot;</span>,<br>    <span class="hljs-string">&quot;O&quot;</span>: <span class="hljs-string">&quot;&lt;organization&gt;&quot;</span>,<br>    <span class="hljs-string">&quot;OU&quot;</span>: <span class="hljs-string">&quot;&lt;organization unit&gt;&quot;</span><br>  &#125;]<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>字段说明：</p>
+<p>“CN” : Common Name, kube-apiserver 从证书中提取该字段作为请求的用户名 (User Name):浏览器使用该字段验证网站是否合法;<br>“O”: Organization, kube-apiserver 从证书中提取该字段作为请求用户所属的组(Group)</p>
+<h2 id="2-生成-CA-秘钥文件（ca-key-pem）和证书文件（ca-pem）"><a href="#2-生成-CA-秘钥文件（ca-key-pem）和证书文件（ca-pem）" class="headerlink" title="2 生成 CA 秘钥文件（ca-key.pem）和证书文件（ca.pem）"></a>2 生成 CA 秘钥文件（<code>ca-key.pem</code>）和证书文件（<code>ca.pem</code>）</h2><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stata">cfssl gencert -initca <span class="hljs-keyword">ca</span>-csr.json | cfssljson -bare <span class="hljs-keyword">ca</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="3-创建一个-JSON-配置文件，用来为-API-服务器生成秘钥和证书"><a href="#3-创建一个-JSON-配置文件，用来为-API-服务器生成秘钥和证书" class="headerlink" title="3 创建一个 JSON 配置文件，用来为 API 服务器生成秘钥和证书"></a>3 创建一个 JSON 配置文件，用来为 API 服务器生成秘钥和证书</h2><p>例如：<code>server-csr.json</code>。 确认用你需要的值替换掉尖括号中的值。<code>MASTER_CLUSTER_IP</code> 是为 API 服务器 指定的服务集群 IP，就像前面小节描述的那样。 以下示例假定你的默认 DNS 域名为<code>cluster.local</code>。 </p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs prolog">&#123;<br>  <span class="hljs-string">&quot;CN&quot;</span>: <span class="hljs-string">&quot;kubernetes&quot;</span>,<br>  <span class="hljs-string">&quot;hosts&quot;</span>: [<br>    <span class="hljs-string">&quot;127.0.0.1&quot;</span>,<br>    <span class="hljs-string">&quot;&lt;MASTER_IP&gt;&quot;</span>,<br>    <span class="hljs-string">&quot;&lt;MASTER_CLUSTER_IP&gt;&quot;</span>,<br>    <span class="hljs-string">&quot;kubernetes&quot;</span>,<br>    <span class="hljs-string">&quot;kubernetes.default&quot;</span>,<br>    <span class="hljs-string">&quot;kubernetes.default.svc&quot;</span>,<br>    <span class="hljs-string">&quot;kubernetes.default.svc.cluster&quot;</span>,<br>    <span class="hljs-string">&quot;kubernetes.default.svc.cluster.local&quot;</span><br>  ],<br>  <span class="hljs-string">&quot;key&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;algo&quot;</span>: <span class="hljs-string">&quot;rsa&quot;</span>,<br>    <span class="hljs-string">&quot;size&quot;</span>: <span class="hljs-number">2048</span><br>  &#125;,<br>  <span class="hljs-string">&quot;names&quot;</span>: [&#123;<br>    <span class="hljs-string">&quot;C&quot;</span>: <span class="hljs-string">&quot;&lt;country&gt;&quot;</span>,<br>    <span class="hljs-string">&quot;ST&quot;</span>: <span class="hljs-string">&quot;&lt;state&gt;&quot;</span>,<br>    <span class="hljs-string">&quot;L&quot;</span>: <span class="hljs-string">&quot;&lt;city&gt;&quot;</span>,<br>    <span class="hljs-string">&quot;O&quot;</span>: <span class="hljs-string">&quot;&lt;organization&gt;&quot;</span>,<br>    <span class="hljs-string">&quot;OU&quot;</span>: <span class="hljs-string">&quot;&lt;organization unit&gt;&quot;</span><br>  &#125;]<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="4-为-API-服务器生成秘钥和证书"><a href="#4-为-API-服务器生成秘钥和证书" class="headerlink" title="4 为 API 服务器生成秘钥和证书"></a>4 为 API 服务器生成秘钥和证书</h2><p>例如：默认会分别存储为<code>server-key.pem</code> 和 <code>server.pem</code> 两个文件 </p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">cfssl gencert <span class="hljs-attribute">-ca</span>=ca.pem <span class="hljs-attribute">-ca-key</span>=ca-key.pem \<br>     <span class="hljs-attribute">--config</span>=ca-config.json <span class="hljs-attribute">-profile</span>=kubernetes \<br>     server-csr.json | cfssljson -bare server<br></code></pre></td></tr></table></figure>
+
+<h1 id="四、-k8s-证书认证"><a href="#四、-k8s-证书认证" class="headerlink" title="四、 k8s 证书认证"></a>四、 k8s 证书认证</h1><h2 id="4-1-TLS-Bootstrapping"><a href="#4-1-TLS-Bootstrapping" class="headerlink" title="4.1 TLS Bootstrapping"></a>4.1 TLS Bootstrapping</h2><p>启用 TLS Bootstrapping 机制 TLS Bootstraping：Master apiserver 启用 TLS 认证后，Node 节点 kubelet 和 kube- proxy 要与 kube-apiserver 进行通信，必须使用 CA 签发的有效证书才可以，当 Node 节点很多时，这种客户端证书颁发需要大量工作，同样也会增加集群扩展复杂度。为了简化流程，Kubernetes 引入了 TLS bootstraping 机制来自动颁发客户端证书，kubelet 会以一个低权限用户自动向 apiserver 申请证书，kubelet 的证书由 apiserver 动态签署。<br>所以强烈建议在 Node 上使用这种方式，目前主要用于 kubelet，kube-proxy 还是由我们统一颁发一个证书。</p>
+<p>TLS bootstraping 工作流程： </p>
+<p><img src="E:/BaiduSyncdisk/%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/%E9%9B%86%E7%BE%A4/%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4/1659365157408.png" srcset="/img/loading.gif" lazyload alt="1659365157408"></p>
+<p>![k8s tls bootstrap流程图](k8s 证书介绍/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA6Imv5Yev5bCU,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center.png)</p>
+<p>授权kubelet-bootstrap用户允许请求证书</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">kubectl create clusterrolebinding kubelet-bootstrap \<br><span class="hljs-attribute">--clusterrole</span>=system:node-bootstrapper \<br><span class="hljs-attribute">--user</span>=kubelet-bootstrap<br></code></pre></td></tr></table></figure>
+
+<p>创建上述配置文件中 token 文件： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &gt; /opt/kubernetes/cfg/token.csv &lt;&lt; <span class="hljs-string">EOF </span><br><span class="hljs-string">2883dba522d43d742dd88f3ce07cf52e,kubelet-bootstrap,10001,system:node-bootstrapper</span><br><span class="hljs-string">EOF</span><br><br></code></pre></td></tr></table></figure>
+
+<p>格式：token，用户名，UID，用户组 </p>
+<p>token 也可自行生成替换：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">head</span> -c 16 /dev/urandom | <span class="hljs-built_in">od</span> -An -t x | <span class="hljs-built_in">tr</span> -d <span class="hljs-string">&#x27; &#x27;</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="五、证书签名请求文件"><a href="#五、证书签名请求文件" class="headerlink" title="五、证书签名请求文件"></a>五、证书签名请求文件</h1><p><a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/setup/best-practices/certificates/">PKI 证书和要求 | Kubernetes</a></p>
+<p><a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/tasks/administer-cluster/certificates/">手动生成证书 | Kubernetes</a></p>
+<p><a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/rbac/">使用 RBAC 鉴权 | Kubernetes</a></p>
+<h2 id="5-1-CA证书签名请求文件"><a href="#5-1-CA证书签名请求文件" class="headerlink" title="5.1 CA证书签名请求文件"></a>5.1 CA证书签名请求文件</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-variable">$</span> <span class="hljs-built_in">cat</span> &gt; ca<span class="hljs-literal">-csr</span>.json &lt;&lt;<span class="hljs-keyword">END</span>   <br>&#123;<br>  <span class="hljs-string">&quot;CN&quot;</span>: <span class="hljs-string">&quot;kubernetes&quot;</span>,<br>  <span class="hljs-string">&quot;key&quot;</span>: &#123;      <br>    <span class="hljs-string">&quot;algo&quot;</span>: <span class="hljs-string">&quot;rsa&quot;</span>,     <br>    <span class="hljs-string">&quot;size&quot;</span>: <span class="hljs-number">2048</span><br>  &#125;,             <br>  <span class="hljs-string">&quot;names&quot;</span>:[&#123;         <br>    <span class="hljs-string">&quot;C&quot;</span>: <span class="hljs-string">&quot;CN&quot;</span>,     <br>    <span class="hljs-string">&quot;ST&quot;</span>: <span class="hljs-string">&quot;Beijing&quot;</span>,<br>    <span class="hljs-string">&quot;L&quot;</span>: <span class="hljs-string">&quot;Beijing&quot;</span>,          <br>    <span class="hljs-string">&quot;O&quot;</span>: <span class="hljs-string">&quot;k8s&quot;</span>,         <br>    <span class="hljs-string">&quot;OU&quot;</span>: <span class="hljs-string">&quot;System&quot;</span>     <br>  &#125;]      <br>&#125;                        <br><span class="hljs-keyword">END</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="5-2-证书签发的配置文件"><a href="#5-2-证书签发的配置文件" class="headerlink" title="5.2 证书签发的配置文件"></a>5.2 证书签发的配置文件</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-variable">$</span> <span class="hljs-built_in">cat</span> &gt; ca<span class="hljs-literal">-config</span>.json &lt;&lt;<span class="hljs-keyword">END</span><br>&#123;<br>  <span class="hljs-string">&quot;signing&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;default&quot;</span>: &#123;<br>      <span class="hljs-string">&quot;expiry&quot;</span>: <span class="hljs-string">&quot;8760h&quot;</span><br>    &#125;,<br>    <span class="hljs-string">&quot;profiles&quot;</span>: &#123;<br>      <span class="hljs-string">&quot;kubernetes&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;usages&quot;</span>: [<br>          <span class="hljs-string">&quot;signing&quot;</span>,<br>          <span class="hljs-string">&quot;key encipherment&quot;</span>,<br>          <span class="hljs-string">&quot;server auth&quot;</span>,<br>          <span class="hljs-string">&quot;client auth&quot;</span><br>        ],<br>        <span class="hljs-string">&quot;expiry&quot;</span>: <span class="hljs-string">&quot;8760h&quot;</span><br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br><span class="hljs-keyword">END</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="5-3-kubernetes证书签发"><a href="#5-3-kubernetes证书签发" class="headerlink" title="5.3 kubernetes证书签发"></a>5.3 kubernetes证书签发</h2><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">$ cat &gt; <span class="hljs-keyword">server</span>-csr.json &lt;&lt; <span class="hljs-keyword">END</span><br>&#123;<br>  &quot;CN&quot;: &quot;kubernetes&quot;,<br>  &quot;hosts&quot;: [<br>    &quot;127.0.0.1&quot;,<br>    &quot;10.0.0.1&quot;,<br>    &quot;10.0.0.31&quot;,<br>    &quot;10.0.0.41&quot;,<br>    &quot;10.0.0.42&quot;,<br>    &quot;k8s-master01&quot;,<br>    &quot;k8s-node01&quot;,<br>    &quot;k8s-node02&quot;,<br>    &quot;kubernetes&quot;,<br>    &quot;kubernetes.default&quot;,<br>    &quot;kubernetes.default.svc&quot;,<br>    &quot;kubernetes.default.svc.cluster&quot;,<br>    &quot;kubernetes.default.svc.cluster.local&quot;<br>  ],<br>  &quot;key&quot;: &#123;<br>    &quot;algo&quot;: &quot;rsa&quot;,<br>    &quot;size&quot;: <span class="hljs-number">2048</span><br>  &#125;,<br>  &quot;names&quot;: [&#123;<br>    &quot;C&quot;: &quot;CN&quot;,<br>    &quot;ST&quot;: &quot;Beijing&quot;,<br>    &quot;L&quot;: &quot;Beijing&quot;,<br>    &quot;O&quot;: &quot;k8s&quot;,<br>    &quot;OU&quot;: &quot;System&quot;<br>  &#125;]<br>&#125;<br><span class="hljs-keyword">END</span><br></code></pre></td></tr></table></figure>
+
+<p>如果hosts字段不为空则需要指定授权使用该证书的IP或域名列表。<br>master节点的IP都填上,同时还有service网络的首IP。(一般是kube-apiserver指定的service-cluster-ip-range网段的第一个IP, 如10.0.0.1)<br>三个master,以上物理节点的IP也可以更换为主机名。</p>
+<h3 id="5-4-admin证书"><a href="#5-4-admin证书" class="headerlink" title="5.4 admin证书"></a>5.4 admin证书</h3><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">cat &gt; <span class="hljs-keyword">admin</span>-csr.json &lt;&lt;EOF<br>&#123;<br>  &quot;CN&quot;: &quot;admin&quot;,<br>  &quot;hosts&quot;: [],<br>  &quot;key&quot;: &#123;<br>    &quot;algo&quot;: &quot;rsa&quot;,<br>    &quot;size&quot;: <span class="hljs-number">2048</span><br>  &#125;,<br>  &quot;names&quot;: [<br>    &#123;<br>      &quot;C&quot;: &quot;CN&quot;,<br>      &quot;L&quot;: &quot;BeiJing&quot;,<br>      &quot;ST&quot;: &quot;BeiJing&quot;,<br>      &quot;O&quot;: &quot;system:masters&quot;,<br>      &quot;OU&quot;: &quot;System&quot;<br>    &#125;<br>  ]<br>&#125;<br>EOF<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>User：admin</li>
+<li> Group：system:masters</li>
+</ul>
+<p>kube-apiserver使用RBAC对客户端(如kubelet, kube-proxy, Pod)请求进行授权。</p>
+<h3 id="2-5-3-kube-proxy-证书签名请求"><a href="#2-5-3-kube-proxy-证书签名请求" class="headerlink" title="2.5.3 kube-proxy 证书签名请求"></a>2.5.3 kube-proxy 证书签名请求</h3><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs prolog">cat &gt; kube-proxy-csr.json &lt;&lt;<span class="hljs-symbol">EOF</span><br>&#123;<br>  <span class="hljs-string">&quot;CN&quot;</span>: <span class="hljs-string">&quot;system:kube-proxy&quot;</span>,<br>  <span class="hljs-string">&quot;hosts&quot;</span>: [],<br>  <span class="hljs-string">&quot;key&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;algo&quot;</span>: <span class="hljs-string">&quot;rsa&quot;</span>,<br>    <span class="hljs-string">&quot;size&quot;</span>: <span class="hljs-number">2048</span><br>  &#125;,<br>  <span class="hljs-string">&quot;names&quot;</span>: [<br>    &#123;<br>      <span class="hljs-string">&quot;C&quot;</span>: <span class="hljs-string">&quot;CN&quot;</span>,<br>      <span class="hljs-string">&quot;L&quot;</span>: <span class="hljs-string">&quot;BeiJing&quot;</span>,<br>      <span class="hljs-string">&quot;ST&quot;</span>: <span class="hljs-string">&quot;BeiJing&quot;</span>,<br>      <span class="hljs-string">&quot;O&quot;</span>: <span class="hljs-string">&quot;k8s&quot;</span>,<br>      <span class="hljs-string">&quot;OU&quot;</span>: <span class="hljs-string">&quot;System&quot;</span><br>    &#125;<br>  ]<br>&#125;<br><span class="hljs-symbol">EOF</span><br></code></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>默认 ClusterRole</th>
+<th>默认 ClusterRoleBinding</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>system:node-proxier</td>
+<td><strong>system:kube-proxy</strong> 用户</td>
+<td>允许访问 kube-proxy 组件所需要的资源。</td>
+</tr>
+</tbody></table>
+<p>kube-apiserver 预定义的 RoleBinding system:node-proxier将User system:kube-proxy与 Role system:node-proxier 绑定,Role 授予了调用 kube-apiserver。</p>
+<p>该证书只会被kubectl 当做client证书使用,所以hosts字段为空。</p>
+<h3 id="2-5-4-创建kube-controller-manager证书"><a href="#2-5-4-创建kube-controller-manager证书" class="headerlink" title="2.5.4 创建kube-controller-manager证书"></a>2.5.4 创建kube-controller-manager证书</h3><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs prolog">cat &gt; kube-controller-manager-csr.json &lt;&lt;<span class="hljs-symbol">EOF</span><br>&#123;<br>  <span class="hljs-string">&quot;CN&quot;</span>: <span class="hljs-string">&quot;system:kube-controller-manager&quot;</span>,<br>  <span class="hljs-string">&quot;hosts&quot;</span>: [<br>    <span class="hljs-string">&quot;127.0.0.1&quot;</span>,<br>    <span class="hljs-string">&quot;10.0.0.31&quot;</span>,<br>    <span class="hljs-string">&quot;10.0.0.41&quot;</span>,<br>    <span class="hljs-string">&quot;10.0.0.42&quot;</span>,<br>    <span class="hljs-string">&quot;k8s-master01&quot;</span>,<br>    <span class="hljs-string">&quot;k8s-node01&quot;</span>,<br>    <span class="hljs-string">&quot;k8s-node02&quot;</span>,<br>  ],<br>  <span class="hljs-string">&quot;key&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;algo&quot;</span>: <span class="hljs-string">&quot;rsa&quot;</span>,<br>    <span class="hljs-string">&quot;size&quot;</span>: <span class="hljs-number">2048</span><br>  &#125;,<br>  <span class="hljs-string">&quot;names&quot;</span>: [<br>    &#123;<br>      <span class="hljs-string">&quot;C&quot;</span>: <span class="hljs-string">&quot;CN&quot;</span>,<br>      <span class="hljs-string">&quot;L&quot;</span>: <span class="hljs-string">&quot;BeiJing&quot;</span>,<br>      <span class="hljs-string">&quot;ST&quot;</span>: <span class="hljs-string">&quot;BeiJing&quot;</span>,<br>      <span class="hljs-string">&quot;O&quot;</span>: <span class="hljs-string">&quot;system:kube-controller-manager&quot;</span>,<br>      <span class="hljs-string">&quot;OU&quot;</span>: <span class="hljs-string">&quot;System&quot;</span><br>    &#125;<br>  ]<br>&#125;<br><span class="hljs-symbol">EOF</span><br></code></pre></td></tr></table></figure>
+
+<p>hosts 列表包含所有kube-controller-manager 节点IP;<br>CN 为 system:kube-controller-manager, O system:kube-controller-manager, kubernetes 内置的 ClusterRoleBindings system:kube-controller-manager 授予 kube-controller-manager 工作所需的权限</p>
+<h3 id="2-5-5-创建kube-scheduler证书"><a href="#2-5-5-创建kube-scheduler证书" class="headerlink" title="2.5.5 创建kube-scheduler证书"></a>2.5.5 创建kube-scheduler证书</h3><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs prolog">cat &gt; kube-scheduler-csr.json &lt;&lt;<span class="hljs-symbol">EOF</span><br>&#123;<br>  <span class="hljs-string">&quot;CN&quot;</span>: <span class="hljs-string">&quot;system:kube-scheduler&quot;</span>,<br>  <span class="hljs-string">&quot;hosts&quot;</span>: [<br>    <span class="hljs-string">&quot;127.0.0.1&quot;</span>,<br>    <span class="hljs-string">&quot;10.0.0.31&quot;</span>,<br>    <span class="hljs-string">&quot;10.0.0.41&quot;</span>,<br>    <span class="hljs-string">&quot;10.0.0.42&quot;</span>,<br>    <span class="hljs-string">&quot;k8s-master01&quot;</span>,<br>    <span class="hljs-string">&quot;k8s-node01&quot;</span>,<br>    <span class="hljs-string">&quot;k8s-node02&quot;</span>,<br>  ],<br>  <span class="hljs-string">&quot;key&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;algo&quot;</span>: <span class="hljs-string">&quot;rsa&quot;</span>,<br>    <span class="hljs-string">&quot;size&quot;</span>: <span class="hljs-number">2048</span><br>  &#125;,<br>  <span class="hljs-string">&quot;names&quot;</span>: [<br>    &#123;<br>      <span class="hljs-string">&quot;C&quot;</span>: <span class="hljs-string">&quot;CN&quot;</span>,<br>      <span class="hljs-string">&quot;L&quot;</span>: <span class="hljs-string">&quot;BeiJing&quot;</span>,<br>      <span class="hljs-string">&quot;ST&quot;</span>: <span class="hljs-string">&quot;BeiJing&quot;</span>,<br>      <span class="hljs-string">&quot;O&quot;</span>: <span class="hljs-string">&quot;system:kube-scheduler&quot;</span>,<br>      <span class="hljs-string">&quot;OU&quot;</span>: <span class="hljs-string">&quot;System&quot;</span><br>    &#125;<br>  ]<br>&#125;<br><span class="hljs-symbol">EOF</span><br></code></pre></td></tr></table></figure>
+
+<p>hosts 列表包含所有kube-scheduler节点IP;<br>CN 为 system:kube-scheduler, O为 system:kube-scheduler, kubernetes 内置的 ClusterRoleBindings system:kube-scheduler 将赋予kube-scheduler 工作所需的权限。</p>
+<h1 id="三、证书操作"><a href="#三、证书操作" class="headerlink" title="三、证书操作"></a>三、证书操作</h1><h2 id="3-1-检查证书是否过期"><a href="#3-1-检查证书是否过期" class="headerlink" title="3.1 检查证书是否过期"></a>3.1 检查证书是否过期</h2><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">kubeadm certs check-expiration</span><br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/kubernetes/">#kubernetes</a>
+      
+        <a href="/tags/k8s/">#k8s</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>k8s 证书介绍</div>
+      <div>https://leellun.github.io/2021/09/03/k8s/k8s证书/k8s 证书介绍/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年9月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/09/03/k8s/%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7/HPA%E5%AE%9E%E6%88%98%E6%BC%94%E7%A4%BA/" title="HPA实战演示">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">HPA实战演示</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/08/26/k8s/persistence/kubernetes%20%E4%B9%8B%20Volume/" title="kubernetes 之 Volume">
+                        <span class="hidden-mobile">kubernetes 之 Volume</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

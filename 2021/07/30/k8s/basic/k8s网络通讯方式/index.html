@@ -1,0 +1,717 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="k8s组网要求 所有的Pods之间可以在不使用NAT网络地址转换的情况下相互通信。 所有的Nodes之间可以在不使用NAT网络地址转换的情况下相互通信。 每个Pod自己看到的自己的ip和其他Pod看到的一致。即所有Pod对象都处于同一平面网络中，而且可以使用Pod自身的地址直接通信。  k8s网络模型设计基础原则 每个Pod都拥有一个独立的IP地址，假定所有 Pod 都在一个可以直接连通的、扁平的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8s网络通讯方式">
+<meta property="og:url" content="https://leellun.github.io/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="k8s组网要求 所有的Pods之间可以在不使用NAT网络地址转换的情况下相互通信。 所有的Nodes之间可以在不使用NAT网络地址转换的情况下相互通信。 每个Pod自己看到的自己的ip和其他Pod看到的一致。即所有Pod对象都处于同一平面网络中，而且可以使用Pod自身的地址直接通信。  k8s网络模型设计基础原则 每个Pod都拥有一个独立的IP地址，假定所有 Pod 都在一个可以直接连通的、扁平的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leellun.github.io/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/image-4.png">
+<meta property="og:image" content="https://leellun.github.io/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/image-5.png">
+<meta property="og:image" content="https://leellun.github.io/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/image-6.png">
+<meta property="og:image" content="https://leellun.github.io/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/1411165-20210604153215333-1022736403-990x1024.png">
+<meta property="og:image" content="https://leellun.github.io/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/1411165-20210604153302687-2143265992.png">
+<meta property="og:image" content="https://leellun.github.io/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/1411165-20210604153732180-730315756.png">
+<meta property="og:image" content="https://leellun.github.io/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/image-2.png">
+<meta property="article:published_time" content="2021-07-30T06:38:02.000Z">
+<meta property="article:modified_time" content="2022-09-26T13:05:09.760Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="k8s">
+<meta property="article:tag" content="网络通讯">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://leellun.github.io/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/image-4.png">
+  
+  
+  
+  <title>k8s网络通讯方式 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="k8s网络通讯方式"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-07-30 14:38" pubdate>
+          2021年7月30日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          39 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">k8s网络通讯方式</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="k8s组网要求"><a href="#k8s组网要求" class="headerlink" title="k8s组网要求"></a><strong>k8s组网要求</strong></h1><ul>
+<li>所有的Pods之间可以在不使用NAT网络地址转换的情况下相互通信。</li>
+<li>所有的Nodes之间可以在不使用NAT网络地址转换的情况下相互通信。</li>
+<li>每个Pod自己看到的自己的ip和其他Pod看到的一致。即所有Pod对象都处于同一平面网络中，而且可以使用Pod自身的地址直接通信。</li>
+</ul>
+<h1 id="k8s网络模型设计基础原则"><a href="#k8s网络模型设计基础原则" class="headerlink" title="k8s网络模型设计基础原则"></a><strong>k8s网络模型设计基础原则</strong></h1><ul>
+<li>每个Pod都拥有一个独立的IP地址，假定所有 Pod 都在一个可以直接连通的、扁平的网络空间中 。</li>
+<li>不管Pod是否运行在同一个 Node中，都要求它们可以直接通过对方的 IP 进行访问。</li>
+<li>用户不需要额外考虑如何建立 Pod 之间的连接，也不需要考虑将容器端口映射到主机端口等问题。</li>
+</ul>
+<p>k8s使用的网络插件必须能为Pod提供满足以上要求的网络，它需要为每个Pod配置至少一个特定的地址，即Pod IP。Pod IP地址实际存在于某个网卡（可以是虚拟设备）上，而service的地址却是一个虚拟IP地址，没有任何网络接口配置此地址，它由kube-proxy借助iptables规则或者IPVS规则重新定向到本地端口，在将其调度至后端Pod对象。Service的IP地址是集群提供服务的接口，也称为ClusterIP。</p>
+<p>Pod网络及其IP由k8s的网络插件负责配置和管理，具体使用的网络地址可在管理配置网络插件时指定，如10.244.0.0/16网络。而Cluster网络和IP则是由k8s集群负责管理和配置，如10.96.0.0/12网络。</p>
+<h1 id="k8s集群网络"><a href="#k8s集群网络" class="headerlink" title="k8s集群网络"></a>k8s集群网络</h1><ul>
+<li>主机之间通信(如master和node)，不归k8s管，管理员自行构建。</li>
+<li>pod资源对象之间通信，是一个虚拟网络。用于为各Pod对象设定IP地址等网络参数，其地址配置于Pod中容器的网络接口上，Pod网络需要借助k8s插件或者CNI插件实现，该插件可独立不属于k8s集群，亦可托管于k8s之上，他需要在构建k8s集群时由管理员定义，而后创建Pod对象时由其自动完成网络参数的动态配置。</li>
+<li>Service资源的对象的网络，也是一个虚拟网络，用于k8s集群之中的Service配置IP地址，但此地址并不配置于任何主机或容器的网络接口之上，而是通过Node之上的kube-proxy配置为iptables或ipvs规则，从而将发往此地址的所有流量调度至其后端的各个Pod对象之上。Service网络在k8s集群创建时予以指定，而各Service的地址则在用户创建Service时予以动态配置。</li>
+</ul>
+<img src="/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/image-4.png" srcset="/img/loading.gif" lazyload class="" title="img">k8s网络环境
+
+<p><strong>容器和容器之间的网络</strong></p>
+<ul>
+<li>在k8s中每个Pod中管理着一组Docker容器，这些Docker容器共享同一个网络命名空间。</li>
+<li>Pod中的每个Docker容器拥有与Pod相同的IP和port地址空间，并且由于他们在同一个网络命名空间，他们之间可以通过localhost相互访问。</li>
+</ul>
+<p>container模式指定新创建的Docker容器和已经存在的一个容器共享一个网络命名空间，而不是和宿主机共享。新创建的Docker容器不会创建自己的网卡，配置自己的 IP，而是和一个指定的容器共享 IP、端口范围等</p>
+<p>每个Pod容器有有一个pause容器其有独立的网络命名空间，在Pod内启动Docker容器时候使用 –net=container就可以让当前Docker容器加入到Pod容器拥有的网络命名空间（pause容器），同一个Pod内的多个docker容器相互通信机制。</p>
+<img src="/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/image-5.png" srcset="/img/loading.gif" lazyload class="" title="img">
+
+<p><strong>Pod与Pod之间的网络</strong></p>
+<img src="/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/image-6.png" srcset="/img/loading.gif" lazyload class="" title="img">pod和pod通信
+
+<ul>
+<li>k8s中，每个Pod拥有一个ip地址，不同的Pod之间可以直接使用ip通讯</li>
+<li>在同一个Node上，从Pod的视角看，它存在于自己的网络命名空间中，并且需要与该Node上的其他网络命名空间上的Pod进行通信。</li>
+</ul>
+<p>原理：</p>
+<p>使用linux虚拟以太网设备或者说是由两个虚拟接口组成的veth对使不同的网络命名空间链接起来，这些虚拟接口分布在多个网络命名空间上（这里是指多个Pod上）</p>
+<p>为了让多个Pod的网络命名空间链接起来，可以让veth对的一端链接到root网络命名空间（宿主机的），另一端链接到Pod的网络命名空间。这里需要用到一个Linux以太网桥，它是一个虚拟的二层网络设备，目的就是把多个以太网段连接起来，它维护一个转发表，通过查看每个设备mac地址决定转发，还是丢弃数据。</p>
+<p>同一台node节点上pod1和pod2通信：</p>
+<p>pod1通过自身eth0网卡发送数据，eth0连接着veth0，网桥把veth0和veth1组成了一个以太网，然后数据到达veth0之后，网桥通过转发表，发送给veth1，veth1直接把数据传给pod2的eth0。</p>
+<p>每对Veth就像一根接插电缆，连接两侧并允许流量在它们之间流动；这种veth对可以推广到同一个Node上任意多的Pod上，如上图这里展示使用veth对链接每个Pod到虚拟机的root网络命名空间。不同node节点上pod和pod通信：<strong>CIDR</strong>CIDR（无类域间路由选择）它消除了传统的A类、B类和C类地址以及划分子网的概念，因而可以更加有效地分配IPv4的地址空间。它可以将好几个IP网络结合在一起，使用一种无类别的域际路由选择算法，使它们合并成一条路由从而较少路由表中的路由条目减轻Internet路由器的负担。k8s集群中，每个node节点都会被分配一个CIDR块，（把网络前缀都相同的连续地址组成的地址组称为CIDR地址块）用来给node上的pod分配IP地址，另外还需要把pod的ip和所在nodeip进行关联.比如node1上pod1和node2上的pod4进行通信首先pod1上网卡eth0将数据发送给已经管理到root命名空间的veth0上，被虚拟网桥收到，查看自己转发表之后，并没有pod4的mac地址。就会把包转发到默认路由，（root命名空间的eth0上，也就是已经到了node节点的网卡上）通过eth0，发送到网络中。寻址转发后包来到了node2，首先被root命名空间的eth0设备接受，查看目标地址是发往pod4的，交给虚拟网桥路由到veth1，最终传给pod4的eth0上。</p>
+<img src="/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/1411165-20210604153215333-1022736403-990x1024.png" srcset="/img/loading.gif" lazyload class="" title="img">不同node节点上
+
+<p>pod和pod通信<strong>pod与service之间的网络</strong>pod的ip地址是不持久的，当集群中pod的规模缩减或者pod故障或者node故障重启后，新的pod的ip就可能与之前的不一样的。所以k8s中衍生出来Service来解决这个问题。Service管理了多个Pods，每个Service有一个虚拟的ip,要访问service管理的Pod上的服务只需要访问你这个虚拟ip就可以了，这个虚拟ip是固定的，当service下的pod规模改变、故障重启、node重启时候，对使用service的用户来说是无感知的，因为他们使用的service的ip没有变。当数据包到达Service虚拟ip后，数据包会被通过k8s给该servcie自动创建的负载均衡器路由到背后的pod容器。在k8s里，iptables规则是由kube-proxy配置，kube-proxy监视APIserver的更改，因为集群中所有service（iptables）更改都会发送到APIServer上，所以每台kubelet-proxy监视APIServer，当对service或pod虚拟IP进行修改时，kube-proxy就会在本地更新，以便正确发送给后端pod.<img src="/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/1411165-20210604153302687-2143265992.png" srcset="/img/loading.gif" lazyload class="" title="img"></p>
+<p>数据包从pod1的eth0离开，通过veth0传给网桥cbr0，网桥找不到service的ip对应的mac，交给了默认路由，到达了root命名空间的eth0root命名空间的eth0接受数据包之前会经过iptables进行过滤，iptables接受数据包后使用kube-proxy在node上配置的规则响应service，然后数据包的目的ip重写为service后端指定的pod的ip了。service到pod包的流转：收到包的pod会回应数据包到源pod，源ip是发送方ip，目标IP是接收方，数据包进行回复时经过iptables，iptables使用内核机制conntrack记住它之前做的选择，又将数据包源ip重新为service的ip，目标ip不变，然后原路返回至pod1的eth0<strong>Internet与service之间的网络</strong>node到internet包的流转</p>
+<img src="/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/1411165-20210604153732180-730315756.png" srcset="/img/loading.gif" lazyload class="" title="img">
+
+<p>数据包源自pod1网络命名空间，通过veth对连接到root网络命名空间，紧接着，转发表里没有IP对应的mac，会发送到默认路由，到达root网络命名空间的eth0那么在到达root网络明明空间之前，iptables会修改数据包，现在数据包源ip是pod1的，继续传输会被Internet网关拒绝掉，因为网关NAT仅转发node的ip，解决方案：使iptables执行源NAT更改数据包源ip，让数据包看起来是来自于node而不是podiptables修改完源ip之后，数据包离开node，根据转发规则发给Internet网关，Internet网关执行另一个NAT，内网ip转为公网ip，在Internet上传输。数据包回应时，也是按照：Internet网关需要将公网IP转换为私有ip，到达目标node节点，再通过iptables修改目标ip并且最终传送到pod的eth0虚拟网桥。Internet到k8s的流量：让Internet流量进入k8s集群，这特定于配置的网络，可以在网络堆栈的不同层来实现：（1） NodePort（2）Service LoadBalancer（3）Ingress控制器。<strong>Flannel</strong>Flannel是CoreOS团队针对Kubernetes设计的一个网络规划服务,简单来说,它的功能是让集群中的不同节点主机创建的Docker容器都具有全集群唯一的虚拟IP地址。而且它还能在这些IP地址之间建立一个覆盖网络(Overlay Network),通过这个覆盖网络,将数据包原封不动地传递到目标容器内</p>
+<img src="/2021/07/30/k8s/basic/k8s%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/image-2.png" srcset="/img/loading.gif" lazyload class="" title="img">ETCD 之Flannel提供说明:
+
+<p>存储管理Flannel可分配的IP地址段资源 监控ETCD中每个Pod的实际地址,并在内存中建立维护Pod节点路由表同一个Pod内部通讯:同一个Pod共享同一个网络命名空间,共享同一个Linux协议栈 <strong>Pod1至Pod2</strong>Pod1与Pod2不在同一台主机,Pod的地址是与docker0在同一个网段的,但docker0网段与宿主机网卡是两个完全不同的IP网段，并且不同Node之间的通信只能通过宿主机的物理网卡进行。将Pod的IP和所在Node的IP关联起来,通过这个关联让Pod可以互相访问Pod1与Pod2在同一台机器,由Docker0网桥直接转发请求至Pod2,不需要经过Flannel<strong>Pod至Service的网络</strong>目前基于性能考虑,全部为iptables维护和转发<strong>Pod到外网</strong>Pod向外网发送请求,查找路由表,转发数据包到宿主机的网卡,宿主网卡完成路由选择后，iptables执行Masquerade，把源IP 更改为宿主网卡的IP,然后向外网服务器发送请求。外网访问PodService</p>
+<p>参考文章： </p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/iqifenxia/article/details/121226087">https://blog.csdn.net/iqifenxia/article/details/121226087</a></p>
+<p><a target="_blank" rel="noopener" href="http://t.zoukankan.com/fat-girl-spring-p-14849880.html">http://t.zoukankan.com/fat-girl-spring-p-14849880.html</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/kubernetes/">#kubernetes</a>
+      
+        <a href="/tags/k8s/">#k8s</a>
+      
+        <a href="/tags/%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF/">#网络通讯</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>k8s网络通讯方式</div>
+      <div>https://leellun.github.io/2021/07/30/k8s/basic/k8s网络通讯方式/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年7月30日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/08/01/k8s/k8s%E6%8E%A7%E5%88%B6%E5%99%A8/k8s%E5%B8%B8%E7%94%A8%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%8A%E7%89%B9%E7%82%B9/" title="k8s常用控制器及特点">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">k8s常用控制器及特点</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/29/k8s/basic/kubernetes%E7%BB%84%E4%BB%B6%E4%BB%8B%E7%BB%8D/" title="k8s资源清单及常用字段">
+                        <span class="hidden-mobile">k8s资源清单及常用字段</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

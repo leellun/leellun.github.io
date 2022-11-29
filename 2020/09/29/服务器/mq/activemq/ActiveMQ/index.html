@@ -1,0 +1,790 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、介绍Apache ActiveMQ是Apache软件基金会所研发的开放源代码消息中间件；由于ActiveMQ是一个纯Java程序，因此只需要操作系统支持Java虚拟机，ActiveMQ便可执行。 二、ActiveMQ持久化在ActiveMQ 中，持久化是指对消息数据的持久化。在ActiveMQ 中，默认的消息是保存在内存中的。当内存容量不足的时候，或ActiveMQ 正常关闭的时候，会将内存中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ActiveMQ介绍与架构说明">
+<meta property="og:url" content="https://leellun.github.io/2020/09/29/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/activemq/ActiveMQ/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="一、介绍Apache ActiveMQ是Apache软件基金会所研发的开放源代码消息中间件；由于ActiveMQ是一个纯Java程序，因此只需要操作系统支持Java虚拟机，ActiveMQ便可执行。 二、ActiveMQ持久化在ActiveMQ 中，持久化是指对消息数据的持久化。在ActiveMQ 中，默认的消息是保存在内存中的。当内存容量不足的时候，或ActiveMQ 正常关闭的时候，会将内存中">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-29T11:14:02.000Z">
+<meta property="article:modified_time" content="2022-10-03T15:55:25.817Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="activemq">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>ActiveMQ介绍与架构说明 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ActiveMQ介绍与架构说明"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-09-29 19:14" pubdate>
+          2020年9月29日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          94 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ActiveMQ介绍与架构说明</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h1><p>Apache ActiveMQ是Apache软件基金会所研发的开放源代码消息中间件；由于ActiveMQ是一个纯Java程序，因此只需要操作系统支持Java虚拟机，ActiveMQ便可执行。</p>
+<h1 id="二、ActiveMQ持久化"><a href="#二、ActiveMQ持久化" class="headerlink" title="二、ActiveMQ持久化"></a>二、ActiveMQ持久化</h1><p>在ActiveMQ 中，持久化是指对消息数据的持久化。在ActiveMQ 中，默认的消息是保存在内存中的。当内存容量不足的时候，或ActiveMQ 正常关闭的时候，会将内存中的未处理的消息持久化到磁盘中。具体的持久化策略由配置文件中的具体配置决定。<br>ActiveMQ 的默认存储策略是kahadb。如果使用JDBC 作为持久化策略，则会将所有的需要持久化的消息保存到数据库中。<br>所有的持久化配置都在conf/activemq.xml 中配置，配置信息都在broker 标签内部定义。</p>
+<h2 id="2-1-kahadb"><a href="#2-1-kahadb" class="headerlink" title="2.1 kahadb"></a>2.1 kahadb</h2><p>kahadb是ActiveMQ 默认的持久化策略。kahadb 是一个文件型数据库。是使用内存+文件保证数据的持久化的。kahadb 可以限制每个数据文件的大小。不代表总计数据容量。</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">persistenceAdapter</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-comment">&lt;!-- directory:保存数据的目录; journalMaxFileLength:保存消息的文件大小--&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;<span class="hljs-name">kahaDB</span> <span class="hljs-attr">directory</span>=<span class="hljs-string">&quot;$</span></span></span><span class="hljs-template-variable">&#123;activemq.data&#125;</span><span class="language-xml"><span class="hljs-tag"><span class="hljs-string">/kahadb&quot;</span> <span class="hljs-attr">journalMaxFileLength</span>=<span class="hljs-string">&quot;16mb&quot;</span>/&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">persistenceAdapter</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<p>特性：</p>
+<p>1、日志形式存储消息；</p>
+<p>2、消息索引以B-Tree 结构存储，可以快速更新；</p>
+<p>3、完全支持JMS 事务；</p>
+<p>4、支持多种恢复机制；</p>
+<h2 id="2-2-AMQ"><a href="#2-2-AMQ" class="headerlink" title="2.2 AMQ"></a>2.2 AMQ</h2><p>AMQ 也是一个文件型数据库，消息信息最终是存储在文件中。内存中也会有缓存数据。并且只适用于5.3 版本之前。</p>
+<p>性能高于JDBC，写入消息时，会将消息写入日志文件，由于是顺序追加写，性能很高。为了提升性能，创建消息主键索引，并且提供缓存机制，进一步提升性能。每个日志文件的大小都是有限制的（默认32m，可自行配置）。当超过这个大小，系统会重新建立一个文件。当所有的消息都消费完成，系统会删除这个文件或者归档。<br>主要的缺点是AMQ Message 会为每一个Destination 创建一个索引，如果使用了大量的Queue，索引文件的大小会占用很多磁盘空间。而且由于索引巨大，一旦Broker（ActiveMQ 应用实例）崩溃，重建索引的速度会非常慢。<br>虽然AMQ 性能略高于Kaha DB 方式，但是由于其重建索引时间过长，而且索引文件占用磁盘空间过大，所以已经不推荐使用。</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">persistenceAdapter</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-comment">&lt;!-- directory:保存数据的目录; maxFileLength:保存消息的文件大小--&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;<span class="hljs-name">amqPersistenceAdapter</span> <span class="hljs-attr">directory</span>=<span class="hljs-string">&quot;$</span></span></span><span class="hljs-template-variable">&#123;activemq.data&#125;</span><span class="language-xml"><span class="hljs-tag"><span class="hljs-string">/amq&quot;</span> <span class="hljs-attr">maxFileLength</span>=<span class="hljs-string">&quot;32mb&quot;</span>/&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">persistenceAdapter</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<h2 id="2-3-JDBC"><a href="#2-3-JDBC" class="headerlink" title="2.3 JDBC"></a>2.3 JDBC</h2><p>dataSource 指定持久化数据库的bean，createTablesOnStartup 是否在启动的时候创建数据表，默认值是true，这样每次启动都会去创建数据表了，一般是第一次启动的时候设置为true，之后改成false。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs abnf">&lt;broker brokerName<span class="hljs-operator">=</span><span class="hljs-string">&quot;test-broker&quot;</span> persistent<span class="hljs-operator">=</span><span class="hljs-string">&quot;true&quot;</span><br><span class="hljs-attribute">xmlns</span><span class="hljs-operator">=</span><span class="hljs-string">&quot;http://activemq.apache.org/schema/core&quot;</span>&gt;<br>    &lt;persistenceAdapter&gt;<br>        &lt;jdbcPersistenceAdapter dataSource<span class="hljs-operator">=</span><span class="hljs-string">&quot;#mysql-ds&quot;</span> createTablesOnStartup<span class="hljs-operator">=</span><span class="hljs-string">&quot;false&quot;</span>/&gt;<br>    &lt;/persistenceAdapter&gt;<br>&lt;/broker&gt;<br>&lt;bean id<span class="hljs-operator">=</span><span class="hljs-string">&quot;mysql-ds&quot;</span> class<span class="hljs-operator">=</span><span class="hljs-string">&quot;org.apache.commons.dbcp.BasicDataSource&quot;</span><br><span class="hljs-attribute">destroy-method</span><span class="hljs-operator">=</span><span class="hljs-string">&quot;close&quot;</span>&gt;<br>    &lt;property name<span class="hljs-operator">=</span><span class="hljs-string">&quot;driverClassName&quot;</span> value<span class="hljs-operator">=</span><span class="hljs-string">&quot;com.mysql.jdbc.Driver&quot;</span>/&gt;<br>    &lt;property name<span class="hljs-operator">=</span><span class="hljs-string">&quot;url&quot;</span><br>    value<span class="hljs-operator">=</span><span class="hljs-string">&quot;jdbc:mysql://localhost/activemq?relaxAutoCommit=true&quot;</span>/&gt;<br>    &lt;property name<span class="hljs-operator">=</span><span class="hljs-string">&quot;username&quot;</span> value<span class="hljs-operator">=</span><span class="hljs-string">&quot;activemq&quot;</span>/&gt;<br>    &lt;property name<span class="hljs-operator">=</span><span class="hljs-string">&quot;password&quot;</span> value<span class="hljs-operator">=</span><span class="hljs-string">&quot;activemq&quot;</span>/&gt;<br>    &lt;property name<span class="hljs-operator">=</span><span class="hljs-string">&quot;maxActive&quot;</span> value<span class="hljs-operator">=</span><span class="hljs-string">&quot;200&quot;</span>/&gt;<br>    &lt;property name<span class="hljs-operator">=</span><span class="hljs-string">&quot;poolPreparedStatements&quot;</span> value<span class="hljs-operator">=</span><span class="hljs-string">&quot;true&quot;</span>/&gt;<br>&lt;/bean&gt;<br></code></pre></td></tr></table></figure>
+
+<p>数据库配置：</p>
+<p>配置成功后，需要在数据库中创建对应的database，否则无法访问。表格ActiveMQ 可以自动创建。</p>
+<p><strong>activemq_msgs</strong> </p>
+<p>用于存储消息，Queue 和Topic 都存储在这个表中。</p>
+<p>字段：</p>
+<p>ID：自增的数据库主键<br>CONTAINER：消息的Destination<br>MSGID_PROD：消息发送者客户端的主键<br>MSG_SEQ：是发送消息的顺序，MSGID_PROD+MSG_SEQ 可以组成JMS 的MessageID<br>EXPIRATION：消息的过期时间，存储的是从1970-01-01 到现在的毫秒数<br>MSG：消息本体的Java 序列化对象的二进制数据<br>PRIORITY：优先级，从0-9，数值越大优先级越高</p>
+<p><strong>activemq_acks</strong> </p>
+<p>用于存储订阅关系。如果是持久化Topic，订阅者和服务器的订阅关系在这个表保存。</p>
+<p>字段：</p>
+<p>CONTAINER：消息的Destination<br>SUB_DEST：如果是使用Static 集群，这个字段会有集群其他系统的信息<br>CLIENT_ID：每个订阅者都必须有一个唯一的客户端ID 用以区分<br>SUB_NAME：订阅者名称<br>SELECTOR：选择器，可以选择只消费满足条件的消息。条件可以用自定义属性实现，<br>可支持多属性AND 和OR 操作<br>LAST_ACKED_ID：记录消费过的消息的ID。</p>
+<p><strong>activemq_lock</strong> </p>
+<p>在集群环境中才有用，只有一个Broker 可以获得消息，称为Master Broker，其他的只能作为备份等待Master Broker 不可用，才可能成为下一个Master Broker。这个表用于记录哪个Broker 是当前的Master Broker。只有在消息必须保证有效，且绝对不能丢失的时候。使用JDBC 存储策略。如果消息可以容忍丢失，或使用集群/主备模式保证数据安全的时候，建议使用levelDB或Kahadb。</p>
+<h2 id="2-4-google-leveldb"><a href="#2-4-google-leveldb" class="headerlink" title="2.4 google leveldb"></a>2.4 google leveldb</h2><p>内存数据库存储</p>
+<h1 id="三、ActiveMQ-消息"><a href="#三、ActiveMQ-消息" class="headerlink" title="三、ActiveMQ 消息"></a>三、ActiveMQ 消息</h1><h2 id="3-1-API"><a href="#3-1-API" class="headerlink" title="3.1 API"></a>3.1 API</h2><figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs autoit"><span class="hljs-built_in">send</span>(Message message)<span class="hljs-comment">;发送消息到默认目的地，就是创建Producer 时指定的目的地。</span><br><span class="hljs-built_in">send</span>(Destination destination, Message message)<span class="hljs-comment">; 发送消息到指定目的地，Producer不建议绑定目的地。也就是创建Producer 的时候，不绑定目的地。session.createProducer(null)。</span><br><span class="hljs-built_in">send</span>(Message message, <span class="hljs-built_in">int</span> deliveryMode, <span class="hljs-built_in">int</span> priority, long timeToLive)<span class="hljs-comment">;发送消息到默认目的地， 且设置相关参数。deliveryMode- 持久化方式（ DeliveryMode.PERSISTENT|DeliveryMode.NON_PERSISTENT）。priority-优先级。timeToLive-消息有效期（单位毫秒）。</span><br><span class="hljs-built_in">send</span>(Destination destination, Message message, <span class="hljs-built_in">int</span> deliveryMode, <span class="hljs-built_in">int</span> priority, long timeToLive)<span class="hljs-comment">; 发送消息到指定目的地，且设置相关参数。</span><br></code></pre></td></tr></table></figure>
+
+<p>如果开启了session，需要手动提交commit</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Session</span> <span class="hljs-variable">session</span> <span class="hljs-operator">=</span> connection.createSession(<span class="hljs-literal">true</span>, Session.CLIENT_ACKNOWLEDGE);<br>......<br>session.commit();<br></code></pre></td></tr></table></figure>
+
+<h2 id="3-2-发送消息过期处理方式"><a href="#3-2-发送消息过期处理方式" class="headerlink" title="3.2 发送消息过期处理方式"></a>3.2 发送消息过期处理方式</h2><p>消息过期后，默认会将失效消息保存到“死信队列（ActiveMQ.DLQ）”。不持久化的消息，在超时后直接丢弃，不会保存到死信队列中。死信队列名称可配置，死信队列中的消息不能恢复。死信队列是在activemq.xml 中配置的。</p>
+<h2 id="3-3-消息优先级"><a href="#3-3-消息优先级" class="headerlink" title="3.3 消息优先级"></a>3.3 消息优先级</h2><p>broker 可以建议权重较高的消息将会优先发送给Consumer，但priority 并不能决定消息传送的严格顺序(order)。</p>
+<p>JMS 标准中约定priority 可以为0<del>9 的整数数值，值越大表示权重越高，默认值为4。但activeMQ 中各个存储器对priority 的支持并非完全一样。比如JDBC 存储器可以支持0</del>9，因为JDBC 存储器可以基于priority 对消息进行排序和索引化；但是对于kahadb/levelDB等这种基于日志文件的存储器而言，priority 支持相对较弱，只能识别三种优先级(LOW: &lt;4,NORMAL: =4,HIGH: &gt; 4)。</p>
+<h5 id="priority配置"><a href="#priority配置" class="headerlink" title="priority配置"></a>priority配置</h5><p>在broker 端，默认是不存储priority 信息的，我们需要手动开启，修改activemq.xml 配<br>置文件，在broker 标签的子标签policyEntries 中增加下述配置：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;policyEntry <span class="hljs-attribute">queue</span>=<span class="hljs-string">&quot;&gt;&quot;</span> <span class="hljs-attribute">prioritizedMessages</span>=<span class="hljs-string">&quot;true&quot;</span>/&gt;<br></code></pre></td></tr></table></figure>
+
+<p>如果通道中Consumer 的消费速度足够快，那么消息几乎不需要从存储文件中Paged In(获取)，直接就能从内存的cache 中获取即可，这种情况下，priority 可以担保“全局顺序”；不过，如果消费者滞后太多，cache 已满，就会<br>触发新接收的消息直接保存在磁盘中，那么此时，priority 就没有那么有效了。</p>
+<p>在Queue 中，prefetch 的消息列表默认将会采用“轮询”的方式。(roundRobin，注意并不是roundRobinDispatch)[备注：因为Queue 不支持任何DispatchPolicy]，依次添加到每个consumer的pending buffer 中， 比如有m1-m2-m3-m4 四条消息， 有C1-C2 两个消费者， 那么:m1-&gt;C1,m2-&gt;C2,m3-&gt;C1,m4-&gt;C2。这种轮序方式，会对基于权重的消息发送有些额外的影响，假如四条消息的权重都不同，但是(m1,m3)-&gt;C1，事实上m2 的权重&gt;m3,对于C1 而言，它似乎丢失了“顺序性”。</p>
+<h5 id="强顺序"><a href="#强顺序" class="headerlink" title="强顺序"></a>强顺序</h5><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;policyEntry <span class="hljs-attribute">queue</span>=<span class="hljs-string">&quot;&gt;&quot;</span> <span class="hljs-attribute">strictOrderDispatch</span>=<span class="hljs-string">&quot;true&quot;</span>/&gt;<br></code></pre></td></tr></table></figure>
+
+<p>strictOrderDispatch“严格顺序转发”，这是区别于“轮询”的一种消息转发手段；不过不要误解它为“全局严格顺序”，它只不过是将prefetch 的消息依次填满每个consumer 的pendingbuffer 。比如上述例子中， 如果C1-C2 两个消费者的buffer 尺寸为3 ， 那么(m1,m2,m3)-&gt;C1,(m4)-&gt;C2;当C1 填充完毕之后，才会填充C2。由此这种策略可以保证buffer中所有的消息都是“权重临近的”、有序的。(需要注意：strictOrderDispatch 并非是解决priority<br>消息顺序的问题而生，只是在使用priority 时需要关注它)。</p>
+<h5 id="严格顺序"><a href="#严格顺序" class="headerlink" title="严格顺序"></a>严格顺序</h5><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;policyEntry <span class="hljs-attribute">queue</span>=<span class="hljs-string">&quot;&gt;&quot;</span> <span class="hljs-attribute">prioritizedMessages</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attribute">useCache</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attribute">expireMessagesPeriod</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attribute">ueuePrefetch</span>=<span class="hljs-string">&quot;1&quot;</span>/&gt;<br></code></pre></td></tr></table></figure>
+
+<p>useCache=false 来关闭内存，强制将所有的消息都立即写入文件(索引化，但是会降低消息的转发效率)；queuePrefetch=1 来约束每个consumer 任何时刻只有一个消息正在处理，那些消息消费之后，将会从文件中重新获取，这大大增加了消息文件操作的次数，不过每次读取肯定都是priority 最高的消息。</p>
+<h2 id="3-4-消息投递模式"><a href="#3-4-消息投递模式" class="headerlink" title="3.4 消息投递模式"></a>3.4 消息投递模式</h2><p>点对点∶生产者向队列投递一条消息，只有一个消费者能够 监听得到这条消息（PTP） </p>
+<p>发布订阅∶生产者向队列投递一条消息，所有监听该队列的 消费者都能够监听得到这条消息（P/S） </p>
+<h2 id="3-5-消息接收"><a href="#3-5-消息接收" class="headerlink" title="3.5 消息接收"></a>3.5 消息接收</h2><h4 id="消息确认"><a href="#消息确认" class="headerlink" title="消息确认"></a>消息确认</h4><p>Consumer 拉取消息后，如果没有做确认acknowledge，此消息不会从MQ 中删除。<br>如果消息被拉去到consumer 后，未确认，那么消息被锁定。如果consumer 关闭的时候仍旧没有确认消息，则释放消息锁定信息，消息将发送给其他的consumer 处理。</p>
+<h4 id="消息过滤"><a href="#消息过滤" class="headerlink" title="消息过滤"></a>消息过滤</h4><p>设置过滤：<br>Session.createConsumer(Destination destination, String messageSelector);<br>过滤信息为字符串，语法类似SQL92 中的where 子句条件信息。可以使用诸如AND、OR、IN、NOT IN 等关键字（详细内容可以查看javax.jms.Message 的帮助文档）。<br>注意：消息的生产者在发送消息的的时候，必须设置可过滤的属性信息，所有的属性信息设置方法格式:setXxxxProperty(String name, T value)。其中方法名中的Xxxx 是类型，如setObjectProperty/setStringProperty 等。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java">factory=<span class="hljs-keyword">new</span> <span class="hljs-title class_">ActiveMQConnectionFactory</span>(<span class="hljs-string">&quot;admin&quot;</span>,<span class="hljs-string">&quot;admin&quot;</span>,<span class="hljs-string">&quot;tcp://192.168.3.44:61616&quot;</span>);<br>connection=factory.createConnection();<br>session=connection.createSession(<span class="hljs-literal">false</span>, Session.AUTO_ACKNOWLEDGE);<br>destination=session.createQueue(<span class="hljs-string">&quot;filtration&quot;</span>);<br>producer=session.createProducer(destination);<br>connection.start();<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">100</span>;i++) &#123;<br>    message=session.createObjectMessage(i);<br>    message.setBooleanProperty(<span class="hljs-string">&quot;validate&quot;</span>, <span class="hljs-literal">true</span>);<br>    message.setIntProperty(<span class="hljs-string">&quot;index&quot;</span>, i);<br>    producer.send(message,DeliveryMode.PERSISTENT,i%<span class="hljs-number">9</span>+<span class="hljs-number">1</span>,<span class="hljs-number">2000</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java">consumer = session.createConsumer(destination,<span class="hljs-string">&quot;validate=true and index=1&quot;</span>);<br>consumer.setMessageListener(<span class="hljs-keyword">new</span> <span class="hljs-title class_">MessageListener</span>() &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onMessage</span><span class="hljs-params">(Message message)</span> &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">//確認方法，代表consumer已經處理消息</span><br>            message.acknowledge();<br>            ObjectMessage oMessage=(ObjectMessage) message;<br>            Object data=oMessage.getObject();<br>            System.out.println(data);<br>        &#125; <span class="hljs-keyword">catch</span> (JMSException e) &#123;<br>            e.printStackTrace();<br>        &#125;<br>    &#125;<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<h1 id="四、ActiveMQ-集群"><a href="#四、ActiveMQ-集群" class="headerlink" title="四、ActiveMQ 集群"></a>四、ActiveMQ 集群</h1><h3 id="Master-Slave"><a href="#Master-Slave" class="headerlink" title="Master-Slave"></a>Master-Slave</h3><p>主从模式是一种高可用解决方案。在ZooKeeper 中注册若干ActiveMQ Broker，其中只有一个Broker 提供对外服务（Master），其他Broker 处于待机状态（Slave）。当Master 出现故障导致宕机时，通过ZooKeeper 内部的选举机制，选举出一台Slave 替代Master 继续对外提供服务。</p>
+<h4 id="ZooKeeper"><a href="#ZooKeeper" class="headerlink" title="ZooKeeper"></a>ZooKeeper</h4><table>
+<thead>
+<tr>
+<th>主机</th>
+<th>服务端口</th>
+<th>投票端口</th>
+<th>选举端口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>192.168.159.130</td>
+<td>2181</td>
+<td>2881</td>
+<td>3881</td>
+</tr>
+<tr>
+<td>192.168.159.130</td>
+<td>2182</td>
+<td>2882</td>
+<td>3882</td>
+</tr>
+<tr>
+<td>192.168.159.130</td>
+<td>2183</td>
+<td>2883</td>
+<td>3883</td>
+</tr>
+</tbody></table>
+<h4 id="ActiveMQ"><a href="#ActiveMQ" class="headerlink" title="ActiveMQ"></a>ActiveMQ</h4><table>
+<thead>
+<tr>
+<th>主机M-S</th>
+<th>通讯端口</th>
+<th>服务端口</th>
+<th>jetty 端口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>192.168.159.130</td>
+<td>62626</td>
+<td>61616</td>
+<td>8161</td>
+</tr>
+<tr>
+<td>192.168.159.130</td>
+<td>62627</td>
+<td>61617</td>
+<td>8162</td>
+</tr>
+<tr>
+<td>192.168.159.130</td>
+<td>62628</td>
+<td>61618</td>
+<td>8163</td>
+</tr>
+</tbody></table>
+<h4 id="ActiveMQ配置"><a href="#ActiveMQ配置" class="headerlink" title="ActiveMQ配置"></a>ActiveMQ配置</h4><h5 id="1-修改jetty-端口"><a href="#1-修改jetty-端口" class="headerlink" title="1 修改jetty 端口"></a>1 修改jetty 端口</h5><p>conf/jetty.xml,分别指定8161、8162、8163</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;jettyPort&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.apache.activemq.web.WebConsolePort&quot;</span> <span class="hljs-attr">init-method</span>=<span class="hljs-string">&quot;start&quot;</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- the default port number for the web console --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;port&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;8161&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="2-统一所有主从节点Broker命名"><a href="#2-统一所有主从节点Broker命名" class="headerlink" title="2 统一所有主从节点Broker命名"></a>2 统一所有主从节点Broker命名</h5><p>修改conf/activemq.xml文件，将broker的命名统一。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;broker <span class="hljs-attribute">xmlns</span>=<span class="hljs-string">&quot;http://activemq.apache.org/schema/core&quot;</span> <span class="hljs-attribute">brokerName</span>=<span class="hljs-string">&quot;mq-cluster&quot;</span><br><span class="hljs-attribute">dataDirectory</span>=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;activemq.data&#125;</span>&quot;</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<h5 id="3-修改持久化配置"><a href="#3-修改持久化配置" class="headerlink" title="3 修改持久化配置"></a>3 修改持久化配置</h5><p>修改conf/activemq.xml 文件。修改broker 标签中子标签persistenceAdapter 相关内容。<br>replicas ：当前主从模型中的节点数量。<br>bind ：主从实例之间的通讯端口。<br>zkAddress 属性代表ZooKeeper 地址。<br>zkPath 是ActiveMQ 主从信息保存到ZooKeeper 中的路径。<br>hostname 为ActiveMQ 实例安装Linux 的主机名。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">persistenceAdapter</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- &lt;kahaDB directory=&quot;$&#123;activemq.data&#125;/kahadb&quot;/&gt; --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">replicatedLevelDB</span></span><br><span class="hljs-tag">        <span class="hljs-attr">directory</span>=<span class="hljs-string">&quot;$&#123;activemq.data&#125;/levelDB&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">replicas</span>=<span class="hljs-string">&quot;3&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">bind</span>=<span class="hljs-string">&quot;tcp://0.0.0.0:62626&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">zkAddress</span>=<span class="hljs-string">&quot;192.168.159.130:2181,192.168.159.130:2182,192.168.159.130:2183&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">zkPath</span>=<span class="hljs-string">&quot;/activemq/leveldb-stores&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">hostname</span>=<span class="hljs-string">&quot;mq-server&quot;</span></span><br><span class="hljs-tag">    /&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">persistenceAdapter</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="4-修改服务端口"><a href="#4-修改服务端口" class="headerlink" title="4 修改服务端口"></a>4 修改服务端口</h5><p> 修改ActiveMQ 对外提供的服务端口。原默认端口为61616。<br>修改conf/activemq.xml 配置文件。修改broker 标签中子标签transportConnectors 的相关配置。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">transportConnectors</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- DOS protection, limit concurrent connections to 1000 and frame size to 100MB --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">transportConnector</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;openwire&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">uri</span>=<span class="hljs-string">&quot;tcp://0.0.0.0:61616?maximumConnections=1000<span class="hljs-symbol">&amp;amp;</span>wireFormat.maxFrameSize=1048576</span></span><br><span class="hljs-string"><span class="hljs-tag">    00&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">transportConnector</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;amqp&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">uri</span>=<span class="hljs-string">&quot;amqp://0.0.0.0:5672?maximumConnections=1000<span class="hljs-symbol">&amp;amp;</span>wireFormat.maxFrameSize=104857</span></span><br><span class="hljs-string"><span class="hljs-tag">    600&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">transportConnector</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;stomp&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">uri</span>=<span class="hljs-string">&quot;stomp://0.0.0.0:61613?maximumConnections=1000<span class="hljs-symbol">&amp;amp;</span>wireFormat.maxFrameSize=1048</span></span><br><span class="hljs-string"><span class="hljs-tag">    57600&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">transportConnector</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;mqtt&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">uri</span>=<span class="hljs-string">&quot;mqtt://0.0.0.0:1883?maximumConnections=1000<span class="hljs-symbol">&amp;amp;</span>wireFormat.maxFrameSize=104857</span></span><br><span class="hljs-string"><span class="hljs-tag">    600&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">transportConnector</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;ws&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">uri</span>=<span class="hljs-string">&quot;ws://0.0.0.0:61614?maximumConnections=1000<span class="hljs-symbol">&amp;amp;</span>wireFormat.maxFrameSize=1048576</span></span><br><span class="hljs-string"><span class="hljs-tag">    00&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">transportConnectors</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="主从启动"><a href="#主从启动" class="headerlink" title="主从启动"></a>主从启动</h4><p>将三个ActiveMQ 实例分别启动。${activemq-home}/bin/active start。启动后，可以查看<br>日志文件，检查启动状态，日志文件为${activemq-home}/data/activemq.log。</p>
+<h4 id="状态查看"><a href="#状态查看" class="headerlink" title="状态查看"></a>状态查看</h4><h3 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h3><p>在所有的ActiveMQ 节点中的conf/activemq.xml 中增加下述配置：（每个主从模型中的networkConnector 都指向另外一个主从模型）</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">networkConnectors</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">networkConnector</span> <span class="hljs-attr">uri</span>=<span class="hljs-string">&quot;static://(tcp://ip:port,tcp://ip:port)&quot;</span> <span class="hljs-attr">duplex</span>=<span class="hljs-string">&quot;false&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">networkConnector</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">networkConnectors</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>注意配置顺序，Networks 相关配置必须在持久化相关配置之前。如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">beans</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://activemq.apache.org/schema/core&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">broker</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://activemq.apache.org/schema/core&quot;</span> <span class="hljs-attr">brokerName</span>=<span class="hljs-string">&quot;mq-cluster&quot;</span></span><br><span class="hljs-tag">            <span class="hljs-attr">dataDirectory</span>=<span class="hljs-string">&quot;$&#123;activemq.data&#125;&quot;</span> &gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">networkConnectors</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">networkConnector</span> <span class="hljs-attr">uri</span>=<span class="hljs-string">&quot; static://(tcp://ip:port,tcp://ip:port)&quot;</span>/&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">networkConnectors</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">persistenceAdapter</span>&gt;</span><br>            &lt; replicatedLevelDB directory = &quot;xxx&quot;/&gt;<br>        <span class="hljs-tag">&lt;/<span class="hljs-name">persistenceAdapter</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">broker</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">beans</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>如： 主从模型1 - 192.168.159.129 主从模型2 - 192.168.159.130,在主从模型1 的所有节点activemq.xml 配置文件中增加标签：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">networkConnectors</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">networkConnector</span></span><br><span class="hljs-tag">      <span class="hljs-attr">uri</span>=<span class="hljs-string">&quot;static://(tcp://192.168.159.130:61616,tcp://192.168.159.130:61617)&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">networkConnectors</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>在模型2 中所有节点增加配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">networkConnectors</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">networkConnector</span>                <span class="hljs-attr">uri</span>=<span class="hljs-string">&quot;static://(tcp://192.168.159.129:61616,tcp://192.168.159.129:61617)&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">networkConnectors</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="Spring集成ActiveMQ"><a href="#Spring集成ActiveMQ" class="headerlink" title="Spring集成ActiveMQ"></a>Spring集成ActiveMQ</h2><p><a target="_blank" rel="noopener" href="https://github.com/leelun/activemqdemo">https://github.com/leelun/activemqdemo</a></p>
+<p>activemq-producer-spring  为ActiveMQ消息的发送，activemq-consumer-spring为ActiveMQ消息的接收</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mq/" class="category-chain-item">mq</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/activemq/">#activemq</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ActiveMQ介绍与架构说明</div>
+      <div>https://leellun.github.io/2020/09/29/服务器/mq/activemq/ActiveMQ/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年9月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/09/30/%E5%90%8E%E7%AB%AF/java/aqs/2020-09-27-aqs%E4%B9%8BJava8-Condition%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="aqs之Java8 Condition源码分析">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">aqs之Java8 Condition源码分析</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/29/%E5%90%8E%E7%AB%AF/java/aqs/2020-09-29-aqs%E4%B9%8BJava8%E5%85%B1%E4%BA%AB%E9%94%81%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="aqs之Java8共享锁源码分析">
+                        <span class="hidden-mobile">aqs之Java8共享锁源码分析</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

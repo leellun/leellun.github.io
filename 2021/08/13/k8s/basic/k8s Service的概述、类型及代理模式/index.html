@@ -1,0 +1,736 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、概述Kubernete Service 是一个定义了一组Pod的策略的抽象，我们也有时候叫做宏观服务。这些被服务标记的Pod都是（一般）通过label Selector决定的 。 通过创建Service,可以为一组具有相同功能的容器应用提供一个统一的入口地址，并且将请求负载分发到后端的各个容器应用上。 对于Kubernete原生的应用，Kubernete提供了一个简单的Endpoints AP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8s Service的概述、类型及代理模式">
+<meta property="og:url" content="https://leellun.github.io/2021/08/13/k8s/basic/k8s%20Service%E7%9A%84%E6%A6%82%E8%BF%B0%E3%80%81%E7%B1%BB%E5%9E%8B%E5%8F%8A%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="一、概述Kubernete Service 是一个定义了一组Pod的策略的抽象，我们也有时候叫做宏观服务。这些被服务标记的Pod都是（一般）通过label Selector决定的 。 通过创建Service,可以为一组具有相同功能的容器应用提供一个统一的入口地址，并且将请求负载分发到后端的各个容器应用上。 对于Kubernete原生的应用，Kubernete提供了一个简单的Endpoints AP">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-13T15:32:02.000Z">
+<meta property="article:modified_time" content="2022-09-26T13:05:09.758Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>k8s Service的概述、类型及代理模式 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="k8s Service的概述、类型及代理模式"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-08-13 23:32" pubdate>
+          2021年8月13日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          76 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">k8s Service的概述、类型及代理模式</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h1><p>Kubernete Service 是一个定义了一组Pod的策略的抽象，我们也有时候叫做宏观服务。这些被服务标记的Pod都是（一般）通过label Selector决定的 。</p>
+<p>通过创建Service,可以为一组具有相同功能的容器应用提供一个统一的入口地址，并且将请求负载分发到后端的各个容器应用上。</p>
+<p>对于Kubernete原生的应用，Kubernete提供了一个简单的Endpoints API，这个Endpoints api的作用就是当一个服务中的pod发生变化时，Endpoints API随之变化，对于哪些不是原生的程序，Kubernetes提供了一个基于虚拟IP的网桥的服务，这个服务会将请求转发到对应的后台pod 。</p>
+<p>![1658045368211](k8s Service的概述、类型及代理模式/1658045368211.png)</p>
+<h1 id="二、代理模式"><a href="#二、代理模式" class="headerlink" title="二、代理模式"></a>二、代理模式</h1><p>Service能够提供负载均衡的能力,但是在使用上有以下限制:</p>
+<p>只提供4层负载均衡能力,而没有7层功能,但有时我们可能需要更多的匹配规则来转发请求,这点上4层负载均衡是不支持的</p>
+<p>VIP和Service代理：</p>
+<p>在Kubernetes 集群中,每个Node运行一个 kube-proxy进程。kube-proxy负责为Service实现了一种VIP (虚拟IP)的形式,而不是ExternalName的形式。</p>
+<ul>
+<li>在Kubernetes v1.0版本,代理完全在userspace.</li>
+<li>在Kubernetes v1.1版本,新增了 iptables 代理,但并不是默认的运行模式。</li>
+<li>从Kubemetes v1.2起,默认就是iptables代理。</li>
+<li>在Kubernetes v1.8.0-beta.0中,添加了ipvs代理</li>
+<li>在Kubernetes 1.14版本开始默认使用ipvs代理</li>
+<li>在Kubernetes v1.0版本, Service是4层概念。在Kubernetes v1.1版本，新增了  Ingress API (beta版) ,用来表示“7层（Http）服务</li>
+</ul>
+<p>为什么不用DNS?</p>
+<p>因为DNS需要在客服端保留记录，存在缓存等干扰，可能导致过期解析。</p>
+<h2 id="1-userspace代理模式"><a href="#1-userspace代理模式" class="headerlink" title="1 userspace代理模式"></a>1 userspace代理模式</h2><p>![1658044956049](k8s Service的概述、类型及代理模式/1658044956049.png)</p>
+<h2 id="2-iptables代理模式"><a href="#2-iptables代理模式" class="headerlink" title="2 iptables代理模式"></a>2 iptables代理模式</h2><p>![1658044977401](k8s Service的概述、类型及代理模式/1658044977401.png)</p>
+<h2 id="3-ipvs代理模式"><a href="#3-ipvs代理模式" class="headerlink" title="3  ipvs代理模式"></a>3  ipvs代理模式</h2><p>这种模式, kube-proxy会监视Kubernetes Service对象和Endpoints,调用netlink接口以相应地创建ipvs规则并定期与Kubernetes Service对象和Endpoints对象同步ipvs规则,以确保ipvs状态与期望一致。访问服务时,流量将被重定向到其中一个后端Pod与iptables 类似, ipvs于netfilter的hook功能,但使用哈希表作为底层数据结构并在内核空间中工作。这意味着ipvs可以更快地重定向流量,并且在同步代理规则时具有更好的性能。此外,ipvs为负载均衡算法提供了更多选项,例如:</p>
+<ul>
+<li>rr:轮询调度</li>
+<li>1c:最小连接数</li>
+<li>dh:目标哈希</li>
+<li>sh:源哈希</li>
+<li>sed:最短期望延迟</li>
+<li>nq:不排队调度</li>
+</ul>
+<p>![1658045067670](k8s Service的概述、类型及代理模式/1658045067670.png)</p>
+<h1 id="三、Service-的类型"><a href="#三、Service-的类型" class="headerlink" title="三、Service 的类型"></a>三、Service 的类型</h1><p>Service 在K8s中有以下四种类型</p>
+<ul>
+<li>Clusterlp:默认类型,自动分配一个仅Cluster内部可以访问的虚拟IP</li>
+<li>NodePort: 在ClusterIP基础上为Service在每台机器上绑定一个端口,这样就可以通过:NodePort来访问该服务</li>
+<li>LoadBalancer: 在NodePort的基础上,借助cloud provider创建一个外部负载均衡器,并将请求转发到: NodePort</li>
+<li>ExternalName:把集群外部的服务引入到集群内部来,在集群内部直接使用。没有任何类型代理被创建,这只有kubernetes 1.7或更高版本的kube-dns才支持</li>
+</ul>
+<h2 id="1-ClusterIP"><a href="#1-ClusterIP" class="headerlink" title="1 ClusterIP"></a>1 ClusterIP</h2><p>clusterIP 主要在每个 node 节点使用iptables,将发向 clusterIP 对应端口的数据,转发到kube-proxy中。然后kube-proxy 自己内部实现有负载均衡的方法,并可以查询到这个 service下对应pod的地址和端口,进而把数据转发给对应的pod的地址和端口</p>
+<p>![1658045231642](k8s Service的概述、类型及代理模式/1658045231642.png)</p>
+<p>协同工作原理:</p>
+<ul>
+<li>apiserver 用户通过kubectl命令向apiserver发送创建service的命令, apiserver接收到请求后将数据存储到etcd中</li>
+<li>kube-proxy kubernetes的每个节点中都有一个叫做kube-porxy的进程,这个进程负责感知service, pod的变化,并将变化的信息写入本地的iptables规则中</li>
+<li>iptables 使用NAT等技术将virtualIP的流量转至endpoint中</li>
+</ul>
+<p>创建myapp-deploy.yaml文件</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">myapp-deploy</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">default</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">replicas:</span> <span class="hljs-number">3</span><br>  <span class="hljs-attr">selector:</span><br>    <span class="hljs-attr">matchLabels:</span><br>      <span class="hljs-attr">app:</span> <span class="hljs-string">myapp</span><br>      <span class="hljs-attr">release:</span> <span class="hljs-string">stabel</span><br>  <span class="hljs-attr">template:</span><br>    <span class="hljs-attr">metadata:</span><br>      <span class="hljs-attr">labels:</span><br>        <span class="hljs-attr">app:</span> <span class="hljs-string">myapp</span><br>        <span class="hljs-attr">release:</span> <span class="hljs-string">stabel</span><br>        <span class="hljs-attr">env:</span> <span class="hljs-string">test</span><br>    <span class="hljs-attr">spec:</span><br>      <span class="hljs-attr">containers:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">myapp</span><br>        <span class="hljs-attr">image:</span> <span class="hljs-string">harborcloud.com/library/nginx:1.9.1</span><br>        <span class="hljs-attr">imagePullPolicy:</span> <span class="hljs-string">IfNotPresent</span><br>        <span class="hljs-attr">ports:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">http</span><br>          <span class="hljs-attr">containerPort:</span> <span class="hljs-number">80</span><br></code></pre></td></tr></table></figure>
+
+<p>创建Service信息，myapp-service.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">myapp</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">default</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">type:</span> <span class="hljs-string">ClusterIP</span><br>  <span class="hljs-attr">selector:</span><br>    <span class="hljs-attr">app:</span> <span class="hljs-string">myapp</span><br>    <span class="hljs-attr">release:</span> <span class="hljs-string">stabel</span><br>  <span class="hljs-attr">ports:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">http</span><br>    <span class="hljs-attr">port:</span> <span class="hljs-number">80</span><br>    <span class="hljs-attr">targetPort:</span> <span class="hljs-number">80</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="2-Headless-Service"><a href="#2-Headless-Service" class="headerlink" title="2 Headless Service"></a>2 Headless Service</h2><p>有时不需要或不想要负载均衡,以及单独的Service IP.遇到这种情况,可以通过指定ClusterIP(spec.clusterIP) 的值为”None”来创建Headless Service。这类Service并不会分配Cluster IP，kube-proxy不会处理它们,而且平台也不会为它们进行负载均衡和路由。</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">[root@k8s-<span class="hljs-keyword">master</span> <span class="hljs-title">mainfests</span>]<span class="hljs-comment"># vim myapp-svc-headless.yaml</span><br></code></pre></td></tr></table></figure>
+
+<p>myapp-svc-headless.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">myapp-headless</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">default</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">selector:</span><br>    <span class="hljs-attr">app:</span> <span class="hljs-string">myapp</span><br>  <span class="hljs-attr">clusterIP:</span> <span class="hljs-string">&quot;None&quot;</span><br>  <span class="hljs-attr">ports:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">port:</span> <span class="hljs-number">80</span><br>    <span class="hljs-attr">targetPort:</span> <span class="hljs-number">80</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mel">[root@k8s-master01 service]# yum install -y  bind-utils<br>[root@k8s-master01 service]# dig -t A myapp-headless.<span class="hljs-keyword">default</span>.svc.<span class="hljs-keyword">cluster</span>.local. @10<span class="hljs-number">.244</span><span class="hljs-number">.0</span><span class="hljs-number">.12</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-attr">[root@k8s-master01 service]</span># kubectl get pod -n kube-system -o wide<br>NAME                                   READY   STATUS    RESTARTS        AGE     IP                    NODE           NOMINATED NODE   READINESS GATES<br>coredns-<span class="hljs-number">7</span>f6cbbb7b8-pbv77               <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">4</span> (<span class="hljs-number">2</span>d20h ago)   <span class="hljs-number">5</span>d20h   <span class="hljs-number">10.244</span>.<span class="hljs-number">0.13</span>           k8s-master01   &lt;<span class="hljs-attribute">none</span>&gt;           &lt;<span class="hljs-attribute">none</span>&gt;<br>coredns-<span class="hljs-number">7</span>f6cbbb7b8-qxw99               <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">4</span> (<span class="hljs-number">2</span>d20h ago)   <span class="hljs-number">5</span>d20h   <span class="hljs-number">10.244</span>.<span class="hljs-number">0.12</span>           k8s-master01   &lt;<span class="hljs-attribute">none</span>&gt;           &lt;<span class="hljs-attribute">none</span>&gt;<br>etcd-k8s-master01                      <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">7</span> (<span class="hljs-number">2</span>d20h ago)   <span class="hljs-number">5</span>d20h   <span class="hljs-number">10.0</span>.<span class="hljs-number">0.10</span>             k8s-master01   &lt;<span class="hljs-attribute">none</span>&gt;           &lt;<span class="hljs-attribute">none</span>&gt;<br>kube-apiserver-k8s-master01            <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">7</span> (<span class="hljs-number">2</span>d20h ago)   <span class="hljs-number">5</span>d20h   <span class="hljs-number">10.0</span>.<span class="hljs-number">0.10</span>             k8s-master01   &lt;<span class="hljs-attribute">none</span>&gt;           &lt;<span class="hljs-attribute">none</span>&gt;<br>kube-controller-manager-k8s-master01   <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">9</span> (<span class="hljs-number">2</span>d20h ago)   <span class="hljs-number">5</span>d20h   <span class="hljs-number">10.0</span>.<span class="hljs-number">0.10</span>             k8s-master01   &lt;<span class="hljs-attribute">none</span>&gt;           &lt;<span class="hljs-attribute">none</span>&gt;<br>kube-proxy-ml24c                       <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">3</span> (<span class="hljs-number">2</span>d20h ago)   <span class="hljs-number">3</span>d22h   fd56:a9ae:cb0f::<span class="hljs-number">7</span>a1   k8s-node01     &lt;none&gt;           &lt;none&gt;<br>kube-proxy-mrbsk                       <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">4</span> (<span class="hljs-number">2</span>d20h ago)   <span class="hljs-number">3</span>d22h   <span class="hljs-number">10.0</span>.<span class="hljs-number">0.10</span>             k8s-master01   &lt;none&gt;           &lt;none&gt;<br>kube-proxy-tkszd                       <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">2</span> (<span class="hljs-number">22</span>h ago)     <span class="hljs-number">3</span>d22h   fd56:a9ae:cb0f::<span class="hljs-number">853</span>   k8s-node02     &lt;none&gt;           &lt;none&gt;<br>kube-scheduler-k8s-master01            <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">8</span> (<span class="hljs-number">2</span>d20h ago)   <span class="hljs-number">5</span>d20h   <span class="hljs-number">10.0</span>.<span class="hljs-number">0.10</span>             k8s-master01   &lt;none&gt;           &lt;none&gt;<br>[root@k8s-master01 service]# dig -t A myapp-headless.default.svc.cluster.local. @<span class="hljs-number">10.244</span>.<span class="hljs-number">0.12</span><br><br>; &lt;&lt;&gt;&gt; DiG <span class="hljs-number">9.11</span>.<span class="hljs-number">4</span>-P2-RedHat-<span class="hljs-number">9.11</span>.<span class="hljs-number">4</span>-<span class="hljs-number">26</span><span class="hljs-selector-class">.P2</span><span class="hljs-selector-class">.el7_9</span>.<span class="hljs-number">9</span> &lt;&lt;&gt;&gt; -t <span class="hljs-selector-tag">A</span> myapp-headless<span class="hljs-selector-class">.default</span><span class="hljs-selector-class">.svc</span><span class="hljs-selector-class">.cluster</span><span class="hljs-selector-class">.local</span>. <span class="hljs-keyword">@10</span>.244.0.12<br>;; global options: +cmd<br>;; Got answer:<br>;; WARNING: .local is reserved for Multicast DNS<br>;; You are currently testing what happens when an mDNS query is leaked <span class="hljs-selector-tag">to</span> DNS<br>;; -&gt;&gt;<span class="hljs-selector-tag">HEADER</span>&lt;&lt;- opcode: QUERY, status: NOERROR, id: <span class="hljs-number">14989</span><br>;; flags: qr aa rd; QUERY: <span class="hljs-number">1</span>, ANSWER: <span class="hljs-number">3</span>, AUTHORITY: <span class="hljs-number">0</span>, ADDITIONAL: <span class="hljs-number">1</span><br>;; WARNING: recursion requested but not available<br><br>;; OPT PSEUDOSECTION:<br>; EDNS: version: <span class="hljs-number">0</span>, flags:; udp: <span class="hljs-number">4096</span><br>;; QUESTION <span class="hljs-selector-tag">SECTION</span>:<br>;myapp-headless<span class="hljs-selector-class">.default</span><span class="hljs-selector-class">.svc</span><span class="hljs-selector-class">.cluster</span><span class="hljs-selector-class">.local</span>. IN <span class="hljs-selector-tag">A</span><br><br>;; ANSWER <span class="hljs-selector-tag">SECTION</span>:<br>myapp-headless.default.svc.cluster.local. <span class="hljs-number">30</span> IN A <span class="hljs-number">10.244</span>.<span class="hljs-number">2.109</span><br>myapp-headless.default.svc.cluster.local. <span class="hljs-number">30</span> IN A <span class="hljs-number">10.244</span>.<span class="hljs-number">1.165</span><br>myapp-headless.default.svc.cluster.local. <span class="hljs-number">30</span> IN A <span class="hljs-number">10.244</span>.<span class="hljs-number">2.108</span><br><br>;; Query <span class="hljs-selector-tag">time</span>: <span class="hljs-number">2</span> msec<br>;; SERVER: <span class="hljs-number">10.244</span>.<span class="hljs-number">0.12</span>#<span class="hljs-number">53</span>(<span class="hljs-number">10.244</span>.<span class="hljs-number">0.12</span>)<br>;; WHEN: 一 <span class="hljs-number">7</span>月 <span class="hljs-number">18</span> <span class="hljs-number">05</span>:<span class="hljs-number">05</span>:<span class="hljs-number">52</span> CST <span class="hljs-number">2022</span><br>;; MSG SIZE  rcvd: <span class="hljs-number">237</span><br><br>[root@k8s-master01 service]# kubectl get pod -o wide<br>NAME                            READY   STATUS    RESTARTS   AGE     IP             NODE         NOMINATED NODE   READINESS GATES<br>myapp-deploy-<span class="hljs-number">85</span>bb565996-<span class="hljs-number">2</span>tvcg   <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">0</span>          <span class="hljs-number">2</span>m20s   <span class="hljs-number">10.244</span>.<span class="hljs-number">2.108</span>   k8s-node02   &lt;none&gt;           &lt;none&gt;<br>myapp-deploy-<span class="hljs-number">85</span>bb565996-dgzgz   <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">0</span>          <span class="hljs-number">2</span>m20s   <span class="hljs-number">10.244</span>.<span class="hljs-number">2.109</span>   k8s-node02   &lt;none&gt;           &lt;none&gt;<br>myapp-deploy-<span class="hljs-number">85</span>bb565996-mlnh8   <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">0</span>          <span class="hljs-number">2</span>m20s   <span class="hljs-number">10.244</span>.<span class="hljs-number">1.165</span>   k8s-node01   &lt;none&gt;           &lt;none&gt;<br></code></pre></td></tr></table></figure>
+
+<p>通过Headless Service一样可以访问到对应的pod上去</p>
+<h2 id="3-NodePort"><a href="#3-NodePort" class="headerlink" title="3 NodePort"></a>3 NodePort</h2><p>nodePort 的原理在于在node上开了一个端口,将向该端口的流量导入到kube-proxy,然后由kube-proxy进一步到给对应的pod</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">[root@<span class="hljs-keyword">master</span> <span class="hljs-title">manifests</span>]<span class="hljs-comment"># vi myapp-np-service.yaml</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">myapp</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">default</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">type:</span> <span class="hljs-string">NodePort</span><br>  <span class="hljs-attr">selector:</span><br>    <span class="hljs-attr">app:</span> <span class="hljs-string">myapp</span><br>    <span class="hljs-attr">release:</span> <span class="hljs-string">stabel</span><br>  <span class="hljs-attr">ports:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">http</span><br>    <span class="hljs-attr">port:</span> <span class="hljs-number">80</span><br>    <span class="hljs-attr">targetPort:</span> <span class="hljs-number">80</span><br></code></pre></td></tr></table></figure>
+
+<p>查看结果</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs gherkin"><span class="hljs-comment"># 查看service服务暴露端口</span><br>[root<span class="hljs-meta">@k8s-master01</span> service]<span class="hljs-comment"># kubectl get svc -o wide</span><br>NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE     SELECTOR<br>kubernetes   ClusterIP   10.96.0.1       <span class="hljs-variable">&lt;none&gt;</span>        443/TCP        5d20h   <span class="hljs-variable">&lt;none&gt;</span><br>myapp        NodePort    10.98.226.253   <span class="hljs-variable">&lt;none&gt;</span>        80:30247/TCP   17s     app=myapp,release=stabel<br><span class="hljs-comment">#查看myapp分布在哪些节点</span><br>[root<span class="hljs-meta">@k8s-master01</span> service]<span class="hljs-comment"># kubectl get pod -o wide</span><br>NAME                            READY   STATUS    RESTARTS   AGE   IP             NODE         NOMINATED NODE   READINESS GATES<br>myapp-deploy-85bb565996-dcgzh   1/1     Running   0          54s   10.244.1.167   k8s-node01   <span class="hljs-variable">&lt;none&gt;</span>           <span class="hljs-variable">&lt;none&gt;</span><br>myapp-deploy-85bb565996-snpfg   1/1     Running   0          54s   10.244.1.166   k8s-node01   <span class="hljs-variable">&lt;none&gt;</span>           <span class="hljs-variable">&lt;none&gt;</span><br>myapp-deploy-85bb565996-xv2q4   1/1     Running   0          54s   10.244.2.110   k8s-node02   <span class="hljs-variable">&lt;none&gt;</span>           <span class="hljs-variable">&lt;none&gt;</span><br><span class="hljs-comment">#查看所有节点的信息</span><br>[root<span class="hljs-meta">@k8s-master01</span> service]<span class="hljs-comment"># kubectl get node -o wide           </span><br>NAME           STATUS   ROLES                  AGE     VERSION   INTERNAL-IP           EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION                CONTAINER-RUNTIME<br>k8s-master01   Ready    control-plane,master   5d20h   v1.22.0   10.0.0.10             <span class="hljs-variable">&lt;none&gt;</span>        CentOS Linux 7 (Core)   3.10.0-1160.71.1.el7.x86_64   docker://18.6.1<br>k8s-node01     Ready    <span class="hljs-variable">&lt;none&gt;</span>                 4d22h   v1.22.0   10.0.0.21             <span class="hljs-variable">&lt;none&gt;</span>        CentOS Linux 7 (Core)   3.10.0-1160.71.1.el7.x86_64   docker://18.6.1<br>k8s-node02     Ready    <span class="hljs-variable">&lt;none&gt;</span>                 4d22h   v1.22.0   10.0.0.22             <span class="hljs-variable">&lt;none&gt;</span>        CentOS Linux 7 (Core)   3.10.0-1160.71.1.el7.x86_64   docker://18.6.1<br></code></pre></td></tr></table></figure>
+
+<p>通过访问10.0.0.10:30247,10.0.0.21:30247,10.0.0.22:30247都可以得到：</p>
+<p>![1658064476544](k8s Service的概述、类型及代理模式.assets/1658064476544.png)</p>
+<p>查询流程</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">[root@k8s-master01 service]<span class="hljs-comment"># iptables -t nat -nvL KUBE-NODEPORTS</span><br>Chain KUBE-NODEPORTS (<span class="hljs-number">0</span> references)<br> pkts bytes target     prot opt <span class="hljs-keyword">in</span>     out     source               destination         <br>    <span class="hljs-number">0</span>     <span class="hljs-number">0</span> KUBE-SVC-<span class="hljs-number">2</span>CMXP7HKUVJN7L6M  tcp  --  *      *       <span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span><span class="hljs-regexp">/0            0.0.0.0/</span><span class="hljs-number">0</span>            <span class="hljs-regexp">/* default/</span>nginx */ tcp dpt:<span class="hljs-number">30029</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="4-LoadBalancer"><a href="#4-LoadBalancer" class="headerlink" title="4 LoadBalancer"></a>4 LoadBalancer</h2><p>loadBalancer 和 nodePort其实是同一种方式,区别在于loadBalancer 比 nodePort多了一步,就是可以调用cloud provider 去创建 LB 来向节点导流。</p>
+<p>![1658046066962](k8s Service的概述、类型及代理模式/1658046066962.png)</p>
+<h1 id="5-ExternalName"><a href="#5-ExternalName" class="headerlink" title="5 ExternalName"></a>5 ExternalName</h1><p>这种类型的Service通过返回CNAME和它的值,可以将服务映射到externalName字段的内容(例如:hub.atguigu.com). ExternalName Service 是 Service的特例,它没有 selector,也没有定义任何的端口和Endpoint。相反的,对于运行在集群外部的服务,它通过返回该外部服务的别名这种方式来提供服务</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span><br><span class="hljs-attr">apiversion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">my-service-1</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">default</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">type:</span> <span class="hljs-string">ExternalName</span><br>  <span class="hljs-attr">externalName:</span> <span class="hljs-string">www.qingyeshuijian.com</span><br></code></pre></td></tr></table></figure>
+
+<p>当查询主机 my-service-1.defalut.svc.cluster.local (SVC_NAME.NAMESPACE.svc.cluster.local )时,集群的DNS服务将返回一个值my.database.example.com的CNAME记录。访问这个服务的工作方式和其他的相同,唯一不同的是重定向发生在DNS层,而且不会进行代理或转发。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-attr">[root@k8s-master01 service]</span># dig -t <span class="hljs-selector-tag">A</span> my-service-<span class="hljs-number">1</span><span class="hljs-selector-class">.default</span><span class="hljs-selector-class">.svc</span><span class="hljs-selector-class">.cluster</span><span class="hljs-selector-class">.local</span>. <span class="hljs-keyword">@10</span>.244.0.12              <br><br>; &lt;&lt;&gt;&gt; DiG <span class="hljs-number">9.11</span>.<span class="hljs-number">4</span>-P2-RedHat-<span class="hljs-number">9.11</span>.<span class="hljs-number">4</span>-<span class="hljs-number">26</span><span class="hljs-selector-class">.P2</span><span class="hljs-selector-class">.el7_9</span>.<span class="hljs-number">9</span> &lt;&lt;&gt;&gt; -t <span class="hljs-selector-tag">A</span> my-service-<span class="hljs-number">1</span><span class="hljs-selector-class">.default</span><span class="hljs-selector-class">.svc</span><span class="hljs-selector-class">.cluster</span><span class="hljs-selector-class">.local</span>. <span class="hljs-keyword">@10</span>.244.0.12<br>;; global options: +cmd<br>;; Got answer:<br>;; WARNING: .local is reserved for Multicast DNS<br>;; You are currently testing what happens when an mDNS query is leaked <span class="hljs-selector-tag">to</span> DNS<br>;; -&gt;&gt;<span class="hljs-selector-tag">HEADER</span>&lt;&lt;- opcode: QUERY, status: NOERROR, id: <span class="hljs-number">3150</span><br>;; flags: qr aa rd; QUERY: <span class="hljs-number">1</span>, ANSWER: <span class="hljs-number">2</span>, AUTHORITY: <span class="hljs-number">0</span>, ADDITIONAL: <span class="hljs-number">1</span><br>;; WARNING: recursion requested but not available<br><br>;; OPT PSEUDOSECTION:<br>; EDNS: version: <span class="hljs-number">0</span>, flags:; udp: <span class="hljs-number">4096</span><br>;; QUESTION <span class="hljs-selector-tag">SECTION</span>:<br>;my-service-<span class="hljs-number">1</span><span class="hljs-selector-class">.default</span><span class="hljs-selector-class">.svc</span><span class="hljs-selector-class">.cluster</span><span class="hljs-selector-class">.local</span>.        IN <span class="hljs-selector-tag">A</span><br><br>;; ANSWER <span class="hljs-selector-tag">SECTION</span>:<br>my-service-<span class="hljs-number">1</span>.default.svc.cluster.local. <span class="hljs-number">30</span> IN CNAME www.qingyeshuijian.com.<br>www.qingyeshuijian.com. <span class="hljs-number">30</span>      IN      A       <span class="hljs-number">39.107</span>.<span class="hljs-number">115.153</span><br><br>;; Query <span class="hljs-selector-tag">time</span>: <span class="hljs-number">50</span> msec<br>;; SERVER: <span class="hljs-number">10.244</span>.<span class="hljs-number">0.12</span>#<span class="hljs-number">53</span>(<span class="hljs-number">10.244</span>.<span class="hljs-number">0.12</span>)<br>;; WHEN: 一 <span class="hljs-number">7</span>月 <span class="hljs-number">18</span> <span class="hljs-number">05</span>:<span class="hljs-number">30</span>:<span class="hljs-number">32</span> CST <span class="hljs-number">2022</span><br>;; MSG SIZE  rcvd: <span class="hljs-number">179</span><br></code></pre></td></tr></table></figure>
+
+<p>通过上面的dig查看ExternalName找到cname指向了<a target="_blank" rel="noopener" href="http://www.qingyeshuijian.com/">www.qingyeshuijian.com</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/kubernetes/">#kubernetes</a>
+      
+        <a href="/tags/k8s/">#k8s</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>k8s Service的概述、类型及代理模式</div>
+      <div>https://leellun.github.io/2021/08/13/k8s/basic/k8s Service的概述、类型及代理模式/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年8月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/08/14/k8s/k8s%E6%8E%A7%E5%88%B6%E5%99%A8/k8s%E4%B9%8BIngress/" title="k8s之Ingress安装部署">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">k8s之Ingress安装部署</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/08/10/k8s/pod/k8s%20pod%E9%87%8D%E5%90%AF%E7%AD%96%E7%95%A5%E4%B8%8E%E7%8A%B6%E6%80%81/" title="k8s pod重启策略与状态">
+                        <span class="hidden-mobile">k8s pod重启策略与状态</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
