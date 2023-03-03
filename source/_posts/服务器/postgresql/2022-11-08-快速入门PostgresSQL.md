@@ -3,7 +3,7 @@ title: 快速入门PostgresSQL
 date: 2022-11-08 17:38:02
 categories:
   - 服务器
-  - 数据库
+  - postgresql
 tags:
   - postgresssql
 ---
