@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://leellun.github.io/2023/03/03/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-03-JVM-%E5%A0%86%E7%BB%93%E6%9E%84%E5%8F%8A%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%9F/20181216134645404.jpg">
 <meta property="og:image" content="https://leellun.github.io/2023/03/03/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-03-JVM-%E5%A0%86%E7%BB%93%E6%9E%84%E5%8F%8A%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%9F/2018121613465910.jpg">
 <meta property="article:published_time" content="2023-03-03T09:24:02.000Z">
-<meta property="article:modified_time" content="2023-03-03T12:00:54.447Z">
+<meta property="article:modified_time" content="2023-03-03T13:43:25.840Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="jvm">
 <meta name="twitter:card" content="summary_large_image">
@@ -475,13 +475,13 @@
 <p>G1的新生代收集跟ParNew类似： 存活的对象被转移到一个/多个Survivor Regions. 如果存活时间达到阀值， 这部分对象就会被提升到老年代.如图：  </p>
 <img src="/2023/03/03/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-03-JVM-%E5%A0%86%E7%BB%93%E6%9E%84%E5%8F%8A%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%9F/2018121613465910.jpg" srcset="/img/loading.gif" lazyload class="" title="img">
 
-<p>G1新生代特点：</p>
+<p><strong>G1新生代特点：</strong></p>
 <p>1 一整块堆内存被分为多个Regions. </p>
 <p>2 存活对象被拷贝到新的Survivor区或老年代.</p>
 <p>3 年轻代内存由一组不连续的heap区组成<strong>，</strong> 这种方法使得可以动态调整各代区域尺寸**.** </p>
 <p>4 Young GC会有STW事件<strong>，</strong> 进行时所有应用程序线程都会被暂停**.** </p>
 <p>5 多线程并发GC.</p>
-<p>G1\老年代GC\特点如下： </p>
+<p><strong>老年代GC特点如下：</strong> </p>
 <p>并发标记阶段 </p>
 <p>1 在与应用程序并发执行的过程中会计算活跃度信息**.** </p>
 <p>2 这些活跃度信息标识出那些regions最适合在STW期间回收(which regions will be best to reclaim during an evacuation pause).</p>
