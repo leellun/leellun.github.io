@@ -24,7 +24,7 @@
 <meta property="og:description" content="1. keyof和in1.1 keyofkeyof 与 Object.keys 略有相似，只不过 keyof 取 interface 的键  1234567interface Point &amp;#123;  x: number;  y: number;&amp;#125;&#x2F;&#x2F; type keys &#x3D; &quot;x&quot; | &quot;y&quot;type keys &#x3D; keyof Point;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-12-01T09:38:02.000Z">
-<meta property="article:modified_time" content="2023-01-07T07:08:43.409Z">
+<meta property="article:modified_time" content="2023-01-14T13:37:03.532Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="ts">
 <meta name="twitter:card" content="summary_large_image">
@@ -219,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.3k 字
+          3.6k 字
         
       </span>
     
@@ -230,7 +230,7 @@
         
         
         
-          28 分钟
+          30 分钟
         
       </span>
     
@@ -302,15 +302,20 @@
 
 <h4 id="Omit-可选属性"><a href="#Omit-可选属性" class="headerlink" title="Omit 可选属性"></a>Omit 可选属性</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Omit</span> <span class="hljs-title">&lt;T</span>, <span class="hljs-title">K</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">keyof</span> <span class="hljs-title">T&gt;</span> </span>= &#123;<br>  [<span class="hljs-type">P</span> in <span class="hljs-type">K</span>]?: <span class="hljs-type">T</span>[<span class="hljs-type">P</span>];<br>&#125;;<br><span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">PickUser</span> </span>= <span class="hljs-type">Omit</span>&lt;<span class="hljs-type">User</span>, <span class="hljs-string">&quot;id&quot;</span> | <span class="hljs-string">&quot;age&quot;</span>&gt;<br><span class="hljs-comment">// 相当于</span><br><span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">PickUser</span> </span>= &#123; id?: number; age?: number; &#125;<br></code></pre></td></tr></table></figure>
 
-<h3 id="3-Condition-Type"><a href="#3-Condition-Type" class="headerlink" title="3. Condition Type"></a>3. <code>Condition Type</code></h3><p>类似于 <code>js</code> 中的 <strong>三目</strong> 运算符，可以使用它扩展一些基本类型 </p>
+<h3 id="3-其它"><a href="#3-其它" class="headerlink" title="3 其它"></a>3 其它</h3><h4 id="UnwrapRef"><a href="#UnwrapRef" class="headerlink" title="UnwrapRef"></a>UnwrapRef</h4><p>UnwrapRef<T>类型，就是对Ref类型就行反解，其作用分为：</p>
+<p>a.如果泛型T是Ref<R>类型，则UnwrapRef类型为ref.value的类型（R）</p>
+<p>b.如果泛型T不是Ref类型，则UnwrapRef类型为T</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml">type UnwrapRef<span class="hljs-tag">&lt;<span class="hljs-name">T</span>&gt;</span> = T extends ShallowRef<span class="hljs-tag">&lt;<span class="hljs-name">infer</span> <span class="hljs-attr">V</span>&gt;</span> ? V : T extends Ref<span class="hljs-tag">&lt;<span class="hljs-name">infer</span> <span class="hljs-attr">V</span>&gt;</span> ? UnwrapRefSimple<span class="hljs-tag">&lt;<span class="hljs-name">V</span>&gt;</span> : UnwrapRefSimple<span class="hljs-tag">&lt;<span class="hljs-name">T</span>&gt;</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="4-Condition-Type"><a href="#4-Condition-Type" class="headerlink" title="4. Condition Type"></a>4. <code>Condition Type</code></h3><p>类似于 <code>js</code> 中的 <strong>三目</strong> 运算符，可以使用它扩展一些基本类型 </p>
 <figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs ada">T extends U ? X : <span class="hljs-type">Y</span><br><br><span class="hljs-keyword">type</span> <span class="hljs-type">isTrue&lt;T&gt; </span>= T extends <span class="hljs-literal">true</span> ? <span class="hljs-literal">true</span> : <span class="hljs-type">false</span><br><br>// 相当于 <span class="hljs-keyword">type</span> <span class="hljs-type">t </span>= <span class="hljs-literal">false</span><br><span class="hljs-keyword">type</span> <span class="hljs-type">t </span>= isTrue&lt;number&gt;<br><br>// 相当于 <span class="hljs-keyword">type</span> <span class="hljs-type">t </span>= <span class="hljs-literal">false</span><br><span class="hljs-keyword">type</span> <span class="hljs-type">t1 </span>= isTrue&lt;<span class="hljs-literal">false</span>&gt;<br></code></pre></td></tr></table></figure>
 
-<h3 id="4-never-amp-Exclude-amp-Omit"><a href="#4-never-amp-Exclude-amp-Omit" class="headerlink" title="4. never &amp; Exclude &amp; Omit"></a>4. <code>never</code> &amp; <code>Exclude</code> &amp; <code>Omit</code></h3><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs ada"><span class="hljs-keyword">type</span> <span class="hljs-type">Exclude&lt;T, </span>U&gt; = T extends U ? never : <span class="hljs-type">T</span>;<br><br>// 相当于: <span class="hljs-keyword">type</span> <span class="hljs-type">A </span>= <span class="hljs-string">&#x27;a&#x27;</span><br><span class="hljs-keyword">type</span> <span class="hljs-type">A </span>= Exclude&lt;<span class="hljs-string">&#x27;x&#x27;</span> | <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;x&#x27;</span> | <span class="hljs-string">&#x27;y&#x27;</span> | <span class="hljs-string">&#x27;z&#x27;</span>&gt;<br></code></pre></td></tr></table></figure>
+<h3 id="5-never-amp-Exclude-amp-Omit"><a href="#5-never-amp-Exclude-amp-Omit" class="headerlink" title="5. never &amp; Exclude &amp; Omit"></a>5. <code>never</code> &amp; <code>Exclude</code> &amp; <code>Omit</code></h3><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs ada"><span class="hljs-keyword">type</span> <span class="hljs-type">Exclude&lt;T, </span>U&gt; = T extends U ? never : <span class="hljs-type">T</span>;<br><br>// 相当于: <span class="hljs-keyword">type</span> <span class="hljs-type">A </span>= <span class="hljs-string">&#x27;a&#x27;</span><br><span class="hljs-keyword">type</span> <span class="hljs-type">A </span>= Exclude&lt;<span class="hljs-string">&#x27;x&#x27;</span> | <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;x&#x27;</span> | <span class="hljs-string">&#x27;y&#x27;</span> | <span class="hljs-string">&#x27;z&#x27;</span>&gt;<br></code></pre></td></tr></table></figure>
 
 <p>结合 <code>Exclude</code> 可以推出 <code>Omit</code> 的写法 </p>
 <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Omit&lt;T</span>, <span class="hljs-title">K</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">keyof</span> <span class="hljs-title">any&gt;</span> </span>= <span class="hljs-type">Pick</span>&lt;<span class="hljs-type">T</span>, <span class="hljs-type">Exclude</span>&lt;keyof <span class="hljs-type">T</span>, <span class="hljs-type">K</span>&gt;&gt;;<br><br>interface <span class="hljs-type">User</span> &#123;<br>  id: number;<br>  age: number;<br>  name: string;<br>&#125;;<br><br><span class="hljs-comment">// 相当于: type PickUser = &#123; age: number; name: string; &#125;</span><br><span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">OmitUser</span> </span>= <span class="hljs-type">Omit</span>&lt;<span class="hljs-type">User</span>, <span class="hljs-string">&quot;id&quot;</span>&gt;<br></code></pre></td></tr></table></figure>
 
-<h3 id="5-interface-amp-type的区别"><a href="#5-interface-amp-type的区别" class="headerlink" title="5. interface &amp; type的区别"></a>5. <code>interface</code> &amp; <code>type</code>的区别</h3><p>共同点：<strong>都是用来定义对象或函数的形状。</strong> </p>
+<h3 id="6-interface-amp-type的区别"><a href="#6-interface-amp-type的区别" class="headerlink" title="6. interface &amp; type的区别"></a>6. <code>interface</code> &amp; <code>type</code>的区别</h3><p>共同点：<strong>都是用来定义对象或函数的形状。</strong> </p>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">interface</span> example &#123;<br>    <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span><br>    <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span><br>&#125;<br> <br><span class="hljs-keyword">interface</span> exampleFunc &#123;<br>    (<span class="hljs-attr">name</span>:<span class="hljs-built_in">string</span>,<span class="hljs-attr">age</span>:<span class="hljs-built_in">number</span>): <span class="hljs-built_in">void</span><br>&#125;<br>    <br>    <br><span class="hljs-keyword">type</span> example = &#123;<br>    <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span><br>    <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span><br>&#125;<br>    <br><span class="hljs-keyword">type</span> example = <span class="hljs-function">(<span class="hljs-params">name:<span class="hljs-built_in">string</span>,age:<span class="hljs-built_in">number</span></span>) =&gt;</span> &#123;  &#125;<br></code></pre></td></tr></table></figure>
 
 <p>interface是通过extends实现的，type是通过&amp;实现的。 其中 <code>interface</code> 可以如下合并多个。 </p>
@@ -344,7 +349,7 @@ interface test &#123;
     &#125;
 */
 </code></pre>
-<h3 id="6-TS提供了几种内置的预定义的条件类型"><a href="#6-TS提供了几种内置的预定义的条件类型" class="headerlink" title="6 TS提供了几种内置的预定义的条件类型"></a>6 TS提供了几种内置的预定义的条件类型</h3><ul>
+<h3 id="7-TS提供了几种内置的预定义的条件类型"><a href="#7-TS提供了几种内置的预定义的条件类型" class="headerlink" title="7 TS提供了几种内置的预定义的条件类型"></a>7 TS提供了几种内置的预定义的条件类型</h3><ul>
 <li>Exclude&lt;T, U&gt; - 用于从类型T中去除不在U类型中的成员</li>
 <li>Extract&lt;T, U&gt; - 用于从类型T中取出可分配给U类型的成员</li>
 <li>NonNullable<T> - 用于从类型T中去除undefined和null类型</li>
