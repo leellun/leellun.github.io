@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-java%E7%BA%BF%E7%A8%8B%E6%B1%A0/wps3.jpg">
 <meta property="og:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-java%E7%BA%BF%E7%A8%8B%E6%B1%A0/wps4.jpg">
 <meta property="article:published_time" content="2023-03-04T11:18:54.000Z">
-<meta property="article:modified_time" content="2023-03-04T11:08:08.216Z">
+<meta property="article:modified_time" content="2023-03-04T12:44:40.986Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="并发编程">
 <meta name="twitter:card" content="summary_large_image">
@@ -298,20 +298,24 @@
 <p>4 如果创建新线程将使当前运行的线程超出maximumPoolSize，任务将被拒绝，并调用</p>
 <p>RejectedExecutionHandler.rejectedExecution()方法。</p>
 <p>总结：ThreadPoolExecutor采取上述步骤的总体设计思路，是为了在执行execute()方法时，尽可能地避免获取全局锁（那将会是一个严重的可伸缩瓶颈）。在ThreadPoolExecutor完成预热之后(当前运行的线程数大于等于corePoolSize)，几乎所有的execute()方法调用都是执行步骤2，而步骤2不需要获取全局锁。</p>
-<h2 id="3、线程池的使用"><a href="#3、线程池的使用" class="headerlink" title="3、线程池的使用"></a>3、线程池的使用</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadPoolExecutor</span>(corePoolSize, maximumPoolSize, keepAliveTime,<br>milliseconds,runnableTaskQueue, handler);<br></code></pre></td></tr></table></figure>
+<p>优点 :</p>
+<p>降低资源消耗 </p>
+<p>提高响应速度 </p>
+<p>提高线程的可管理性 </p>
+<h2 id="3、线程池的使用"><a href="#3、线程池的使用" class="headerlink" title="3、线程池的使用"></a>3、线程池的使用</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-title function_">ThreadPoolExecutor</span><span class="hljs-params">(<span class="hljs-type">int</span> corePoolSize,</span><br><span class="hljs-params">                              <span class="hljs-type">int</span> maximumPoolSize,</span><br><span class="hljs-params">                              <span class="hljs-type">long</span> keepAliveTime,</span><br><span class="hljs-params">                              TimeUnit unit,</span><br><span class="hljs-params">                              BlockingQueue&lt;Runnable&gt; workQueue,</span><br><span class="hljs-params">                              ThreadFactory threadFactory,</span><br><span class="hljs-params">                              RejectedExecutionHandler handler)</span><br></code></pre></td></tr></table></figure>
 
 <blockquote>
-<p>1）corePoolSize（线程池的基本大小）</p>
-<p>2）runnableTaskQueue（任务队列）</p>
-<p>3）maximumPoolSize（线程池最大数量）</p>
-<p>4）ThreadFactory：用于设置创建线程的工厂，可以通过线程工厂给每个创建出来的线程设置更有意义的名字。</p>
-<p>5）RejectedExecutionHandler（饱和策略）</p>
+<p>（1）corePoolSize（线程池的基本大小）</p>
+<p>（2）maximumPoolSize（线程池最大数量）</p>
+<p>（3）keepAliveTime（线程活动保持时间）</p>
+<p>（4）unit：存活单位 </p>
+<p>（5）workQueue：阻塞队列</p>
+<p>（6）ThreadFactory：用于设置创建线程的工厂</p>
+<p>（7）RejectedExecutionHandler（饱和策略）</p>
 <p>AbortPolicy：直接抛出异常。</p>
 <p>CallerRunsPolicy：只用调用者所在线程来运行任务。</p>
 <p>DiscardOldestPolicy：丢弃队列里最近的一个任务，并执行当前任务。</p>
 <p>DiscardPolicy：不处理，丢弃掉。</p>
-<p>6）keepAliveTime（线程活动保持时间）</p>
-<p>7）timeUnit（线程活动保持时间的单位）</p>
 </blockquote>
 <h3 id="execute-和submit"><a href="#execute-和submit" class="headerlink" title="execute()和submit()"></a>execute()和submit()</h3><p>都可以向线程池提交任务.</p>
 <p>区别：</p>

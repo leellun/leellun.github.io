@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8Bsynchronized%E5%8E%9F%E7%90%86/wps11.jpg">
 <meta property="og:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8Bsynchronized%E5%8E%9F%E7%90%86/wps12.jpg">
 <meta property="article:published_time" content="2023-03-04T11:18:54.000Z">
-<meta property="article:modified_time" content="2023-03-04T11:11:41.222Z">
+<meta property="article:modified_time" content="2023-03-04T12:38:26.767Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="并发编程">
 <meta name="twitter:card" content="summary_large_image">
@@ -231,7 +231,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6.5k 字
+          6.7k 字
         
       </span>
     
@@ -242,7 +242,7 @@
         
         
         
-          55 分钟
+          56 分钟
         
       </span>
     
@@ -450,6 +450,13 @@
 <p>线程A释放锁，随后线程B获取这个锁，这个过程实质上是线程A通过主内存向线程B发送消息。</p>
 <img src="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8Bsynchronized%E5%8E%9F%E7%90%86/wps12.jpg" srcset="/img/loading.gif" lazyload class="" title="img"> 
 
+<h1 id="六、重点"><a href="#六、重点" class="headerlink" title="六、重点"></a>六、重点</h1><h2 id="6-1-特点"><a href="#6-1-特点" class="headerlink" title="6.1 特点"></a>6.1 特点</h2><ul>
+<li>可重入：可重入的原理，就和前面提到的 monitor 计数器类似。对象本身有一把锁， JVM 会跟踪对象被加锁的次数：避免死锁、提升封装性 </li>
+<li>粒度是线程而不是调用</li>
+<li>不可中断 </li>
+<li>效率低<br>锁的释放情况少<br>试图获得锁时不能设定超时时间<br>不能中断一个正在试图获得锁的线程 </li>
+<li>不够灵活<br>加锁和释放锁的时机单一<br>每个锁仅有单一的条件(某个对象)，可能不够<br>无法知道是否成功获取到锁</li>
+</ul>
 <p>参阅书籍:<br>《Java并发编程艺术》<br>《Java多线程设计模式》</p>
 
                 
