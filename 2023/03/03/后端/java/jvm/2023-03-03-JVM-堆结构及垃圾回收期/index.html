@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://leellun.github.io/2023/03/03/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-03-JVM-%E5%A0%86%E7%BB%93%E6%9E%84%E5%8F%8A%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%9F/20181216134645404.jpg">
 <meta property="og:image" content="https://leellun.github.io/2023/03/03/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-03-JVM-%E5%A0%86%E7%BB%93%E6%9E%84%E5%8F%8A%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%9F/2018121613465910.jpg">
 <meta property="article:published_time" content="2023-03-03T09:24:02.000Z">
-<meta property="article:modified_time" content="2023-03-03T13:43:25.840Z">
+<meta property="article:modified_time" content="2023-03-03T14:04:00.096Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="jvm">
 <meta name="twitter:card" content="summary_large_image">
@@ -230,7 +230,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7.6k 字
+          7.9k 字
         
       </span>
     
@@ -241,7 +241,7 @@
         
         
         
-          64 分钟
+          66 分钟
         
       </span>
     
@@ -492,6 +492,14 @@
 <p>拷贝**/*<em>清理阶段(Copying/Cleanup Phase)</em></p>
 <p>1 年轻代与老年代同时回收**.** </p>
 <p>2 老年代内存回收会基于他的活跃度信息**.** </p>
+<h3 id="3-3-8-ZGC回收器"><a href="#3-3-8-ZGC回收器" class="headerlink" title="3.3.8 ZGC回收器"></a>3.3.8 ZGC回收器</h3><p>ZGC（Z Garbage Collector） 是一款性能比 G1 更加优秀的垃圾收集器。ZGC 第一次出现是在  JDK 11 中以实验性的特性引入，这也是 JDK 11 中最大的亮点。在 JDK 15 中 ZGC 不再是实验功能，可以正式投入生产使用了，使用 –XX:+UseZGC 可以启用 ZGC。 </p>
+<p>特性： </p>
+<p>1 暂停时间不会超过 10 ms。 </p>
+<blockquote>
+<p>JDK 16 发布后，GC 暂停时间已经缩小到 1 ms 以内，并且时间复杂度是 o(1)，这也就是说 GC 停顿时间是一个固定值了，并不会受堆内存大小影响。 </p>
+</blockquote>
+<p>2 最大支持 16TB 的大堆，最小支持 8MB 的小堆。</p>
+<p>3 跟 G1 相比，对应用程序吞吐量的影响小于 15 %。</p>
 
                 
               </div>

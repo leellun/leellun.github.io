@@ -26,7 +26,7 @@
 <meta property="og:image" content="https://leellun.github.io/2023/03/03/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-03-JVM%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BB%93%E6%9E%84/20181216134403815.jpg">
 <meta property="og:image" content="https://leellun.github.io/2023/03/03/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-03-JVM%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BB%93%E6%9E%84/1677841800504.png">
 <meta property="article:published_time" content="2023-03-03T09:14:02.000Z">
-<meta property="article:modified_time" content="2023-03-03T11:39:11.223Z">
+<meta property="article:modified_time" content="2023-03-03T14:46:38.739Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="jvm">
 <meta name="twitter:card" content="summary_large_image">
@@ -222,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.5k 字
+          2.6k 字
         
       </span>
     
@@ -233,7 +233,7 @@
         
         
         
-          21 分钟
+          22 分钟
         
       </span>
     
@@ -304,7 +304,18 @@
 <p>（3）无论通过哪种方式退出，在方法退出后都返回到该方法被调用的位置。方法正常退出时，调用者的pc计数器的值作为返回地址，即调用该方法的指令的下一条指令地址。而是通过异常退出的，返回地址是要通过异常表来确定，栈帧中一般不会保存这部分信息。 </p>
 <h3 id="6-5-帧数据区"><a href="#6-5-帧数据区" class="headerlink" title="6.5 帧数据区"></a>6.5 帧数据区</h3><p>栈还需要一些数据来支持常量池的解析，这里的帧数据区保存着访问常量池的指针，方便程序访问常量池，另外，当函数返回或者出现异常时，虚拟机必须有一个异常处理表，方便发送异常的时候找到异常的代码，因此异常处理表也是帧数据区的一部分。</p>
 <h2 id="7-本地方法栈"><a href="#7-本地方法栈" class="headerlink" title="7 本地方法栈"></a>7 本地方法栈</h2><p>本地方法栈和<strong>java</strong>栈非常类似，最大的不同在于<strong>java</strong>栈用于方法的调用，而本地方法栈则用于本地方法的调用，作为对<strong>java</strong>虚拟机的重要扩展，<strong>java</strong>虚拟机允许<strong>java</strong>直接调用本地方法（通常使用<strong>C</strong>编写） </p>
-<h2 id="8-PC寄存器"><a href="#8-PC寄存器" class="headerlink" title="8 PC寄存器"></a>8 PC寄存器</h2><p><strong>PC</strong>（<strong>Program Counter</strong>）寄存器也是每一个<strong>线程私有的空间</strong>，<strong>java</strong>虚拟机会为每一个<strong>java</strong>线程创建<strong>PC</strong>寄存器。如果当前方法不是本地方法，<strong>PC</strong>寄存器就会指向当前正在被执行的指令。如果当前方法是本地方法，那么<strong>PC</strong>寄存器的值就是<strong>undefined</strong> </p>
+<h2 id="8-PC寄存器"><a href="#8-PC寄存器" class="headerlink" title="8 PC寄存器"></a>8 PC寄存器</h2>
+
+<p><strong>PC</strong>（<strong>Program Counter</strong>）寄存器也是每一个<strong>线程私有的空间</strong>，<strong>java</strong>虚拟机会为每一个<strong>java</strong>线程创建<strong>PC</strong>寄存器。</p>
+<p>PC寄存器用来存储指向下一条指令的地址，即即将要执行的指令代码，由执行引擎执行下一条指令。本地方法PC寄存器的值就是undefined。</p>
+<p>例：</p>
+
+
+<p>当pc寄存器指向偏位地址5的位置，执行引擎通过pc寄存器指向的下一条指令地址，获取操作指令存储到操作数栈，局部变量表，执行引擎将字节码翻译为机器指令执行。</p>
+<p>pc寄存器存储字节码指令地址作用？为什么使用pc寄存器记录当前线程的执行地址？</p>
+<blockquote>
+<p>因为cpu需要不停的切换各个线程，切换回来就得知道从哪里开始执行。</p>
+</blockquote>
 <h2 id="9-执行引擎"><a href="#9-执行引擎" class="headerlink" title="9 执行引擎"></a>9 执行引擎</h2><p>虚拟机最核心的组件就是执行引擎，负责执行虚拟机的字节码。一般会先进行编译成机器码后执行。现代虚拟机为了提高执行效率，会使用即时编译(just in time)技术将方法编译成机器码后再执行。 </p>
 
                 
