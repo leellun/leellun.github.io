@@ -219,6 +219,144 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2022/11/18/k8s/basic/2022-11-18-k8s%E9%9B%86%E7%BE%A4%E7%BB%9F%E4%B8%80%E8%AE%BE%E7%BD%AE%E6%97%B6%E9%97%B4/" target="_self">
+          k8s集群统一设置时间
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/11/18/k8s/basic/2022-11-18-k8s%E9%9B%86%E7%BE%A4%E7%BB%9F%E4%B8%80%E8%AE%BE%E7%BD%AE%E6%97%B6%E9%97%B4/" target="_self">
+        <div>
+          1 安装时间同步需要软件1yum install -y ntpdate  2 设置时间2.1 手动设置时间12date -s &quot;20190712 18:30:50&quot;hwclock --systohc  2.2 在线更新时间123ntpdate 0.asia.pool.ntp.org# 强制把系统时间写入CMOSclock -w  3 强制把系统时间写入CMOShwclock作用
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-11-18 20:14" pubdate>
+              2022-11-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/11/12/%E6%9C%8D%E5%8A%A1%E5%99%A8/postgresql/2022-11-12-k8s%E9%83%A8%E7%BD%B2%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84postgresql/" target="_self">
+          k8s部署一个简单的postgresql
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/11/12/%E6%9C%8D%E5%8A%A1%E5%99%A8/postgresql/2022-11-12-k8s%E9%83%A8%E7%BD%B2%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84postgresql/" target="_self">
+        <div>
+          1 下载postgresql的helm安装包拉取helm安装包： 12helm repo add bitnami https://charts.bitnami.com/bitnamihelm pull  bitnami/postgresql --version 11.7.0  2 修改helm包配置12tar -zxf postgresql-11.7.0.tgzcd postgresql  修改v
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-11-12 20:14" pubdate>
+              2022-11-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/postgresql/" class="category-chain-item">postgresql</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/postgresql/">#postgresql</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2022/11/12/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E7%AE%97%E6%B3%95%E9%A2%98/2022-11-12-%E5%89%91%E6%8C%87offer%E7%AE%97%E6%B3%95%E9%A2%98/" target="_self">
           剑指offer算法题
         </a>
@@ -767,151 +905,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/10/26/k8s/%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1/2022-10-26-k8s%E9%80%9A%E8%BF%87helm%E9%83%A8%E7%BD%B2zipkin%E5%AE%98%E6%96%B9%E9%95%9C%E5%83%8F/" target="_self">
-          k8s通过helm部署zipkin官方镜像
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/10/26/k8s/%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1/2022-10-26-k8s%E9%80%9A%E8%BF%87helm%E9%83%A8%E7%BD%B2zipkin%E5%AE%98%E6%96%B9%E9%95%9C%E5%83%8F/" target="_self">
-        <div>
-          https://github.com/openzipkin/zipkin/tree/master/charts/zipkin 12helm repo add openzipkin https://openzipkin.github.io/zipkin
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-10-26 20:14" pubdate>
-              2022-10-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/k8s/">#k8s</a>
-            
-              <a href="/tags/zipkin/">#zipkin</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/10/25/k8s/%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1/2021-10-25-k8s%E9%80%9A%E8%BF%87helm%E9%83%A8%E7%BD%B2nacos%E5%AE%98%E6%96%B9%E9%95%9C%E5%83%8F/" target="_self">
-          k8s通过helm部署nacos官方镜像
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/10/25/k8s/%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1/2021-10-25-k8s%E9%80%9A%E8%BF%87helm%E9%83%A8%E7%BD%B2nacos%E5%AE%98%E6%96%B9%E9%95%9C%E5%83%8F/" target="_self">
-        <div>
-          一、官方部署介绍github仓库地址 1https://github.com/nacos-group/nacos-k8s.git  官方部署方案： 123cd nacos-k8schmod +x quick-startup.sh./quick-startup.sh  说明： quick-startup.sh 脚本部署了mysql和nacos 12345678#!/usr/bin/env bashe
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-10-25 20:14" pubdate>
-              2022-10-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/k8s/">#k8s</a>
-            
-              <a href="/tags/nacos/">#nacos</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/#board">14</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/#board">15</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

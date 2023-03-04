@@ -23,11 +23,15 @@
 <meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
 <meta property="og:description" content="1 运行时数据区结构图  2 栈、堆、方法区关系  3 参数设置jdk8及以后，元数据区大小可以使用参数-XX:MetaspaceSize和-XX:MaxMetaspaceSize指定。XX:MaxMetaspaceSize 的值是-1，即没有限制。 与永久代不同，如果不指定大小,默认情况下,虚拟机会耗尽所有的可用系统内存。如果元数据区发生溢出，虚拟机一样会抛出异常OutOfMemoryError">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-04-JVM-%E6%96%B9%E6%B3%95%E5%8C%BA/1677923178057.png">
+<meta property="og:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-04-JVM-%E6%96%B9%E6%B3%95%E5%8C%BA/1677923243230.png">
+<meta property="og:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-04-JVM-%E6%96%B9%E6%B3%95%E5%8C%BA/1677923931981.png">
 <meta property="article:published_time" content="2023-03-04T11:14:02.000Z">
-<meta property="article:modified_time" content="2023-03-04T10:02:46.997Z">
+<meta property="article:modified_time" content="2023-03-04T10:52:47.818Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="jvm">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-04-JVM-%E6%96%B9%E6%B3%95%E5%8C%BA/1677923178057.png">
   
   
   
@@ -273,9 +277,9 @@
             
               <div class="markdown-body">
                 
-                <h2 id="1-运行时数据区结构图"><a href="#1-运行时数据区结构图" class="headerlink" title="1 运行时数据区结构图"></a>1 运行时数据区结构图</h2>
+                <h2 id="1-运行时数据区结构图"><a href="#1-运行时数据区结构图" class="headerlink" title="1 运行时数据区结构图"></a>1 运行时数据区结构图</h2><img src="/2023/03/04/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-04-JVM-%E6%96%B9%E6%B3%95%E5%8C%BA/1677923178057.png" srcset="/img/loading.gif" lazyload class="" width="1677923178057">
 
-<h2 id="2-栈、堆、方法区关系"><a href="#2-栈、堆、方法区关系" class="headerlink" title="2 栈、堆、方法区关系"></a>2 栈、堆、方法区关系</h2>
+<h2 id="2-栈、堆、方法区关系"><a href="#2-栈、堆、方法区关系" class="headerlink" title="2 栈、堆、方法区关系"></a>2 栈、堆、方法区关系</h2><img src="/2023/03/04/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-04-JVM-%E6%96%B9%E6%B3%95%E5%8C%BA/1677923243230.png" srcset="/img/loading.gif" lazyload class="" width="1677923243230">
 
 <h2 id="3-参数设置"><a href="#3-参数设置" class="headerlink" title="3 参数设置"></a>3 参数设置</h2><p>jdk8及以后，元数据区大小可以使用参数-XX:MetaspaceSize和-XX:MaxMetaspaceSize指定。XX:MaxMetaspaceSize 的值是-1，即没有限制。</p>
 <p>与永久代不同，如果不指定大小,默认情况下,虚拟机会耗尽所有的可用系统内存。如果元数据区发生溢出，虚拟机一样会抛出异常OutOfMemoryError。</p>
@@ -297,7 +301,7 @@
 <li>异常表</li>
 <li>每个异常处理的开始位置、结束位置、代码处理在程序计数器中的偏移地址、被捕获的异常类的常量池索引</li>
 </ul>
-
+<img src="/2023/03/04/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-04-JVM-%E6%96%B9%E6%B3%95%E5%8C%BA/1677923931981.png" srcset="/img/loading.gif" lazyload class="" width="1677923931981">
 
 <h2 id="5-垃圾回收"><a href="#5-垃圾回收" class="headerlink" title="5 垃圾回收"></a>5 垃圾回收</h2><p>方法区的垃圾收集主要回收两部分内容:常量池中废弃的常量和不再使用的类型。</p>
 
@@ -397,12 +401,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-java%E7%BA%BF%E7%A8%8B%E6%B1%A0/" title="java线程池">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">java线程池</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-04-JVM%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88/" title="JVM虚拟机栈">
-                        <span class="hidden-mobile">JVM虚拟机栈</span>
+                      <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-04-JVM-%E5%A0%86%E5%86%85%E5%AD%98/" title="JVM-堆内存">
+                        <span class="hidden-mobile">JVM-堆内存</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

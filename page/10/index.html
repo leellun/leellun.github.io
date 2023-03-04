@@ -219,6 +219,146 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/07/16/k8s/k8s%E6%8E%A7%E5%88%B6%E5%99%A8/RC%E4%B8%8ERS%E4%B8%8EDeployment%E5%85%B3%E8%81%94/" target="_self">
+          RC与RS与Deployment关联
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/07/16/k8s/k8s%E6%8E%A7%E5%88%B6%E5%99%A8/RC%E4%B8%8ERS%E4%B8%8EDeployment%E5%85%B3%E8%81%94/" target="_self">
+        <div>
+          RCRC (ReplicationController )主要的作用就是用来确保容器应用的副本数始终保持在用户定义的副本数。即如果有容器异常退出,会自动创建新的Pod来替代:而如果异常多出来的容器也会自动回收 Kubernetes 官方建议使用RS (ReplicaSet)替代RC (ReplicationController)进行部署,RS跟RC没有本质的不同,只是名字不一样,并且RS支持集合式
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-07-16 10:24" pubdate>
+              2021-07-16
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/07/13/k8s/k8s%E6%8E%A7%E5%88%B6%E5%99%A8/kubernetes%E6%8E%A7%E5%88%B6%E5%99%A8DaemonSet/" target="_self">
+          kubernetes控制器DaemonSet
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/07/13/k8s/k8s%E6%8E%A7%E5%88%B6%E5%99%A8/kubernetes%E6%8E%A7%E5%88%B6%E5%99%A8DaemonSet/" target="_self">
+        <div>
+          什么是DaemonSet？DaemonSet 确保全部(或者一些) Node上运行一个Pod的副本。当有Node加入集群时,也会为他们新增一个Pod.当有Node从集群移除时,这些Pod也会被回收。删除DaemonSet将会删除它创建的所有Pod。 DaemonSet 的一些典型用法：  在每个节点上运行集群守护进程，集群存储daemon,例如在每个Node上运行glusterd,ceph。 在每
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-07-13 13:32" pubdate>
+              2021-07-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/06/30/k8s/k8s%E6%8E%A7%E5%88%B6%E5%99%A8/kubernetes%E5%9F%BA%E7%A1%80%E6%8E%A7%E5%88%B6%E5%99%A8/" target="_self">
           kubernetes基础控制器
         </a>
@@ -769,149 +909,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/10/18/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2020-10-18-aqs%E4%B9%8BJava8-Unsafe%E7%B1%BB%E8%A7%A3%E6%9E%90/" target="_self">
-          aqs之Java8 Unsafe类解析
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/18/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2020-10-18-aqs%E4%B9%8BJava8-Unsafe%E7%B1%BB%E8%A7%A3%E6%9E%90/" target="_self">
-        <div>
-          一、介绍Unsafe是位于sun.misc包下的一个类，主要提供一些用于执行低级别、不安全操作的方法，比如  直接访问系统内存资源 自主管理内存资源等  可以使用Unsafe的native方法间接访问底层方法，增强Java语言底层资源操作能力方面起到了很大的作用。通过native使Unsafe有操作内存空间的能力，这也增加了程序发生相关指针问题的风险。在程序中过度、不正确使用Unsafe类会使得程
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-18 20:14" pubdate>
-              2020-10-18
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">#并发编程</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/10/14/%E5%90%8E%E7%AB%AF/java/aqs/2020-10-14-aqs%E4%B9%8BJava8-CyclicBarrier%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" target="_self">
-          aqs之Java8 CyclicBarrier源码分析
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/14/%E5%90%8E%E7%AB%AF/java/aqs/2020-10-14-aqs%E4%B9%8BJava8-CyclicBarrier%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" target="_self">
-        <div>
-          一、介绍让一组线程到达一个屏障（也可以叫同步点）时被阻塞，直到最后一个线程到达屏障 12345678910111213141516171819202122private static CyclicBarrier c=new CyclicBarrier(); public static void main(String[] args) &#123;        new Thread(new Run
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-14 20:14" pubdate>
-              2020-10-14
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/aqs/">#aqs</a>
-            
-              <a href="/tags/%E6%BA%90%E7%A0%81/">#源码</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/9/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/#board">8</a><a class="page-number" href="/page/9/#board">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/#board">11</a><a class="page-number" href="/page/12/#board">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/#board">14</a><a class="extend next" rel="next" href="/page/11/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/9/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/#board">8</a><a class="page-number" href="/page/9/#board">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/#board">11</a><a class="page-number" href="/page/12/#board">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/#board">15</a><a class="extend next" rel="next" href="/page/11/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
