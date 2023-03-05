@@ -219,6 +219,76 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/08/10/k8s/pod/k8s%20pod%E9%87%8D%E5%90%AF%E7%AD%96%E7%95%A5%E4%B8%8E%E7%8A%B6%E6%80%81/" target="_self">
+          k8s pod重启策略与状态
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/08/10/k8s/pod/k8s%20pod%E9%87%8D%E5%90%AF%E7%AD%96%E7%95%A5%E4%B8%8E%E7%8A%B6%E6%80%81/" target="_self">
+        <div>
+          重启策略PodSpec中有一个 restartPolicy字段，可能的值为Always、OnFailure和Never。默认为Always.  restartPolicy 适用于Pod中的所有容器。restartPolicy仅指通过同一节点上的kubelet 重新启动容器。失败的容器由kubelet以五分钟为上限的指数退避延迟(10秒,20秒, 40秒.)重新启动,并在成功执行十分钟后重置。如Po
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-10 21:32" pubdate>
+              2021-08-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/kubernetes/">#kubernetes</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/08/08/k8s/pod/k8s%20pod%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E2%80%94%E6%8E%A2%E9%92%88/" target="_self">
           k8s pod生命周期—探针
         </a>
@@ -809,76 +879,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2021-07-29 19:38" pubdate>
               2021-07-29
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/k8s/" class="category-chain-item">k8s</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/kubernetes/">#kubernetes</a>
-            
-              <a href="/tags/k8s/">#k8s</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/07/27/k8s/basic/k8s%E8%B5%84%E6%BA%90%E6%B8%85%E5%8D%95%E5%8F%8A%E5%B8%B8%E7%94%A8%E5%AD%97%E6%AE%B5/" target="_self">
-          k8s资源清单及常用字段
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/07/27/k8s/basic/k8s%E8%B5%84%E6%BA%90%E6%B8%85%E5%8D%95%E5%8F%8A%E5%B8%B8%E7%94%A8%E5%AD%97%E6%AE%B5/" target="_self">
-        <div>
-          K8s中所有的内容都抽象为资源,资源实例化之后,叫做对象。 名称空间级别工作负载型资源(workload ): Pod、 ReplicaSet, Deployment、 StatefulSet、DaemonSet、Job、CronJob (ReplicationController 在vl.11 版本被废弃) 服务发现及负载均衡型资源( ServiceDiscovery LoadBalance )
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-27 19:38" pubdate>
-              2021-07-27
             </time>
           </div>
         

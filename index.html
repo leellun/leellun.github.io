@@ -219,6 +219,74 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/03/05/%E5%90%8E%E7%AB%AF/java/%E9%97%AE%E9%A2%98/2023-03-05-java%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84ConcurrentHashMap/" target="_self">
+          java数据结构ConcurrentHashMap
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/03/05/%E5%90%8E%E7%AB%AF/java/%E9%97%AE%E9%A2%98/2023-03-05-java%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84ConcurrentHashMap/" target="_self">
+        <div>
+          1.HashMap 和 ConcurrentHashMap 的区别JDK1.7 ConcurrentHashMap对整个桶数组进行了分割分段(Segment)，然后在每一个分段上都用lock锁进行保护，相对于HashTable的synchronized锁的粒度更精细了一些，并发性能更好，而HashMap没有锁机制，不是线程安全的。（JDK1.8之后ConcurrentHashMap启用了一种全新的
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-03-05 10:18" pubdate>
+              2023-03-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ConcurrentHashMap/">#ConcurrentHashMap</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E9%97%AE%E9%A2%98/2023-03-04-%E4%B8%BA%E4%BB%80%E4%B9%88HashMap%E7%9A%84%E5%BA%95%E5%B1%82%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6%E4%B8%BA%E4%BD%95%E6%80%BB%E6%98%AF2%E7%9A%84n%E6%AC%A1%E6%96%B9%EF%BC%9F/" target="_self">
           为什么HashMap的底层数组长度为何总是2的n次方？
         </a>
@@ -356,14 +424,14 @@
       <h1 class="index-header">
         
         <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_self">
-          HashMap面试题
+          java数据结构HashMap
         </a>
       </h1>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_self">
         <div>
-          1、 影响HashMap性能的重要参数初始容量：创建哈希表(数组)时桶的数量，默认为 16  负载因子：哈希表在其容量自动增加之前可以达到多满的一种尺度，默认为 0.75  2、HashMap工作原理  3 、HashMap 的底层数组长度为何总是2的n次方HashMap根据用户传入的初始化容量，利用无符号右移和按位或运算等方式计算出第一个大于该数的2的幂。  使数据分布均匀，减少碰撞 当leng
+          1、 影响HashMap性能的重要参数初始容量：创建哈希表(数组)时桶的数量，默认为 16  负载因子：哈希表在其容量自动增加之前可以达到多满的一种尺度，默认为 0.75  2、HashMap工作原理  HashMap底层是hash数组和单向链表实现,数组中的每个元素都是链表,由Node内部类(实现Map.Entry&lt;K,V&gt;接口)实现,HashMap通过put&amp;get方法存储
         </div>
       </a>
 
@@ -780,74 +848,6 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
             <time datetime="2023-03-03 17:24" pubdate>
-              2023-03-03
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/jvm/">#jvm</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/03/03/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-03-JVM%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BB%93%E6%9E%84/" target="_self">
-          JVM虚拟机结构
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/03/03/%E5%90%8E%E7%AB%AF/java/jvm/2023-03-03-JVM%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BB%93%E6%9E%84/" target="_self">
-        <div>
-          1 类加载子系统类加载子系统负责从文件系统或者网络中加载Class信息，加载的类信息存放于一块称为方法区的内存空间。 2 方法区就是存放类信息、常量信息、包括字符串字面量和数字常量(这部分常量信息是Class文件中常量池部分的内存映射)等。 方法区在java7和Java8以后有什么不同？ 1 方法区是JVM规范的一个概念定义，并不是一个具体的实现，每一个JVM的实现都可以有各自的实现；  2
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-03-03 17:14" pubdate>
               2023-03-03
             </time>
           </div>
