@@ -219,6 +219,146 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2020/10/11/%E5%90%8E%E7%AB%AF/java/aqs/2020-10-11-aqs%E4%B9%8BJava8-Semaphore%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" target="_self">
+          aqs之Java8 Semaphore源码分析
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/11/%E5%90%8E%E7%AB%AF/java/aqs/2020-10-11-aqs%E4%B9%8BJava8-Semaphore%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" target="_self">
+        <div>
+          一、介绍Semaphore（信号量）是用来控制同时访问特定资源的线程数量，它通过协调各个线程，以保证合理的使用公共资源。 Semaphore的构造方法Semaphore（int permits）接受一个整型的数字，表示可用的许可证数量。Semaphore（10）表示允许10个线程获取许可证，也就是最大并发数是10。 Semaphore的acquire()方法获取一个许可证，使用完之后调用relea
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-11 20:14" pubdate>
+              2020-10-11
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/aqs/">#aqs</a>
+            
+              <a href="/tags/%E6%BA%90%E7%A0%81/">#源码</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/10/11/%E5%90%8E%E7%AB%AF/java/aqs/2020-10-12-aqs%E4%B9%8BJava8-ReadWriteLock%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" target="_self">
+          aqs之Java8 ReadWriteLock源码分析
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/10/11/%E5%90%8E%E7%AB%AF/java/aqs/2020-10-12-aqs%E4%B9%8BJava8-ReadWriteLock%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" target="_self">
+        <div>
+          一、介绍ReentrantReadWriteLock 可重入的读写锁。读写锁的特点读读之间不互斥，读写或写写之间是互斥的。 ReentrantReadWriteLock 中的读取锁是共享锁，写入锁是独占锁。写锁只有一个线程能获取到，而读锁可以多个线程同时获取 ReentrantReadWriteLock 利用一个低16位表示排他（写）锁定计数，高16位表示共享（读）锁计数的锁状态，来控制锁的读写顺
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-11 20:14" pubdate>
+              2020-10-11
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/aqs/">#aqs</a>
+            
+              <a href="/tags/%E6%BA%90%E7%A0%81/">#源码</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2020/09/30/%E5%90%8E%E7%AB%AF/java/aqs/2020-09-27-aqs%E4%B9%8BJava8-Condition%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" target="_self">
           aqs之Java8 Condition源码分析
         </a>
@@ -758,146 +898,6 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/rabbitmq/">#rabbitmq</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/03/06/centos/centos7%E9%98%B2%E7%81%AB%E5%A2%99%E9%85%8D%E7%BD%AE/" target="_self">
-          centos7防火墙配置
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/03/06/centos/centos7%E9%98%B2%E7%81%AB%E5%A2%99%E9%85%8D%E7%BD%AE/" target="_self">
-        <div>
-          一、防火墙服务12345678910yum install firewalld //防火墙安装systemctl status firewalld  或者 firewall-cmd --state //防火墙状态查看systemctl disable firewalld //停止systemctl stop firewalld //禁用systemctl start firewalld //启动s
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-03-06 20:14" pubdate>
-              2020-03-06
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/linux/" class="category-chain-item">linux</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/centos/">#centos</a>
-            
-              <a href="/tags/%E9%98%B2%E7%81%AB%E5%A2%99/">#防火墙</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/03/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/nosql/NoSql%E5%85%A5%E9%97%A8%E5%92%8C%E6%A6%82%E8%BF%B0/" target="_self">
-          NoSql入门和概述
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/03/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/nosql/NoSql%E5%85%A5%E9%97%A8%E5%92%8C%E6%A6%82%E8%BF%B0/" target="_self">
-        <div>
-          背景对于以前采用数据存储的业务数据大多数采用的是MySQL，而对于作伪数据多样性，及并发上，就出现性能瓶颈。 而互联网需要数据海量性、多样性、实时性，需求需要高性能、高可扩、高性能。 所以就出现了非关系数据库(NoSQL)，因为一些类型的数据存储不需要固定的模式，无需多余操作就可以横向扩展。 特性易扩展NoSQL数据库种类繁多，但是一个共同的特点都是去掉关系数据库的关系型特性。数据之间无关系，这样
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-03-06 20:14" pubdate>
-              2020-03-06
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/" class="category-chain-item">redis</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/centos/">#centos</a>
-            
-              <a href="/tags/nosql/">#nosql</a>
             
           </div>
         

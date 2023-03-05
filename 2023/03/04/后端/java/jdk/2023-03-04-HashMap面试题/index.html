@@ -23,11 +23,15 @@
 <meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
 <meta property="og:description" content="1、 影响HashMap性能的重要参数初始容量：创建哈希表(数组)时桶的数量，默认为 16  负载因子：哈希表在其容量自动增加之前可以达到多满的一种尺度，默认为 0.75  2、HashMap工作原理  HashMap底层是hash数组和单向链表实现,数组中的每个元素都是链表,由Node内部类(实现Map.Entry&lt;K,V&gt;接口)实现,HashMap通过put&amp;get方法存储">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/1677940989772.png">
+<meta property="og:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/1677997509766.png">
+<meta property="og:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/1677998288004.png">
 <meta property="article:published_time" content="2023-03-04T12:18:54.000Z">
-<meta property="article:modified_time" content="2023-03-05T07:40:26.937Z">
+<meta property="article:modified_time" content="2023-03-05T08:26:32.389Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="HashMap">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/1677940989772.png">
   
   
   
@@ -275,7 +279,7 @@
                 
                 <h3 id="1、-影响HashMap性能的重要参数"><a href="#1、-影响HashMap性能的重要参数" class="headerlink" title="1、 影响HashMap性能的重要参数"></a>1、 影响HashMap性能的重要参数</h3><p>初始容量：<code>创建哈希表(数组)时桶的数量，默认为 16</code> </p>
 <p>负载因子：哈希表在其容量自动增加之前可以达到多满的一种尺度，默认为 0.75 </p>
-<h3 id="2、HashMap工作原理"><a href="#2、HashMap工作原理" class="headerlink" title="2、HashMap工作原理"></a>2、HashMap工作原理</h3>
+<h3 id="2、HashMap工作原理"><a href="#2、HashMap工作原理" class="headerlink" title="2、HashMap工作原理"></a>2、HashMap工作原理</h3><img src="/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/1677940989772.png" srcset="/img/loading.gif" lazyload class="" width="1677940989772">
 
 <p>HashMap底层是hash数组和单向链表实现,数组中的每个元素都是链表,由Node内部类(实现Map.Entry&lt;K,V&gt;接口)实现,HashMap通过put&amp;get方法存储和获取。</p>
 <p>存储对象时,将K/V键值传给put()方法:</p>
@@ -315,10 +319,10 @@
 <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs haxe"><span class="hljs-comment">//通过比较hash和旧的容量的与值比较是否为0判定是否需要位置变化</span><br><span class="hljs-keyword">if</span> ((e.hash &amp; oldCap) == <span class="hljs-number">0</span>) &#123;<br>	<span class="hljs-keyword">new</span><span class="hljs-type">Tab</span>[j] = loHead;<br>&#125;<span class="hljs-keyword">else</span>&#123;<br>	<span class="hljs-comment">//(e.hash &amp; oldCap) == 1 这里是需要重新更新位置变化，位置变化为 当前位置+旧的容量大小</span><br>    <span class="hljs-keyword">new</span><span class="hljs-type">Tab</span>[j + oldCap] = hiHead;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>借用一张网上的图片：</p>
-
+<img src="/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/1677997509766.png" srcset="/img/loading.gif" lazyload class="" width="1677997509766">
 
 <p>可以看出hash&amp;(oldCap-1)=15的节点上的链表经过resize后，转变为右图。左图位置15的链表上有5个数据节点，扩容后3个节点位置不变，2个节点的大小变为原来的索引位置15+原来的容量大小16=31</p>
-<h3 id="9-hash计算规则"><a href="#9-hash计算规则" class="headerlink" title="9 hash计算规则"></a>9 hash计算规则</h3>
+<h3 id="9-hash计算规则"><a href="#9-hash计算规则" class="headerlink" title="9 hash计算规则"></a>9 hash计算规则</h3><img src="/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/1677998288004.png" srcset="/img/loading.gif" lazyload class="" width="1677998288004">
 
 <p>为什么这里把key的hashcode取出来，然后把它右移16位，然后取异或？</p>
 <p>因为int是4个字节，也就是32位，大概是有40亿的空间，如果哈希函数运用的比较松散，一般是很难出现哈希碰撞的。但是现实中一个长度为40亿的数组内存是放不下的并且HashMap在扩容前的数组的默认初始值为16，因此直接拿Hashcode值来用是不现实的。因此需要做一些运算。我们右移16位也即是把高位的数据右移到低位的16位，然后与自己做异或，那就是把高位和低位的数据进行混合，以此来加大低位的随机性，同时混合后的低位掺杂了高位的特征，这样高位的信息也被变相保存了下来。这么做主要是从速度，功效和质量来考虑的。</p>
