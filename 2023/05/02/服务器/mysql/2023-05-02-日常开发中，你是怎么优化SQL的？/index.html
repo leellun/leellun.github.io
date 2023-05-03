@@ -24,7 +24,7 @@
 <meta property="og:description" content="1、考虑分析 分析慢查询日志 使用explain查看执行计划 索引优化 深分页优化 避免全表扫描 避免返回不必要的数据（如select具体字段而不是select*） 使用合适的数据类型（如可以使用int类型的话，就不要设计为varchar） 优化sql结构（如join优化等等） 适当分批量进行 (如批量更新、删除) 定期清理无用的数据 适当分库分表 读写分离  2、深分页优化标签记录法  就是标记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-05-02T12:14:02.000Z">
-<meta property="article:modified_time" content="2023-05-03T14:26:04.545Z">
+<meta property="article:modified_time" content="2023-05-03T15:03:08.346Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary_large_image">
@@ -219,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.1k 字
+          3.5k 字
         
       </span>
     
@@ -230,7 +230,7 @@
         
         
         
-          27 分钟
+          30 分钟
         
       </span>
     
@@ -398,7 +398,14 @@
 <li>in元素不要过多</li>
 <li>尽量用union all替换union</li>
 </ul>
-<h2 id="9-后续更多"><a href="#9-后续更多" class="headerlink" title="9 后续更多"></a>9 后续更多</h2>
+<h2 id="9、order-by查询效率慢-如何优化"><a href="#9、order-by查询效率慢-如何优化" class="headerlink" title="9、order by查询效率慢,如何优化."></a>9、order by查询效率慢,如何优化.</h2><p>order by排序，分为全字段排序和rowid排序。它是拿max_length_for_sort_data和结果行数据长度对比，如果结果行数据长度超过max_length_for_sort_data这个值，就会走rowid排序，相反，则走全字段排序。 </p>
+<p>rowid排序，一般需要回表去找满足条件的数据，所以效率会慢一点.如果是order by排序,可能会借助磁盘文件排序的话，效率就更慢一点. </p>
+<p>如何优化order by的文件排序?</p>
+<ul>
+<li>因为数据是无序的，所以就需要排序。如果数据本身是有序的，那就不会再用到文件排序啦。而索引数据本身是有序的，我们通过建立索引来优化order by语句。</li>
+<li>我们还可以通过调整max_length_for_sort_data、sort_buffer_size等参数优化；</li>
+</ul>
+<h2 id="10-后续更多"><a href="#10-后续更多" class="headerlink" title="10 后续更多"></a>10 后续更多</h2>
                 
               </div>
             

@@ -219,6 +219,74 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/05/03/%E6%9C%8D%E5%8A%A1%E5%99%A8/mysql/2023-05-03-group-by-%E6%9F%A5%E8%AF%A2%E6%85%A2%E7%9A%84%E8%AF%9D,%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%EF%BC%9F/" target="_self">
+          group by 查询慢的话,如何优化？
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/05/03/%E6%9C%8D%E5%8A%A1%E5%99%A8/mysql/2023-05-03-group-by-%E6%9F%A5%E8%AF%A2%E6%85%A2%E7%9A%84%E8%AF%9D,%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%EF%BC%9F/" target="_self">
+        <div>
+          1、说明根据一定的规则，进行分组。  group by可能会慢在哪里？因为它既用到临时表，又默认用到排序。有时候还可能用到磁盘临时表。   如果执行过程中，会发现内存临时表大小到达了上限（控制这个上限的参数就是tmp_table_size），会把内存临时表转成磁盘临时表。 如果数据量很大，很可能这个查询需要的磁盘临时表，就会占用大量的磁盘空间。  2、如何优化group by呢? group by
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-03 20:14" pubdate>
+              2023-05-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mysql/" class="category-chain-item">mysql</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/mysql/">#mysql</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/05/02/%E5%90%8E%E7%AB%AF/%E9%AB%98%E5%B9%B6%E5%8F%91/2023-05-02-%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%B9%82%E7%AD%89%E6%80%A7%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%EF%BC%9F/" target="_self">
           接口的幂等性如何设计？
         </a>
@@ -818,74 +886,6 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/HashMap/">#HashMap</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/aqs/2023-03-04-Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8BLock/" target="_self">
-          Java并发编程之Lock
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/aqs/2023-03-04-Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8BLock/" target="_self">
-        <div>
-          1、Lock接口Java SE 5之后，并发包中新增了Lock接口（以及相关实现类）用来实现锁功能，它提供了与synchronized关键字类似的同步功能，只是在使用时需要显式地获取和释放锁。 使用synchronized关键字将会隐式地获取锁，但是它将锁的获取和释放固化了，也就是先获取再释放。 Lock 接口比同步方法和同步块提供了更具扩展性的锁操作。 它允许更灵活的结构，可以具有完全不同的性质
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-03-04 20:18" pubdate>
-              2023-03-04
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">#并发编程</a>
             
           </div>
         
