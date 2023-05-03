@@ -219,6 +219,350 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2020/03/03/centos/Centos%20%E2%80%93%20%E6%9F%A5%E7%9C%8B%E3%80%81%E4%BF%AE%E6%94%B9%E3%80%81%E6%9B%B4%E6%96%B0%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/" target="_self">
+          Centos – 查看、修改、更新系统时间
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/03/03/centos/Centos%20%E2%80%93%20%E6%9F%A5%E7%9C%8B%E3%80%81%E4%BF%AE%E6%94%B9%E3%80%81%E6%9B%B4%E6%96%B0%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/" target="_self">
+        <div>
+          一、查看系统时间12[root@k8s-master01 ~]# date2022年 07月 10日 星期日 13:10:18 CST  二、手动修改系统时间（1）设置时间 date -s &quot;20190712 18:30:50&quot; （2）保存设置hwclock --systohc 三、通过网络同步时间（1）安装 ntpdate 命令 1yum install -y ntpdate
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-03-03 21:14" pubdate>
+              2020-03-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/linux/" class="category-chain-item">linux</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/centos/">#centos</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/02/09/centos/linux%E5%9F%BA%E7%A1%80/" target="_self">
+          linux基础
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/02/09/centos/linux%E5%9F%BA%E7%A1%80/" target="_self">
+        <div>
+          一 系统文件夹介绍 /    根目录分区  /boot启动Linux的核心文件  /bin：存放最常用命令；   /dev：设备文件；  /etc：存放各种配置文件；  /home：用户主目录；  /lib：系统最基本的动态链接共享库；  /mnt：一般是空的，用来临时挂载别的文件系统；  /proc：虚拟目录，是内存的映射；  /sbin：系统管理员命令存放目录；  /usr：最大的目录，存许应
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-02-09 20:14" pubdate>
+              2020-02-09
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/linux/" class="category-chain-item">linux</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/centos/">#centos</a>
+            
+              <a href="/tags/linux/">#linux</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/01/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/redis%E9%9B%86%E7%BE%A4/" target="_self">
+          redis集群
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/01/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/redis%E9%9B%86%E7%BE%A4/" target="_self">
+        <div>
+          redis集群一、介绍Redis 集群使用数据分片（sharding）而非一致性哈希（consistency hashing）来实现： 一个 Redis 集群包含 16384 个哈希槽（hash slot）， 数据库中的每个键都属于这 16384 个哈希槽的其中一个， 集群使用公式 CRC16(key) % 16384 来计算键 key 属于哪个槽， 其中 CRC16(key) 语句用于计算键 k
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-01-22 20:14" pubdate>
+              2020-01-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/" class="category-chain-item">redis</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/redis/">#redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/01/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/mongodb/mongodb%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8%E6%96%87%E6%A1%A3/" target="_self">
+          mongodb入门文档
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/01/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/mongodb/mongodb%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8%E6%96%87%E6%A1%A3/" target="_self">
+        <div>
+          一、介绍MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。 MongoDB 将数据存储为一个文档，数据结构由键值(key=&gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。 优点  1  满足对数据库的高并发读写 2  对海量数据的高效存储和访问 3  对数据库高扩展性和高可用性 4  灵活的数据结构，满足
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-01-07 20:14" pubdate>
+              2020-01-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mongodb/" class="category-chain-item">mongodb</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/mongodb/">#mongodb</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/" target="_self">
+          网络七层协议
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/" target="_self">
+        <div>
+          七层协议图  七层协议走势图    七层协议定义   应用层 网络服务与最终用户的一个接口(用户操作)人机交互窗口，把人的语言输入到计算机当中。    表示层 编码，解码，加密，解密（二进制）   会话层 建立，维持，终止会话进程（QQ号码）   传输层 通过端口号区分不同的服务，数据分段（受MTU限制），确认、重传、流控、排序（TCP）   网络层 通过IP地址（IPV4、IPV6）进行逻辑寻址
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-01-06 20:14" pubdate>
+              2020-01-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/" class="category-chain-item">网络</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/centos/">#centos</a>
+            
+              <a href="/tags/%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/">#七层协议</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/springboot%E9%9B%86%E6%88%90redis/" target="_self">
           springboot快速集成redis
         </a>
@@ -553,353 +897,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/ElasticSerach%E5%85%A5%E9%97%A8/" target="_self">
-          elasticsearch基本操作
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/03/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/ElasticSerach%E5%85%A5%E9%97%A8/" target="_self">
-        <div>
-          一、HTTP操作1.1 HTTP请求方法   请求方法 说明 开始版本    GET 请求会显示请求指定的资源。一般来说GET方法应该只用于数据的读取，而不应当用于会产生副作用的非幂等的操作中。 HTTP/0.9   POST 向指定资源提交数据，请求服务器进行处理，请求数据会被包含在请求体中。POST方法是非幂等的方法，因为这个请求可能会创建新的资源或修改现有资源。 HTTP/1.0   HEA
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-25 18:14" pubdate>
-              2019-03-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/" class="category-chain-item">elasticsearch</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/elasticsearch/">#elasticsearch</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elk/" target="_self">
-          elasticsearch比较全面的教程
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/03/25/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elk/" target="_self">
-        <div>
-          1. ElasticSearch简介1.1 ES简介Elasticsearch（以下简称 ES） 是使用java开发，基于Lucene、分布式、通过Restful方式进行交互的近实时搜索平台框架。它的特点有：分布式，零配置，自动发现，索引自动分片，索引副本机制，restful风格接口，多数据源，自动搜索负载等。 ES 是 ELK 架构技术栈的组件之一。 ELK（ES+Logstash+Kibana
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-25 18:14" pubdate>
-              2019-03-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/" class="category-chain-item">elasticsearch</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/elasticsearch/">#elasticsearch</a>
-            
-              <a href="/tags/elk/">#elk</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/24/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticsearch/" target="_self">
-          ElasticSearch基本教程和架构说明
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/03/24/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticsearch/" target="_self">
-        <div>
-          elasticsearch一、介绍1.1 ES简介Elasticsearch(以下简称ES)是使用iava开发，基于Lucene、分布式、通过Restful7方式进行交互的近实时搜索平台框架。它的特点有：分布式，零配置，自动发现，索引自动分片，索引副本机制，restful风格接口，多数据源，自动搜索负载等。 ES是ELK架构技术栈的组件之一。 ELK(ES+Logstash+Kibana)是一个免
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-24 19:14" pubdate>
-              2019-03-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/" class="category-chain-item">elasticsearch</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/elasticsearch/">#elasticsearch</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/24/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticsearch%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" target="_self">
-          elasticsearch配置文件
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/03/24/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/elasticsearch%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" target="_self">
-        <div>
-          一、配置文件1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586# -----------------------------
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-24 18:19" pubdate>
-              2019-03-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/" class="category-chain-item">elasticsearch</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/elasticsearch/">#elasticsearch</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/ElasticSearch%20%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98/" target="_self">
-          ElasticSearch 安装注意问题
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2019/03/22/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/ElasticSearch%20%E6%B3%A8%E6%84%8F%E9%97%AE%E9%A2%98/" target="_self">
-        <div>
-          1 如果系统配置 JAVA_HOME ，那么使用系统默认的 JDK ，如果没有配置使用自带的 JDK。 2 若启动失败，排查是否内存问题 config/jvm.options: 1234//JVM初始内存Xms1g//JVM最大内存Xmx1g  3 出现max virtual memory areas vm.max_map_count [65530] likely too low, increas
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-03-22 18:14" pubdate>
-              2019-03-22
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/elasticsearch/" class="category-chain-item">elasticsearch</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/elasticsearch/">#elasticsearch</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/13/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#board">12</a><a class="page-number" href="/page/13/#board">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/#board">15</a><a class="extend next" rel="next" href="/page/15/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/13/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#board">12</a><a class="page-number" href="/page/13/#board">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/#board">15</a><a class="page-number" href="/page/16/#board">16</a><a class="extend next" rel="next" href="/page/15/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
