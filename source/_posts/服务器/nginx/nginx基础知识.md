@@ -263,7 +263,36 @@ deny all;
 
 ```
 
+# 9 图片裁剪
 
+要实现nginx的图片裁剪功能，需要在编译nginx时加入第三方模块ngx_http_image_filter_module，该模块提供了图片处理功能，包括裁剪、缩放、旋转等。 
 
+```
+./configure --with-http_image_filter_module
+```
 
+```
+http {
+    ...
+    # 在http模块中添加 image_filter 指令
+    image_filter        on;
+    # 添加 image_filter_jpeg_quality 指令，指定jpeg图片压缩质量
+    image_filter_jpeg_quality 75;
+    # 添加 image_filter_buffer 指令，指定缓存大小
+    image_filter_buffer 2M;
+    ...
+}
 
+```
+
+# 10 常用命令
+
+1. 启动Nginx：`sudo nginx`
+2. 停止Nginx：`sudo nginx -s stop`
+3. 重载Nginx配置文件：`sudo nginx -s reload`
+4. 重新启动Nginx：`sudo nginx -s reopen`
+5. 检查Nginx配置文件语法：`sudo nginx -t`
+6. 查看Nginx版本号：`sudo nginx -v`
+7. 查看Nginx的编译配置选项：`sudo nginx -V`
+8. 查看Nginx当前连接数：`sudo nginx -V`
+9. nginx -c nginx.conf 指定配置文件启动

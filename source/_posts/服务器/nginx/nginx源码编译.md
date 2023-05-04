@@ -196,3 +196,11 @@ Commercial support is available at
 ./nginx -s quit 处理完关于nginx的所有请求后再停止服务
 ```
 
+# 四、示例
+
+```
+./configure --prefix=/usr/local/nginx --error-log-path=/var/log/nginx/error.log \
+--http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx/nginx.pid --lock-path=/var/lock/nginx.lock --user=nginx --group=nginx \
+--with-http_ssl_module --with-http_image_filter_module --with-http_flv_module --with-http_stub_status_module --with-http_gzip_static_module
+```
+
