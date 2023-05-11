@@ -285,6 +285,27 @@ http {
 
 ```
 
+例如：
+
+```
+        location ~ ^/(.*)\.(png|jpg|jpeg|gif)$ {
+            root /opt/img;
+
+            set $img_width -;
+            set $img_height -;
+            # 获取参数size的值
+            if ($arg_size ~* "^(\d+)x(\d+)$") {
+              set $img_width $1;
+              set $img_height $2;
+            }
+            # 裁剪图片并且调整大小
+            image_filter resize $img_width $img_height;
+
+            image_filter_jpeg_quality 75;
+            image_filter_buffer 10M;
+        }
+```
+
 # 10 常用命令
 
 1. 启动Nginx：`sudo nginx`
@@ -296,3 +317,96 @@ http {
 7. 查看Nginx的编译配置选项：`sudo nginx -V`
 8. 查看Nginx当前连接数：`sudo nginx -V`
 9. nginx -c nginx.conf 指定配置文件启动
+
+# 11 语法规则
+
+**语法规则：**
+
+- = 开头表示精确匹配
+- `^~` 开头表示uri以某个常规字符串开头，理解为匹配url路径即可(非正则)
+- `~` 开头表示区分大小写的正则匹配
+- `~*` 开头表示不区分大小写的正则匹配
+- `!~`和`!~*`分别为区分大小写不匹配及不区分大小写不匹配的正则
+- `/` 通用匹配，任何请求都会匹配到
+
+优先级：
+
+- 等号类型（=）的优先级最高。一旦匹配成功，则不再查找其他location的匹配项
+- ^~和通用匹配。使用前缀匹配，不支持正则表达式，如果有多个location匹配成功的话，不会终止匹配过程，会匹配表达式最长的那个(下方有例子)
+- 如果上一步得到的最长的location为^~类型，则表示阻断正则表达式，不再匹配正则表达式
+- 如果上一步得到的最长的location不是^~类型，继续匹配正则表达式，只要有一个正则成功，则使用这个正则的location，立即返回结果，并结束解析过程
+
+# 12 缓存设置
+
+```
+http{
+    proxy_connect_timeout 10;
+    proxy_read_timeout 180;
+    proxy_send_timeout 5;
+    proxy_buffer_size 16k;
+    proxy_buffers 4 32k;
+    proxy_busy_buffers_size 96k;
+    proxy_temp_file_write_size 96k;
+    proxy_temp_path /tmp/temp_dir;
+    proxy_cache_path /tmp/cache levels=1:2 keys_zone=cache_one:100m inactive=1d max_size=10g;
+
+
+    server {
+        listen       80 default_server;
+        server_name  localhost;
+        root /blog/;
+
+        location / {
+
+        }
+
+        # 静态文件html缓存
+        location ~ /archives/.*\.html$ {
+              proxy_pass http://127.0.0.1:8000$request_uri;
+              proxy_redirect off;
+              proxy_cache cache_one;
+              proxy_cache_valid 200 304 12h;
+              proxy_cache_valid 301 302 1d;
+              proxy_cache_valid any 5m;
+              expires 1d;
+              add_header wall  "hey, nginx静态文件缓存";
+        }
+}
+```
+
+ http层：
+
+```
+proxy_connect_timeout服务器连接的超时时间
+
+proxy_read_timeout连接成功后,等候后端服务器响应时间
+
+proxy_send_timeout后端服务器数据回传时间
+
+proxy_buffer_size缓冲区的大小
+
+proxy_buffers每个连接设置缓冲区的数量为number，每块缓冲区的大小为size
+
+proxy_busy_buffers_size开启缓冲响应的功能以后，在没有读到全部响应的情况下，写缓冲到达一定大小时，nginx一定会向客户端发送响应，直到缓冲小于此值。
+
+proxy_temp_file_write_size设置nginx每次写数据到临时文件的size(大小)限制
+
+proxy_temp_path从后端服务器接收的临时文件的存放路径
+```
+
+server层：
+
+```
+/archives/.*.html$ 这里说是正则访问/archives/以.html结尾的url进行匹配
+
+proxy_pass nginx缓存里拿不到资源，向该地址转发请求，拿到新的资源，并进行缓存
+
+proxy_redirect 设置后端服务器“Location”响应头和“Refresh”响应头的替换文本
+
+proxy_set_header 允许重新定义或者添加发往后端服务器的请求头
+
+proxy_cache 指定用于页面缓存的共享内存，对应http层设置的keys_zone
+
+proxy_cache_valid 为不同的响应状态码设置不同的缓存时间
+```
+

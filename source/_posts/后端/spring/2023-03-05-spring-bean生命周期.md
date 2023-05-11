@@ -8,6 +8,8 @@ tags:
   - spring
 ---
 
+## 1 Spring Bean 生命周期
+
 Spring Bean的生命周期指的是Bean从创建到初始化再到销毁的过程，这个过程由IOC容器管理。 
 
 Bean的初始化和销毁 在整个生命周期过程中，我们可以自定义Bean的初始化和销毁钩子函数，当Bean的生命周期到达相应的阶段的时候，Spring会调用我们自定义的Bean的初始化和销毁方法。自定义Bean初始化和销毁方法有多种方式 。
@@ -80,9 +82,21 @@ protected Object doCreateBean(String beanName, RootBeanDefinition mbd, @Nullable
 	}
 ```
 
+![1683470943532](2023-03-05-spring-bean生命周期/1683470943532.png)
+
 后续源码分析........
 
 spring阶段总结：
 
 实例化、属性赋值、初始化、销毁这 4 个大阶段 
+
+## 2 Spring AOP工作流程
+
+![1683470686767](2023-03-05-spring-bean生命周期/1683470686767.png)
+
+![1683470742350](2023-03-05-spring-bean生命周期/1683470742350.png)
+
+![1683470767960](2023-03-05-spring-bean生命周期/1683470767960.png)
+
+![1683470781243](2023-03-05-spring-bean生命周期/1683470781243.png)
 
