@@ -23,11 +23,22 @@
 <meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
 <meta property="og:description" content="redis底层数据结构1234567891011121314151617181920212223typedef struct redisObject&amp;#123;     &#x2F;&#x2F;类型     unsigned type:4;&#x2F;&#x2F; 4bit     &#x2F;&#x2F;编码     unsigned encoding:4;&#x2F;&#x2F; 4bit     &#x2F;&#x2F;指向底层数据结构的指针     void *ptr;&#x2F;&#x2F; 8字节">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leellun.github.io/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664774038820.png">
+<meta property="og:image" content="https://leellun.github.io/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664779430783.png">
+<meta property="og:image" content="https://leellun.github.io/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664773986198.png">
+<meta property="og:image" content="https://leellun.github.io/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664776187157.png">
+<meta property="og:image" content="https://leellun.github.io/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664776177297.png">
+<meta property="og:image" content="https://leellun.github.io/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664776744469.png">
+<meta property="og:image" content="https://leellun.github.io/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664776761516.png">
+<meta property="og:image" content="https://leellun.github.io/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664777286854.png">
+<meta property="og:image" content="https://leellun.github.io/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664777297048.png">
+<meta property="og:image" content="https://leellun.github.io/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664777576014.png">
 <meta property="article:published_time" content="2022-01-06T12:14:02.000Z">
-<meta property="article:modified_time" content="2022-10-03T08:00:49.297Z">
+<meta property="article:modified_time" content="2023-05-11T13:36:21.616Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="redis">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://leellun.github.io/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664774038820.png">
   
   
   
@@ -303,10 +314,10 @@
 
 <h2 id="1-2-embstr"><a href="#1-2-embstr" class="headerlink" title="1.2 embstr"></a>1.2 embstr</h2><p>优点：创建时少分配一次空间，删除时释放一次空间，数据相连查找方便。</p>
 <p>缺点：字符串的长度增加需要重新分配内存时，整个redisObject和sds都需要重新分配空间，因此redis中的embstr实现为只读。</p>
-
+<img src="/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664774038820.png" srcset="/img/loading.gif" lazyload class="" width="1664774038820">
 
 <p>embstr，这种形式使得 RedisObject和SDS 内存地址是连续的。 </p>
-
+<img src="/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664779430783.png" srcset="/img/loading.gif" lazyload class="" width="1664779430783">
 
 <p>64字节，减去RedisObject头信息19字节，再减去３字节SDS头信息，剩下45字节，再去除\0结尾。这样最后可以存储44字节。 </p>
 <figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1:6379</span>&gt; set str a<br>OK<br><span class="hljs-number">127.0.0.1:6379</span>&gt; object encoding str<br><span class="hljs-string">&quot;embstr&quot;</span><br></code></pre></td></tr></table></figure>
@@ -314,7 +325,7 @@
 <p>在对embstr对象进行修改时，都会先转化为raw再进行修改，因此，只要是修改embstr对象，修改后的对象一定是raw的，无论是否达到了44个字节。 </p>
 <figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1:6379</span>&gt; set str a<br>OK<br><span class="hljs-number">127.0.0.1:6379</span>&gt; get str<br><span class="hljs-string">&quot;a&quot;</span><br><span class="hljs-number">127.0.0.1:6379</span>&gt; object encoding str<br><span class="hljs-string">&quot;embstr&quot;</span><br><span class="hljs-number">127.0.0.1:6379</span>&gt; append str b<br>(integer) <span class="hljs-number">2</span><br><span class="hljs-number">127.0.0.1:6379</span>&gt; get str<br><span class="hljs-string">&quot;ab&quot;</span><br><span class="hljs-number">127.0.0.1:6379</span>&gt; object encoding str<br><span class="hljs-string">&quot;raw&quot;</span><br></code></pre></td></tr></table></figure>
 
-<h2 id="1-3-raw"><a href="#1-3-raw" class="headerlink" title="1.3 raw"></a>1.3 raw</h2>
+<h2 id="1-3-raw"><a href="#1-3-raw" class="headerlink" title="1.3 raw"></a>1.3 raw</h2><img src="/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664773986198.png" srcset="/img/loading.gif" lazyload class="" width="1664773986198">
 
 <p>embstr与raw都使用redisObject和sds保存数据 ，区别：</p>
 <ul>
@@ -324,9 +335,9 @@
 <h1 id="2-list"><a href="#2-list" class="headerlink" title="2 list"></a>2 list</h1><p>Redis 列表是简单的字符串列表，按照插入顺序排序。可以添加一个元素导列表的头部（左边）或者尾部（右边）。它的底层实际是个链表。</p>
 <figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs tcl">简介：列表（<span class="hljs-keyword">list</span>）类型是用来存储多个有序的字符串，一个列表最多可以存储<span class="hljs-number">2</span>^<span class="hljs-number">32</span><span class="hljs-number">-1</span>个元素。<br>简单实用举例：lpush key value [value ...] 、<span class="hljs-keyword">lrange</span> key start end<br>内部编码：ziplist（压缩列表）、linkedlist（链表）<br>应用场景：消息队列，文章列表<br></code></pre></td></tr></table></figure>
 
-<h2 id="2-1-linkedlist"><a href="#2-1-linkedlist" class="headerlink" title="2.1 linkedlist"></a>2.1 linkedlist</h2>
+<h2 id="2-1-linkedlist"><a href="#2-1-linkedlist" class="headerlink" title="2.1 linkedlist"></a>2.1 linkedlist</h2><img src="/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664776187157.png" srcset="/img/loading.gif" lazyload class="" width="1664776187157">
 
-<h2 id="2-2-ziplist"><a href="#2-2-ziplist" class="headerlink" title="2.2 ziplist"></a>2.2 ziplist</h2>
+<h2 id="2-2-ziplist"><a href="#2-2-ziplist" class="headerlink" title="2.2 ziplist"></a>2.2 ziplist</h2><img src="/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664776177297.png" srcset="/img/loading.gif" lazyload class="" width="1664776177297">
 
 <ul>
 <li>1、列表保存元素个数小于512个</li>
@@ -340,9 +351,9 @@
 
 <h1 id="3-hash"><a href="#3-hash" class="headerlink" title="3 hash"></a>3 hash</h1><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs armasm">简介：在Redis中，哈希类型是指v（值）本身又是一个键值对（k-v）结构<br>简单使用举例：hset key <span class="hljs-meta">field</span> value 、hget key <span class="hljs-meta">field</span><br>内部编码：ziplist（压缩列表） 、hashtable（哈希表）<br>应用场景：缓存用户信息等。<br>注意点：如果开发使用hgetall，哈希元素比较多的话，可能导致Redis阻塞，可以使用hscan。而如果只是获取部分<span class="hljs-meta">field</span>，建议使用hmget。<br></code></pre></td></tr></table></figure>
 
-<h2 id="3-1-ziplist"><a href="#3-1-ziplist" class="headerlink" title="3.1 ziplist"></a>3.1 ziplist</h2>
+<h2 id="3-1-ziplist"><a href="#3-1-ziplist" class="headerlink" title="3.1 ziplist"></a>3.1 ziplist</h2><img src="/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664776744469.png" srcset="/img/loading.gif" lazyload class="" width="1664776744469">
 
-<h2 id="3-2-hashtable"><a href="#3-2-hashtable" class="headerlink" title="3.2 hashtable"></a>3.2 hashtable</h2>
+<h2 id="3-2-hashtable"><a href="#3-2-hashtable" class="headerlink" title="3.2 hashtable"></a>3.2 hashtable</h2><img src="/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664776761516.png" srcset="/img/loading.gif" lazyload class="" width="1664776761516">
 
 <p>hashtable 编码的哈希表对象底层使用字典数据结构，哈希对象中的每个键值对都使用一个字典键值对。</p>
 <p>使用ziplist（压缩列表）编码：</p>
@@ -352,14 +363,14 @@
 </ul>
 <h1 id="4-set"><a href="#4-set" class="headerlink" title="4 set"></a>4 set</h1><figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs tcl">简介：集合（<span class="hljs-keyword">set</span>）类型也是用来保存多个的字符串元素，但是不允许重复元素<br>简单使用举例：sadd key element [element ...]、smembers key<br>内部编码：intset（整数集合）、hashtable（哈希表）<br>注意点：smembers和<span class="hljs-keyword">lrange</span>、hgetall都属于比较重的命令，如果元素过多存在阻塞Redis的可能性，可以使用sscan来完成。<br>应用场景：用户标签,生成随机数抽奖、社交需求。<br></code></pre></td></tr></table></figure>
 
-<h2 id="4-1-intset"><a href="#4-1-intset" class="headerlink" title="4.1 intset"></a>4.1 intset</h2>
+<h2 id="4-1-intset"><a href="#4-1-intset" class="headerlink" title="4.1 intset"></a>4.1 intset</h2><img src="/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664777286854.png" srcset="/img/loading.gif" lazyload class="" width="1664777286854">
 
 <p>使用 intset 编码条件：</p>
 <p>1、集合对象中所有元素都是整数 </p>
 <p>2、集合对象所有元素数量不超过512 ，可以set-max-intset-entries 进行配置 </p>
 <figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1:6379</span>&gt; sadd set1 <span class="hljs-number">1</span><br>(integer) <span class="hljs-number">1</span><br><span class="hljs-number">127.0.0.1:6379</span>&gt; smembers set1<br><span class="hljs-number">1</span>) <span class="hljs-string">&quot;1&quot;</span><br><span class="hljs-number">127.0.0.1:6379</span>&gt; object encoding set1<br><span class="hljs-string">&quot;intset&quot;</span><br><span class="hljs-number">127.0.0.1:6379</span>&gt; sadd set1 a<br>(integer) <span class="hljs-number">1</span><br><span class="hljs-number">127.0.0.1:6379</span>&gt; object encoding set1<br><span class="hljs-string">&quot;hashtable&quot;</span><br></code></pre></td></tr></table></figure>
 
-<h2 id="4-2-hashtable"><a href="#4-2-hashtable" class="headerlink" title="4.2 hashtable"></a>4.2 hashtable</h2>
+<h2 id="4-2-hashtable"><a href="#4-2-hashtable" class="headerlink" title="4.2 hashtable"></a>4.2 hashtable</h2><img src="/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664777297048.png" srcset="/img/loading.gif" lazyload class="" width="1664777297048">
 
 <h1 id="5-zset"><a href="#5-zset" class="headerlink" title="5 zset"></a>5 zset</h1><blockquote>
 <ul>
@@ -371,7 +382,7 @@
 </blockquote>
 <p>与列表使用索引下标作为排序依据不同，有序集合为每个元素设置一个分数（score）作为排序依据。 </p>
 <h2 id="5-1-ziplist"><a href="#5-1-ziplist" class="headerlink" title="5.1 ziplist"></a>5.1 ziplist</h2><p> ziplist 编码的有序集合对象使用压缩列表作为底层实现，每个集合元素使用两个紧挨在一起的压缩列表节点来保存，第一个节点保存元素的成员，第二个节点保存元素的分值。并且压缩列表内的集合元素按分值从小到大的顺序进行排列，小的放置在靠近表头的位置，大的放置在靠近表尾的位置。 </p>
-
+<img src="/2022/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/redis/2022-01-06-redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%86%85%E9%83%A8%E7%BC%96%E7%A0%81/1664777576014.png" srcset="/img/loading.gif" lazyload class="" width="1664777576014">
 
 <p>使用 ziplist 编码条件：</p>
 <ul>

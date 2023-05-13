@@ -24,7 +24,7 @@
 <meta property="og:description" content="1 开启日志打开缓存对于每一条日志记录,日志文件都将先打开文件,再写入日志记录,然后马上关闭,为了提高包含变量的日志文件存放路径的性能,可以使用open_log_file_cache指令来设置,格式如下： 1open_log_file_cache max&#x3D;N [inactive&#x3D;time][min_uses&#x3D;N][valid&#x3D;time]|off  该指令默认是禁止的,等同于：open_log_fi">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-01-04T04:14:02.000Z">
-<meta property="article:modified_time" content="2022-09-26T13:05:09.874Z">
+<meta property="article:modified_time" content="2023-05-07T05:29:31.157Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="nginx">
 <meta name="twitter:card" content="summary_large_image">
@@ -219,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.9k 字
+          6.5k 字
         
       </span>
     
@@ -230,7 +230,7 @@
         
         
         
-          33 分钟
+          55 分钟
         
       </span>
     
@@ -343,9 +343,48 @@
 
 <h1 id="8-目录身份验证"><a href="#8-目录身份验证" class="headerlink" title="8 目录身份验证"></a>8 目录身份验证</h1><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-comment"># htpasswd-cm /etc/nginx/.htpasswd alice</span><br><span class="hljs-comment"># htpasswd-m /etc/nginx/.htpasswd bob</span><br><span class="hljs-section">location</span> /redhat &#123;<br><span class="hljs-attribute">root</span> /web/html;<br><span class="hljs-attribute">index</span> index.html index.htm;<br><span class="hljs-attribute">autoindex</span> <span class="hljs-literal">on</span>;<br><span class="hljs-attribute">auth_basic</span> <span class="hljs-string">&quot;AwstatAuth&quot;</span><br>auth_basic_user_file /etc/nginx/.htpasswd;<br><span class="hljs-attribute">deny</span> <span class="hljs-number">192.168.0.132</span>;<br><span class="hljs-attribute">allow</span> <span class="hljs-number">192.168.0.0</span>/<span class="hljs-number">24</span>;<br><span class="hljs-attribute">allow</span> <span class="hljs-number">192.168.1.1</span>;<br><span class="hljs-attribute">deny</span> all;<br>&#125;<br><br></code></pre></td></tr></table></figure>
 
+<h1 id="9-图片裁剪"><a href="#9-图片裁剪" class="headerlink" title="9 图片裁剪"></a>9 图片裁剪</h1><p>要实现nginx的图片裁剪功能，需要在编译nginx时加入第三方模块ngx_http_image_filter_module，该模块提供了图片处理功能，包括裁剪、缩放、旋转等。 </p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">./configure</span> <span class="hljs-params">--with-http_image_filter_module</span><br></code></pre></td></tr></table></figure>
 
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">http &#123;<br>    <span class="hljs-string">...</span><br>    <span class="hljs-comment"># 在http模块中添加 image_filter 指令</span><br>    image_filter        on;<br>    <span class="hljs-comment"># 添加 image_filter_jpeg_quality 指令，指定jpeg图片压缩质量</span><br>    image_filter_jpeg_quality 75;<br>    <span class="hljs-comment"># 添加 image_filter_buffer 指令，指定缓存大小</span><br>    image_filter_buffer 2M;<br>    <span class="hljs-string">...</span><br>&#125;<br><br></code></pre></td></tr></table></figure>
 
+<p>例如：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">location</span> <span class="hljs-regexp">~ ^/(.*)\.(png|jpg|jpeg|gif)$</span> &#123;<br>    <span class="hljs-attribute">root</span> /opt/img;<br><br>    <span class="hljs-attribute">set</span> <span class="hljs-variable">$img_width</span> -;<br>    <span class="hljs-attribute">set</span> <span class="hljs-variable">$img_height</span> -;<br>    <span class="hljs-comment"># 获取参数size的值</span><br>    <span class="hljs-attribute">if</span> (<span class="hljs-variable">$arg_size</span> <span class="hljs-regexp">~* &quot;^(\d+)x(\d+)$&quot;)</span> &#123;<br>      <span class="hljs-attribute">set</span> <span class="hljs-variable">$img_width</span> <span class="hljs-variable">$1</span>;<br>      <span class="hljs-attribute">set</span> <span class="hljs-variable">$img_height</span> <span class="hljs-variable">$2</span>;<br>    &#125;<br>    <span class="hljs-comment"># 裁剪图片并且调整大小</span><br>    <span class="hljs-attribute">image_filter</span> resize <span class="hljs-variable">$img_width</span> <span class="hljs-variable">$img_height</span>;<br><br>    <span class="hljs-attribute">image_filter_jpeg_quality</span> <span class="hljs-number">75</span>;<br>    <span class="hljs-attribute">image_filter_buffer</span> <span class="hljs-number">10M</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
+<h1 id="10-常用命令"><a href="#10-常用命令" class="headerlink" title="10 常用命令"></a>10 常用命令</h1><ol>
+<li>启动Nginx：<code>sudo nginx</code></li>
+<li>停止Nginx：<code>sudo nginx -s stop</code></li>
+<li>重载Nginx配置文件：<code>sudo nginx -s reload</code></li>
+<li>重新启动Nginx：<code>sudo nginx -s reopen</code></li>
+<li>检查Nginx配置文件语法：<code>sudo nginx -t</code></li>
+<li>查看Nginx版本号：<code>sudo nginx -v</code></li>
+<li>查看Nginx的编译配置选项：<code>sudo nginx -V</code></li>
+<li>查看Nginx当前连接数：<code>sudo nginx -V</code></li>
+<li>nginx -c nginx.conf 指定配置文件启动</li>
+</ol>
+<h1 id="11-语法规则"><a href="#11-语法规则" class="headerlink" title="11 语法规则"></a>11 语法规则</h1><p><strong>语法规则：</strong></p>
+<ul>
+<li>= 开头表示精确匹配</li>
+<li><code>^~</code> 开头表示uri以某个常规字符串开头，理解为匹配url路径即可(非正则)</li>
+<li><code>~</code> 开头表示区分大小写的正则匹配</li>
+<li><code>~*</code> 开头表示不区分大小写的正则匹配</li>
+<li><code>!~</code>和<code>!~*</code>分别为区分大小写不匹配及不区分大小写不匹配的正则</li>
+<li><code>/</code> 通用匹配，任何请求都会匹配到</li>
+</ul>
+<p>优先级：</p>
+<ul>
+<li>等号类型（=）的优先级最高。一旦匹配成功，则不再查找其他location的匹配项</li>
+<li>^~和通用匹配。使用前缀匹配，不支持正则表达式，如果有多个location匹配成功的话，不会终止匹配过程，会匹配表达式最长的那个(下方有例子)</li>
+<li>如果上一步得到的最长的location为^~类型，则表示阻断正则表达式，不再匹配正则表达式</li>
+<li>如果上一步得到的最长的location不是^~类型，继续匹配正则表达式，只要有一个正则成功，则使用这个正则的location，立即返回结果，并结束解析过程</li>
+</ul>
+<h1 id="12-缓存设置"><a href="#12-缓存设置" class="headerlink" title="12 缓存设置"></a>12 缓存设置</h1><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs awk">http&#123;<br>    proxy_connect_timeout <span class="hljs-number">10</span>;<br>    proxy_read_timeout <span class="hljs-number">180</span>;<br>    proxy_send_timeout <span class="hljs-number">5</span>;<br>    proxy_buffer_size <span class="hljs-number">16</span>k;<br>    proxy_buffers <span class="hljs-number">4</span> <span class="hljs-number">32</span>k;<br>    proxy_busy_buffers_size <span class="hljs-number">96</span>k;<br>    proxy_temp_file_write_size <span class="hljs-number">96</span>k;<br>    proxy_temp_path <span class="hljs-regexp">/tmp/</span>temp_dir;<br>    proxy_cache_path <span class="hljs-regexp">/tmp/</span>cache levels=<span class="hljs-number">1</span>:<span class="hljs-number">2</span> keys_zone=cache_one:<span class="hljs-number">100</span>m inactive=<span class="hljs-number">1</span>d max_size=<span class="hljs-number">10</span>g;<br><br><br>    server &#123;<br>        listen       <span class="hljs-number">80</span> default_server;<br>        server_name  localhost;<br>        root <span class="hljs-regexp">/blog/</span>;<br><br>        location / &#123;<br><br>        &#125;<br><br>        <span class="hljs-comment"># 静态文件html缓存</span><br>        location ~ <span class="hljs-regexp">/archives/</span>.*\.html$ &#123;<br>              proxy_pass http:<span class="hljs-regexp">//</span><span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">8000</span><span class="hljs-variable">$request_uri</span>;<br>              proxy_redirect off;<br>              proxy_cache cache_one;<br>              proxy_cache_valid <span class="hljs-number">200</span> <span class="hljs-number">304</span> <span class="hljs-number">12</span>h;<br>              proxy_cache_valid <span class="hljs-number">301</span> <span class="hljs-number">302</span> <span class="hljs-number">1</span>d;<br>              proxy_cache_valid any <span class="hljs-number">5</span>m;<br>              expires <span class="hljs-number">1</span>d;<br>              add_header wall  <span class="hljs-string">&quot;hey, nginx静态文件缓存&quot;</span>;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p> http层：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs fortran">proxy_connect_timeout服务器连接的超时时间<br><br>proxy_read_timeout连接成功后,等候后端服务器响应时间<br><br>proxy_send_timeout后端服务器数据回传时间<br><br>proxy_buffer_size缓冲区的大小<br><br>proxy_buffers每个连接设置缓冲区的数量为<span class="hljs-keyword">number</span>，每块缓冲区的大小为<span class="hljs-built_in">size</span><br><br>proxy_busy_buffers_size开启缓冲响应的功能以后，在没有读到全部响应的情况下，写缓冲到达一定大小时，nginx一定会向客户端发送响应，直到缓冲小于此值。<br><br>proxy_temp_file_write_size设置nginx每次写数据到临时文件的<span class="hljs-built_in">size</span>(大小)限制<br><br>proxy_temp_path从后端服务器接收的临时文件的存放路径<br></code></pre></td></tr></table></figure>
+
+<p>server层：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">/archives/.</span>*<span class="hljs-string">.html</span>$ 这里说是正则访问<span class="hljs-string">/archives/</span>以<span class="hljs-string">.html</span>结尾的url进行匹配<br><br>proxy_pass nginx缓存里拿不到资源，向该地址转发请求，拿到新的资源，并进行缓存<br><br>proxy_redirect 设置后端服务器“Location”响应头和“Refresh”响应头的替换文本<br><br>proxy_<span class="hljs-keyword">set</span>_header 允许重新定义或者添加发往后端服务器的请求头<br><br>proxy_cache 指定用于页面缓存的共享内存，对应http层设置的keys_zone<br><br>proxy_cache_valid 为不同的响应状态码设置不同的缓存时间<br></code></pre></td></tr></table></figure>
 
 
                 

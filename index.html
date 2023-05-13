@@ -219,6 +219,69 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/05/07/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-07-redis%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3key%E5%86%B2%E7%AA%81%EF%BC%9F/" target="_self">
+          redis如何解决key冲突？
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/05/07/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-07-redis%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3key%E5%86%B2%E7%AA%81%EF%BC%9F/" target="_self">
+        <div>
+          1、业务隔离不同的业务使用不同的redis集群，或者协议使用redis的不同db。 为每个业务分配独立的Redis数据库：可以通过Redis的多数据库功能，为每个业务分配独立的数据库，避免不同业务的Key之间的冲突。 例如： 将所有用户相关的操作放在一个数据库中，将所有订单相关的操作放在另一个数据库中。 这种方式可以在代码中通过指定不同的数据库编号来实现。 2、良好的Redis Key的设计 格式
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-07 12:38" pubdate>
+              2023-05-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="category-chain-item">面试题</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/redis/">#redis</a>
+            
+              <a href="/tags/key%E5%86%B2%E7%AA%81/">#key冲突</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/05/03/%E6%9C%8D%E5%8A%A1%E5%99%A8/mysql/2023-05-03-group-by-%E6%9F%A5%E8%AF%A2%E6%85%A2%E7%9A%84%E8%AF%9D,%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%EF%BC%9F/" target="_self">
           group by 查询慢的话,如何优化？
         </a>
@@ -226,6 +289,74 @@
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/05/03/%E6%9C%8D%E5%8A%A1%E5%99%A8/mysql/2023-05-03-group-by-%E6%9F%A5%E8%AF%A2%E6%85%A2%E7%9A%84%E8%AF%9D,%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%EF%BC%9F/" target="_self">
+        <div>
+          1、说明根据一定的规则，进行分组。  group by可能会慢在哪里？因为它既用到临时表，又默认用到排序。有时候还可能用到磁盘临时表。   如果执行过程中，会发现内存临时表大小到达了上限（控制这个上限的参数就是tmp_table_size），会把内存临时表转成磁盘临时表。 如果数据量很大，很可能这个查询需要的磁盘临时表，就会占用大量的磁盘空间。  2、如何优化group by呢? group by
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-03 20:14" pubdate>
+              2023-05-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mysql/" class="category-chain-item">mysql</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/mysql/">#mysql</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/05/03/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-03-group-by-%E6%9F%A5%E8%AF%A2%E6%85%A2%E7%9A%84%E8%AF%9D,%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%EF%BC%9F/" target="_self">
+          group by 查询慢的话,如何优化？
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/05/03/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-03-group-by-%E6%9F%A5%E8%AF%A2%E6%85%A2%E7%9A%84%E8%AF%9D,%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%EF%BC%9F/" target="_self">
         <div>
           1、说明根据一定的规则，进行分组。  group by可能会慢在哪里？因为它既用到临时表，又默认用到排序。有时候还可能用到磁盘临时表。   如果执行过程中，会发现内存临时表大小到达了上限（控制这个上限的参数就是tmp_table_size），会把内存临时表转成磁盘临时表。 如果数据量很大，很可能这个查询需要的磁盘临时表，就会占用大量的磁盘空间。  2、如何优化group by呢? group by
         </div>
@@ -423,15 +554,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2023/04/05/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-04-05-CompletableFuture%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" target="_self">
-          CompletableFuture使用教程
+        <a href="/2023/05/02/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-02-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E4%B8%AD%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96SQL%E7%9A%84%EF%BC%9F/" target="_self">
+          日常开发中，你是怎么优化SQL的？
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/04/05/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-04-05-CompletableFuture%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/05/02/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-02-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E4%B8%AD%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96SQL%E7%9A%84%EF%BC%9F/" target="_self">
         <div>
-          一、简介Future是Java 5中添加作为异步计算的结果，但它没有任何方法处理计算可能出现的错误。 而CompletableFuture是在Java8后开始引进的，CompletableFuture提供了非常强大的Future的扩展功能，可以简化异步编程的复杂性，并且提供了函数式编程的能力，可以通过回调的方式处理计算结果，也提供了转换和组合 CompletableFuture 的方法。  Com
+          1、考虑分析 分析慢查询日志 使用explain查看执行计划 索引优化 深分页优化 避免全表扫描 避免返回不必要的数据（如select具体字段而不是select*） 使用合适的数据类型（如可以使用int类型的话，就不要设计为varchar） 优化sql结构（如join优化等等） 适当分批量进行 (如批量更新、删除) 定期清理无用的数据 适当分库分表 读写分离  2、深分页优化标签记录法  就是标记
         </div>
       </a>
 
@@ -439,8 +570,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2023-04-05 12:33" pubdate>
-              2023-04-05
+            <time datetime="2023-05-02 20:14" pubdate>
+              2023-05-02
             </time>
           </div>
         
@@ -455,12 +586,12 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mysql/" class="category-chain-item">mysql</a>
   
   
 
@@ -477,7 +608,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/volatile/">#volatile</a>
+              <a href="/tags/mysql/">#mysql</a>
             
           </div>
         
@@ -491,15 +622,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2023/03/06/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-06-Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8Bvolatile/" target="_self">
-          Java并发编程之volatile
+        <a href="/2023/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98/1-mysql-%E4%B8%AD%E7%B4%A2%E5%BC%95%E7%B1%BB%E5%9E%8B%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%AF%B9%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%80%A7%E8%83%BD%E7%9A%84%E5%BD%B1%E5%93%8D%EF%BC%9F/" target="_self">
+          1 mysql 中索引类型有哪些，以及对数据库的性能的影响？
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/03/06/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-06-Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8Bvolatile/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98/1-mysql-%E4%B8%AD%E7%B4%A2%E5%BC%95%E7%B1%BB%E5%9E%8B%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%AF%B9%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%80%A7%E8%83%BD%E7%9A%84%E5%BD%B1%E5%93%8D%EF%BC%9F/" target="_self">
         <div>
-          1 volatile简介volatile是轻量级的synchronized，它在多处理器开发中保证了共享变量的“可见性”。可见性的意思是当一个线程修改一个共享变量时，另外一个线程能读到这个修改的值。volatile执行成本比synchronized底，因为它不会引起线程上下文的切换和调度。 如果一个字段被声明成volatile，Java线程内存模型确保所有线程看到这个变量的值是一致 特性： 1 可
+          索引类型普通索引：允许被索引的数据列包含重复的值唯一索引：可以保证数据记录的唯一性 主键索引：是一种特殊的唯一素引，在一张表中只能定义一个主键索引，主键用于唯一标识一条记录，使用关键字 primary key 来创建 联合索引：索引可以覆盖多个数据列 全文索引：通过建立倒排索引，可以极大的提升检索效率，解决判断字段是否包含的问题，是目前搜索引擎使用的一种关键技术 索引作用索引可以极大地提高数据的查
         </div>
       </a>
 
@@ -507,8 +638,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2023-03-06 12:33" pubdate>
-              2023-03-06
+            <time datetime="2023-04-07 12:38" pubdate>
+              2023-04-07
             </time>
           </div>
         
@@ -523,15 +654,8 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="category-chain-item">面试题</a>
   
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
-  
-  
-
   
 
       </span>
@@ -545,7 +669,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/volatile/">#volatile</a>
+              <a href="/tags/redis/">#redis</a>
+            
+              <a href="/tags/key%E5%86%B2%E7%AA%81/">#key冲突</a>
             
           </div>
         
@@ -559,15 +685,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2023/03/05/%E5%90%8E%E7%AB%AF/java/%E9%97%AE%E9%A2%98/2023-03-05-java%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84ConcurrentHashMap/" target="_self">
-          java数据结构ConcurrentHashMap
+        <a href="/2023/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98/2-MySQL%E6%99%AE%E9%80%9A%E7%B4%A2%E5%BC%95%E5%92%8C%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%EF%BC%9F/" target="_self">
+          1 MySQL普通索引和唯一索引如何选择？
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/03/05/%E5%90%8E%E7%AB%AF/java/%E9%97%AE%E9%A2%98/2023-03-05-java%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84ConcurrentHashMap/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98/2-MySQL%E6%99%AE%E9%80%9A%E7%B4%A2%E5%BC%95%E5%92%8C%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%EF%BC%9F/" target="_self">
         <div>
-          1.HashMap 和 ConcurrentHashMap 的区别JDK1.7 ConcurrentHashMap对整个桶数组进行了分割分段(Segment)，然后在每一个分段上都用lock锁进行保护，相对于HashTable的synchronized锁的粒度更精细了一些，并发性能更好，而HashMap没有锁机制，不是线程安全的。（JDK1.8之后ConcurrentHashMap启用了一种全新的
+          1 普通索引和唯一索引介绍普通索引可重复，唯一索引和主键一样不能重复。 唯一索引可作为数据的一个合法验证手段，例如手机号、身份证号，规定该字段不得重复，那么就使用唯一索引。 唯一索引的作用跟主键一样，但区别： 一张表里面只能有一个主键，主键不能为空，但唯一索引可以有多个。唯一索引可以有一条记录为null。 2 查询性能分析InnoDB数据按数据页单位读写。即读一条记录时，并非将该一个记录从磁盘读出
         </div>
       </a>
 
@@ -575,8 +701,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2023-03-05 10:18" pubdate>
-              2023-03-05
+            <time datetime="2023-04-07 12:38" pubdate>
+              2023-04-07
             </time>
           </div>
         
@@ -591,15 +717,8 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="category-chain-item">面试题</a>
   
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
-  
-  
-
   
 
       </span>
@@ -613,7 +732,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/ConcurrentHashMap/">#ConcurrentHashMap</a>
+              <a href="/tags/mysql%E7%B4%A2%E5%BC%95/">#mysql索引</a>
             
           </div>
         
@@ -627,15 +746,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2023/03/05/%E5%90%8E%E7%AB%AF/spring/2023-03-05-spring-bean%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" target="_self">
-          spring bean生命周期
+        <a href="/2023/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-07-%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3springboot%E4%B8%AD%E7%9A%84starter%EF%BC%9F/" target="_self">
+          如何理解springboot中的starter？
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/03/05/%E5%90%8E%E7%AB%AF/spring/2023-03-05-spring-bean%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-07-%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3springboot%E4%B8%AD%E7%9A%84starter%EF%BC%9F/" target="_self">
         <div>
-          Spring Bean的生命周期指的是Bean从创建到初始化再到销毁的过程，这个过程由IOC容器管理。  Bean的初始化和销毁 在整个生命周期过程中，我们可以自定义Bean的初始化和销毁钩子函数，当Bean的生命周期到达相应的阶段的时候，Spring会调用我们自定义的Bean的初始化和销毁方法。自定义Bean初始化和销毁方法有多种方式 。    实例化：实例化一个 bean 对象；  属性赋值：
+          1、starter由来使用 spring + springmvc 框架进行开发的时候，如果需要引入 mybatis 框架，那么需要在 xml 中定义需要的 bean 对象，这个过程很明显是很麻烦的，如果需要引入额外的其他组件，那么也需要进行复杂的配置，因此在 springboot 中引入了 starter  2、starter是什么？Spring Boot的starter是一种依赖包，可以通过一种
         </div>
       </a>
 
@@ -643,8 +762,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2023-03-05 10:18" pubdate>
-              2023-03-05
+            <time datetime="2023-04-07 12:38" pubdate>
+              2023-04-07
             </time>
           </div>
         
@@ -659,15 +778,8 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="category-chain-item">面试题</a>
   
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
-  
-  
-
   
 
       </span>
@@ -681,7 +793,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/spring/">#spring</a>
+              <a href="/tags/redis/">#redis</a>
+            
+              <a href="/tags/key%E5%86%B2%E7%AA%81/">#key冲突</a>
             
           </div>
         
@@ -695,15 +809,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E9%97%AE%E9%A2%98/2023-03-04-%E4%B8%BA%E4%BB%80%E4%B9%88HashMap%E7%9A%84%E5%BA%95%E5%B1%82%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6%E4%B8%BA%E4%BD%95%E6%80%BB%E6%98%AF2%E7%9A%84n%E6%AC%A1%E6%96%B9%EF%BC%9F/" target="_self">
-          为什么HashMap的底层数组长度为何总是2的n次方？
+        <a href="/2023/04/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/clickhouse/2023-04-07-clickhouse%E5%88%86%E5%8C%BA%E5%8D%B8%E8%BD%BD%E5%92%8C%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86/" target="_self">
+          clickhouse分区卸载和数据清理
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E9%97%AE%E9%A2%98/2023-03-04-%E4%B8%BA%E4%BB%80%E4%B9%88HashMap%E7%9A%84%E5%BA%95%E5%B1%82%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6%E4%B8%BA%E4%BD%95%E6%80%BB%E6%98%AF2%E7%9A%84n%E6%AC%A1%E6%96%B9%EF%BC%9F/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/04/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/clickhouse/2023-04-07-clickhouse%E5%88%86%E5%8C%BA%E5%8D%B8%E8%BD%BD%E5%92%8C%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86/" target="_self">
         <div>
-          1 说明每次扩容后，原数据都会进行数据迁移，根据二进制的计算，扩容后数据要么在原来位置，要么在【原来位置+扩容长度】，这样就不需要重新hash，效率上更高。  HashMap根据用户传入的初始化容量，利用无符号右移和按位或运算等方式计算出第一个大于该数的2的幂。  使数据分布均匀，减少碰撞 当length为2的n次方时，h&amp;(length - 1) 就相当于对length取模，而且在速度、
+          1clickhouse-client -m    1select * from system.storage_policies;  获取分区信息 12345678910SELECT    partition AS `分区`,    sum(rows) AS `总行数`,    formatReadableSize(sum(data_uncompressed_bytes)) AS `原始大小`,
         </div>
       </a>
 
@@ -711,8 +825,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2023-03-04 20:28" pubdate>
-              2023-03-04
+            <time datetime="2023-04-07 12:38" pubdate>
+              2023-04-07
             </time>
           </div>
         
@@ -727,12 +841,12 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/clickhouse/" class="category-chain-item">clickhouse</a>
   
   
 
@@ -749,143 +863,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/HashMap/">#HashMap</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%B8%80%E5%AE%9A%E6%AF%94%E4%B8%B2%E8%A1%8C%E6%89%A7%E8%A1%8C%E5%BF%AB%E5%90%97%EF%BC%9F/" target="_self">
-          多线程执行一定比串行执行快吗？
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%B8%80%E5%AE%9A%E6%AF%94%E4%B8%B2%E8%A1%8C%E6%89%A7%E8%A1%8C%E5%BF%AB%E5%90%97%EF%BC%9F/" target="_self">
-        <div>
-          1 并发编程将串行执行部分变成并发执行，但要考虑上下文切换和资源调度的时间 并发编程的目的是为了让程序运行得更快，但是，并不是启动更多的线程就能让程序最大限度地并发执行。 2 多线程程序的评量标准 安全性——不损坏对象 对象损坏指对象的状态不符合设计师的设计原意，通常是对象的字段所取得的值和预期不一样。   生存性——进行必要的处理 最典型的例子就是死锁   复用性——可再利用类 类的复用性，在写
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-03-04 20:18" pubdate>
-              2023-03-04
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">#并发编程</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_self">
-          java数据结构HashMap
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_self">
-        <div>
-          1、 影响HashMap性能的重要参数初始容量：创建哈希表(数组)时桶的数量，默认为 16  负载因子：哈希表在其容量自动增加之前可以达到多满的一种尺度，默认为 0.75  2、HashMap工作原理  HashMap底层是hash数组和单向链表实现,数组中的每个元素都是链表,由Node内部类(实现Map.Entry&lt;K,V&gt;接口)实现,HashMap通过put&amp;get方法存储
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-03-04 20:18" pubdate>
-              2023-03-04
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/HashMap/">#HashMap</a>
+              <a href="/tags/clickhouse/">#clickhouse</a>
             
           </div>
         
@@ -897,7 +875,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/#board">16</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/#board">17</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

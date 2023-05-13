@@ -23,11 +23,14 @@
 <meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
 <meta property="og:description" content="1、考虑分析 分析慢查询日志 使用explain查看执行计划 索引优化 深分页优化 避免全表扫描 避免返回不必要的数据（如select具体字段而不是select*） 使用合适的数据类型（如可以使用int类型的话，就不要设计为varchar） 优化sql结构（如join优化等等） 适当分批量进行 (如批量更新、删除) 定期清理无用的数据 适当分库分表 读写分离  2、深分页优化标签记录法  就是标记">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leellun.github.io/2023/05/02/%E6%9C%8D%E5%8A%A1%E5%99%A8/mysql/2023-05-02-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E4%B8%AD%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96SQL%E7%9A%84%EF%BC%9F/1683121864951.png">
+<meta property="og:image" content="https://leellun.github.io/2023/05/02/%E6%9C%8D%E5%8A%A1%E5%99%A8/mysql/2023-05-02-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E4%B8%AD%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96SQL%E7%9A%84%EF%BC%9F/1683122499269.png">
 <meta property="article:published_time" content="2023-05-02T12:14:02.000Z">
-<meta property="article:modified_time" content="2023-05-03T15:03:08.346Z">
+<meta property="article:modified_time" content="2023-05-11T13:36:21.543Z">
 <meta property="article:author" content="leellun">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://leellun.github.io/2023/05/02/%E6%9C%8D%E5%8A%A1%E5%99%A8/mysql/2023-05-02-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E4%B8%AD%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96SQL%E7%9A%84%EF%BC%9F/1683121864951.png">
   
   
   
@@ -318,7 +321,7 @@
 <p>使用Explain执行计划来进行优化。同时也要注意避免使用OR等耗费性能的操作符。 </p>
 <p><strong>分库分表</strong> </p>
 <p>如果数据量千万级别，需要考虑分库分表</p>
-<h2 id="4、哪些因素可能导致MySQL慢查询？"><a href="#4、哪些因素可能导致MySQL慢查询？" class="headerlink" title="4、哪些因素可能导致MySQL慢查询？"></a>4、哪些因素可能导致MySQL慢查询？</h2>
+<h2 id="4、哪些因素可能导致MySQL慢查询？"><a href="#4、哪些因素可能导致MySQL慢查询？" class="headerlink" title="4、哪些因素可能导致MySQL慢查询？"></a>4、哪些因素可能导致MySQL慢查询？</h2><img src="/2023/05/02/%E6%9C%8D%E5%8A%A1%E5%99%A8/mysql/2023-05-02-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E4%B8%AD%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96SQL%E7%9A%84%EF%BC%9F/1683121864951.png" srcset="/img/loading.gif" lazyload class="" width="1683121864951">
 
 <h2 id="5、使用索引优化SQL查询"><a href="#5、使用索引优化SQL查询" class="headerlink" title="5、使用索引优化SQL查询"></a>5、使用索引优化SQL查询</h2><ul>
 <li>添加合适索引（在where、group by、order by等后面的字段添加合适索引）</li>
@@ -342,7 +345,7 @@
 <figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> article<br><span class="hljs-keyword">show</span> profiles<br></code></pre></td></tr></table></figure>
 
 <p>show profiles会显示最近发给服务器的多条语句，条数由变量profiling_history_size定义，默认是15。如果我们需要看单独某条SQL的分析，可以show profile查看最近一条SQL的分析。也可以使用show profile for query id（其中id就是show profiles中的QUERY_ID）查看具体一条的SQL语句分析。 </p>
-
+<img src="/2023/05/02/%E6%9C%8D%E5%8A%A1%E5%99%A8/mysql/2023-05-02-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E4%B8%AD%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96SQL%E7%9A%84%EF%BC%9F/1683122499269.png" srcset="/img/loading.gif" lazyload class="" width="1683122499269">
 
 <p>除了查看profile ，还可以查看cpu和io，如上图。 </p>
 <h3 id="6-4-Optimizer-Trace分析详情"><a href="#6-4-Optimizer-Trace分析详情" class="headerlink" title="6.4 Optimizer Trace分析详情"></a>6.4 Optimizer Trace分析详情</h3><p>profile只能查看到SQL的执行耗时，但是无法看到SQL真正执行的过程信息，即不知道MySQL优化器是如何选择执行计划。这时候，我们可以使用Optimizer Trace，它可以跟踪执行语句的解析优化执行的全过程。 </p>
@@ -512,8 +515,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/04/05/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-04-05-CompletableFuture%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" title="CompletableFuture使用教程">
-                        <span class="hidden-mobile">CompletableFuture使用教程</span>
+                      <a href="/2023/05/02/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-02-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E4%B8%AD%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96SQL%E7%9A%84%EF%BC%9F/" title="日常开发中，你是怎么优化SQL的？">
+                        <span class="hidden-mobile">日常开发中，你是怎么优化SQL的？</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
