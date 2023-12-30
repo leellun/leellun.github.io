@@ -601,7 +601,7 @@ kubectl config use-context default --kubeconfig=${KUBE_CONFIG}
 
 TLS bootstraping 工作流程： 
 
-![1659365157408](二进制部署kubernetes集群.assets/1659365157408.png)
+![1659365157408](二进制部署kubernetes集群/1659365157408.png)
 
 授权kubelet-bootstrap用户允许请求证书
 
