@@ -44,6 +44,34 @@ https://github.com/kubesphere/ks-installer/edit/master/scripts/kubesphere-delete
 ## 2.1 执行以下命令以开始安装：
 
 ```
+cat >> default-storage-class.yaml <<-EOF
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: local
+  annotations:
+    cas.openebs.io/config: |
+      - name: StorageType
+        value: "hostpath"
+      - name: BasePath
+        value: "/var/openebs/local/"
+    kubectl.kubernetes.io/last-applied-configuration: >
+      {"apiVersion":"storage.k8s.io/v1","kind":"StorageClass","metadata":{"annotations":{"cas.openebs.io/config":"-
+      name: StorageType\n  value: \"hostpath\"\n- name: BasePath\n  value:
+      \"/var/openebs/local/\"\n","openebs.io/cas-type":"local","storageclass.beta.kubernetes.io/is-default-class":"true","storageclass.kubesphere.io/supported-access-modes":"[\"ReadWriteOnce\"]"},"name":"local"},"provisioner":"openebs.io/local","reclaimPolicy":"Delete","volumeBindingMode":"WaitForFirstConsumer"}
+    openebs.io/cas-type: local
+    storageclass.beta.kubernetes.io/is-default-class: 'true'
+    storageclass.kubesphere.io/supported-access-modes: '["ReadWriteOnce"]'
+provisioner: openebs.io/local
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
+EOF
+kubectl apply -f default-storage-class.yaml
+```
+
+
+
+```
 kubectl apply -f https://github.com/kubesphere/ks-installer/releases/download/v3.2.1/kubesphere-installer.yaml
 kubectl apply -f https://github.com/kubesphere/ks-installer/releases/download/v3.2.1/cluster-configuration.yaml
 
