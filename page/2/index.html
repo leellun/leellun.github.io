@@ -219,6 +219,135 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98/2-MySQL%E6%99%AE%E9%80%9A%E7%B4%A2%E5%BC%95%E5%92%8C%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%EF%BC%9F/" target="_self">
+          1 MySQL普通索引和唯一索引如何选择？
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98/2-MySQL%E6%99%AE%E9%80%9A%E7%B4%A2%E5%BC%95%E5%92%8C%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%EF%BC%9F/" target="_self">
+        <div>
+          1 普通索引和唯一索引介绍普通索引可重复，唯一索引和主键一样不能重复。 唯一索引可作为数据的一个合法验证手段，例如手机号、身份证号，规定该字段不得重复，那么就使用唯一索引。 唯一索引的作用跟主键一样，但区别： 一张表里面只能有一个主键，主键不能为空，但唯一索引可以有多个。唯一索引可以有一条记录为null。 2 查询性能分析InnoDB数据按数据页单位读写。即读一条记录时，并非将该一个记录从磁盘读出
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-04-07 12:38" pubdate>
+              2023-04-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="category-chain-item">面试题</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/mysql%E7%B4%A2%E5%BC%95/">#mysql索引</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/04/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/clickhouse/2023-04-07-clickhouse%E5%88%86%E5%8C%BA%E5%8D%B8%E8%BD%BD%E5%92%8C%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86/" target="_self">
+          clickhouse分区卸载和数据清理
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/04/07/%E6%9C%8D%E5%8A%A1%E5%99%A8/clickhouse/2023-04-07-clickhouse%E5%88%86%E5%8C%BA%E5%8D%B8%E8%BD%BD%E5%92%8C%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86/" target="_self">
+        <div>
+          1clickhouse-client -m    1select * from system.storage_policies;  获取分区信息 12345678910SELECT    partition AS `分区`,    sum(rows) AS `总行数`,    formatReadableSize(sum(data_uncompressed_bytes)) AS `原始大小`,
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-04-07 12:38" pubdate>
+              2023-04-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/clickhouse/" class="category-chain-item">clickhouse</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/clickhouse/">#clickhouse</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/04/05/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-04-05-CompletableFuture%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" target="_self">
           CompletableFuture使用教程
         </a>
@@ -355,74 +484,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2023/03/05/%E5%90%8E%E7%AB%AF/java/%E9%97%AE%E9%A2%98/2023-03-05-java%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84ConcurrentHashMap/" target="_self">
-          java数据结构ConcurrentHashMap
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/03/05/%E5%90%8E%E7%AB%AF/java/%E9%97%AE%E9%A2%98/2023-03-05-java%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84ConcurrentHashMap/" target="_self">
-        <div>
-          1.HashMap 和 ConcurrentHashMap 的区别JDK1.7 ConcurrentHashMap对整个桶数组进行了分割分段(Segment)，然后在每一个分段上都用lock锁进行保护，相对于HashTable的synchronized锁的粒度更精细了一些，并发性能更好，而HashMap没有锁机制，不是线程安全的。（JDK1.8之后ConcurrentHashMap启用了一种全新的
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-03-05 10:18" pubdate>
-              2023-03-05
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/ConcurrentHashMap/">#ConcurrentHashMap</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
         <a href="/2023/03/05/%E5%90%8E%E7%AB%AF/spring/2023-03-05-spring-bean%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" target="_self">
           spring bean生命周期
         </a>
@@ -491,6 +552,74 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/03/05/%E5%90%8E%E7%AB%AF/java/%E9%97%AE%E9%A2%98/2023-03-05-java%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84ConcurrentHashMap/" target="_self">
+          java数据结构ConcurrentHashMap
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/03/05/%E5%90%8E%E7%AB%AF/java/%E9%97%AE%E9%A2%98/2023-03-05-java%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84ConcurrentHashMap/" target="_self">
+        <div>
+          1.HashMap 和 ConcurrentHashMap 的区别JDK1.7 ConcurrentHashMap对整个桶数组进行了分割分段(Segment)，然后在每一个分段上都用lock锁进行保护，相对于HashTable的synchronized锁的粒度更精细了一些，并发性能更好，而HashMap没有锁机制，不是线程安全的。（JDK1.8之后ConcurrentHashMap启用了一种全新的
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-03-05 10:18" pubdate>
+              2023-03-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ConcurrentHashMap/">#ConcurrentHashMap</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E9%97%AE%E9%A2%98/2023-03-04-%E4%B8%BA%E4%BB%80%E4%B9%88HashMap%E7%9A%84%E5%BA%95%E5%B1%82%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6%E4%B8%BA%E4%BD%95%E6%80%BB%E6%98%AF2%E7%9A%84n%E6%AC%A1%E6%96%B9%EF%BC%9F/" target="_self">
           为什么HashMap的底层数组长度为何总是2的n次方？
         </a>
@@ -546,74 +675,6 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/HashMap/">#HashMap</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%B8%80%E5%AE%9A%E6%AF%94%E4%B8%B2%E8%A1%8C%E6%89%A7%E8%A1%8C%E5%BF%AB%E5%90%97%EF%BC%9F/" target="_self">
-          多线程执行一定比串行执行快吗？
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%B8%80%E5%AE%9A%E6%AF%94%E4%B8%B2%E8%A1%8C%E6%89%A7%E8%A1%8C%E5%BF%AB%E5%90%97%EF%BC%9F/" target="_self">
-        <div>
-          1 并发编程将串行执行部分变成并发执行，但要考虑上下文切换和资源调度的时间 并发编程的目的是为了让程序运行得更快，但是，并不是启动更多的线程就能让程序最大限度地并发执行。 2 多线程程序的评量标准 安全性——不损坏对象 对象损坏指对象的状态不符合设计师的设计原意，通常是对象的字段所取得的值和预期不一样。   生存性——进行必要的处理 最典型的例子就是死锁   复用性——可再利用类 类的复用性，在写
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-03-04 20:18" pubdate>
-              2023-03-04
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">#并发编程</a>
             
           </div>
         
@@ -763,15 +824,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8%E5%92%8C%E6%A1%86%E6%9E%B6/" target="_self">
-          Java并发编程之并发容器和框架
+        <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%B8%80%E5%AE%9A%E6%AF%94%E4%B8%B2%E8%A1%8C%E6%89%A7%E8%A1%8C%E5%BF%AB%E5%90%97%EF%BC%9F/" target="_self">
+          多线程执行一定比串行执行快吗？
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8%E5%92%8C%E6%A1%86%E6%9E%B6/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%B8%80%E5%AE%9A%E6%AF%94%E4%B8%B2%E8%A1%8C%E6%89%A7%E8%A1%8C%E5%BF%AB%E5%90%97%EF%BC%9F/" target="_self">
         <div>
-          1 阻塞队列说明一个支持两个附加操作的队列。这两个附加的操作支持阻塞的插入和移除方法。 1）支持阻塞的插入方法：当队列满时，队列会阻塞插入元素的线程，直到队列不满。 2）支持阻塞的移除方法：在队列为空时，获取元素的线程会等待队列变为非空。 阻塞队列常用于生产者和消费者的场景，生产者是向队列里添加元素的线程，消费者是从队列里取元素的线程。阻塞队列就是生产者用来存放元素、消费者用来获取元素的容器。
+          1 并发编程将串行执行部分变成并发执行，但要考虑上下文切换和资源调度的时间 并发编程的目的是为了让程序运行得更快，但是，并不是启动更多的线程就能让程序最大限度地并发执行。 2 多线程程序的评量标准 安全性——不损坏对象 对象损坏指对象的状态不符合设计师的设计原意，通常是对象的字段所取得的值和预期不一样。   生存性——进行必要的处理 最典型的例子就是死锁   复用性——可再利用类 类的复用性，在写
         </div>
       </a>
 
@@ -780,74 +841,6 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
             <time datetime="2023-03-04 20:18" pubdate>
-              2023-03-04
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">#并发编程</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8Bsynchronized%E5%8E%9F%E7%90%86/" target="_self">
-          Java并发编程之synchronized原理
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/2023-03-04-Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8Bsynchronized%E5%8E%9F%E7%90%86/" target="_self">
-        <div>
-          一、锁锁是用来控制多个线程访问共享资源的方式，能够防止多个线程同时访问共享资源（但是有些锁可以允许多个线程并发的访问共享资源，比如读写锁）。 锁可以让临界区互斥执行 锁是Java并发编程中最重要的同步机制。锁除了让临界区互斥执行外，还可以让释放锁的线程向获取同一个锁的线程发送消息。 二、synchronized普通同步方法：对于普通同步方法，锁是当前实例对象。 12public synchroni
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-03-04 19:18" pubdate>
               2023-03-04
             </time>
           </div>
