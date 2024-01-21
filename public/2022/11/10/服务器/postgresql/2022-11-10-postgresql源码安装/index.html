@@ -1,0 +1,740 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1、官网下载源码12# 浏览器下载较好wget -c https:&#x2F;&#x2F;ftp.postgresql.org&#x2F;pub&#x2F;source&#x2F;v14.0&#x2F;postgresql-14.0.tar.gz  安装相关环境 1yum install -y gcc-c++ gcc cmake ncurses-devel perl zlib*  2 源码编译123456tar -zxf postgresql-14.0.t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="postgresql源码安装">
+<meta property="og:url" content="https://leellun.github.io/2022/11/10/%E6%9C%8D%E5%8A%A1%E5%99%A8/postgresql/2022-11-10-postgresql%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="1、官网下载源码12# 浏览器下载较好wget -c https:&#x2F;&#x2F;ftp.postgresql.org&#x2F;pub&#x2F;source&#x2F;v14.0&#x2F;postgresql-14.0.tar.gz  安装相关环境 1yum install -y gcc-c++ gcc cmake ncurses-devel perl zlib*  2 源码编译123456tar -zxf postgresql-14.0.t">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-10T12:14:02.000Z">
+<meta property="article:modified_time" content="2022-11-11T17:36:54.704Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="postgresql">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>postgresql源码安装 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="postgresql源码安装"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-10 20:14" pubdate>
+          2022年11月10日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          76 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">postgresql源码安装</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="1、官网下载源码"><a href="#1、官网下载源码" class="headerlink" title="1、官网下载源码"></a>1、官网下载源码</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># 浏览器下载较好</span><br>wget -c https:<span class="hljs-regexp">//</span>ftp.postgresql.org<span class="hljs-regexp">/pub/</span>source<span class="hljs-regexp">/v14.0/</span>postgresql-<span class="hljs-number">14.0</span>.tar.gz<br></code></pre></td></tr></table></figure>
+
+<p>安装相关环境</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">yum install</span> <span class="hljs-literal">-</span><span class="hljs-comment">y gcc</span><span class="hljs-literal">-</span><span class="hljs-comment">c</span><span class="hljs-literal">++</span> <span class="hljs-comment">gcc cmake ncurses</span><span class="hljs-literal">-</span><span class="hljs-comment">devel perl zlib*</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="2-源码编译"><a href="#2-源码编译" class="headerlink" title="2 源码编译"></a>2 源码编译</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">tar -zxf postgresql-14.0.tar.gz<br><span class="hljs-built_in">cd</span> postgresql-14.0<br><br><span class="hljs-comment"># 开始编译</span><br>./configure --prefix=/home/postgresql<br>make &amp;&amp; make install <br></code></pre></td></tr></table></figure>
+
+<h2 id="3-初始化数据库"><a href="#3-初始化数据库" class="headerlink" title="3 初始化数据库"></a>3 初始化数据库</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># 切换用户progres</span><br>su progres<br>mkdir <span class="hljs-regexp">/home/</span>postgresql<span class="hljs-regexp">/data/</span><br><br><span class="hljs-comment"># 初始化数据库</span><br><span class="hljs-regexp">/home/</span>postgresql<span class="hljs-regexp">/bin/i</span>nitdb -D <span class="hljs-regexp">/home/</span>postgresql<span class="hljs-regexp">/data/</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="4-修改配置"><a href="#4-修改配置" class="headerlink" title="4 修改配置"></a>4 修改配置</h2><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">vi /home/postgresql/data/pg_hba.conf<br># <span class="hljs-keyword">replication</span> privilege.<br>host    <span class="hljs-keyword">all</span>             <span class="hljs-keyword">all</span>             <span class="hljs-number">0.0</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span>/<span class="hljs-number">0</span>               md5<br><br>vi /home/postgresql/data/postgresql.conf<br># 修改监听地址<br>listen_addresses = <span class="hljs-string">&#x27;*&#x27;</span> <br></code></pre></td></tr></table></figure>
+
+<h2 id="5-启动数据库"><a href="#5-启动数据库" class="headerlink" title="5 启动数据库"></a>5 启动数据库</h2><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">/home/postgresql/bin/pg_ctl -D /home/postgresql/data -l logfile <span class="hljs-keyword">start</span><br></code></pre></td></tr></table></figure>
+
+<p>修改密码</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/home/</span>postgresql<span class="hljs-regexp">/bin/</span>psql<br></code></pre></td></tr></table></figure>
+
+<h2 id="6-重新加载配置"><a href="#6-重新加载配置" class="headerlink" title="6 重新加载配置"></a>6 重新加载配置</h2><p>不用重启，让配置生效</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">/home/postgresql/bin/pg_ctl -D /home/postgresql/data   reload<br></code></pre></td></tr></table></figure>
+
+<h2 id="7-用户管理"><a href="#7-用户管理" class="headerlink" title="7 用户管理"></a>7 用户管理</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-comment">-- 创建用户</span><br>CREATE USER name <span class="hljs-string">[[ WITH ] option [...]]</span><br><br><span class="hljs-comment">-- 创建角色 在PG中，用户与角色是没有区别的，角色默认没有login权限，无法登陆，如果授予login之后，也可以像用户一样登陆。</span><br>CREATE ROLE name <span class="hljs-string">[[ WITH ] option [...]]</span><br></code></pre></td></tr></table></figure>
+
+<p>option常用选项如下：</p>
+<ul>
+<li>SUPERUSER | NOSUPERUSER：创建出来的用户是否为超级用户</li>
+<li>CREATEDB | NOCREATEDB：创建出来的用户是否有create database的权限</li>
+<li>CREATEROLE | NOCREATEROLE：创建出来的用户是否有创建其它角色的权限</li>
+<li>CREATEUSER | NOCREATEUSER：创建出来的用户是否有创建其它用户的权限</li>
+<li>INHERIT | NOINHERIT：确定角色是否继承其它角色的权限</li>
+<li>LOGIN | NOLOGIN：创建出来的角色是否有登录权限</li>
+<li>CONNECTION LIMIT n：创建出来的角色并发连接数限制数量，默认值是“-1”,表示没有限制</li>
+<li>VALID UNTIL ‘timestamp’：密码失效时间</li>
+</ul>
+<p>修改密码：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">USER</span> 用户名 <span class="hljs-keyword">WITH</span> <span class="hljs-keyword">PASSWORD</span> <span class="hljs-string">&#x27;xxx&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<h2 id="8-权限的管理"><a href="#8-权限的管理" class="headerlink" title="8 权限的管理"></a>8 权限的管理</h2><table>
+<thead>
+<tr>
+<th>权限</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TABLE</td>
+<td>表操作权限</td>
+</tr>
+<tr>
+<td>column_name</td>
+<td>列操作权限</td>
+</tr>
+<tr>
+<td>SEQUENCE</td>
+<td>序列操作权限</td>
+</tr>
+<tr>
+<td>DATABASE</td>
+<td>数据库操作权限</td>
+</tr>
+<tr>
+<td>DOMAIN</td>
+<td><em>域</em> 操作权限</td>
+</tr>
+</tbody></table>
+<h3 id="8-1-授权"><a href="#8-1-授权" class="headerlink" title="8.1 授权"></a>8.1 授权</h3><p>在postgresql数据库中，任何逻辑对象(包括数据库)都是有所有者的，也就是说数据库对象都是属于某个用户的，所以，无需把对象的权限赋予所有者，因为所有者默认就拥有所有的权限，在PG数据库中，删除及其修改对象的权限都不能赋予别的用户，它是所有者的固有权限，不能赋予或撤销，所有者也隐式地拥有把操作该对象的权限授予其他用户的权利。 </p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs css">-- 将角色授予给另外一个角色<br>GRANT role_name<span class="hljs-selector-attr">[,...]</span> <span class="hljs-selector-tag">TO</span> role_name<span class="hljs-selector-attr">[,...]</span> WITH ADMIN OPTION;<br><br>-- 角色回收<br>REVOKE role_name<span class="hljs-selector-attr">[,...]</span> <span class="hljs-selector-tag">FROM</span> role_name<span class="hljs-selector-attr">[,...]</span><span class="hljs-selector-attr">[CASCADE | RESTRICT]</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">GRANT</span> &#123; &#123; <span class="hljs-selector-tag">SELECT</span> | <span class="hljs-selector-tag">INSERT</span> | <span class="hljs-selector-tag">UPDATE</span> | <span class="hljs-selector-tag">DELETE</span> | <span class="hljs-selector-tag">TRUNCATE</span> | <span class="hljs-selector-tag">REFERENCES</span> | <span class="hljs-selector-tag">TRIGGER</span> &#125;<br>    <span class="hljs-selector-attr">[, ...]</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> &#123; <span class="hljs-selector-attr">[ TABLE ]</span> <span class="hljs-selector-tag">table_name</span> <span class="hljs-selector-attr">[, ...]</span><br>         | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-tag">TABLES</span> <span class="hljs-selector-tag">IN</span> <span class="hljs-selector-tag">SCHEMA</span> <span class="hljs-selector-tag">schema_name</span> <span class="hljs-selector-attr">[, ...]</span> &#125;<br>    <span class="hljs-selector-tag">TO</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span> <span class="hljs-selector-attr">[ WITH GRANT OPTION ]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br><br><span class="hljs-selector-tag">GRANT</span> &#123; &#123; <span class="hljs-selector-tag">SELECT</span> | <span class="hljs-selector-tag">INSERT</span> | <span class="hljs-selector-tag">UPDATE</span> | <span class="hljs-selector-tag">REFERENCES</span> &#125; ( column_name [, ...] )<br>    <span class="hljs-selector-attr">[, ...]</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> ( column_name [, ...] ) &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-attr">[ TABLE ]</span> <span class="hljs-selector-tag">table_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">TO</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span> <span class="hljs-selector-attr">[ WITH GRANT OPTION ]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br><br><span class="hljs-selector-tag">GRANT</span> &#123; &#123; <span class="hljs-selector-tag">USAGE</span> | <span class="hljs-selector-tag">SELECT</span> | <span class="hljs-selector-tag">UPDATE</span> &#125;<br>    <span class="hljs-selector-attr">[, ...]</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> &#123; <span class="hljs-selector-tag">SEQUENCE</span> <span class="hljs-selector-tag">sequence_name</span> <span class="hljs-selector-attr">[, ...]</span><br>         | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-tag">SEQUENCES</span> <span class="hljs-selector-tag">IN</span> <span class="hljs-selector-tag">SCHEMA</span> <span class="hljs-selector-tag">schema_name</span> <span class="hljs-selector-attr">[, ...]</span> &#125;<br>    <span class="hljs-selector-tag">TO</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span> <span class="hljs-selector-attr">[ WITH GRANT OPTION ]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br><br><span class="hljs-selector-tag">GRANT</span> &#123; &#123; <span class="hljs-selector-tag">CREATE</span> | <span class="hljs-selector-tag">CONNECT</span> | <span class="hljs-selector-tag">TEMPORARY</span> | <span class="hljs-selector-tag">TEMP</span> &#125; <span class="hljs-selector-attr">[, ...]</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">DATABASE</span> <span class="hljs-selector-tag">database_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">TO</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span> <span class="hljs-selector-attr">[ WITH GRANT OPTION ]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br><br><span class="hljs-selector-tag">GRANT</span> &#123; <span class="hljs-selector-tag">USAGE</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">DOMAIN</span> <span class="hljs-selector-tag">domain_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">TO</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span> <span class="hljs-selector-attr">[ WITH GRANT OPTION ]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br><br><span class="hljs-selector-tag">GRANT</span> &#123; <span class="hljs-selector-tag">USAGE</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">FOREIGN</span> <span class="hljs-selector-tag">DATA</span> <span class="hljs-selector-tag">WRAPPER</span> <span class="hljs-selector-tag">fdw_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">TO</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span> <span class="hljs-selector-attr">[ WITH GRANT OPTION ]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br><br><span class="hljs-selector-tag">GRANT</span> &#123; <span class="hljs-selector-tag">USAGE</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">FOREIGN</span> <span class="hljs-selector-tag">SERVER</span> <span class="hljs-selector-tag">server_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">TO</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span> <span class="hljs-selector-attr">[ WITH GRANT OPTION ]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br><br><span class="hljs-selector-tag">GRANT</span> &#123; <span class="hljs-selector-tag">EXECUTE</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> &#123; &#123; <span class="hljs-selector-tag">FUNCTION</span> | <span class="hljs-selector-tag">PROCEDURE</span> | <span class="hljs-selector-tag">ROUTINE</span> &#125; <span class="hljs-selector-tag">routine_name</span> <span class="hljs-selector-attr">[ ( [ [ argmode ]</span> <span class="hljs-selector-attr">[ arg_name ]</span> <span class="hljs-selector-tag">arg_type</span> <span class="hljs-selector-attr">[, ...]</span> ] ) ] <span class="hljs-selector-attr">[, ...]</span><br>         | <span class="hljs-keyword">ALL</span> &#123; <span class="hljs-selector-tag">FUNCTIONS</span> | <span class="hljs-selector-tag">PROCEDURES</span> | <span class="hljs-selector-tag">ROUTINES</span> &#125; <span class="hljs-selector-tag">IN</span> <span class="hljs-selector-tag">SCHEMA</span> <span class="hljs-selector-tag">schema_name</span> <span class="hljs-selector-attr">[, ...]</span> &#125;<br>    <span class="hljs-selector-tag">TO</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span> <span class="hljs-selector-attr">[ WITH GRANT OPTION ]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br><br><span class="hljs-selector-tag">GRANT</span> &#123; <span class="hljs-selector-tag">USAGE</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">LANGUAGE</span> <span class="hljs-selector-tag">lang_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">TO</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span> <span class="hljs-selector-attr">[ WITH GRANT OPTION ]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br><br><span class="hljs-selector-tag">GRANT</span> &#123; &#123; <span class="hljs-selector-tag">SELECT</span> | <span class="hljs-selector-tag">UPDATE</span> &#125; <span class="hljs-selector-attr">[, ...]</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">LARGE</span> <span class="hljs-selector-tag">OBJECT</span> <span class="hljs-selector-tag">loid</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">TO</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span> <span class="hljs-selector-attr">[ WITH GRANT OPTION ]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br><br><span class="hljs-selector-tag">GRANT</span> &#123; &#123; <span class="hljs-selector-tag">CREATE</span> | <span class="hljs-selector-tag">USAGE</span> &#125; <span class="hljs-selector-attr">[, ...]</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">SCHEMA</span> <span class="hljs-selector-tag">schema_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">TO</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span> <span class="hljs-selector-attr">[ WITH GRANT OPTION ]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br><br><span class="hljs-selector-tag">GRANT</span> &#123; <span class="hljs-selector-tag">CREATE</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">TABLESPACE</span> <span class="hljs-selector-tag">tablespace_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">TO</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span> <span class="hljs-selector-attr">[ WITH GRANT OPTION ]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br><br><span class="hljs-selector-tag">GRANT</span> &#123; <span class="hljs-selector-tag">USAGE</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">TYPE</span> <span class="hljs-selector-tag">type_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">TO</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span> <span class="hljs-selector-attr">[ WITH GRANT OPTION ]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br><br><span class="hljs-selector-tag">GRANT</span> <span class="hljs-selector-tag">role_name</span> <span class="hljs-selector-attr">[, ...]</span> <span class="hljs-selector-tag">TO</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-attr">[ WITH ADMIN OPTION ]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br><br><span class="hljs-selector-tag">where</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-tag">can</span> <span class="hljs-selector-tag">be</span>:<br><br>    <span class="hljs-selector-attr">[ GROUP ]</span> <span class="hljs-selector-tag">role_name</span><br>  | <span class="hljs-selector-tag">PUBLIC</span><br>  | <span class="hljs-selector-tag">CURRENT_ROLE</span><br>  | <span class="hljs-selector-tag">CURRENT_USER</span><br>  | <span class="hljs-selector-tag">SESSION_USER</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"># 授权增删改查<br><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">update</span>,<span class="hljs-keyword">delete</span>,<span class="hljs-keyword">insert</span>,<span class="hljs-keyword">select</span> <span class="hljs-keyword">ON</span> <span class="hljs-keyword">ALL</span> <span class="hljs-keyword">TABLES</span> <span class="hljs-keyword">IN</span> <span class="hljs-keyword">SCHEMA</span> <span class="hljs-built_in">public</span> <span class="hljs-keyword">TO</span> signalmap_rw;<br></code></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"># 给所有用户授予<span class="hljs-keyword">insert</span>权限针对films表<br><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">ON</span> films <span class="hljs-keyword">TO</span> <span class="hljs-built_in">PUBLIC</span>;<br><br># 授权manuel用户在试图kinds的所有权限<br><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">ALL</span> <span class="hljs-keyword">PRIVILEGES</span> <span class="hljs-keyword">ON</span> kinds <span class="hljs-keyword">TO</span> manuel;<br><br># 注意，如果由超级用户或<span class="hljs-keyword">types</span>的所有者执行，上面的操作确实会授予所有特权，但如果由其他人执行，则只授予其他人拥有授予选项的权限。<br><span class="hljs-keyword">GRANT</span> admins <span class="hljs-keyword">TO</span> joe;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-comment">-- 回收public模式的create权限</span><br><span class="hljs-keyword">revoke</span> <span class="hljs-keyword">create</span> <span class="hljs-keyword">on</span> <span class="hljs-keyword">schema</span> <span class="hljs-built_in">public</span> <span class="hljs-keyword">from</span> <span class="hljs-built_in">public</span>;<br><span class="hljs-comment">-- 创建只读用户，密码为readonly</span><br><span class="hljs-keyword">create</span> <span class="hljs-keyword">user</span> readonly <span class="hljs-keyword">password</span> <span class="hljs-string">&#x27;readonly&#x27;</span>;<br><span class="hljs-comment">-- 授权public模式给readonly</span><br><span class="hljs-keyword">grant</span> <span class="hljs-keyword">usage</span> <span class="hljs-keyword">on</span> <span class="hljs-keyword">schema</span> <span class="hljs-built_in">public</span> <span class="hljs-keyword">to</span> readonly;<br><span class="hljs-comment">-- 授权public模式的所有表权限给readonly用户</span><br><span class="hljs-keyword">grant</span> <span class="hljs-keyword">select</span> <span class="hljs-keyword">on</span> <span class="hljs-keyword">all</span> <span class="hljs-keyword">tables</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">schema</span> <span class="hljs-built_in">public</span> <span class="hljs-keyword">to</span> readonly;<br><span class="hljs-comment">-- 切换到readonly测试</span><br>\c - readonly <br><span class="hljs-comment">-- 切换到postgres用户</span><br>\c - postgres<br><span class="hljs-comment">-- 将public模式的默认表查询权限授予readonly用户</span><br><span class="hljs-keyword">alter</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">privileges</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">schema</span> <span class="hljs-built_in">public</span> <span class="hljs-keyword">grant</span> <span class="hljs-keyword">select</span> <span class="hljs-keyword">on</span> <span class="hljs-keyword">tables</span> <span class="hljs-keyword">to</span> readonly;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-comment">-- 查看某用户的系统权限</span><br><span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span>  pg_roles <span class="hljs-keyword">WHERE</span> rolname=<span class="hljs-string">&#x27;postgres&#x27;</span>;<br><br><span class="hljs-comment">-- 查看某用户的表级别权限</span><br><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> information_schema.table_privileges <span class="hljs-keyword">where</span> grantee=<span class="hljs-string">&#x27;postgres&#x27;</span>;<br><br><span class="hljs-comment">-- 查看某用户的usage权限</span><br><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> information_schema.usage_privileges <span class="hljs-keyword">where</span> grantee=<span class="hljs-string">&#x27;postgres&#x27;</span>;<br><br><span class="hljs-comment">-- 查看某用户在存储过程函数的执行权限</span><br><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> information_schema.routine_privileges <span class="hljs-keyword">where</span> grantee=<span class="hljs-string">&#x27;postgres&#x27;</span>; <br><br><span class="hljs-comment">-- 查看某用户在某表的列上的权限</span><br><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> information_schema.column_privileges <span class="hljs-keyword">where</span> grantee=<span class="hljs-string">&#x27;postgres&#x27;</span>; <br><br><span class="hljs-comment">-- 查看当前用户能够访问的数据类型</span><br><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> information_schema.data_type_privileges ; <br><br><span class="hljs-comment">-- 查看用户自定义类型上授予的USAGE权限</span><br><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> information_schema.udt_privileges <span class="hljs-keyword">where</span> grantee=<span class="hljs-string">&#x27;postgres&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="8-2-回收权限"><a href="#8-2-回收权限" class="headerlink" title="8.2 回收权限"></a>8.2 回收权限</h3><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">REVOKE</span> <span class="hljs-selector-attr">[ GRANT OPTION FOR ]</span><br>    &#123; &#123; <span class="hljs-selector-tag">SELECT</span> | <span class="hljs-selector-tag">INSERT</span> | <span class="hljs-selector-tag">UPDATE</span> | <span class="hljs-selector-tag">DELETE</span> | <span class="hljs-selector-tag">TRUNCATE</span> | <span class="hljs-selector-tag">REFERENCES</span> | <span class="hljs-selector-tag">TRIGGER</span> &#125;<br>    <span class="hljs-selector-attr">[, ...]</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> &#123; <span class="hljs-selector-attr">[ TABLE ]</span> <span class="hljs-selector-tag">table_name</span> <span class="hljs-selector-attr">[, ...]</span><br>         | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-tag">TABLES</span> <span class="hljs-selector-tag">IN</span> <span class="hljs-selector-tag">SCHEMA</span> <span class="hljs-selector-tag">schema_name</span> <span class="hljs-selector-attr">[, ...]</span> &#125;<br>    <span class="hljs-selector-tag">FROM</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br>    <span class="hljs-selector-attr">[ CASCADE | RESTRICT ]</span><br><br><span class="hljs-selector-tag">REVOKE</span> <span class="hljs-selector-attr">[ GRANT OPTION FOR ]</span><br>    &#123; &#123; <span class="hljs-selector-tag">SELECT</span> | <span class="hljs-selector-tag">INSERT</span> | <span class="hljs-selector-tag">UPDATE</span> | <span class="hljs-selector-tag">REFERENCES</span> &#125; ( column_name [, ...] )<br>    <span class="hljs-selector-attr">[, ...]</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> ( column_name [, ...] ) &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-attr">[ TABLE ]</span> <span class="hljs-selector-tag">table_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">FROM</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br>    <span class="hljs-selector-attr">[ CASCADE | RESTRICT ]</span><br><br><span class="hljs-selector-tag">REVOKE</span> <span class="hljs-selector-attr">[ GRANT OPTION FOR ]</span><br>    &#123; &#123; <span class="hljs-selector-tag">USAGE</span> | <span class="hljs-selector-tag">SELECT</span> | <span class="hljs-selector-tag">UPDATE</span> &#125;<br>    <span class="hljs-selector-attr">[, ...]</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> &#123; <span class="hljs-selector-tag">SEQUENCE</span> <span class="hljs-selector-tag">sequence_name</span> <span class="hljs-selector-attr">[, ...]</span><br>         | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-tag">SEQUENCES</span> <span class="hljs-selector-tag">IN</span> <span class="hljs-selector-tag">SCHEMA</span> <span class="hljs-selector-tag">schema_name</span> <span class="hljs-selector-attr">[, ...]</span> &#125;<br>    <span class="hljs-selector-tag">FROM</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br>    <span class="hljs-selector-attr">[ CASCADE | RESTRICT ]</span><br><br><span class="hljs-selector-tag">REVOKE</span> <span class="hljs-selector-attr">[ GRANT OPTION FOR ]</span><br>    &#123; &#123; <span class="hljs-selector-tag">CREATE</span> | <span class="hljs-selector-tag">CONNECT</span> | <span class="hljs-selector-tag">TEMPORARY</span> | <span class="hljs-selector-tag">TEMP</span> &#125; <span class="hljs-selector-attr">[, ...]</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">DATABASE</span> <span class="hljs-selector-tag">database_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">FROM</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br>    <span class="hljs-selector-attr">[ CASCADE | RESTRICT ]</span><br><br><span class="hljs-selector-tag">REVOKE</span> <span class="hljs-selector-attr">[ GRANT OPTION FOR ]</span><br>    &#123; <span class="hljs-selector-tag">USAGE</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">DOMAIN</span> <span class="hljs-selector-tag">domain_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">FROM</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br>    <span class="hljs-selector-attr">[ CASCADE | RESTRICT ]</span><br><br><span class="hljs-selector-tag">REVOKE</span> <span class="hljs-selector-attr">[ GRANT OPTION FOR ]</span><br>    &#123; <span class="hljs-selector-tag">USAGE</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">FOREIGN</span> <span class="hljs-selector-tag">DATA</span> <span class="hljs-selector-tag">WRAPPER</span> <span class="hljs-selector-tag">fdw_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">FROM</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br>    <span class="hljs-selector-attr">[ CASCADE | RESTRICT ]</span><br><br><span class="hljs-selector-tag">REVOKE</span> <span class="hljs-selector-attr">[ GRANT OPTION FOR ]</span><br>    &#123; <span class="hljs-selector-tag">USAGE</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">FOREIGN</span> <span class="hljs-selector-tag">SERVER</span> <span class="hljs-selector-tag">server_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">FROM</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br>    <span class="hljs-selector-attr">[ CASCADE | RESTRICT ]</span><br><br><span class="hljs-selector-tag">REVOKE</span> <span class="hljs-selector-attr">[ GRANT OPTION FOR ]</span><br>    &#123; <span class="hljs-selector-tag">EXECUTE</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> &#123; &#123; <span class="hljs-selector-tag">FUNCTION</span> | <span class="hljs-selector-tag">PROCEDURE</span> | <span class="hljs-selector-tag">ROUTINE</span> &#125; <span class="hljs-selector-tag">function_name</span> <span class="hljs-selector-attr">[ ( [ [ argmode ]</span> <span class="hljs-selector-attr">[ arg_name ]</span> <span class="hljs-selector-tag">arg_type</span> <span class="hljs-selector-attr">[, ...]</span> ] ) ] <span class="hljs-selector-attr">[, ...]</span><br>         | <span class="hljs-keyword">ALL</span> &#123; <span class="hljs-selector-tag">FUNCTIONS</span> | <span class="hljs-selector-tag">PROCEDURES</span> | <span class="hljs-selector-tag">ROUTINES</span> &#125; <span class="hljs-selector-tag">IN</span> <span class="hljs-selector-tag">SCHEMA</span> <span class="hljs-selector-tag">schema_name</span> <span class="hljs-selector-attr">[, ...]</span> &#125;<br>    <span class="hljs-selector-tag">FROM</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br>    <span class="hljs-selector-attr">[ CASCADE | RESTRICT ]</span><br><br><span class="hljs-selector-tag">REVOKE</span> <span class="hljs-selector-attr">[ GRANT OPTION FOR ]</span><br>    &#123; <span class="hljs-selector-tag">USAGE</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">LANGUAGE</span> <span class="hljs-selector-tag">lang_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">FROM</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br>    <span class="hljs-selector-attr">[ CASCADE | RESTRICT ]</span><br><br><span class="hljs-selector-tag">REVOKE</span> <span class="hljs-selector-attr">[ GRANT OPTION FOR ]</span><br>    &#123; &#123; <span class="hljs-selector-tag">SELECT</span> | <span class="hljs-selector-tag">UPDATE</span> &#125; <span class="hljs-selector-attr">[, ...]</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">LARGE</span> <span class="hljs-selector-tag">OBJECT</span> <span class="hljs-selector-tag">loid</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">FROM</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br>    <span class="hljs-selector-attr">[ CASCADE | RESTRICT ]</span><br><br><span class="hljs-selector-tag">REVOKE</span> <span class="hljs-selector-attr">[ GRANT OPTION FOR ]</span><br>    &#123; &#123; <span class="hljs-selector-tag">CREATE</span> | <span class="hljs-selector-tag">USAGE</span> &#125; <span class="hljs-selector-attr">[, ...]</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">SCHEMA</span> <span class="hljs-selector-tag">schema_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">FROM</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br>    <span class="hljs-selector-attr">[ CASCADE | RESTRICT ]</span><br><br><span class="hljs-selector-tag">REVOKE</span> <span class="hljs-selector-attr">[ GRANT OPTION FOR ]</span><br>    &#123; <span class="hljs-selector-tag">CREATE</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">TABLESPACE</span> <span class="hljs-selector-tag">tablespace_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">FROM</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br>    <span class="hljs-selector-attr">[ CASCADE | RESTRICT ]</span><br><br><span class="hljs-selector-tag">REVOKE</span> <span class="hljs-selector-attr">[ GRANT OPTION FOR ]</span><br>    &#123; <span class="hljs-selector-tag">USAGE</span> | <span class="hljs-keyword">ALL</span> <span class="hljs-selector-attr">[ PRIVILEGES ]</span> &#125;<br>    <span class="hljs-selector-tag">ON</span> <span class="hljs-selector-tag">TYPE</span> <span class="hljs-selector-tag">type_name</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-tag">FROM</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br>    <span class="hljs-selector-attr">[ CASCADE | RESTRICT ]</span><br><br><span class="hljs-selector-tag">REVOKE</span> <span class="hljs-selector-attr">[ ADMIN OPTION FOR ]</span><br>    <span class="hljs-selector-tag">role_name</span> <span class="hljs-selector-attr">[, ...]</span> <span class="hljs-selector-tag">FROM</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-attr">[, ...]</span><br>    <span class="hljs-selector-attr">[ GRANTED BY role_specification ]</span><br>    <span class="hljs-selector-attr">[ CASCADE | RESTRICT ]</span><br><br><span class="hljs-selector-tag">where</span> <span class="hljs-selector-tag">role_specification</span> <span class="hljs-selector-tag">can</span> <span class="hljs-selector-tag">be</span>:<br><br>    <span class="hljs-selector-attr">[ GROUP ]</span> <span class="hljs-selector-tag">role_name</span><br>  | <span class="hljs-selector-tag">PUBLIC</span><br>  | <span class="hljs-selector-tag">CURRENT_ROLE</span><br>  | <span class="hljs-selector-tag">CURRENT_USER</span><br>  | <span class="hljs-selector-tag">SESSION_USER</span><br></code></pre></td></tr></table></figure>
+
+<p>Revoke insert privilege for the public on table <code>films</code>:</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">ON</span> films <span class="hljs-keyword">FROM</span> <span class="hljs-built_in">PUBLIC</span>;<br></code></pre></td></tr></table></figure>
+
+<p>Revoke all privileges from user <code>manuel</code> on view <code>kinds</code>:</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">ALL</span> <span class="hljs-keyword">PRIVILEGES</span> <span class="hljs-keyword">ON</span> kinds <span class="hljs-keyword">FROM</span> manuel;<br></code></pre></td></tr></table></figure>
+
+<p>Note that this actually means “revoke all privileges that I granted”.</p>
+<p>Revoke membership in role <code>admins</code> from user <code>joe</code>:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> admins <span class="hljs-keyword">FROM</span> joe;<br></code></pre></td></tr></table></figure>
+
+<h3 id="8-3-授权过程"><a href="#8-3-授权过程" class="headerlink" title="8.3 授权过程"></a>8.3 授权过程</h3><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"># 所有表<br><span class="hljs-keyword">grant</span> <span class="hljs-keyword">all</span> <span class="hljs-keyword">privileges</span> <span class="hljs-keyword">on</span> <span class="hljs-keyword">all</span> <span class="hljs-keyword">tables</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">schema</span> <span class="hljs-built_in">public</span>  <span class="hljs-keyword">to</span> sonaruser;<br><span class="hljs-keyword">grant</span> <span class="hljs-keyword">all</span> <span class="hljs-keyword">privileges</span> <span class="hljs-keyword">on</span> <span class="hljs-keyword">schema</span> <span class="hljs-built_in">public</span>  <span class="hljs-keyword">to</span> sonaruser;<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/postgresql/" class="category-chain-item">postgresql</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/postgresql/">#postgresql</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>postgresql源码安装</div>
+      <div>https://leellun.github.io/2022/11/10/服务器/postgresql/2022-11-10-postgresql源码安装/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/11/12/%E5%90%8E%E7%AB%AF/java/%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/%E7%AE%97%E6%B3%95%E9%A2%98/2022-11-12-%E5%89%91%E6%8C%87offer%E7%AE%97%E6%B3%95%E9%A2%98/" title="剑指offer算法题">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">剑指offer算法题</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/08/%E6%9C%8D%E5%8A%A1%E5%99%A8/postgresql/2022-11-08-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8PostgresSQL/" title="快速入门PostgresSQL">
+                        <span class="hidden-mobile">快速入门PostgresSQL</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

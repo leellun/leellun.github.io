@@ -1,0 +1,910 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="beego的路由设置1 基础路由从 beego 1.2 版本开始支持了基本的 RESTful 函数式路由,应用中的大多数路由都会定义在 routers&#x2F;router.go 文件中。最简单的 beego 路由由 URI 和闭包函数组成。 1.1 基本 GET 路由123beego.Get(&quot;&#x2F;&quot;,func(ctx *context.Context)&amp;#123;     ctx.O">
+<meta property="og:type" content="article">
+<meta property="og:title" content="beego的路由设置">
+<meta property="og:url" content="https://leellun.github.io/2024/01/16/%E5%90%8E%E7%AB%AF/go/beego%E7%9A%84%E8%B7%AF%E7%94%B1%E8%AE%BE%E7%BD%AE/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="beego的路由设置1 基础路由从 beego 1.2 版本开始支持了基本的 RESTful 函数式路由,应用中的大多数路由都会定义在 routers&#x2F;router.go 文件中。最简单的 beego 路由由 URI 和闭包函数组成。 1.1 基本 GET 路由123beego.Get(&quot;&#x2F;&quot;,func(ctx *context.Context)&amp;#123;     ctx.O">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.topgoer.com/static/images/init.png">
+<meta property="article:published_time" content="2024-01-16T12:14:02.000Z">
+<meta property="article:modified_time" content="2024-01-16T12:33:52.424Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="beego">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.topgoer.com/static/images/init.png">
+  
+  
+  
+  <title>beego的路由设置 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="beego的路由设置"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-01-16 20:14" pubdate>
+          2024年1月16日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          111 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">beego的路由设置</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="beego的路由设置"><a href="#beego的路由设置" class="headerlink" title="beego的路由设置"></a>beego的路由设置</h1><h2 id="1-基础路由"><a href="#1-基础路由" class="headerlink" title="1 基础路由"></a>1 基础路由</h2><p>从 beego 1.2 版本开始支持了基本的 RESTful 函数式路由,应用中的大多数路由都会定义在 <code>routers/router.go</code> 文件中。最简单的 beego 路由由 URI 和闭包函数组成。</p>
+<h3 id="1-1-基本-GET-路由"><a href="#1-1-基本-GET-路由" class="headerlink" title="1.1 基本 GET 路由"></a>1.1 基本 GET 路由</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">beego.<span class="hljs-constructor">Get(<span class="hljs-string">&quot;/&quot;</span>,<span class="hljs-params">func</span>(<span class="hljs-params">ctx</span> <span class="hljs-operator">*</span><span class="hljs-params">context</span>.Context)</span>&#123;<br>     ctx.Output.<span class="hljs-constructor">Body([]<span class="hljs-params">byte</span>(<span class="hljs-string">&quot;hello world&quot;</span>)</span>)<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<h3 id="1-2-基本-POST-路由"><a href="#1-2-基本-POST-路由" class="headerlink" title="1.2 基本 POST 路由"></a>1.2 基本 POST 路由</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">beego.<span class="hljs-constructor">Post(<span class="hljs-string">&quot;/alice&quot;</span>,<span class="hljs-params">func</span>(<span class="hljs-params">ctx</span> <span class="hljs-operator">*</span><span class="hljs-params">context</span>.Context)</span>&#123;<br>     ctx.Output.<span class="hljs-constructor">Body([]<span class="hljs-params">byte</span>(<span class="hljs-string">&quot;bob&quot;</span>)</span>)<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<h3 id="1-3-注册一个可以响应任何-HTTP-的路由"><a href="#1-3-注册一个可以响应任何-HTTP-的路由" class="headerlink" title="1.3 注册一个可以响应任何 HTTP 的路由"></a>1.3 注册一个可以响应任何 HTTP 的路由</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">beego.<span class="hljs-constructor">Any(<span class="hljs-string">&quot;/foo&quot;</span>,<span class="hljs-params">func</span>(<span class="hljs-params">ctx</span> <span class="hljs-operator">*</span><span class="hljs-params">context</span>.Context)</span>&#123;<br>     ctx.Output.<span class="hljs-constructor">Body([]<span class="hljs-params">byte</span>(<span class="hljs-string">&quot;bar&quot;</span>)</span>)<br>&#125;)<br> <br></code></pre></td></tr></table></figure>
+
+<h3 id="1-4-所有的支持的基础函数如下所示"><a href="#1-4-所有的支持的基础函数如下所示" class="headerlink" title="1.4 所有的支持的基础函数如下所示"></a>1.4 所有的支持的基础函数如下所示</h3><ul>
+<li>beego.Get(router, beego.FilterFunc)</li>
+<li>beego.Post(router, beego.FilterFunc)</li>
+<li>beego.Put(router, beego.FilterFunc)</li>
+<li>beego.Patch(router, beego.FilterFunc)</li>
+<li>beego.Head(router, beego.FilterFunc)</li>
+<li>beego.Options(router, beego.FilterFunc)</li>
+<li>beego.Delete(router, beego.FilterFunc)</li>
+<li>beego.Any(router, beego.FilterFunc)</li>
+</ul>
+<h3 id="1-5-支持自定义的-handler-实现"><a href="#1-5-支持自定义的-handler-实现" class="headerlink" title="1.5 支持自定义的 handler 实现"></a>1.5 支持自定义的 handler 实现</h3><p>有些时候我们已经实现了一些 rpc 的应用,但是想要集成到 beego 中,或者其他的 httpserver 应用,集成到 beego 中来.现在可以很方便的集成:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs css">s := rpc.<span class="hljs-built_in">NewServer</span>()<br>s.<span class="hljs-built_in">RegisterCodec</span>(json.<span class="hljs-built_in">NewCodec</span>(), <span class="hljs-string">&quot;application/json&quot;</span>)<br>s.<span class="hljs-built_in">RegisterService</span>(<span class="hljs-built_in">new</span>(HelloService), <span class="hljs-string">&quot;&quot;</span>)<br>beego.<span class="hljs-built_in">Handler</span>(<span class="hljs-string">&quot;/rpc&quot;</span>, s)<br></code></pre></td></tr></table></figure>
+
+<p><code>beego.Handler(router, http.Handler)</code> 这个函数是关键,第一个参数表示路由 URI, 第二个就是你自己实现的 <code>http.Handler</code>, 注册之后就会把所有 rpc 作为前缀的请求分发到 <code>http.Handler</code> 中进行处理.</p>
+<p>这个函数其实还有第三个参数就是是否是前缀匹配,默认是 false, 如果设置了 true, 那么就会在路由匹配的时候前缀匹配,即 <code>/rpc/user</code> 这样的也会匹配去运行</p>
+<h3 id="1-6-RESTful路由"><a href="#1-6-RESTful路由" class="headerlink" title="1.6 RESTful路由"></a>1.6 RESTful路由</h3><p>RESTful是Beego隐式支持的一种流行的API开发方法，对Get请求执行Get方法，对Post请求执行Post方法。缺省路由器为RESTful。下面会介绍固定路由、正则路由。</p>
+<h2 id="2-固定路由"><a href="#2-固定路由" class="headerlink" title="2 固定路由"></a>2 固定路由</h2><p>固定路由也就是全匹配的路由，如下所示：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">beego.<span class="hljs-constructor">Router(<span class="hljs-string">&quot;/&quot;</span>, &amp;<span class="hljs-params">controllers</span>.MainController&#123;&#125;)</span><br>beego.<span class="hljs-constructor">Router(<span class="hljs-string">&quot;/admin&quot;</span>, &amp;<span class="hljs-params">admin</span>.UserController&#123;&#125;)</span><br>beego.<span class="hljs-constructor">Router(<span class="hljs-string">&quot;/admin/index&quot;</span>, &amp;<span class="hljs-params">admin</span>.ArticleController&#123;&#125;)</span><br>beego.<span class="hljs-constructor">Router(<span class="hljs-string">&quot;/admin/addpkg&quot;</span>, &amp;<span class="hljs-params">admin</span>.AddController&#123;&#125;)</span><br></code></pre></td></tr></table></figure>
+
+<p>如上所示的路由就是我们最常用的路由方式，一个固定的路由，一个控制器，然后根据用户请求方法不同请求控制器中对应的方法，典型的 RESTful 方式。</p>
+<h2 id="3-正则路由"><a href="#3-正则路由" class="headerlink" title="3 正则路由"></a>3 正则路由</h2><p>为了用户更加方便的路由设置，beego 参考了 sinatra 的路由实现，支持多种方式的路由：</p>
+<ul>
+<li><p>beego.Router(“/api/?:id”, &amp;controllers.RController{})</p>
+<p>默认匹配 //例如对于URL”/api/123”可以匹配成功，此时变量”:id”值为”123”</p>
+</li>
+<li><p>beego.Router(“/api/:id”, &amp;controllers.RController{})</p>
+<p>默认匹配 //例如对于URL”/api/123”可以匹配成功，此时变量”:id”值为”123”，但URL”/api/“匹配失败</p>
+</li>
+<li><p>beego.Router(“/api/:id([0-9]+)“, &amp;controllers.RController{})</p>
+<p>自定义正则匹配 //例如对于URL”/api/123”可以匹配成功，此时变量”:id”值为”123”</p>
+</li>
+<li><p>beego.Router(“/user/:username([\w]+)“, &amp;controllers.RController{})</p>
+<p>正则字符串匹配 //例如对于URL”/user/astaxie”可以匹配成功，此时变量”:username”值为”astaxie”</p>
+</li>
+<li><p>beego.Router(“/download/*.*”, &amp;controllers.RController{})</p>
+<p>*匹配方式 //例如对于URL”/download/file/api.xml”可以匹配成功，此时变量”:path”值为”file/api”， “:ext”值为”xml”</p>
+</li>
+<li><p>beego.Router(“/download/ceshi/*“, &amp;controllers.RController{})</p>
+<p>*全匹配方式 //例如对于URL”/download/ceshi/file/api.json”可以匹配成功，此时变量”:splat”值为”file/api.json”</p>
+</li>
+<li><p>beego.Router(“/:id:int”, &amp;controllers.RController{})</p>
+<p>int 类型设置方式，匹配 :id为int 类型，框架帮你实现了正则 ([0-9]+)</p>
+</li>
+<li><p>beego.Router(“/:hi:string”, &amp;controllers.RController{})</p>
+<p>string 类型设置方式，匹配 :hi 为 string 类型。框架帮你实现了正则 ([\w]+)</p>
+</li>
+<li><p>beego.Router(“/cms_:id([0-9]+).html”, &amp;controllers.CmsController{})</p>
+<p>带有前缀的自定义正则 //匹配 :id 为正则类型。匹配 cms_123.html 这样的 url :id = 123</p>
+</li>
+</ul>
+<p>可以在 Controller 中通过如下方式获取上面的变量：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus">this<span class="hljs-selector-class">.Ctx</span><span class="hljs-selector-class">.Input</span><span class="hljs-selector-class">.Param</span>(<span class="hljs-string">&quot;:id&quot;</span>)<br>this<span class="hljs-selector-class">.Ctx</span><span class="hljs-selector-class">.Input</span><span class="hljs-selector-class">.Param</span>(<span class="hljs-string">&quot;:username&quot;</span>)<br>this<span class="hljs-selector-class">.Ctx</span><span class="hljs-selector-class">.Input</span><span class="hljs-selector-class">.Param</span>(<span class="hljs-string">&quot;:splat&quot;</span>)<br>this<span class="hljs-selector-class">.Ctx</span><span class="hljs-selector-class">.Input</span><span class="hljs-selector-class">.Param</span>(<span class="hljs-string">&quot;:path&quot;</span>)<br>this<span class="hljs-selector-class">.Ctx</span><span class="hljs-selector-class">.Input</span><span class="hljs-selector-class">.Param</span>(<span class="hljs-string">&quot;:ext&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<h2 id="4-自定义方法及-RESTful-规则"><a href="#4-自定义方法及-RESTful-规则" class="headerlink" title="4 自定义方法及 RESTful 规则"></a>4 自定义方法及 RESTful 规则</h2><p>上面列举的是默认的请求方法名（请求的 method 和函数名一致，例如 <code>GET</code> 请求执行 <code>Get</code> 函数，<code>POST</code> 请求执行 <code>Post</code> 函数），如果用户期望自定义函数名，那么可以使用如下方式：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dts">beego.Router(<span class="hljs-string">&quot;/&quot;</span>,<span class="hljs-variable">&amp;</span>IndexController<span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span>,<span class="hljs-string">&quot;*:Index&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>使用第三个参数，第三个参数就是用来设置对应 method 到函数名，定义如下</p>
+<ul>
+<li><code>*</code>表示任意的 method 都执行该函数</li>
+<li>使用 httpmethod:funcname 格式来展示</li>
+<li>多个不同的格式使用 <code>;</code> 分割</li>
+<li>多个 method 对应同一个 funcname，method 之间通过 <code>,</code> 来分割</li>
+</ul>
+<p>以下是一个 RESTful 的设计示例：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dts">beego.Router(<span class="hljs-string">&quot;/api/list&quot;</span>,<span class="hljs-variable">&amp;</span>RestController<span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span>,<span class="hljs-string">&quot;*:ListFood&quot;</span>)<br>beego.Router(<span class="hljs-string">&quot;/api/create&quot;</span>,<span class="hljs-variable">&amp;</span>RestController<span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span>,<span class="hljs-string">&quot;post:CreateFood&quot;</span>)<br>beego.Router(<span class="hljs-string">&quot;/api/update&quot;</span>,<span class="hljs-variable">&amp;</span>RestController<span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span>,<span class="hljs-string">&quot;put:UpdateFood&quot;</span>)<br>beego.Router(<span class="hljs-string">&quot;/api/delete&quot;</span>,<span class="hljs-variable">&amp;</span>RestController<span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span>,<span class="hljs-string">&quot;delete:DeleteFood&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>以下是多个 HTTP Method 指向同一个函数的示例：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dts">beego.Router(<span class="hljs-string">&quot;/api&quot;</span>,<span class="hljs-variable">&amp;</span>RestController<span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span>,<span class="hljs-string">&quot;get,post:ApiFunc&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>以下是不同的 method 对应不同的函数，通过 ; 进行分割的示例：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dts">beego.Router(<span class="hljs-string">&quot;/simple&quot;</span>,<span class="hljs-variable">&amp;</span>SimpleController<span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span>,<span class="hljs-string">&quot;get:GetFunc;post:PostFunc&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>可用的 HTTP Method：</p>
+<ul>
+<li>*: 包含以下所有的函数</li>
+<li>get: GET 请求</li>
+<li>post: POST 请求</li>
+<li>put: PUT 请求</li>
+<li>delete: DELETE 请求</li>
+<li>patch: PATCH 请求</li>
+<li>options: OPTIONS 请求</li>
+<li>head: HEAD 请求</li>
+</ul>
+<p>如果同时存在 * 和对应的 HTTP Method，那么优先执行 HTTP Method 的方法，例如同时注册了如下所示的路由：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dts">beego.Router(<span class="hljs-string">&quot;/simple&quot;</span>,<span class="hljs-variable">&amp;</span>SimpleController<span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span>,<span class="hljs-string">&quot;*:AllFunc;post:PostFunc&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>那么执行 <code>POST</code> 请求的时候，执行 <code>PostFunc</code> 而不执行 <code>AllFunc</code>。</p>
+<blockquote>
+<p>自定义函数的路由默认不支持 RESTful 的方法，也就是如果你设置了 <code>beego.Router(&quot;/api&quot;,&amp;RestController&#123;&#125;,&quot;post:ApiFunc&quot;)</code> 这样的路由，如果请求的方法是 <code>POST</code>，那么不会默认去执行 <code>Post</code> 函数。</p>
+</blockquote>
+<h2 id="5-自动匹配"><a href="#5-自动匹配" class="headerlink" title="5 自动匹配"></a>5 自动匹配</h2><p>用户首先需要把需要路由的控制器注册到自动路由中：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-meta">#用于自动路由控制器中的方法</span><br>beego.AutoRouter(<span class="hljs-variable">&amp;controllers</span>.ObjectController<span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span>)<br><span class="hljs-meta">#用于自动路由控制器中的方法，并指定URL前缀</span><br>beego.AutoRouter(<span class="hljs-variable">&amp;controllers</span>.ObjectController<span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span>, <span class="hljs-string">&quot;/object&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>那么 beego 就会通过反射获取该结构体中所有的实现方法，你就可以通过如下的方式访问到对应的方法中：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/object/</span>login   调用 ObjectController 中的 Login 方法<br><span class="hljs-regexp">/object/</span>logout  调用 ObjectController 中的 Logout 方法<br></code></pre></td></tr></table></figure>
+
+<p>除了前缀两个 <code>/:controller/:method</code> 的匹配之外，剩下的 url beego 会帮你自动化解析为参数，保存在 <code>this.Ctx.Input.Params</code> 当中：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/object/</span>blog<span class="hljs-regexp">/2013/</span><span class="hljs-number">09</span>/<span class="hljs-number">12</span>  调用 ObjectController 中的 Blog 方法，参数如下：map[<span class="hljs-number">0</span>:<span class="hljs-number">2013</span> <span class="hljs-number">1</span>:<span class="hljs-number">09</span> <span class="hljs-number">2</span>:<span class="hljs-number">12</span>]<br></code></pre></td></tr></table></figure>
+
+<p>方法名在内部是保存了用户设置的，例如 Login，url 匹配的时候都会转化为小写，所以，<code>/object/LOGIN</code> 这样的 <code>url</code> 也一样可以路由到用户定义的 <code>Login</code> 方法中。</p>
+<p>现在已经可以通过自动识别出来下面类似的所有 url，都会把请求分发到 <code>controller</code> 的 <code>simple</code> 方法：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/controller/</span>simple<br><span class="hljs-regexp">/controller/</span>simple.html<br><span class="hljs-regexp">/controller/</span>simple.json<br><span class="hljs-regexp">/controller/</span>simple.xml<br></code></pre></td></tr></table></figure>
+
+<p>可以通过 <code>this.Ctx.Input.Param(&quot;:ext&quot;)</code> 获取后缀名。</p>
+<h2 id="6-注解路由"><a href="#6-注解路由" class="headerlink" title="6 注解路由"></a>6 注解路由</h2><p>从 beego 1.3 版本开始支持了注解路由，用户无需在 router 中注册路由，只需要 Include 相应地 controller，然后在 controller 的 method 方法上面写上 router 注释（// @router）就可以了，详细的使用请看下面的例子：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> CMS API<br>type CMSController struct &#123;<br>    beego.Controller<br>&#125;<br><br><span class="hljs-keyword">func</span> (c *CMSController) URLMapping() &#123;<br>    c.Mapping(<span class="hljs-string">&quot;StaticBlock&quot;</span>, c.StaticBlock)<br>    c.Mapping(<span class="hljs-string">&quot;AllBlock&quot;</span>, c.AllBlock)<br>&#125;<br><br><br><span class="hljs-regexp">//</span> @router <span class="hljs-regexp">/staticblock/</span>:key [get]<br><span class="hljs-keyword">func</span> (this *CMSController) StaticBlock() &#123;<br><br>&#125;<br><br><span class="hljs-regexp">//</span> @router <span class="hljs-regexp">/all/</span>:key [get]<br><span class="hljs-keyword">func</span> (this *CMSController) AllBlock() &#123;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>可以在 <code>router.go</code> 中通过如下方式注册路由：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">beego.<span class="hljs-keyword">Include</span>(&amp;CMSController&#123;&#125;)<br></code></pre></td></tr></table></figure>
+
+<p>beego 自动会进行源码分析，注意只会在 dev 模式下进行生成，生成的路由放在 “/routers/commentsRouter.go” 文件中。</p>
+<p>这样上面的路由就支持了如下的路由：</p>
+<ul>
+<li>GET /staticblock/:key</li>
+<li>GET /all/:key</li>
+</ul>
+<p>其实效果和自己通过 Router 函数注册是一样的：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dts">beego.Router(<span class="hljs-string">&quot;/staticblock/:key&quot;</span>, <span class="hljs-variable">&amp;</span>CMSController<span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span>, <span class="hljs-string">&quot;get:StaticBlock&quot;</span>)<br>beego.Router(<span class="hljs-string">&quot;/all/:key&quot;</span>, <span class="hljs-variable">&amp;</span>CMSController<span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span>, <span class="hljs-string">&quot;get:AllBlock&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>同时大家注意到新版本里面增加了 URLMapping 这个函数，这是新增加的函数，用户如果没有进行注册，那么就会通过反射来执行对应的函数，如果注册了就会通过 interface 来进行执行函数，性能上面会提升很多。</p>
+<h2 id="7-namespace"><a href="#7-namespace" class="headerlink" title="7 namespace"></a>7 namespace</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-comment">//初始化 namespace</span><br>ns :=<br>beego<span class="hljs-selector-class">.NewNamespace</span>(<span class="hljs-string">&quot;/v1&quot;</span>,<br>    beego<span class="hljs-selector-class">.NSCond</span>(<span class="hljs-built_in">func</span>(ctx *context.Context) bool &#123;<br>        <span class="hljs-keyword">if</span> ctx<span class="hljs-selector-class">.Input</span><span class="hljs-selector-class">.Domain</span>() == <span class="hljs-string">&quot;api.beego.me&quot;</span> &#123;<br>            return true<br>        &#125;<br>        return false<br>    &#125;),<br>    beego<span class="hljs-selector-class">.NSBefore</span>(auth),<br>    beego<span class="hljs-selector-class">.NSGet</span>(<span class="hljs-string">&quot;/notallowed&quot;</span>, <span class="hljs-built_in">func</span>(ctx *context.Context) &#123;<br>        ctx<span class="hljs-selector-class">.Output</span><span class="hljs-selector-class">.Body</span>(<span class="hljs-selector-attr">[]</span><span class="hljs-built_in">byte</span>(<span class="hljs-string">&quot;notAllowed&quot;</span>))<br>    &#125;),<br>    beego<span class="hljs-selector-class">.NSRouter</span>(<span class="hljs-string">&quot;/version&quot;</span>, &amp;AdminController&#123;&#125;, <span class="hljs-string">&quot;get:ShowAPIVersion&quot;</span>),<br>    beego<span class="hljs-selector-class">.NSRouter</span>(<span class="hljs-string">&quot;/changepassword&quot;</span>, &amp;UserController&#123;&#125;),<br>    beego<span class="hljs-selector-class">.NSNamespace</span>(<span class="hljs-string">&quot;/shop&quot;</span>,<br>        beego<span class="hljs-selector-class">.NSBefore</span>(sentry),<br>        beego<span class="hljs-selector-class">.NSGet</span>(<span class="hljs-string">&quot;/:id&quot;</span>, <span class="hljs-built_in">func</span>(ctx *context.Context) &#123;<br>            ctx<span class="hljs-selector-class">.Output</span><span class="hljs-selector-class">.Body</span>(<span class="hljs-selector-attr">[]</span><span class="hljs-built_in">byte</span>(<span class="hljs-string">&quot;notAllowed&quot;</span>))<br>        &#125;),<br>    ),<br>    beego<span class="hljs-selector-class">.NSNamespace</span>(<span class="hljs-string">&quot;/cms&quot;</span>,<br>        beego<span class="hljs-selector-class">.NSInclude</span>(<br>            &amp;controllers.MainController&#123;&#125;,<br>            &amp;controllers.CMSController&#123;&#125;,<br>            &amp;controllers.BlockController&#123;&#125;,<br>        ),<br>    ),<br>)<br><span class="hljs-comment">//注册 namespace</span><br>beego<span class="hljs-selector-class">.AddNamespace</span>(ns)<br></code></pre></td></tr></table></figure>
+
+<p>上面这个代码支持了如下这样的请求 URL</p>
+<ul>
+<li>GET /v1/notallowed</li>
+<li>GET /v1/version</li>
+<li>GET /v1/changepassword</li>
+<li>POST /v1/changepassword</li>
+<li>GET /v1/shop/123</li>
+<li>GET /v1/cms/ 对应 MainController、CMSController、BlockController 中得注解路由</li>
+</ul>
+<p>而且还支持前置过滤,条件判断,无限嵌套 namespace</p>
+<p>namespace 的接口如下:</p>
+<ul>
+<li><p>NewNamespace(prefix string, funcs …interface{})</p>
+<p>初始化 namespace 对象,下面这些函数都是 namespace 对象的方法,但是强烈推荐使用 NS 开头的相应函数注册，因为这样更容易通过 gofmt 工具看的更清楚路由的级别关系</p>
+</li>
+<li><p>NSCond(cond namespaceCond)</p>
+<p>支持满足条件的就执行该 namespace, 不满足就不执行</p>
+</li>
+<li><p>NSBefore(filiterList …FilterFunc)</p>
+</li>
+<li><p>NSAfter(filiterList …FilterFunc)</p>
+<p>上面分别对应 beforeRouter 和 FinishRouter 两个过滤器，可以同时注册多个过滤器</p>
+</li>
+<li><p>NSInclude(cList …ControllerInterface)</p>
+</li>
+<li><p>NSRouter(rootpath string, c ControllerInterface, mappingMethods …string)</p>
+</li>
+<li><p>NSGet(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>NSPost(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>NSDelete(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>NSPut(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>NSHead(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>NSOptions(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>NSPatch(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>NSAny(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>NSHandler(rootpath string, h http.Handler)</p>
+</li>
+<li><p>NSAutoRouter(c ControllerInterface)</p>
+</li>
+<li><p>NSAutoPrefix(prefix string, c ControllerInterface)</p>
+<p>上面这些都是设置路由的函数,详细的使用和上面 beego 的对应函数是一样的</p>
+</li>
+<li><p>NSNamespace(prefix string, params …innnerNamespace)</p>
+<p>嵌套其他 namespace</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs stylus">ns :=<br>beego<span class="hljs-selector-class">.NewNamespace</span>(<span class="hljs-string">&quot;/v1&quot;</span>,<br>    beego<span class="hljs-selector-class">.NSNamespace</span>(<span class="hljs-string">&quot;/shop&quot;</span>,<br>        beego<span class="hljs-selector-class">.NSGet</span>(<span class="hljs-string">&quot;/:id&quot;</span>, <span class="hljs-built_in">func</span>(ctx *context.Context) &#123;<br>            ctx<span class="hljs-selector-class">.Output</span><span class="hljs-selector-class">.Body</span>(<span class="hljs-selector-attr">[]</span><span class="hljs-built_in">byte</span>(<span class="hljs-string">&quot;shopinfo&quot;</span>))<br>        &#125;),<br>    ),<br>    beego<span class="hljs-selector-class">.NSNamespace</span>(<span class="hljs-string">&quot;/order&quot;</span>,<br>        beego<span class="hljs-selector-class">.NSGet</span>(<span class="hljs-string">&quot;/:id&quot;</span>, <span class="hljs-built_in">func</span>(ctx *context.Context) &#123;<br>            ctx<span class="hljs-selector-class">.Output</span><span class="hljs-selector-class">.Body</span>(<span class="hljs-selector-attr">[]</span><span class="hljs-built_in">byte</span>(<span class="hljs-string">&quot;orderinfo&quot;</span>))<br>        &#125;),<br>    ),<br>    beego<span class="hljs-selector-class">.NSNamespace</span>(<span class="hljs-string">&quot;/crm&quot;</span>,<br>        beego<span class="hljs-selector-class">.NSGet</span>(<span class="hljs-string">&quot;/:id&quot;</span>, <span class="hljs-built_in">func</span>(ctx *context.Context) &#123;<br>            ctx<span class="hljs-selector-class">.Output</span><span class="hljs-selector-class">.Body</span>(<span class="hljs-selector-attr">[]</span><span class="hljs-built_in">byte</span>(<span class="hljs-string">&quot;crminfo&quot;</span>))<br>        &#125;),<br>    ),<br>)<br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>下面这些函数都是属于 *Namespace 对象的方法：不建议直接使用，当然效果和上面的 NS 开头的函数是一样的，只是上面的方式更优雅，写出来的代码更容易看得懂</p>
+<ul>
+<li><p>Cond(cond namespaceCond)</p>
+<p>支持满足条件的就执行该 namespace, 不满足就不执行,例如你可以根据域名来控制 namespace</p>
+</li>
+<li><p>Filter(action string, filter FilterFunc)</p>
+<p>action 表示你需要执行的位置, before 和 after 分别表示执行逻辑之前和执行逻辑之后的 filter</p>
+</li>
+<li><p>Router(rootpath string, c ControllerInterface, mappingMethods …string)</p>
+</li>
+<li><p>AutoRouter(c ControllerInterface)</p>
+</li>
+<li><p>AutoPrefix(prefix string, c ControllerInterface)</p>
+</li>
+<li><p>Get(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>Post(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>Delete(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>Put(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>Head(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>Options(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>Patch(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>Any(rootpath string, f FilterFunc)</p>
+</li>
+<li><p>Handler(rootpath string, h http.Handler)</p>
+<p>上面这些都是设置路由的函数,详细的使用和上面 beego 的对应函数是一样的</p>
+</li>
+<li><p>Namespace(ns …*Namespace)</p>
+</li>
+</ul>
+<p>更多的例子代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-comment">//APIS</span><br>ns :<span class="hljs-operator">=</span><br>    beego.<span class="hljs-type">NewNamespace</span>(<span class="hljs-string">&quot;/api&quot;</span>,<br>        <span class="hljs-comment">//此处正式版时改为验证加密请求</span><br>        beego.<span class="hljs-type">NSCond</span>(<span class="hljs-keyword">func</span>(ctx <span class="hljs-operator">*</span>context.<span class="hljs-type">Context</span>) bool &#123;<br>            <span class="hljs-keyword">if</span> ua :<span class="hljs-operator">=</span> ctx.<span class="hljs-type">Input</span>.<span class="hljs-type">Request</span>.<span class="hljs-type">UserAgent</span>(); ua <span class="hljs-operator">!=</span> <span class="hljs-string">&quot;&quot;</span> &#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>            &#125;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>        &#125;),<br>        beego.<span class="hljs-type">NSNamespace</span>(<span class="hljs-string">&quot;/ios&quot;</span>,<br>            <span class="hljs-comment">//CRUD Create(创建)、Read(读取)、Update(更新)和Delete(删除)</span><br>            beego.<span class="hljs-type">NSNamespace</span>(<span class="hljs-string">&quot;/create&quot;</span>,<br>                <span class="hljs-comment">// /api/ios/create/node/</span><br>                beego.<span class="hljs-type">NSRouter</span>(<span class="hljs-string">&quot;/node&quot;</span>, <span class="hljs-operator">&amp;</span>apis.<span class="hljs-type">CreateNodeHandler</span>&#123;&#125;),<br>                <span class="hljs-comment">// /api/ios/create/topic/</span><br>                beego.<span class="hljs-type">NSRouter</span>(<span class="hljs-string">&quot;/topic&quot;</span>, <span class="hljs-operator">&amp;</span>apis.<span class="hljs-type">CreateTopicHandler</span>&#123;&#125;),<br>            ),<br>            beego.<span class="hljs-type">NSNamespace</span>(<span class="hljs-string">&quot;/read&quot;</span>,<br>                beego.<span class="hljs-type">NSRouter</span>(<span class="hljs-string">&quot;/node&quot;</span>, <span class="hljs-operator">&amp;</span>apis.<span class="hljs-type">ReadNodeHandler</span>&#123;&#125;),<br>                beego.<span class="hljs-type">NSRouter</span>(<span class="hljs-string">&quot;/topic&quot;</span>, <span class="hljs-operator">&amp;</span>apis.<span class="hljs-type">ReadTopicHandler</span>&#123;&#125;),<br>            ),<br>            beego.<span class="hljs-type">NSNamespace</span>(<span class="hljs-string">&quot;/update&quot;</span>,<br>                beego.<span class="hljs-type">NSRouter</span>(<span class="hljs-string">&quot;/node&quot;</span>, <span class="hljs-operator">&amp;</span>apis.<span class="hljs-type">UpdateNodeHandler</span>&#123;&#125;),<br>                beego.<span class="hljs-type">NSRouter</span>(<span class="hljs-string">&quot;/topic&quot;</span>, <span class="hljs-operator">&amp;</span>apis.<span class="hljs-type">UpdateTopicHandler</span>&#123;&#125;),<br>            ),<br>            beego.<span class="hljs-type">NSNamespace</span>(<span class="hljs-string">&quot;/delete&quot;</span>,<br>                beego.<span class="hljs-type">NSRouter</span>(<span class="hljs-string">&quot;/node&quot;</span>, <span class="hljs-operator">&amp;</span>apis.<span class="hljs-type">DeleteNodeHandler</span>&#123;&#125;),<br>                beego.<span class="hljs-type">NSRouter</span>(<span class="hljs-string">&quot;/topic&quot;</span>, <span class="hljs-operator">&amp;</span>apis.<span class="hljs-type">DeleteTopicHandler</span>&#123;&#125;),<br>            )<br>        ),<br>    )<br><br>beego.<span class="hljs-type">AddNamespace</span>(ns)<br></code></pre></td></tr></table></figure>
+
+<h2 id="8-项目路由设置"><a href="#8-项目路由设置" class="headerlink" title="8 项目路由设置"></a>8 项目路由设置</h2><p>我的项目是beego-web，这是我的入口文件main.go的文件内容：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	_ <span class="hljs-string">&quot;beego-web/routers&quot;</span><br>	beego <span class="hljs-string">&quot;github.com/beego/beego/v2/server/web&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	beego.Run()<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://www.topgoer.com/static/images/init.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>这里引入了一个包 <code>_ &quot;</code>beego-web<code>/routers&quot;</code>,这个包只引入执行了里面的 init 函数，看看这个里面做了什么事情：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> routers<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;beego-web/controllers&quot;</span><br>	beego <span class="hljs-string">&quot;github.com/beego/beego/v2/server/web&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span> &#123;<br>    beego.Router(<span class="hljs-string">&quot;/&quot;</span>, &amp;controllers.MainController&#123;&#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>路由包里面我们看到执行了路由注册 <code>beego.Router</code>, 这个函数的功能是映射 URL 到 controller，第一个参数是 URL (用户请求的地址)，这里我们注册的是 <code>/</code>，也就是我们访问的不带任何参数的 URL，第二个参数是对应的 Controller，也就是即将把请求分发到那个控制器来执行相应的逻辑，我们可以执行类似的方式注册如下路由：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">beego.<span class="hljs-constructor">Router(<span class="hljs-string">&quot;/user&quot;</span>, &amp;<span class="hljs-params">controllers</span>.UserController&#123;&#125;)</span><br></code></pre></td></tr></table></figure>
+
+<p>可以通过访问 <code>/user</code> 去执行 <code>UserController</code> 的逻辑。这就是我们所谓的路由。</p>
+<h2 id="9-更多路由设置"><a href="#9-更多路由设置" class="headerlink" title="9 更多路由设置"></a>9 更多路由设置</h2><p>1 AutoRouter： 用于自动路由控制器中的方法。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">beego.<span class="hljs-constructor">AutoRouter(&amp;<span class="hljs-params">controllers</span>.UserController&#123;&#125;)</span><br></code></pre></td></tr></table></figure>
+
+<p>2 AutoRouter（带前缀）： 用于自动路由控制器中的方法，并指定URL前缀。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">beego.<span class="hljs-constructor">AutoRouter(&amp;<span class="hljs-params">controllers</span>.UserController&#123;&#125;, <span class="hljs-string">&quot;/user&quot;</span>)</span><br></code></pre></td></tr></table></figure>
+
+<p>3 NamespaceCond： 用于为命名空间添加条件。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs go">nsCond := beego.NamespaceCond(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(ctx *context.Context)</span></span> <span class="hljs-type">bool</span> &#123;<br>    <span class="hljs-comment">// 添加条件，返回 true 表示条件满足</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>&#125;)<br>ns.Cond(nsCond)<br></code></pre></td></tr></table></figure>
+
+<p>4 Include（带前缀）： 用于将控制器包含到命名空间中，并指定URL前缀。</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">beego.<span class="hljs-keyword">Include</span>(&amp;controllers.UserController&#123;&#125;, &quot;/user&quot;)<br></code></pre></td></tr></table></figure>
+
+<p>5 Include（带前缀和条件）： 在包含控制器到命名空间时，可以指定URL前缀和条件。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">beego.<span class="hljs-constructor">Include(&amp;<span class="hljs-params">controllers</span>.UserController&#123;&#125;, <span class="hljs-string">&quot;/user&quot;</span>, <span class="hljs-params">beego</span>.NSCond(<span class="hljs-params">func</span>(<span class="hljs-params">ctx</span> <span class="hljs-operator">*</span><span class="hljs-params">context</span>.Context)</span> <span class="hljs-built_in">bool</span> &#123;<br>    <span class="hljs-comment">// 添加条件，返回 true 表示条件满足</span><br>    return <span class="hljs-literal">true</span><br>&#125;))<br></code></pre></td></tr></table></figure>
+
+<p>6 将该 URL 路径映射到控制器</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">beego.<span class="hljs-constructor">Router(<span class="hljs-string">&quot;/&quot;</span>, &amp;<span class="hljs-params">controllers</span>.MainController&#123;&#125;)</span><br></code></pre></td></tr></table></figure>
+
+<p>7 NSRouter 命名空间中添加路由</p>
+<p>与Router不同点是这个是在Namespace中使用</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs stylus">ns_api_v2 := beego<span class="hljs-selector-class">.NewNamespace</span>(<span class="hljs-string">&quot;api/v2&quot;</span>,<br>              beego<span class="hljs-selector-class">.NSRouter</span>(<span class="hljs-string">&quot;/login&quot;</span>, &amp;MainController&#123;&#125;, <span class="hljs-string">&quot;get:Login&quot;</span>),<br>             beego<span class="hljs-selector-class">.NSRouter</span>(<span class="hljs-string">&quot;/logout&quot;</span>, &amp;MainController&#123;&#125;, <span class="hljs-string">&quot;get:Logout&quot;</span>),<br>      )<br></code></pre></td></tr></table></figure>
+
+<p>8 NSCond 用于为命名空间（Namespace）添加条件</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs go">ns_api_v2 := beego.NewNamespace(<span class="hljs-string">&quot;api/v2&quot;</span>,<br>             beego.NSCond(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(ctx *context.Context)</span></span> <span class="hljs-type">bool</span> &#123;<br>                    <span class="hljs-keyword">if</span> ctx.Input.Domain() == <span class="hljs-string">&quot;127.0.0.1&quot;</span> &#123;<br>                           <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>                    &#125;<br>                    <span class="hljs-comment">// 输出一个友好提示！！</span><br>                    ctx.Output.Body([]<span class="hljs-type">byte</span>(<span class="hljs-string">&quot;域名被限制！&quot;</span>))<br>                    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>             &#125;),<br>)<br></code></pre></td></tr></table></figure>
+
+<p>9 NSInclude是包含在当前namespace中</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs stylus">ns := beego<span class="hljs-selector-class">.NewNamespace</span>(<span class="hljs-string">&quot;/v1&quot;</span>,<br>	beego<span class="hljs-selector-class">.NSNamespace</span>(<span class="hljs-string">&quot;/object&quot;</span>,<br>		beego<span class="hljs-selector-class">.NSInclude</span>(<br>			&amp;controllers.ObjectController&#123;&#125;,<br>		),<br>	),<br>	beego<span class="hljs-selector-class">.NSNamespace</span>(<span class="hljs-string">&quot;/user&quot;</span>,<br>		beego<span class="hljs-selector-class">.NSInclude</span>(<br>			&amp;controllers.UserController&#123;&#125;,<br>		),<br>	),<br>)<br>beego<span class="hljs-selector-class">.AddNamespace</span>(ns)<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%90%8E%E7%AB%AF/go/" class="category-chain-item">go</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/beego/">#beego</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>beego的路由设置</div>
+      <div>https://leellun.github.io/2024/01/16/后端/go/beego的路由设置/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年1月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/01/16/%E5%90%8E%E7%AB%AF/go/Beego%E6%A1%86%E6%9E%B6%20app.conf%E9%85%8D%E7%BD%AE/" title="Beego框架app.conf配置">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Beego框架app.conf配置</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/05/07/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-07-redis%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3key%E5%86%B2%E7%AA%81%EF%BC%9F/" title="redis如何解决key冲突？">
+                        <span class="hidden-mobile">redis如何解决key冲突？</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,762 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1 开启日志打开缓存对于每一条日志记录,日志文件都将先打开文件,再写入日志记录,然后马上关闭,为了提高包含变量的日志文件存放路径的性能,可以使用open_log_file_cache指令来设置,格式如下： 1open_log_file_cache max&#x3D;N [inactive&#x3D;time][min_uses&#x3D;N][valid&#x3D;time]|off  该指令默认是禁止的,等同于：open_log_fi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx基础知识">
+<meta property="og:url" content="https://leellun.github.io/2020/01/04/%E6%9C%8D%E5%8A%A1%E5%99%A8/nginx/nginx%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="1 开启日志打开缓存对于每一条日志记录,日志文件都将先打开文件,再写入日志记录,然后马上关闭,为了提高包含变量的日志文件存放路径的性能,可以使用open_log_file_cache指令来设置,格式如下： 1open_log_file_cache max&#x3D;N [inactive&#x3D;time][min_uses&#x3D;N][valid&#x3D;time]|off  该指令默认是禁止的,等同于：open_log_fi">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-04T04:14:02.000Z">
+<meta property="article:modified_time" content="2023-05-07T05:29:31.157Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="nginx">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>nginx基础知识 - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="nginx基础知识"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-01-04 12:14" pubdate>
+          2020年1月4日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          55 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">nginx基础知识</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="1-开启日志打开缓存"><a href="#1-开启日志打开缓存" class="headerlink" title="1 开启日志打开缓存"></a>1 开启日志打开缓存</h1><p>对于每一条日志记录,日志文件都将先打开文件,再写入日志记录,然后马上关闭,为了提高包含变量的日志文件存放路径的性能,可以使用open_log_file_cache指令来设置,格式如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">open_log_file_cache <span class="hljs-attribute">max</span>=N [<span class="hljs-attribute">inactive</span>=time][<span class="hljs-attribute">min_uses</span>=N][<span class="hljs-attribute">valid</span>=time]|off<br></code></pre></td></tr></table></figure>
+
+<p>该指令默认是禁止的,等同于：open_log_file_cache off;</p>
+<p>max:设置缓存中的最大文件描述符数量</p>
+<p>inactive:设置一个时间,如果在设置的时间内没有使用此文件描述符,则自动删除此描述符</p>
+<p>min_uses:在参数inactive指定的时间范围内,如果日志文件超过被使用的次数,则将该日志文件的描述符计入缓存,默认为10秒钟</p>
+<p>valid:设置多长时间检查一次,看日志文件路径与文件名是否仍然存在默认60秒</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">open_log_file_cache <span class="hljs-attribute">max</span>=1000 <span class="hljs-attribute">inactive</span>=20s <span class="hljs-attribute">min_uses</span>=2 <span class="hljs-attribute">valid</span>=1m;<br></code></pre></td></tr></table></figure>
+
+<h1 id="2-Nginx开启压缩输出"><a href="#2-Nginx开启压缩输出" class="headerlink" title="2 Nginx开启压缩输出"></a>2 Nginx开启压缩输出</h1><p>在http {}中间,启用压缩</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs applescript">$ vim /etc/nginx/nginx.conf<br>gzip <span class="hljs-keyword">on</span>;<br>gzip_min_length <span class="hljs-number">1</span>k;<br>gzip_buffer <span class="hljs-number">4</span> <span class="hljs-number">16</span>k;<br>gzip_http_version <span class="hljs-number">1.1</span>;<br>gzip_comp_level <span class="hljs-number">2</span>;<br>gzip_type <span class="hljs-built_in">text</span>/plain <span class="hljs-built_in">application</span>/x-javascript <span class="hljs-built_in">text</span>/css <span class="hljs-built_in">application</span>/xml;<br>gzip_vary <span class="hljs-keyword">on</span>;<br></code></pre></td></tr></table></figure>
+
+<h1 id="3-缓存"><a href="#3-缓存" class="headerlink" title="3 缓存"></a>3 缓存</h1><h2 id="3-1-Nginx的浏览器本地缓存设置"><a href="#3-1-Nginx的浏览器本地缓存设置" class="headerlink" title="3.1 Nginx的浏览器本地缓存设置"></a>3.1 Nginx的浏览器本地缓存设置</h2><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs coq">$ vim /etc/nginx/nginx.conf<br>location ~.*\.(gif|<span class="hljs-type">jpg</span>|<span class="hljs-type">jpge</span>|<span class="hljs-type">png</span>|<span class="hljs-type">bmp</span>|<span class="hljs-type">swf</span>)$<br>&#123;<br>  expires <span class="hljs-number">30</span>d;<br>&#125;<br>location ~.*\.(js|<span class="hljs-type">css</span>)?$<br>&#123;<br>  expires <span class="hljs-number">1</span>h;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="3-2-nginx代理缓存"><a href="#3-2-nginx代理缓存" class="headerlink" title="3.2 nginx代理缓存"></a>3.2 nginx代理缓存</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30795127/article/details/97385091#proxy_cache_path">https://blog.csdn.net/weixin_30795127/article/details/97385091#proxy_cache_path</a></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">location</span> ~.*\.(gif|jpg|jpge|png|bmp|swf|js|css|html)$<br>&#123;<br>  <span class="hljs-attribute">proxy_cache</span> cache_one;<br>  <span class="hljs-attribute">proxy_cache_valid</span> <span class="hljs-number">200</span> <span class="hljs-number">10m</span>;<br>  <span class="hljs-attribute">proxy_cache_valid</span> <span class="hljs-number">304</span> <span class="hljs-number">1m</span>;<br>  <span class="hljs-attribute">proxy_cache_valid</span> <span class="hljs-number">301</span> <span class="hljs-number">302</span> <span class="hljs-number">1h</span>;<br>  <span class="hljs-attribute">proxy_cache_valid</span> any <span class="hljs-number">1m</span>;<br>  <span class="hljs-comment">#以域名、URI、参数组合成Web缓存的Key值, Nginx根据Key值哈希,存储缓存内容到二级缓存目录内</span><br>  <span class="hljs-attribute">proxy_cache_key</span> <span class="hljs-variable">$hostSuri</span><span class="hljs-variable">$is_argsSargs</span>;<br>  <span class="hljs-attribute">proxy_set_header</span> Host <span class="hljs-variable">$host</span>;<br>  <span class="hljs-attribute">proxy_set_header</span> X-Forwarded-For <span class="hljs-variable">$remote_addr</span>;<br>  <span class="hljs-attribute">proxy_pass</span> http://192.168.3.1;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>proxy_cache_valid</p>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs excel">语法<span class="hljs-symbol">:</span> proxy_cache_valid [<span class="hljs-built_in">code</span> ...] <span class="hljs-built_in">time</span>; <br></code></pre></td></tr></table></figure>
+
+<h1 id="4-设定限速"><a href="#4-设定限速" class="headerlink" title="4 设定限速"></a>4 设定限速</h1><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">location</span> /download<br>&#123;<br>  <span class="hljs-attribute">limit_rate</span> <span class="hljs-number">256k</span>;<br>  <span class="hljs-attribute">proxy_pass</span> http://1.2.3.4;<br>  <span class="hljs-attribute">proxy_set_header</span> Host <span class="hljs-variable">$host</span>;<br>  <span class="hljs-attribute">proxy_set_header</span> X-Forwarded-For <span class="hljs-variable">$remote_addr</span>;<br>&#125;<br><span class="hljs-section">location</span> /movie<br>&#123;<br>  <span class="hljs-attribute">limit_rate_after</span> <span class="hljs-number">10m</span>;<br>  <span class="hljs-attribute">limit_rate</span> <span class="hljs-number">100k</span>;<br>&#125;<br><span class="hljs-attribute">if</span> (Shttp_user_agent <span class="hljs-regexp">~ Google|Yahoo|baidu)</span>&#123;<br>  <span class="hljs-attribute">limit_rate</span> <span class="hljs-number">20k</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="5-请求连接控制"><a href="#5-请求连接控制" class="headerlink" title="5 请求连接控制"></a>5 请求连接控制</h1><p>允许客户端请求的最大的单个文件字节数</p>
+<p>client_max_body_size300m;</p>
+<p>缓冲区代理缓冲用户端请求的最大字节数可以理解为先保存到本地再传给用户</p>
+<p>client_body_buffer_size 128k;</p>
+<p>跟后端服务器连接的超时时间-发起握手等候响应超时时间</p>
+<p>proxy_connect_timeout 600;</p>
+<p>连接成功后-等候后端服务器响应时间_其实已经进入后端的排队之中等候处理</p>
+<p>proxy_read_timeout600</p>
+<p>后端服务器数据回传时间-就是在规定时间之内后端服务器必须传完所有的数据</p>
+<p>proxy_send_timeout 600;</p>
+<p>代理请求缓存区_这个缓存区间会保存用户的头信息以供Nginx进行规则处理-一般只要能保存下头信息即可</p>
+<p>proxy_buffer_size 16k;</p>
+<h1 id="6-Nginx-rewrite"><a href="#6-Nginx-rewrite" class="headerlink" title="6 Nginx rewrite"></a>6 Nginx rewrite</h1><p>Rewrite主要的功能就是实现URL的重写, Nginx的Rewrite规则采用PCRE (Perl Compatible Regular Expressions) Perl兼容正则表达式的语法进行规则匹配,如果需要Nginx的Rewrite功能,在编译Nginx之前,需要编译安装PCRE库</p>
+<p>URL是Uniform Resource Location的缩写,译为“统一资源定位符”。如: <a target="_blank" rel="noopener" href="http://www.linkwan.com/111/welcome.htm">http://www.linkwan.com/111/welcome.htm</a></p>
+<p>URI由一个通过通用资源标志符(Universal ResourceIdentifier, 简称”URI”)进行定位</p>
+<h1 id="7-指令"><a href="#7-指令" class="headerlink" title="7 指令"></a>7 指令</h1><p>if指令</p>
+<p>规则语法</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-keyword">if</span> (<span class="hljs-variable">$http_user_agent</span> ~ MSIE )&#123;<br>  rewrite ^(.*)$ <span class="hljs-regexp">/msie/</span><span class="hljs-variable">$1</span> <span class="hljs-keyword">break</span>;<br>&#125;<br><span class="hljs-keyword">if</span> (!-f <span class="hljs-variable">$request_filename</span>)&#123;<br>  rewrite ^<span class="hljs-regexp">/img/</span>(.*)$<span class="hljs-regexp">/site/</span><span class="hljs-variable">$host</span><span class="hljs-regexp">/images/</span><span class="hljs-variable">$1</span> last;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>return指令</p>
+<p>示例,如果访问的URL以”.sh”、”*.bash”结尾,则返回状态码403</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs crmsh"><span class="hljs-keyword">location</span> <span class="hljs-title">.*.(sh</span> | bash)?$<br>return <span class="hljs-number">403</span>;<br></code></pre></td></tr></table></figure>
+
+<p>set、rewrite指令</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">if</span> (?host <span class="hljs-regexp">~* ^(.*?)\.aaa\.com$)</span><br>&#123;<br>  <span class="hljs-attribute">set</span> ?var_tz <span class="hljs-string">&#x27;1&#x27;</span>;<br>  <span class="hljs-attribute">if</span> (?host <span class="hljs-regexp">~* ^192\.168\.1\.(.*?)$)</span><br>  &#123;<br>      <span class="hljs-attribute">set</span> <span class="hljs-variable">$var_tz</span> <span class="hljs-string">&#x27;1&#x27;</span>;<br>  &#125;<br>  <span class="hljs-attribute">if</span> (<span class="hljs-variable">$host</span> <span class="hljs-regexp">~* ^localhost)</span><br>  &#123;<br>      <span class="hljs-attribute">set</span> ?var_tz <span class="hljs-string">&#x27;1&#x27;</span><br>  &#125;<br>  if (<span class="hljs-variable">$var_tz</span> !~<span class="hljs-string">&#x27;1&#x27;</span>)<br>  &#123;<br>      <span class="hljs-attribute">rewrite</span><span class="hljs-regexp"> ^/(.*)$</span> http://www.aaa.com/ <span class="hljs-literal">redirect</span>;<br>  &#125;<br></code></pre></td></tr></table></figure>
+
+<p>rewrite </p>
+<figure class="highlight nim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs nim">location /cms/ [<br>  proxy_pass http://test.yourdomain.com;<br>  rewrite <span class="hljs-string">&quot;^/cms/(.*)\.html$&quot;</span> /cms/index.html <span class="hljs-keyword">break</span>;<br>&#125;<br>一般在跟location中(即location/[..])或直接在server标签中编写rewrite规则,推荐使用last标记,在非跟location中(location /cms/<span class="hljs-meta">&#123;...&#125;</span>),则使用<span class="hljs-keyword">break</span>标记<br></code></pre></td></tr></table></figure>
+
+<p>rewrite规则编写实例</p>
+<p>1、将原来要访问/data目录重写为/bbs</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">rewrite A<span class="hljs-regexp">/data/</span>?$ <span class="hljs-regexp">/bbs/</span> permanent;<br></code></pre></td></tr></table></figure>
+
+<p>2、根据不同的浏览器将得到不同的结果</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">if</span> (<span class="hljs-variable">$http_user_agent</span> MSIE)&#123;<br>  <span class="hljs-attribute">rewrite</span><span class="hljs-regexp"> ^(.*)$</span> /msie/<span class="hljs-variable">$1</span> <span class="hljs-literal">break</span>;<br>&#125;<br><br><br><br></code></pre></td></tr></table></figure>
+
+<p>3、防止盗链</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">location</span> ~*\.(gif|jpg|png|swf|flv)$ &#123;<br>  <span class="hljs-attribute">valid_referers</span> <span class="hljs-literal">none</span> <span class="hljs-literal">blocked</span> www.test.com <span class="hljs-regexp">*.test.com</span>;<br>  <span class="hljs-attribute">if</span> (<span class="hljs-variable">$invalid_referer</span>) (<br>     rewrite<span class="hljs-regexp"> ^/(.*)</span> http://www.test.com/block.html;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>4、实现域名跳转</p>
+<p>所有对<a target="_blank" rel="noopener" href="http://www.abc.com的访问/">www.abc.com的访问</a>, redirect到<a target="_blank" rel="noopener" href="http://www.test.com/">www.test.com</a></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">server</span><br>&#123;<br><span class="hljs-attribute">listen</span> <span class="hljs-number">80</span>;<br><span class="hljs-attribute">server_name</span> www.test.com;<br><span class="hljs-attribute">index</span> index.html index.php;<br><span class="hljs-attribute">root</span> /export/home/www<br>if (<span class="hljs-variable">$host</span> =<span class="hljs-string">&quot;www.abc.com&quot;</span>)&#123;<br><span class="hljs-attribute">rewrite</span><span class="hljs-regexp"> ^/(.*)$</span> http://www.test.com/<span class="hljs-variable">$1</span> <span class="hljs-literal">permanent</span>;<br>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h1 id="8-目录身份验证"><a href="#8-目录身份验证" class="headerlink" title="8 目录身份验证"></a>8 目录身份验证</h1><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-comment"># htpasswd-cm /etc/nginx/.htpasswd alice</span><br><span class="hljs-comment"># htpasswd-m /etc/nginx/.htpasswd bob</span><br><span class="hljs-section">location</span> /redhat &#123;<br><span class="hljs-attribute">root</span> /web/html;<br><span class="hljs-attribute">index</span> index.html index.htm;<br><span class="hljs-attribute">autoindex</span> <span class="hljs-literal">on</span>;<br><span class="hljs-attribute">auth_basic</span> <span class="hljs-string">&quot;AwstatAuth&quot;</span><br>auth_basic_user_file /etc/nginx/.htpasswd;<br><span class="hljs-attribute">deny</span> <span class="hljs-number">192.168.0.132</span>;<br><span class="hljs-attribute">allow</span> <span class="hljs-number">192.168.0.0</span>/<span class="hljs-number">24</span>;<br><span class="hljs-attribute">allow</span> <span class="hljs-number">192.168.1.1</span>;<br><span class="hljs-attribute">deny</span> all;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h1 id="9-图片裁剪"><a href="#9-图片裁剪" class="headerlink" title="9 图片裁剪"></a>9 图片裁剪</h1><p>要实现nginx的图片裁剪功能，需要在编译nginx时加入第三方模块ngx_http_image_filter_module，该模块提供了图片处理功能，包括裁剪、缩放、旋转等。 </p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">./configure</span> <span class="hljs-params">--with-http_image_filter_module</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">http &#123;<br>    <span class="hljs-string">...</span><br>    <span class="hljs-comment"># 在http模块中添加 image_filter 指令</span><br>    image_filter        on;<br>    <span class="hljs-comment"># 添加 image_filter_jpeg_quality 指令，指定jpeg图片压缩质量</span><br>    image_filter_jpeg_quality 75;<br>    <span class="hljs-comment"># 添加 image_filter_buffer 指令，指定缓存大小</span><br>    image_filter_buffer 2M;<br>    <span class="hljs-string">...</span><br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">location</span> <span class="hljs-regexp">~ ^/(.*)\.(png|jpg|jpeg|gif)$</span> &#123;<br>    <span class="hljs-attribute">root</span> /opt/img;<br><br>    <span class="hljs-attribute">set</span> <span class="hljs-variable">$img_width</span> -;<br>    <span class="hljs-attribute">set</span> <span class="hljs-variable">$img_height</span> -;<br>    <span class="hljs-comment"># 获取参数size的值</span><br>    <span class="hljs-attribute">if</span> (<span class="hljs-variable">$arg_size</span> <span class="hljs-regexp">~* &quot;^(\d+)x(\d+)$&quot;)</span> &#123;<br>      <span class="hljs-attribute">set</span> <span class="hljs-variable">$img_width</span> <span class="hljs-variable">$1</span>;<br>      <span class="hljs-attribute">set</span> <span class="hljs-variable">$img_height</span> <span class="hljs-variable">$2</span>;<br>    &#125;<br>    <span class="hljs-comment"># 裁剪图片并且调整大小</span><br>    <span class="hljs-attribute">image_filter</span> resize <span class="hljs-variable">$img_width</span> <span class="hljs-variable">$img_height</span>;<br><br>    <span class="hljs-attribute">image_filter_jpeg_quality</span> <span class="hljs-number">75</span>;<br>    <span class="hljs-attribute">image_filter_buffer</span> <span class="hljs-number">10M</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="10-常用命令"><a href="#10-常用命令" class="headerlink" title="10 常用命令"></a>10 常用命令</h1><ol>
+<li>启动Nginx：<code>sudo nginx</code></li>
+<li>停止Nginx：<code>sudo nginx -s stop</code></li>
+<li>重载Nginx配置文件：<code>sudo nginx -s reload</code></li>
+<li>重新启动Nginx：<code>sudo nginx -s reopen</code></li>
+<li>检查Nginx配置文件语法：<code>sudo nginx -t</code></li>
+<li>查看Nginx版本号：<code>sudo nginx -v</code></li>
+<li>查看Nginx的编译配置选项：<code>sudo nginx -V</code></li>
+<li>查看Nginx当前连接数：<code>sudo nginx -V</code></li>
+<li>nginx -c nginx.conf 指定配置文件启动</li>
+</ol>
+<h1 id="11-语法规则"><a href="#11-语法规则" class="headerlink" title="11 语法规则"></a>11 语法规则</h1><p><strong>语法规则：</strong></p>
+<ul>
+<li>= 开头表示精确匹配</li>
+<li><code>^~</code> 开头表示uri以某个常规字符串开头，理解为匹配url路径即可(非正则)</li>
+<li><code>~</code> 开头表示区分大小写的正则匹配</li>
+<li><code>~*</code> 开头表示不区分大小写的正则匹配</li>
+<li><code>!~</code>和<code>!~*</code>分别为区分大小写不匹配及不区分大小写不匹配的正则</li>
+<li><code>/</code> 通用匹配，任何请求都会匹配到</li>
+</ul>
+<p>优先级：</p>
+<ul>
+<li>等号类型（=）的优先级最高。一旦匹配成功，则不再查找其他location的匹配项</li>
+<li>^~和通用匹配。使用前缀匹配，不支持正则表达式，如果有多个location匹配成功的话，不会终止匹配过程，会匹配表达式最长的那个(下方有例子)</li>
+<li>如果上一步得到的最长的location为^~类型，则表示阻断正则表达式，不再匹配正则表达式</li>
+<li>如果上一步得到的最长的location不是^~类型，继续匹配正则表达式，只要有一个正则成功，则使用这个正则的location，立即返回结果，并结束解析过程</li>
+</ul>
+<h1 id="12-缓存设置"><a href="#12-缓存设置" class="headerlink" title="12 缓存设置"></a>12 缓存设置</h1><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs awk">http&#123;<br>    proxy_connect_timeout <span class="hljs-number">10</span>;<br>    proxy_read_timeout <span class="hljs-number">180</span>;<br>    proxy_send_timeout <span class="hljs-number">5</span>;<br>    proxy_buffer_size <span class="hljs-number">16</span>k;<br>    proxy_buffers <span class="hljs-number">4</span> <span class="hljs-number">32</span>k;<br>    proxy_busy_buffers_size <span class="hljs-number">96</span>k;<br>    proxy_temp_file_write_size <span class="hljs-number">96</span>k;<br>    proxy_temp_path <span class="hljs-regexp">/tmp/</span>temp_dir;<br>    proxy_cache_path <span class="hljs-regexp">/tmp/</span>cache levels=<span class="hljs-number">1</span>:<span class="hljs-number">2</span> keys_zone=cache_one:<span class="hljs-number">100</span>m inactive=<span class="hljs-number">1</span>d max_size=<span class="hljs-number">10</span>g;<br><br><br>    server &#123;<br>        listen       <span class="hljs-number">80</span> default_server;<br>        server_name  localhost;<br>        root <span class="hljs-regexp">/blog/</span>;<br><br>        location / &#123;<br><br>        &#125;<br><br>        <span class="hljs-comment"># 静态文件html缓存</span><br>        location ~ <span class="hljs-regexp">/archives/</span>.*\.html$ &#123;<br>              proxy_pass http:<span class="hljs-regexp">//</span><span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">8000</span><span class="hljs-variable">$request_uri</span>;<br>              proxy_redirect off;<br>              proxy_cache cache_one;<br>              proxy_cache_valid <span class="hljs-number">200</span> <span class="hljs-number">304</span> <span class="hljs-number">12</span>h;<br>              proxy_cache_valid <span class="hljs-number">301</span> <span class="hljs-number">302</span> <span class="hljs-number">1</span>d;<br>              proxy_cache_valid any <span class="hljs-number">5</span>m;<br>              expires <span class="hljs-number">1</span>d;<br>              add_header wall  <span class="hljs-string">&quot;hey, nginx静态文件缓存&quot;</span>;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p> http层：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs fortran">proxy_connect_timeout服务器连接的超时时间<br><br>proxy_read_timeout连接成功后,等候后端服务器响应时间<br><br>proxy_send_timeout后端服务器数据回传时间<br><br>proxy_buffer_size缓冲区的大小<br><br>proxy_buffers每个连接设置缓冲区的数量为<span class="hljs-keyword">number</span>，每块缓冲区的大小为<span class="hljs-built_in">size</span><br><br>proxy_busy_buffers_size开启缓冲响应的功能以后，在没有读到全部响应的情况下，写缓冲到达一定大小时，nginx一定会向客户端发送响应，直到缓冲小于此值。<br><br>proxy_temp_file_write_size设置nginx每次写数据到临时文件的<span class="hljs-built_in">size</span>(大小)限制<br><br>proxy_temp_path从后端服务器接收的临时文件的存放路径<br></code></pre></td></tr></table></figure>
+
+<p>server层：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">/archives/.</span>*<span class="hljs-string">.html</span>$ 这里说是正则访问<span class="hljs-string">/archives/</span>以<span class="hljs-string">.html</span>结尾的url进行匹配<br><br>proxy_pass nginx缓存里拿不到资源，向该地址转发请求，拿到新的资源，并进行缓存<br><br>proxy_redirect 设置后端服务器“Location”响应头和“Refresh”响应头的替换文本<br><br>proxy_<span class="hljs-keyword">set</span>_header 允许重新定义或者添加发往后端服务器的请求头<br><br>proxy_cache 指定用于页面缓存的共享内存，对应http层设置的keys_zone<br><br>proxy_cache_valid 为不同的响应状态码设置不同的缓存时间<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/nginx/" class="category-chain-item">nginx</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/nginx/">#nginx</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>nginx基础知识</div>
+      <div>https://leellun.github.io/2020/01/04/服务器/nginx/nginx基础知识/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年1月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/01/06/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E4%B8%83%E5%B1%82%E5%8D%8F%E8%AE%AE/" title="网络七层协议">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">网络七层协议</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/12/21/%E6%9C%8D%E5%8A%A1%E5%99%A8/nginx/nginx%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/" title="nginx源码编译">
+                        <span class="hidden-mobile">nginx源码编译</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

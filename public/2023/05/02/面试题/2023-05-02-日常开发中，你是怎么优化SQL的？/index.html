@@ -1,0 +1,784 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1、考虑分析 分析慢查询日志 使用explain查看执行计划 索引优化 深分页优化 避免全表扫描 避免返回不必要的数据（如select具体字段而不是select*） 使用合适的数据类型（如可以使用int类型的话，就不要设计为varchar） 优化sql结构（如join优化等等） 适当分批量进行 (如批量更新、删除) 定期清理无用的数据 适当分库分表 读写分离  2、深分页优化标签记录法  就是标记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="日常开发中，你是怎么优化SQL的？">
+<meta property="og:url" content="https://leellun.github.io/2023/05/02/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-02-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E4%B8%AD%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96SQL%E7%9A%84%EF%BC%9F/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="1、考虑分析 分析慢查询日志 使用explain查看执行计划 索引优化 深分页优化 避免全表扫描 避免返回不必要的数据（如select具体字段而不是select*） 使用合适的数据类型（如可以使用int类型的话，就不要设计为varchar） 优化sql结构（如join优化等等） 适当分批量进行 (如批量更新、删除) 定期清理无用的数据 适当分库分表 读写分离  2、深分页优化标签记录法  就是标记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leellun.github.io/2023/05/02/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-02-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E4%B8%AD%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96SQL%E7%9A%84%EF%BC%9F/1683121864951.png">
+<meta property="og:image" content="https://leellun.github.io/2023/05/02/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-02-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E4%B8%AD%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96SQL%E7%9A%84%EF%BC%9F/1683122499269.png">
+<meta property="article:published_time" content="2023-05-02T12:14:02.000Z">
+<meta property="article:modified_time" content="2023-05-11T13:36:21.811Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://leellun.github.io/2023/05/02/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-02-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E4%B8%AD%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96SQL%E7%9A%84%EF%BC%9F/1683121864951.png">
+  
+  
+  
+  <title>日常开发中，你是怎么优化SQL的？ - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="日常开发中，你是怎么优化SQL的？"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-05-02 20:14" pubdate>
+          2023年5月2日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">日常开发中，你是怎么优化SQL的？</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="1、考虑分析"><a href="#1、考虑分析" class="headerlink" title="1、考虑分析"></a>1、考虑分析</h2><ul>
+<li>分析慢查询日志</li>
+<li>使用explain查看执行计划</li>
+<li>索引优化</li>
+<li>深分页优化</li>
+<li>避免全表扫描</li>
+<li>避免返回不必要的数据（如select具体字段而不是select*）</li>
+<li>使用合适的数据类型（如可以使用int类型的话，就不要设计为varchar）</li>
+<li>优化sql结构（如join优化等等）</li>
+<li>适当分批量进行 (如批量更新、删除)</li>
+<li>定期清理无用的数据</li>
+<li>适当分库分表</li>
+<li>读写分离</li>
+</ul>
+<h2 id="2、深分页优化"><a href="#2、深分页优化" class="headerlink" title="2、深分页优化"></a>2、深分页优化</h2><p><strong>标签记录法</strong> </p>
+<p>就是标记一下上次查询到哪一条了，下次再来查的时候，从该条开始往下扫描。 </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">select</span>  id,<span class="hljs-type">name</span>,balance <span class="hljs-keyword">FROM</span> account <span class="hljs-keyword">where</span> id &gt; <span class="hljs-number">100000</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">10</span>;<br></code></pre></td></tr></table></figure>
+
+<p>局限：连续自增的id字段 </p>
+<p><strong>延迟关联法</strong> </p>
+<p>把条件转移到主键索引树，然后减少回表。 </p>
+<p>例如：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">select</span> id,<span class="hljs-type">name</span>,balance <span class="hljs-keyword">from</span> account <span class="hljs-keyword">where</span> create_time&gt; <span class="hljs-string">&#x27;2020-09-19&#x27;</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">100000</span>,<span class="hljs-number">10</span>;<br></code></pre></td></tr></table></figure>
+
+<p>优化：创建索引 idx_create_time(id,create_time) </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">select</span>  t1.id,t1.name,t1.balance <span class="hljs-keyword">FROM</span> account t1 <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> <br>(<span class="hljs-keyword">SELECT</span> id <span class="hljs-keyword">FROM</span> account  <span class="hljs-keyword">WHERE</span> create_time &gt; <span class="hljs-string">&#x27;2020-09-19&#x27;</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">100000</span>, <span class="hljs-number">10</span>) <br><span class="hljs-keyword">AS</span> t2 <span class="hljs-keyword">on</span> t1.id= t2.id;<br></code></pre></td></tr></table></figure>
+
+<p>通过idx_create_time二级索引树查询到满足条件的主键ID，再与原表通过主键ID内连接，这样后面直接走了主键索引了。 </p>
+<h2 id="3、大表的优化方案"><a href="#3、大表的优化方案" class="headerlink" title="3、大表的优化方案"></a>3、大表的优化方案</h2><p><strong>数据库设计优化</strong> </p>
+<p>可以考虑<strong>拆分表、使用分区表、添加索引等方式</strong>来优化表结构。 同时也要<strong>避免使用大量冗余字段、避免频繁使用join查询</strong>等操作。 </p>
+<p><strong>索引优化</strong> </p>
+<p><strong>增加索引、使用覆盖索引、使用联合索引等方式来提高查询效率</strong>。同时也要注意<strong>定期清理冗余的索引以及对于经常使用的查询语句建立索引</strong>。 </p>
+<p><strong>分区优化</strong> </p>
+<p>将大表按照某个列分成多个分区表，每个分区表的数据量较小，可以提高查询和更新的性能。分区表还可以帮助在维护表结构的同时，减少锁表时间，提高并发处理能力。 </p>
+<blockquote>
+<p>例如：我最近做的一个saas的cms的网站，通过siteId将多个网站的数据按照siteId进行分区，隔离多个网站的数据，并且能够高效查找当前网站的数据</p>
+</blockquote>
+<p><strong>数据清理归档</strong> </p>
+<p>对于一些历史数据或者无用数据，<strong>可以进行定期归档，避免数据过多造成SQL查询效率降低</strong>。同时也要注意对于大表进行定期的数据备份以及紧急数据恢复的准备工作。 </p>
+<p><strong>缓存优化</strong> </p>
+<p>对于一些经常被查询的数据，可以使用缓存优化。使用Redis等缓存中间件来缓存常用的数据，以减少查询数据库的次数，提高查询效率。 </p>
+<p><strong>SQL语句优化</strong> </p>
+<p>使用Explain执行计划来进行优化。同时也要注意避免使用OR等耗费性能的操作符。 </p>
+<p><strong>分库分表</strong> </p>
+<p>如果数据量千万级别，需要考虑分库分表</p>
+<h2 id="4、哪些因素可能导致MySQL慢查询？"><a href="#4、哪些因素可能导致MySQL慢查询？" class="headerlink" title="4、哪些因素可能导致MySQL慢查询？"></a>4、哪些因素可能导致MySQL慢查询？</h2><img src="/2023/05/02/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-02-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E4%B8%AD%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96SQL%E7%9A%84%EF%BC%9F/1683121864951.png" srcset="/img/loading.gif" lazyload class="" width="1683121864951">
+
+<h2 id="5、使用索引优化SQL查询"><a href="#5、使用索引优化SQL查询" class="headerlink" title="5、使用索引优化SQL查询"></a>5、使用索引优化SQL查询</h2><ul>
+<li>添加合适索引（在where、group by、order by等后面的字段添加合适索引）</li>
+<li>选择合适的索引类型 (B-tree索引适合范围查询、哈希索引适合等值查询)</li>
+<li>注意不适合加索引的场景（数据量少的表，更新频繁的字段，区分度低的字段）</li>
+<li>加索引的时候，需要考虑覆盖索引，减少回表，<strong>考虑联合索引的最左前缀原则</strong></li>
+<li>explain查看SQL的执行计划，确认是否会命中索引。</li>
+<li>注意索引并不是越多越好，<strong>通常建议在单个表中不要超过5个索引</strong>。因为索引会占用磁盘空间，索引更新代价高。</li>
+</ul>
+<h2 id="6、SQL优化分析步骤"><a href="#6、SQL优化分析步骤" class="headerlink" title="6、SQL优化分析步骤"></a>6、SQL优化分析步骤</h2><h3 id="6-1-查看慢查询日志记录，分析慢SQL"><a href="#6-1-查看慢查询日志记录，分析慢SQL" class="headerlink" title="6.1 查看慢查询日志记录，分析慢SQL"></a>6.1 查看慢查询日志记录，分析慢SQL</h3><ul>
+<li>slow query log表示慢查询开启的状态</li>
+<li>slow_query_log_file表示慢查询日志存放的位置</li>
+<li>long_query_time表示查询超过多少秒才记录到慢查询日志。 </li>
+</ul>
+<p>查看变量：</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gams">show <span class="hljs-keyword">variables</span> like <span class="hljs-comment">&#x27;slow_query_log%&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="6-2-explain查看分析SQL的执行计划"><a href="#6-2-explain查看分析SQL的执行计划" class="headerlink" title="6.2 explain查看分析SQL的执行计划"></a>6.2 explain查看分析SQL的执行计划</h3><p>具体分析看 其它文章</p>
+<h3 id="6-3-profile-分析执行耗时"><a href="#6-3-profile-分析执行耗时" class="headerlink" title="6.3 profile 分析执行耗时"></a>6.3 profile 分析执行耗时</h3><p>explain只能看SQL的预估执行计划，如果要了解SQL真正的执行线程状态及消耗的时间，需要使用profiling。开启profiling参数后，后续执行的SQL语句都会记录其资源开销，包括IO，上下文切换，CPU，内存等等，可以根据这些开销进一步分析当前慢SQL的瓶颈再进一步进行优化。</p>
+<p>profiling默认是关闭，我们可以使用show variables like ‘%profil%’查看是否开启 </p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> article<br><span class="hljs-keyword">show</span> profiles<br></code></pre></td></tr></table></figure>
+
+<p>show profiles会显示最近发给服务器的多条语句，条数由变量profiling_history_size定义，默认是15。如果我们需要看单独某条SQL的分析，可以show profile查看最近一条SQL的分析。也可以使用show profile for query id（其中id就是show profiles中的QUERY_ID）查看具体一条的SQL语句分析。 </p>
+<img src="/2023/05/02/%E9%9D%A2%E8%AF%95%E9%A2%98/2023-05-02-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E4%B8%AD%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96SQL%E7%9A%84%EF%BC%9F/1683122499269.png" srcset="/img/loading.gif" lazyload class="" width="1683122499269">
+
+<p>除了查看profile ，还可以查看cpu和io，如上图。 </p>
+<h3 id="6-4-Optimizer-Trace分析详情"><a href="#6-4-Optimizer-Trace分析详情" class="headerlink" title="6.4 Optimizer Trace分析详情"></a>6.4 Optimizer Trace分析详情</h3><p>profile只能查看到SQL的执行耗时，但是无法看到SQL真正执行的过程信息，即不知道MySQL优化器是如何选择执行计划。这时候，我们可以使用Optimizer Trace，它可以跟踪执行语句的解析优化执行的全过程。 </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment">//打开分析</span><br><span class="hljs-keyword">set</span> optimizer_trace=<span class="hljs-string">&quot;enabled=on&quot;</span><br><span class="hljs-comment">//查看</span><br><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> information_schema.optimizer_trace<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>oin_preparation：准备阶段</li>
+<li>join_optimization：分析阶段</li>
+<li>join_execution：执行阶段</li>
+</ul>
+<h3 id="6-5-确定问题并采用相应的措施"><a href="#6-5-确定问题并采用相应的措施" class="headerlink" title="6.5 确定问题并采用相应的措施"></a>6.5 确定问题并采用相应的措施</h3><ul>
+<li>多数慢SQL都跟索引有关，比如不加索引，索引不生效、不合理等，这时候，我们可以<strong>优化索引</strong>。</li>
+<li>还可以优化SQL语句，比如一些in元素过多问题（分批），深分页问题（基于上一次数据过滤等），进行时间分段查询</li>
+<li>SQl没办法很好优化，可以改用ES的方式，或者数仓。</li>
+<li>如果单表数据量过大导致慢查询，则可以考虑分库分表</li>
+<li>如果数据库在刷脏页导致慢查询，考虑是否可以优化一些参数，跟DBA讨论优化方案</li>
+<li>如果存量数据量太大，考虑是否可以让部分数据归档</li>
+</ul>
+<h2 id="7、一条sql执行过长的时间，你如何优化，从哪些方面入手？"><a href="#7、一条sql执行过长的时间，你如何优化，从哪些方面入手？" class="headerlink" title="7、一条sql执行过长的时间，你如何优化，从哪些方面入手？"></a>7、一条sql执行过长的时间，你如何优化，从哪些方面入手？</h2><ul>
+<li>确定瓶颈</li>
+<li>索引优化</li>
+<li>优化SQL语句</li>
+<li>数据库参数优化</li>
+<li>分析锁的情况</li>
+<li>数据库硬件升级</li>
+</ul>
+<p><strong>确定瓶颈</strong> </p>
+<p><strong>查看MySQL日志，慢查询日志，explain分析SQL的执行计划，profile 分析执行耗时，Optimizer Trace分析详情</strong>等操作 。确定了瓶颈，才能有针对性地进行优化。 </p>
+<p><strong>索引优化</strong> </p>
+<p><strong>优化SQL语句</strong> </p>
+<p>针对join频繁、过多子查询</p>
+<p><strong>数据库参数优化</strong> </p>
+<p>可以通过修改数据库参数来优化查询效率，如修改内存缓存大小、修改连接池大小等。 </p>
+<p><strong>分析锁的情况</strong> </p>
+<p>查询执行时间过长有可能是由于锁的问题导致的，需要分析查询语句中是否存在锁的问题，如果存在锁的问题，可以考虑增加锁的并发度，从而提高查询效率。 </p>
+<h2 id="8、常用的数据库设计优化技巧？"><a href="#8、常用的数据库设计优化技巧？" class="headerlink" title="8、常用的数据库设计优化技巧？"></a>8、常用的数据库设计优化技巧？</h2><ul>
+<li>字段尽量避免使用NULL</li>
+<li>合理选择数据类型</li>
+<li>字段选择合适的长度</li>
+<li>正确使用索引</li>
+<li>尽量少定义text类型</li>
+<li>合理的数据表结构设计</li>
+<li>适当的冗余设计</li>
+<li>优化SQL查询语句</li>
+<li>一张表的字段不宜过多</li>
+<li>查询SQL尽量不要使用select *，而是select具体字段。</li>
+<li>小表驱动大表</li>
+<li>优化你的like语句</li>
+<li>尽量避免在索引列上使用mysql的内置函数</li>
+<li>如果插入数据过多，考虑批量操作。</li>
+<li>多用limit</li>
+<li>exist &amp; in合理利用</li>
+<li>in元素不要过多</li>
+<li>尽量用union all替换union</li>
+</ul>
+<h2 id="9、order-by查询效率慢-如何优化"><a href="#9、order-by查询效率慢-如何优化" class="headerlink" title="9、order by查询效率慢,如何优化."></a>9、order by查询效率慢,如何优化.</h2><p>order by排序，分为全字段排序和rowid排序。它是拿max_length_for_sort_data和结果行数据长度对比，如果结果行数据长度超过max_length_for_sort_data这个值，就会走rowid排序，相反，则走全字段排序。 </p>
+<p>rowid排序，一般需要回表去找满足条件的数据，所以效率会慢一点.如果是order by排序,可能会借助磁盘文件排序的话，效率就更慢一点. </p>
+<p>如何优化order by的文件排序?</p>
+<ul>
+<li>因为数据是无序的，所以就需要排序。如果数据本身是有序的，那就不会再用到文件排序啦。而索引数据本身是有序的，我们通过建立索引来优化order by语句。</li>
+<li>我们还可以通过调整max_length_for_sort_data、sort_buffer_size等参数优化；</li>
+</ul>
+<h2 id="10-后续更多"><a href="#10-后续更多" class="headerlink" title="10 后续更多"></a>10 后续更多</h2>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/mysql/" class="category-chain-item">mysql</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/mysql/">#mysql</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>日常开发中，你是怎么优化SQL的？</div>
+      <div>https://leellun.github.io/2023/05/02/面试题/2023-05-02-日常开发中，你是怎么优化SQL的？/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年5月2日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/05/03/%E6%9C%8D%E5%8A%A1%E5%99%A8/mysql/2023-05-03-group-by-%E6%9F%A5%E8%AF%A2%E6%85%A2%E7%9A%84%E8%AF%9D,%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%EF%BC%9F/" title="group by 查询慢的话,如何优化？">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">group by 查询慢的话,如何优化？</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/05/02/%E5%90%8E%E7%AB%AF/%E9%AB%98%E5%B9%B6%E5%8F%91/2023-05-02-%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%B9%82%E7%AD%89%E6%80%A7%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%EF%BC%9F/" title="接口的幂等性如何设计？">
+                        <span class="hidden-mobile">接口的幂等性如何设计？</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

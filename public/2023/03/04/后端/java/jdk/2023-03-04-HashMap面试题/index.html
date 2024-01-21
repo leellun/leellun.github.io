@@ -1,0 +1,731 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/leaf_icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="leellun">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1、 影响HashMap性能的重要参数初始容量：创建哈希表(数组)时桶的数量，默认为 16  负载因子：哈希表在其容量自动增加之前可以达到多满的一种尺度，默认为 0.75  2、HashMap工作原理  HashMap底层是hash数组和单向链表实现,数组中的每个元素都是链表,由Node内部类(实现Map.Entry&lt;K,V&gt;接口)实现,HashMap通过put&amp;get方法存储">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java数据结构HashMap">
+<meta property="og:url" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/index.html">
+<meta property="og:site_name" content="青叶水间 - 一个IT技术文章分享博客">
+<meta property="og:description" content="1、 影响HashMap性能的重要参数初始容量：创建哈希表(数组)时桶的数量，默认为 16  负载因子：哈希表在其容量自动增加之前可以达到多满的一种尺度，默认为 0.75  2、HashMap工作原理  HashMap底层是hash数组和单向链表实现,数组中的每个元素都是链表,由Node内部类(实现Map.Entry&lt;K,V&gt;接口)实现,HashMap通过put&amp;get方法存储">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/1677940989772.png">
+<meta property="og:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/1677997509766.png">
+<meta property="og:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/1677998288004.png">
+<meta property="article:published_time" content="2023-03-04T12:18:54.000Z">
+<meta property="article:modified_time" content="2023-03-05T08:26:32.389Z">
+<meta property="article:author" content="leellun">
+<meta property="article:tag" content="HashMap">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://leellun.github.io/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/1677940989772.png">
+  
+  
+  
+  <title>java数据结构HashMap - 青叶水间 - 一个IT技术文章分享博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"leellun.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>青叶水间</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg-default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="java数据结构HashMap"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-04 20:18" pubdate>
+          2023年3月4日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          38 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">java数据结构HashMap</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="1、-影响HashMap性能的重要参数"><a href="#1、-影响HashMap性能的重要参数" class="headerlink" title="1、 影响HashMap性能的重要参数"></a>1、 影响HashMap性能的重要参数</h3><p>初始容量：<code>创建哈希表(数组)时桶的数量，默认为 16</code> </p>
+<p>负载因子：哈希表在其容量自动增加之前可以达到多满的一种尺度，默认为 0.75 </p>
+<h3 id="2、HashMap工作原理"><a href="#2、HashMap工作原理" class="headerlink" title="2、HashMap工作原理"></a>2、HashMap工作原理</h3><img src="/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/1677940989772.png" srcset="/img/loading.gif" lazyload class="" width="1677940989772">
+
+<p>HashMap底层是hash数组和单向链表实现,数组中的每个元素都是链表,由Node内部类(实现Map.Entry&lt;K,V&gt;接口)实现,HashMap通过put&amp;get方法存储和获取。</p>
+<p>存储对象时,将K/V键值传给put()方法:</p>
+<p>①、调用hash(K)方法计算K的hash值,然后结合数组长度,计算得数组下标;</p>
+<p>②、调整数组大小(当容器中的元素个数大于capacity*loadfactor时,容器会进行扩容resize为2n);</p>
+<p>③</p>
+<p>i.如果K的hash值在HashMap中不存在,则执行插入,若存在,则发生碰撞;</p>
+<p>ii.如果K的hash值在HashMap中存在,且它们两者equals返回true,则更新键值对;</p>
+<p>iii.如果K的hash值在HashMap中存在,且它们两者equals返回false,则插入链表的尾部(尾插法)或者红黑树中(树的添加方式)。</p>
+<h3 id="3-、HashMap-的底层数组长度为何总是2的n次方"><a href="#3-、HashMap-的底层数组长度为何总是2的n次方" class="headerlink" title="3 、HashMap 的底层数组长度为何总是2的n次方"></a>3 、<code>HashMap 的底层数组长度为何总是2的n次方</code></h3><p>HashMap根据用户传入的初始化容量，利用无符号右移和按位或运算等方式计算出第一个大于该数的2的幂。</p>
+<ul>
+<li>使数据分布均匀，减少碰撞</li>
+<li>当length为2的n次方时，h&amp;(length - 1) 就相当于对length取模，而且在速度、效率上比直接取模要快得多</li>
+</ul>
+<p>（1）当length为2的N次方的时候，h &amp; (length-1) = h % length</p>
+<p>为什么&amp;效率更高呢？因为位运算直接对内存数据进行操作，不需要转成十进制，所以位运算要比取模运算的效率更高</p>
+<p>（2）当length为2的N次方的时候，数据分布均匀，减少冲突</p>
+<p>此时我们基于第一个原因进行分析，此时hash策略为h &amp; (length-1)。</p>
+<h3 id="4、HashMap允许空键空值么"><a href="#4、HashMap允许空键空值么" class="headerlink" title="4、HashMap允许空键空值么"></a>4、HashMap允许空键空值么</h3><p>HashMap最多只允许一个键为Null(多条会覆盖)，但允许多个值为Null</p>
+<p>HashTable不允许key和值为null</p>
+<h3 id="5、1-8中做了哪些优化优化？"><a href="#5、1-8中做了哪些优化优化？" class="headerlink" title="5、1.8中做了哪些优化优化？"></a>5、1.8中做了哪些优化优化？</h3><ul>
+<li><code>数组+链表改成了数组+链表或红黑树</code></li>
+<li><code>链表的插入方式从头插法改成了尾插法</code></li>
+<li><code>扩容的时候1.7需要对原数组中的元素进行重新hash定位在新数组的位置，1.8采用更简单的判断逻辑，位置不变或索引+旧容量大小；</code></li>
+<li>在插入时，1.7先判断是否需要扩容，再插入，1.8先进行插入，插入完成再判断是否需要扩容；</li>
+</ul>
+<h3 id="6、HashMap线程安全方面会出现什么问题"><a href="#6、HashMap线程安全方面会出现什么问题" class="headerlink" title="6、HashMap线程安全方面会出现什么问题"></a>6、<code>HashMap线程安全方面会出现什么问题</code></h3><ul>
+<li>在jdk1.7中，在多线程环境下，扩容时会造成环形链或数据丢失。</li>
+<li>在jdk1.8中，在多线程环境下，会发生数据覆盖的情况</li>
+</ul>
+<h3 id="7、为什么1-8改用红黑树"><a href="#7、为什么1-8改用红黑树" class="headerlink" title="7、为什么1.8改用红黑树"></a>7、为什么1.8改用红黑树</h3><p>当过多hash冲突，让HashMap不断地产生碰撞，那么相同key位置的链表就会不断增长，当你需要对这个HashMap的相应位置进行查询的时候，就会去循环遍历这个超级大的链表，性能及其地下。java8使用红黑树来替代超过8个节点数的链表后，查询方式性能得到了很好的提升，从原来的是O(n)到O(logn) </p>
+<h3 id="8、1-8中的扩容为什么逻辑判断更简单"><a href="#8、1-8中的扩容为什么逻辑判断更简单" class="headerlink" title="8、1.8中的扩容为什么逻辑判断更简单"></a>8、1.8中的扩容为什么逻辑判断更简单</h3><p>元素在重新计算hash之后，因为n变为2倍，那么n-1的mask范围在高位多1bit(红色)，因此新的index就会发生这样的变化： </p>
+<p>单节点变化：</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs haxe"><span class="hljs-keyword">new</span><span class="hljs-type">Tab</span>[e.hash &amp; (<span class="hljs-keyword">new</span><span class="hljs-type">Cap</span> - <span class="hljs-number">1</span>)] = e;<br></code></pre></td></tr></table></figure>
+
+<p>链表变化：</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs haxe"><span class="hljs-comment">//通过比较hash和旧的容量的与值比较是否为0判定是否需要位置变化</span><br><span class="hljs-keyword">if</span> ((e.hash &amp; oldCap) == <span class="hljs-number">0</span>) &#123;<br>	<span class="hljs-keyword">new</span><span class="hljs-type">Tab</span>[j] = loHead;<br>&#125;<span class="hljs-keyword">else</span>&#123;<br>	<span class="hljs-comment">//(e.hash &amp; oldCap) == 1 这里是需要重新更新位置变化，位置变化为 当前位置+旧的容量大小</span><br>    <span class="hljs-keyword">new</span><span class="hljs-type">Tab</span>[j + oldCap] = hiHead;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>借用一张网上的图片：</p>
+<img src="/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/1677997509766.png" srcset="/img/loading.gif" lazyload class="" width="1677997509766">
+
+<p>可以看出hash&amp;(oldCap-1)=15的节点上的链表经过resize后，转变为右图。左图位置15的链表上有5个数据节点，扩容后3个节点位置不变，2个节点的大小变为原来的索引位置15+原来的容量大小16=31</p>
+<h3 id="9-hash计算规则"><a href="#9-hash计算规则" class="headerlink" title="9 hash计算规则"></a>9 hash计算规则</h3><img src="/2023/03/04/%E5%90%8E%E7%AB%AF/java/jdk/2023-03-04-HashMap%E9%9D%A2%E8%AF%95%E9%A2%98/1677998288004.png" srcset="/img/loading.gif" lazyload class="" width="1677998288004">
+
+<p>为什么这里把key的hashcode取出来，然后把它右移16位，然后取异或？</p>
+<p>因为int是4个字节，也就是32位，大概是有40亿的空间，如果哈希函数运用的比较松散，一般是很难出现哈希碰撞的。但是现实中一个长度为40亿的数组内存是放不下的并且HashMap在扩容前的数组的默认初始值为16，因此直接拿Hashcode值来用是不现实的。因此需要做一些运算。我们右移16位也即是把高位的数据右移到低位的16位，然后与自己做异或，那就是把高位和低位的数据进行混合，以此来加大低位的随机性，同时混合后的低位掺杂了高位的特征，这样高位的信息也被变相保存了下来。这么做主要是从速度，功效和质量来考虑的。</p>
+<h3 id="10-HashMap的主要参数都有哪些？"><a href="#10-HashMap的主要参数都有哪些？" class="headerlink" title="10 HashMap的主要参数都有哪些？"></a>10 HashMap的主要参数都有哪些？</h3><p>DEFAULT_INITIAL_CAPACITY：默认的初始化容量，1&lt;&lt;4位运算的结果是16，也就是默认的初始化容量为16。</p>
+<p>MAXIMUM_CAPACITY：容量的最大值，1 &lt;&lt; 30位，2的30次幂。<br>DEFAULT_LOAD_FACTOR：默认的加载因子。</p>
+<p>TREEIFY_THRESHOLD：当链表长度大于这个参数时，链表就可能会转化为红黑树。</p>
+<p>UNTREEIFY_THRESHOLD：元素数量等于这个值也就是6的时候变回来。</p>
+<p>MIN_TREEIFY_CAPACITY：转变成树的table的最小容量，小于该值则不会进行树化。</p>
+<h3 id="11-哈希冲突及解决方法"><a href="#11-哈希冲突及解决方法" class="headerlink" title="11 哈希冲突及解决方法"></a>11 哈希冲突及解决方法</h3><p>开放定址法：开放定址法就是一旦发生了冲突，就去寻找下一个空的散列地址，只要散列表足够大，空的散列地址总能找到，并将记录存入。</p>
+<p>链地址法：将哈希表的每个单元作为链表的头结点，所有哈希地址为i的元素构成一个同义词链表。</p>
+<p>再哈希法：当哈希地址发生冲突用其他的函数计算另一个哈希函数地址，直到冲突不再产生为止。</p>
+<p>建立公共溢出区：将哈希表分为基本表和溢出表两部分，发生冲突的元素都放入溢出表中。</p>
+<h3 id="12-HashMap如何有效减少碰撞？"><a href="#12-HashMap如何有效减少碰撞？" class="headerlink" title="12 HashMap如何有效减少碰撞？"></a>12 HashMap如何有效减少碰撞？</h3><ol>
+<li>扰动函数：促使元素位置分布均匀，减少碰撞几率</li>
+<li>使用final对象，并采用合适的equals()和hashCode()方法</li>
+</ol>
+<h3 id="13-为啥我们重写equals方法的时候需要重写hashCode方法呢？"><a href="#13-为啥我们重写equals方法的时候需要重写hashCode方法呢？" class="headerlink" title="13 为啥我们重写equals方法的时候需要重写hashCode方法呢？"></a>13 为啥我们重写equals方法的时候需要重写hashCode方法呢？</h3><p>     hashmap中value的查找是通过 key 的 hashcode 来查找，所以对自己的对象必须重写 hashcode 方法通过 hashcode 找到对象地址后会用 equals 比较你传入的对象和 hashmap 中的 key 对象是否相同,因此还要重写 equals。</p>
+<h3 id="14-HashMap什么时候进行扩容？它是怎么扩容的呢？"><a href="#14-HashMap什么时候进行扩容？它是怎么扩容的呢？" class="headerlink" title="14 HashMap什么时候进行扩容？它是怎么扩容的呢？"></a>14 HashMap什么时候进行扩容？它是怎么扩容的呢？</h3><p>HashMap进行扩容取决于以下两个元素：</p>
+<p>Capacity：HashMap当前长度。</p>
+<p>LoadFactor：负载因子，默认值0.75f。<br>     当Map中的元素个数（包括数组，链表和红黑树中）超过了16*0.75=12之后开始扩容。<br>     具体怎么进行扩容呢？将会创建原来HashMap大小的两倍的bucket数组，来重新调整map的大小，并将原来的对象放入新的bucket数组中。这个过程叫作rehashing ，因为它将会调用hash方法找到新的bucket位置。</p>
+<h3 id="15-JDK1-7扩容的时候为什么要重新Hash呢，为什么不直接复制过去？"><a href="#15-JDK1-7扩容的时候为什么要重新Hash呢，为什么不直接复制过去？" class="headerlink" title="15 JDK1.7扩容的时候为什么要重新Hash呢，为什么不直接复制过去？"></a>15 JDK1.7扩容的时候为什么要重新Hash呢，为什么不直接复制过去？</h3><p>    是因为长度扩大以后，Hash的规则也随之改变。比如原来长度（Length）是8，你位运算出来的值是2 ，新的长度是16你位运算出来的值明显不一样了。</p>
+<h3 id="16-和Hashtable的区别是什么？"><a href="#16-和Hashtable的区别是什么？" class="headerlink" title="16 和Hashtable的区别是什么？"></a>16 和Hashtable的区别是什么？</h3><p>     HashMap和Hashtable都实现了Map接口。主要的区别有：线程安全性，同步(synchronization)，以及速度。</p>
+<p>     HashMap几乎可以等价于Hashtable，除了HashMap是非synchronized的，并可以接受null(HashMap可以接受为null的键值(key)和值(value)，而Hashtable则不行)。</p>
+<p>     HashMap是非synchronized，而Hashtable是synchronized；Java 5提供了ConcurrentHashMap，它是HashTable的替代，比HashTable的扩展性更好。</p>
+<p>     另一个区别是HashMap的迭代器(Iterator)是fail-fast迭代器，而Hashtable的enumerator迭代器不是fail-fast的。所以当有其它线程改变了HashMap的结构（增加或者移除元素），将会抛出ConcurrentModificationException，但迭代器本身的remove()方法移除元素则不会抛出ConcurrentModificationException异常。但这并不是一个一定发生的行为，要看JVM。这条同样也是Enumeration和Iterator的区别。</p>
+<p>Fail-safe和iterator迭代器相关。如果某个集合对象创建了Iterator或者ListIterator，然后其它的线程试图“结构上”更改集合对象，将会抛出ConcurrentModificationException异常。但其它线程可以通过set()方法更改集合对象是允许的，因为这并没有从“结构上”更改集合。但是假如已经从结构上进行了更改，再调用set()方法，将会抛出IllegalArgumentException异常。</p>
+<h3 id="17-什么是Java集合中的快速失败（fast-fail）机制"><a href="#17-什么是Java集合中的快速失败（fast-fail）机制" class="headerlink" title="17 什么是Java集合中的快速失败（fast-fail）机制?"></a>17 什么是Java集合中的快速失败（fast-fail）机制?</h3><p> 快速失败是Java集合的一种错误检测机制，当多个线程对集合进行结构上的改变的操作时，有可能会产生fail-fast。 </p>
+<p>那么快速失败机制底层是怎么实现的呢？</p>
+<p>集合在被遍历期间如果内容发生变化，就会改变modCount的值。当迭代器使用hashNext()/next()遍历下一个元素之前，都会检测modCount变量是否为expectedModCount值，是的话就返回遍历；否则抛出异常，终止遍历。 </p>
+<h3 id="18-HashTable一定是线程安全吗？它会有快速失败的时候吗？"><a href="#18-HashTable一定是线程安全吗？它会有快速失败的时候吗？" class="headerlink" title="18 HashTable一定是线程安全吗？它会有快速失败的时候吗？"></a>18 HashTable一定是线程安全吗？它会有快速失败的时候吗？</h3><p>Hashtable线程安全是由于其内部实现在put和remove等方法上使用synchronized进行了同步，所以对单个方法的使用是线程安全的。但是对多个方法进行复合操作时，线程安全性无法保证。比如一个线程在进行get操作，一个线程在进行remove操作，往往会导致下标越界等异常。</p>
+<p>Hashtable也会在迭代的时候抛出ConcurrentModificationException，可能发生快速失败</p>
+<h3 id="19-当两个对象的hashCode相同会发生什么"><a href="#19-当两个对象的hashCode相同会发生什么" class="headerlink" title="19 当两个对象的hashCode相同会发生什么?"></a>19 当两个对象的hashCode相同会发生什么?</h3><p>因为<code>hashCode</code>相同,不一定就是相等的(<code>equals</code>方法比较),所以两个对象所在数组的下标相同,”碰撞”就此发生。又因为<code>HashMap</code>使用链表存储对象,这个<code>Node</code>会存储到链表中。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%90%8E%E7%AB%AF/java/" class="category-chain-item">java</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HashMap/">#HashMap</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>java数据结构HashMap</div>
+      <div>https://leellun.github.io/2023/03/04/后端/java/jdk/2023-03-04-HashMap面试题/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>leellun</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/%E9%97%AE%E9%A2%98/2023-03-04-%E4%B8%BA%E4%BB%80%E4%B9%88HashMap%E7%9A%84%E5%BA%95%E5%B1%82%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6%E4%B8%BA%E4%BD%95%E6%80%BB%E6%98%AF2%E7%9A%84n%E6%AC%A1%E6%96%B9%EF%BC%9F/" title="为什么HashMap的底层数组长度为何总是2的n次方？">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">为什么HashMap的底层数组长度为何总是2的n次方？</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/04/%E5%90%8E%E7%AB%AF/java/aqs/2023-03-04-Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8BLock/" title="Java并发编程之Lock">
+                        <span class="hidden-mobile">Java并发编程之Lock</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/leellun" target="_blank" rel="nofollow noopener"><span>我的github</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
